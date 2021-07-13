@@ -122,6 +122,10 @@ class MarketData_FTX:
             depths["ASK"][float(info[0])] = float(info[1])
         for info in data.get('bids', []):
             depths["BID"][float(info[0])] = float(info[1])
+
+        print("%s PUBLISH: \n" % (exchange))
+        print(depths)
+
         self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
 
     def __parse_trades(self, symbol, msg):

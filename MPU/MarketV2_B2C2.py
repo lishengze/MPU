@@ -22,7 +22,7 @@ class MarketData_B2C2:
         self.__publisher = Publisher(exchange=exchange, redis_config=redis_config, debug_mode=debug_mode)
 
         self.__ws_url = "wss://socket.b2c2.net/quotes"
-        self.__token = "bf67093781746c841305d22897829ab3f3b3f87a"
+        self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
 
         self.__symbol_book = {
                 "BTCUSD.SPOT": "BTC_USD",
@@ -62,7 +62,7 @@ class MarketData_B2C2:
                     #async with ws_session.ws_connect('wss://localhost:5000/v1/portal/ws') as ws:
                     async with ws_session.ws_connect(url=self.__ws_url, headers=header, heartbeat=10, autoclose=False) as ws:
                         response = await ws.receive()
-                        #print(response)
+                        print(response)
                         self.__publisher.logger(level=self.__publisher.info,
                                                 event=MDEvent.CONNECTED())
 
@@ -133,6 +133,10 @@ class MarketData_B2C2:
                                 depth_update["ASK"][float(level["price"])] = float(level["quantity"])
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
+
+                            print("%s PUBLISH: \n" % (exchange))
+                            print(depths)
+
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
                                 self.__publisher.pub_depthx(symbol=self.__symbol_book[msg["instrument"]],
                                                             depth_update=depth_update, is_snapshot=True)
