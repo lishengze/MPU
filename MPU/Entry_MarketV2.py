@@ -27,8 +27,17 @@ from MarketV2_HASHKEYPRO import MarketData_HASHKEYPRO
 from MarketV2_HASHKEYPRO2 import MarketData_HASHKEYPRO2
 from MarketV2_B2C2 import MarketData_B2C2
 from MarketV2_FTX import MarketData_FTX
-from settings import REDIS_CONFIG
 
+g_redis_config_file_name = "../redis_config.json"
+
+def get_redis_config():    
+    json_file = open(g_redis_config_file_name,'r')
+    json_dict = json.load(json_file)
+    print("\n******* redis_config *******")
+    print(json_dict)
+    time.sleep(3)
+
+    return json_dict
 
 class MarketDataSurveillance:
     def __init__(self, debug_mode: bool = True):
@@ -49,7 +58,7 @@ class MarketDataSurveillance:
         self.log(level=self._INFO, topic="Initialize", msg=f"DEBUG_MODE={self.__debug_mode}")
 
         self.__md_svc = {
-            "BINANCE": MarketData_BINANCE,
+            # "BINANCE": MarketData_BINANCE,
             #"BINANCE_PERPETUAL": MarketData_BINANCE_Perpetual,
             #"GDAX": MarketData_GDAX,
             #"BITMEX": MarketData_BITMEX,
@@ -57,13 +66,13 @@ class MarketDataSurveillance:
             #"POLONIEX": MarketData_POLONIEX,
             #"XDAEX": MarketData_XDAEX,
             #"HASHKEYPRO": MarketData_HASHKEYPRO,
-            "HUOBI": MarketData_HUOBI,
+            # "HUOBI": MarketData_HUOBI,
             #"HUOBI_FUTURE": MarketData_HUOBI_Future,
             #"HUOBI_PERPETUAL": MarketData_HUOBI_Perpetual,
-            "OKEX": MarketData_OKEX,
+            # "OKEX": MarketData_OKEX,
             #"OKEX_FUTURE": MarketData_OKEX_Future,
             #"OKEX_PERPETUAL": MarketData_OKEX_Perpetual,
-            #"FTX": MarketData_FTX,
+            "FTX": MarketData_FTX,
             #"B2C2": MarketData_B2C2,
             #"HASHKEYPRO2": MarketData_HASHKEYPRO2,
         }
@@ -77,7 +86,7 @@ class MarketDataSurveillance:
         #                       "PORT": 6666,
         #                       "PWD": "rkqFB4,wpoMmHqT6he}r"}
 
-        self.__redis_config = REDIS_CONFIG
+        self.__redis_config = get_redis_config()
 
         self.__redis_conn = redis.Redis(host=self.__redis_config["HOST"],
                                         port=self.__redis_config["PORT"],

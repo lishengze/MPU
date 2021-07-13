@@ -5,6 +5,7 @@ import redis
 import threading
 import numpy
 import sys
+import time
 
 from collections import deque
 
@@ -16,8 +17,21 @@ kline60_topic = "SLOW_KLINE"
 #klineday_topic = "KLINEd"
 total_kline_type = [kline1_topic, kline60_topic]
 
+g_redis_config_file_name = "../redis_config.json"
+
+def get_redis_config():    
+    json_file = open(g_redis_config_file_name,'r')
+    json_dict = json.load(json_file)
+    print("\nredis_config")
+    print(json_dict)
+    time.sleep(3)
+
+    return json_dict
+    
 def to_datetime(s):
     return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f")
+
+
 
 class KLineSvc:
     def __init__(self, slow_period: int = 60, running_mode: str = "DEBUG"):
@@ -25,9 +39,10 @@ class KLineSvc:
         self.__mode = running_mode
         self.__verification_tag = False
         self.__topic_list = dict()
-        self.__svc_marketdata = redis.Redis(host="127.0.0.1",
-                                            port=6379,
-                                            password="tradingtest")
+        self.__redis_config = get_redis_config()
+        self.__svc_marketdata = redis.Redis(host=self.__redis_config["HOST"],
+                                            port=self.__redis_config["PORT"],
+                                            password=self.__redis_config["PWD"])
 
         self.__data_recover()
 
