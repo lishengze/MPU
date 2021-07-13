@@ -16,9 +16,9 @@ class MarketData_FTX:
         if redis_config is None:
             redis_config = REDIS_CONFIG
 
-        exchange = "FTX"
+        self.__exchange_name = "FTX"
 
-        self.__publisher = Publisher(exchange=exchange, redis_config=redis_config, debug_mode=debug_mode)
+        self.__publisher = Publisher(exchange=__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
 
         self.__ws_url = "wss://ftx.com/ws/"
 
@@ -41,7 +41,7 @@ class MarketData_FTX:
             "ETH/BTC" : "ETH_BTC",
         }
 
-        
+
         self.ws_future = asyncio.run_coroutine_threadsafe(self.ws_listener(), self.ws_loop)
 
         while True:
@@ -57,6 +57,7 @@ class MarketData_FTX:
             try:
                 async with aiohttp.ClientSession() as ws_session:
                     async with ws_session.ws_connect(self.__ws_url, heartbeat=10, autoclose=True) as ws:
+                        print("FTX Connect {self.__ws_url} Success!")
                         for ref_no in list(self.__symbol_list.keys()):
                             await ws.send_json({'op': 'subscribe', 'channel': 'orderbook', 'market': ref_no})
                             await ws.send_json({'op': 'subscribe', 'channel': 'trades', 'market': ref_no})
@@ -125,7 +126,7 @@ class MarketData_FTX:
         for info in data.get('bids', []):
             depths["BID"][float(info[0])] = float(info[1])
 
-        print("%s PUBLISH: \n" % (exchange))
+        print("%s PUBLISH: \n" % (__exchange_name))
         print(depths)
 
         self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')

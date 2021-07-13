@@ -69,7 +69,7 @@ class MarketData_B2C2:
                         data = {
                                   "event": "subscribe",
                                   "instrument": "BTCUSD.SPOT",
-                                  "levels": [1,5],
+                                  "levels": [50,250],
                                   "tag": ""
                                }
                         await ws.send_json(data)
@@ -79,7 +79,7 @@ class MarketData_B2C2:
                         data1 = {
                                   "event": "subscribe",
                                   "instrument": "BTCUST.SPOT",
-                                  "levels": [1,5],
+                                  "levels": [50,250],
                                   "tag": ""
                                }
                         await ws.send_json(data1)
@@ -134,8 +134,8 @@ class MarketData_B2C2:
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
-                            print("\n%s PUBLISH: \n" % (self.__exchange_name))
-                            print(depth_update)
+                            # print("\n%s PUBLISH: \n" % (self.__exchange_name))
+                            # print(depth_update)
 
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
                                 self.__publisher.pub_depthx(symbol=self.__symbol_book[msg["instrument"]],

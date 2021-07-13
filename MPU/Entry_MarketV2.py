@@ -73,8 +73,8 @@ class MarketDataSurveillance:
             # "OKEX": MarketData_OKEX,
             #"OKEX_FUTURE": MarketData_OKEX_Future,
             #"OKEX_PERPETUAL": MarketData_OKEX_Perpetual,
-            # "FTX": MarketData_FTX,
-            "B2C2": MarketData_B2C2,
+            "FTX": MarketData_FTX,
+            # "B2C2": MarketData_B2C2,
             #"HASHKEYPRO2": MarketData_HASHKEYPRO2,
         }
 
