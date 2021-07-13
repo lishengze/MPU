@@ -166,6 +166,9 @@ def ftx_on_open(ws):
     }
 
     sub_info_str = json.dumps(sub_info)
+
+    print(sub_info_str)
+
     ws.send(sub_info_str)
 
 def ftx_on_msg(ws, message):
