@@ -155,15 +155,16 @@ def ftx_on_open(ws):
     ts = int(time.time() * 1000)
     api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
     api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
+    print("0")
     sub_info = {'op': 'login', 
                     'args': 
                     {
                         'key': api_key,
-                        'sign': hmac.new(
-                            api_secret, f'{ts}websocket_login'.encode(), 'sha256').hexdigest(),
+                        'sign': hmac.new(api_secret, f'{ts}websocket_login'.encode(), 'sha256').hexdigest(),
                         'time': ts,
                     }
     }
+    print("1")
 
     sub_info_str = json.dumps(sub_info)
 
