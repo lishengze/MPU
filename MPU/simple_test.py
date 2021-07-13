@@ -156,7 +156,7 @@ def ftx_on_open(ws):
     api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
     api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
     print("0")
-    tmp_sign_origin = hmac.new(api_secret, f'{ts}websocket_login'.encode(), 'sha256')
+    tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
     print(tmp_sign_origin)
     tmp_sign_hex = tmp_sign_origin.hexdigest()
     print(tmp_sign_hex)
@@ -194,6 +194,33 @@ def test_ftx_sub():
 
 def test_websocket():
     test_ftx_sub()
+
+def test_hmac():
+    print("\nftx_on_open")
+    ts = int(time.time() * 1000)
+    api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
+    api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
+    print("0")
+    tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
+    print(tmp_sign_origin)
+    tmp_sign_hex = tmp_sign_origin.hexdigest()
+    print(tmp_sign_hex)
+
+    
+    sub_info = {'op': 'login', 
+                    'args': 
+                    {
+                        'key': api_key,
+                        'sign': tmp_sign_hex,
+                        'time': ts,
+                    }
+    }
+    print("1")
+
+    sub_info_str = json.dumps(sub_info)
+
+    print(sub_info_str)
+
 
 def test_http_restful():
     # test_urllib()
@@ -252,6 +279,7 @@ def test_urllib():
 
 
 if __name__ == "__main__":
+    # test_hmac()
     test_websocket()
     # test_http_restful()
 
