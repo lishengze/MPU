@@ -18,7 +18,7 @@ class MarketData_FTX:
 
         self.__exchange_name = "FTX"
 
-        self.__publisher = Publisher(exchange=__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
+        self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
 
         self.__ws_url = "wss://ftx.com/ws/"
 
