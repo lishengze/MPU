@@ -17,9 +17,9 @@ class MarketData_B2C2:
         if redis_config is None:            
             redis_config = REDIS_CONFIG
 
-        exchange = "B2C2"
+        self.__exchange_name = "B2C2"
 
-        self.__publisher = Publisher(exchange=exchange, redis_config=redis_config, debug_mode=debug_mode)
+        self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
 
         self.__ws_url = "wss://socket.uat.b2c2.net/quotes"
         self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
@@ -134,8 +134,8 @@ class MarketData_B2C2:
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
-                            print("\n%s PUBLISH: \n" % (exchange))
-                            print(depths)
+                            print("\n%s PUBLISH: \n" % (self.__exchange_name))
+                            print(depth_update)
 
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
                                 self.__publisher.pub_depthx(symbol=self.__symbol_book[msg["instrument"]],
