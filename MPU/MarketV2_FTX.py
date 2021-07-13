@@ -40,6 +40,8 @@ class MarketData_FTX:
             "FTT/USDT": "FTT_USDT",
             "ETH/BTC" : "ETH_BTC",
         }
+
+        
         self.ws_future = asyncio.run_coroutine_threadsafe(self.ws_listener(), self.ws_loop)
 
         while True:

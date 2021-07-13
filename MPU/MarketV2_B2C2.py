@@ -21,7 +21,7 @@ class MarketData_B2C2:
 
         self.__publisher = Publisher(exchange=exchange, redis_config=redis_config, debug_mode=debug_mode)
 
-        self.__ws_url = "wss://socket.b2c2.net/quotes"
+        self.__ws_url = "wss://socket.uat.b2c2.net/quotes"
         self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
 
         self.__symbol_book = {
