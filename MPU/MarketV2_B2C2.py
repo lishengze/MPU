@@ -74,7 +74,7 @@ class MarketData_B2C2:
                                }
                         await ws.send_json(data)
                         response = await ws.receive()
-                        print(f"R {response}")
+                        print(f"\nR \n{response}")
 
                         data1 = {
                                   "event": "subscribe",
@@ -84,7 +84,7 @@ class MarketData_B2C2:
                                }
                         await ws.send_json(data1)
                         response1 = await ws.receive()
-                        print(f"R1 {response1}")
+                        print(f"\nR1 \n{response1}")
 
 
                         data2 = {
@@ -95,7 +95,7 @@ class MarketData_B2C2:
                                }
                         await ws.send_json(data2)
                         response2 = await ws.receive()
-                        print(f"R2 {response2}")
+                        print(f"\nR2 \n{response2}")
 
                         data3 = {
                                   "event": "subscribe",
@@ -105,7 +105,7 @@ class MarketData_B2C2:
                                }
                         await ws.send_json(data3)
                         response2 = await ws.receive()
-                        print(f"R3 {response2}")
+                        print(f"\nR3 \n{response2}")
 
                         data4 = {
                                   "event": "subscribe",
@@ -115,7 +115,7 @@ class MarketData_B2C2:
                                }
                         await ws.send_json(data4)
                         response2 = await ws.receive()
-                        print(f"R4 {response2}")
+                        print(f"\nR4 \n{response2}")
 
 
                         async for ws_msg in ws:
@@ -134,7 +134,7 @@ class MarketData_B2C2:
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
-                            print("%s PUBLISH: \n" % (exchange))
+                            print("\n%s PUBLISH: \n" % (exchange))
                             print(depths)
 
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
