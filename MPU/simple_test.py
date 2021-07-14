@@ -264,7 +264,7 @@ class FTX(object):
                                     on_message=self.on_msg,
                                     on_error=self.on_error,
                                     on_close=ftx_on_close)
-        self._ws.on_open = self.on_open
+        self._ws.on_open = ftx_on_open
 
         # self._timer_thread = threading.Thread(target=self.on_timer, )
         # self._timer_thread.start()
