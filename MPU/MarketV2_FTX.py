@@ -79,7 +79,7 @@ class MarketData_FTX:
 
         while True:
             time.sleep(10)
-            ws.send_str(get_ping_info())
+            self.ws.send_str(get_ping_info())
 
     # Thread Worker for aio_initiator Method
     def asyncio_initiator(self, loop):
@@ -91,6 +91,7 @@ class MarketData_FTX:
             try:
                 async with aiohttp.ClientSession() as ws_session:
                     async with ws_session.ws_connect(self.__ws_url, heartbeat=10, autoclose=True) as ws:
+                        self.ws = ws
                         print("FTX Connect {self.__ws_url} Success!")
 
                         print("Login First!")
