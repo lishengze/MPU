@@ -259,12 +259,12 @@ class FTX(object):
 
     def start(self):
         print("\n\n***** Start Connect %s *****" % (self._ws_url))
-        
-        self._ws = websocket.WebSocketApp( self._ws_url,
-                                    on_message=self.on_msg,
-                                    on_error=self.on_error,
-                                    on_close=ftx_on_close)
-        self._ws.on_open = ftx_on_open
+        websocket.enableTrace(True)
+        self._ws = websocket.WebSocketApp(self._ws_url)
+        self._ws.on_message = self.on_msg
+        self._ws.on_error = self.on_error                                    
+        self._ws.on_open = self.on_open
+        self._ws.on_close = self.on_close
 
         # self._timer_thread = threading.Thread(target=self.on_timer, )
         # self._timer_thread.start()
