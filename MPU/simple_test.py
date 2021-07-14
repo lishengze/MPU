@@ -259,7 +259,7 @@ class FTX(object):
 
     def start(self):
         print("\n\n***** Start Connect %s *****" % (self._ws_url))
-        websocket.enableTrace(True)
+        # websocket.enableTrace(True)
         self._ws = websocket.WebSocketApp(self._ws_url)
         self._ws.on_message = self.on_msg
         self._ws.on_error = self.on_error                                    
@@ -272,7 +272,7 @@ class FTX(object):
         self._ws.run_forever()
 
     def on_msg(self, msg):
-        print("on_msg {msg}")
+        print("on_msg %s "%(str(msg)))
 
     def on_open(self):
         print("\nftx_on_open")
