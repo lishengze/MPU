@@ -95,16 +95,21 @@ class MarketData_FTX:
                         print("FTX Connect %s Success!" % (self.__ws_url))
 
                         print("Login First!")
-                        await ws.send_str(get_login_info())
+                        ws.send_str(get_login_info())
 
                         for ref_no in list(self.__symbol_list.keys()):
-                            await ws.send_json({'op': 'subscribe', 'channel': 'orderbook', 'market': ref_no})
-                            await ws.send_json({'op': 'subscribe', 'channel': 'trades', 'market': ref_no})
+                            sub_order_book_json = {'op': 'subscribe', 'channel': 'orderbook', 'market': ref_no}
+                            print(sub_order_book_json)
+                            ws.send_json(sub_order_book_json)
+
+                            sub_trade_json = {'op': 'subscribe', 'channel': 'trades', 'market': ref_no}
+                            print(sub_trade_json)
+                            ws.send_json(sub_trade_json)
+
                             #await ws.send_json({'op': 'subscribe', 'channel': 'markets', 'grouping': 500, 'market': ref_no})
 
                         self.__publisher.logger(level=self.__publisher.info,
                                                 event=MDEvent.CONNECTED())
-
                         async for ws_msg in ws:
                             if ws_msg.type in [aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR]:
                                 # Websocket Forced Close, Break the Loop and Reconnect Websocket
