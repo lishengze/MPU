@@ -107,9 +107,12 @@ class FTX(object):
 
     def on_msg(self, msg):
         try:
-            print(msg)
+            # print(msg)
+
             dic = json.loads(msg)
+
             self.process_msg(dic)
+
         except Exception as e:
             print("[E] on_msg: ")
             print(e)
@@ -148,6 +151,7 @@ class FTX(object):
             #                             event=MDEvent.WSERROR(ws_msg.type))
             #     return
 
+            print(ws_msg)
             if ws_msg.type == "pong":
                 return
 
@@ -163,7 +167,7 @@ class FTX(object):
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(msg)))
                 self.__publisher.logger(level="WARNING", msg=error_msg)                                        
         except Exception as e:
-            print("[E] process_msg: ")
+            print("[E] process_msg: %s" % (str(ws_msg)))
             print(e)
 
     def __parse_orderbook(self, symbol, msg):
