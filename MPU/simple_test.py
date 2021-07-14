@@ -272,7 +272,8 @@ class FTX(object):
         self._ws.run_forever()
 
     def on_msg(self, msg):
-        print("on_msg %s "%(str(msg)))
+        print("on_msg")
+        print(msg)
 
     def on_open(self):
         print("\nftx_on_open")
