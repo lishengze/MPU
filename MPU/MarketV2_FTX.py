@@ -106,9 +106,14 @@ class FTX(object):
         self._ws.run_forever()
 
     def on_msg(self, msg):
-        # print("wbsk on_msg: ")
-        print(msg)
-        self.process_msg(msg)
+        try:
+            print(msg)
+            dic = json.loads(msg)
+            self.process_msg(dic)
+        except Exception as e:
+            print("[E] on_msg: ")
+            print(e)
+
 
     def on_open(self):
         print("\nftx_on_open")
@@ -119,8 +124,8 @@ class FTX(object):
 
         time.sleep(3)
         for symbol in self._symbol_list:
-            self._ws.send(get_sub_order_info())
-            self._ws.send(get_sub_trade_info())
+            self._ws.send(get_sub_order_info(symbol))
+            self._ws.send(get_sub_trade_info(symbol))
 
     def on_error(self):
         print("on_error")
