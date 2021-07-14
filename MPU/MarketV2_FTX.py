@@ -152,15 +152,19 @@ class FTX(object):
             #     return
 
             print(ws_msg)
-            if ws_msg["type"] == "pong":
+            if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" :
+                return
+
+            if "data" not in ws_msg:
                 return
 
             # msg = json.loads()
 
             msg = ws_msg["data"]
 
-            ex_symbol = msg.get('market', '')
-            channel_type = msg.get('channel', '')
+            ex_symbol = ws_msg.get('market', '')
+            channel_type = ws_msg.get('channel', '')
+
             if channel_type == 'orderbook':
                 self.__parse_orderbook(ex_symbol, msg)
             elif channel_type == 'trades':
