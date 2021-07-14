@@ -271,10 +271,10 @@ class FTX(object):
 
         self._ws.run_forever()
 
-    def on_msg(self, ws, msg):
+    def on_msg(self, msg):
         print("on_msg {msg}")
 
-    def on_open(self, ws):
+    def on_open(self):
         print("\nftx_on_open")
 
         self._is_connnect = True
@@ -285,10 +285,10 @@ class FTX(object):
         time.sleep(3)
         self._ws.send(get_sub_market_info())
 
-    def on_error(self, ws):
+    def on_error(self):
         print("on_error")
 
-    def on_close(self, ws):
+    def on_close(self):
         print("on_close")
 
     def on_timer(self):
