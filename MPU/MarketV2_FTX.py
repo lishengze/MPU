@@ -127,7 +127,7 @@ class FTX(object):
 
         time.sleep(3)
         for symbol in self._symbol_list:
-            self._ws.send(get_sub_order_info(symbol))
+            # self._ws.send(get_sub_order_info(symbol))
             self._ws.send(get_sub_trade_info(symbol))
 
     def on_error(self):
