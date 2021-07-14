@@ -5,6 +5,7 @@ import http.client
 import time
 import _thread
 import hmac
+import threading
 
 def process_heartbeat(ws):
     heartbeat_info = {
@@ -184,7 +185,15 @@ def get_sub_market_info():
     sub_info_str = json.dumps(sub_info)
     print(sub_info_str)
     
-    return sub_info_str                
+    return sub_info_str           
+
+def get_ping_info():
+    sub_info = {'op': 'ping'}  
+
+    sub_info_str = json.dumps(sub_info)
+    print(sub_info_str)
+    
+    return sub_info_str                 
 
 def ftx_on_open(ws):
     print("\nftx_on_open")
@@ -203,7 +212,7 @@ def test_ftx_sub():
     print("\n\n***** Connect %s *****" % (url))
     
     ws = websocket.WebSocketApp(url,
-                                on_message=ftx_on_open,
+                                on_message=ftx_on_msg,
                                 on_error=ftx_on_error,
                                 on_close=ftx_on_close)
     ws.on_open = ftx_on_open
@@ -238,65 +247,68 @@ def test_hmac():
 
     print(sub_info_str)
 
+class FTX(object):
+    def __init__(self):
+        self._ws_url = "wss://ftx.com/ws/"
+        self._key = ""
+        self._secret = ""
+        self._ping_secs = 10
 
-def test_http_restful():
-    # test_urllib()
-    test_http_client()
+        self._is_connnect = False
+        self._ws = None
 
-def get_http_kline_str():
-    symbol = "BTC_USDT"
-    frequency = 60 * 5
-    end_time = int(time.time())
-    end_time = end_time - end_time % frequency
-    start_time = end_time - 60 * 30
-    query_str = ("v1/kline_request/symbol=%s&start_time=%d&end_time=%d&frequency=%d" \
-                % (symbol, start_time, end_time, frequency))
-    return query_str  
-
-def get_http_enquiry_str():
-    symbol = "BTC_USDT"
-    volume = 10
-    direction_type = 0
-    query_str = ("/v1/enquiry?symbol=%s&type=%d&volume=%d" \
-                % (symbol, direction_type, volume))
-    return query_str      
-
-def test_http_client():
-    # uri = "127.0.0.1:9115"
-    uri = "36.255.220.139:9115"
-    conn = http.client.HTTPConnection(uri)
-    # query_str = get_http_kline_str()
-    query_str = get_http_enquiry_str()
-
-    print("query_str: %s" % (query_str))
-
-    conn.request("GET", query_str)
-    res =conn.getresponse()
-    print(res.read().decode("utf-8"))
-    
-def test_urllib():
-    uri = "http://127.0.0.1:9115"
-    response = urllib.request.urlopen(uri)
-    html = response.read()
-    print("Http Response: \n%s" % (html))    
+    def start(self):
+        print("\n\n***** Start Connect %s *****" % (self._ws_url))
 
 
-# class FTX(object):
-#     def __init__(self):
-#         self._ws_url = "wss://ftx.com/ws/"
+        
+        self._ws = websocket.WebSocketApp( self._ws_url,
+                                    on_message=self.on_msg,
+                                    on_error=self.on_error,
+                                    on_close=ftx_on_close)
+        self._ws.on_open = self.on_open
 
-#     def start(self):
-#         pass
+        self._timer_thread = threading.Thread(self.on_timer)
+        self._timer_thread.start()
 
-#     def on_msg(self, ws, msg):
-#         pass
+        self._ws.run_forever()
 
-#     def on_open(self, ws):
-#         pass
+    def on_msg(self, ws, msg):
+        print("on_msg {msg}")
+
+    def on_open(self, ws):
+        print("\nftx_on_open")
+
+        self._is_connnect = True
+
+        sub_info_str = get_login_info()
+        self._ws.send(sub_info_str)
+
+        time.sleep(3)
+        self._ws.send(get_sub_market_info())
+
+    def on_error(self, ws):
+        print("on_error")
+
+    def on_close(self, ws):
+        print("on_close")
+
+    def on_timer(self):
+        while True:
+            time.sleep(self._ping_secs)
+
+            if self._is_connnect:
+                self._ws.send(get_ping_info())
+
+def test_ftx():
+    ftx_obj = FTX()
+    ftx_obj.start()
 
 
 if __name__ == "__main__":
     # test_hmac()
-    test_websocket()
+    # test_websocket()
     # test_http_restful()
+
+    test_ftx()
 
