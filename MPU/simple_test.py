@@ -259,8 +259,6 @@ class FTX(object):
 
     def start(self):
         print("\n\n***** Start Connect %s *****" % (self._ws_url))
-
-
         
         self._ws = websocket.WebSocketApp( self._ws_url,
                                     on_message=self.on_msg,
@@ -268,7 +266,7 @@ class FTX(object):
                                     on_close=ftx_on_close)
         self._ws.on_open = self.on_open
 
-        self._timer_thread = threading.Thread(self.on_timer)
+        self._timer_thread = threading.Thread(target=self.on_timer, )
         self._timer_thread.start()
 
         self._ws.run_forever()
@@ -294,9 +292,9 @@ class FTX(object):
         print("on_close")
 
     def on_timer(self):
+        print("on_timer: ")
         while True:
             time.sleep(self._ping_secs)
-
             if self._is_connnect:
                 self._ws.send(get_ping_info())
 
