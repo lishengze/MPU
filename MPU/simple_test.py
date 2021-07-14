@@ -296,6 +296,10 @@ class FTX(object):
         print("on_timer: ")
         if self._is_connnect:
             self._ws.send(get_ping_info())        
+
+        self._timer = threading.Timer(self._ping_secs, self.on_timer)
+        self._timer.start()
+                    
         # while True:
         #     time.sleep(self._ping_secs)
         #     if self._is_connnect:
