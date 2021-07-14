@@ -169,6 +169,7 @@ class FTX(object):
         except Exception as e:
             print("[E] process_msg: %s" % (str(ws_msg)))
             print(e)
+            print("")
 
     def __parse_orderbook(self, symbol, msg):
         try:
