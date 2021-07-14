@@ -92,10 +92,10 @@ class MarketData_FTX:
                 async with aiohttp.ClientSession() as ws_session:
                     async with ws_session.ws_connect(self.__ws_url, heartbeat=10, autoclose=True) as ws:
                         self.ws = ws
-                        print("FTX Connect {self.__ws_url} Success!")
+                        print("FTX Connect %s Success!" % (self.__ws_url))
 
                         print("Login First!")
-                        ws.send_str(get_login_info())
+                        await ws.send_str(get_login_info())
 
                         for ref_no in list(self.__symbol_list.keys()):
                             await ws.send_json({'op': 'subscribe', 'channel': 'orderbook', 'market': ref_no})
