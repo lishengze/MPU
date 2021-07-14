@@ -9,6 +9,39 @@ from datetime import datetime
 import time
 from settings import REDIS_CONFIG
 
+def get_ping_info():
+    sub_info = {'op': 'ping'}  
+
+    sub_info_str = json.dumps(sub_info)
+    print(sub_info_str)
+    
+    return sub_info_str   
+
+def get_login_info():
+    ts = int(time.time() * 1000)
+    api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
+    api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
+    # print("0")
+    tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
+    # print(tmp_sign_origin)
+    tmp_sign_hex = tmp_sign_origin.hexdigest()
+    # print(tmp_sign_hex)
+
+    
+    sub_info = {'op': 'login', 
+                    'args': 
+                    {
+                        'key': api_key,
+                        'sign': tmp_sign_hex,
+                        'time': ts,
+                    }
+    }
+    # print("1")
+
+    sub_info_str = json.dumps(sub_info)
+    print(sub_info_str)
+    
+    return sub_info_str
 
 class MarketData_FTX:
     def __init__(self, debug_mode: bool = True, redis_config: dict = None):
@@ -46,6 +79,7 @@ class MarketData_FTX:
 
         while True:
             time.sleep(10)
+            ws.send_str(get_ping_info())
 
     # Thread Worker for aio_initiator Method
     def asyncio_initiator(self, loop):
@@ -58,6 +92,10 @@ class MarketData_FTX:
                 async with aiohttp.ClientSession() as ws_session:
                     async with ws_session.ws_connect(self.__ws_url, heartbeat=10, autoclose=True) as ws:
                         print("FTX Connect {self.__ws_url} Success!")
+
+                        print("Login First!")
+                        ws.send_str(get_login_info())
+
                         for ref_no in list(self.__symbol_list.keys()):
                             await ws.send_json({'op': 'subscribe', 'channel': 'orderbook', 'market': ref_no})
                             await ws.send_json({'op': 'subscribe', 'channel': 'trades', 'market': ref_no})
@@ -74,7 +112,7 @@ class MarketData_FTX:
                                 break
 
                             msg = json.loads(ws_msg.data)
-                            # print(msg)
+                            print(msg)
                             ex_symbol = msg.get('market', '')
                             channel_type = msg.get('channel', '')
                             if channel_type == 'orderbook':
