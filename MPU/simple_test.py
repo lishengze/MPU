@@ -266,8 +266,8 @@ class FTX(object):
                                     on_close=ftx_on_close)
         self._ws.on_open = self.on_open
 
-        self._timer_thread = threading.Thread(target=self.on_timer, )
-        self._timer_thread.start()
+        # self._timer_thread = threading.Thread(target=self.on_timer, )
+        # self._timer_thread.start()
 
         self._ws.run_forever()
 
