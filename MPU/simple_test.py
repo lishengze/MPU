@@ -252,7 +252,7 @@ class FTX(object):
         self._ws_url = "wss://ftx.com/ws/"
         self._key = ""
         self._secret = ""
-        self._ping_secs = 10
+        self._ping_secs = 1
 
         self._is_connnect = False
         self._ws = None
@@ -273,7 +273,7 @@ class FTX(object):
 
     def on_msg(self, msg):
         print("on_msg")
-        print(msg)
+        # print(msg)
 
     def on_open(self):
         print("\nftx_on_open")
