@@ -150,16 +150,15 @@ def ftx_on_error(ws, error):
     print("ftx_on_error {error}")
     pass
 
-def ftx_on_open(ws):
-    print("\nftx_on_open")
+def get_login_info():
     ts = int(time.time() * 1000)
     api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
     api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
-    print("0")
+    # print("0")
     tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
-    print(tmp_sign_origin)
+    # print(tmp_sign_origin)
     tmp_sign_hex = tmp_sign_origin.hexdigest()
-    print(tmp_sign_hex)
+    # print(tmp_sign_hex)
 
     
     sub_info = {'op': 'login', 
@@ -170,13 +169,31 @@ def ftx_on_open(ws):
                         'time': ts,
                     }
     }
-    print("1")
+    # print("1")
 
     sub_info_str = json.dumps(sub_info)
-
     print(sub_info_str)
+    
+    return sub_info_str
 
+def get_sub_market_info():
+    sub_info = {'op': 'subscribe', 
+                'channel': 'orderbook', 
+                'market': "BTC/USDT"}  
+
+    sub_info_str = json.dumps(sub_info)
+    print(sub_info_str)
+    
+    return sub_info_str                
+
+def ftx_on_open(ws):
+    print("\nftx_on_open")
+
+    sub_info_str = get_login_info()
     ws.send(sub_info_str)
+
+    time.sleep(3)
+    ws.send(get_sub_market_info())
 
 def ftx_on_msg(ws, message):
     print("ftx_on_msg {message}")
