@@ -266,8 +266,8 @@ class FTX(object):
         self._ws.on_open = self.on_open
         self._ws.on_close = self.on_close
 
-        # self._timer_thread = threading.Thread(target=self.on_timer, )
-        # self._timer_thread.start()
+        self._timer = threading.Timer(self._ping_secs, self.on_timer)
+        self._timer.start()
 
         self._ws.run_forever()
 
@@ -294,10 +294,12 @@ class FTX(object):
 
     def on_timer(self):
         print("on_timer: ")
-        while True:
-            time.sleep(self._ping_secs)
-            if self._is_connnect:
-                self._ws.send(get_ping_info())
+        if self._is_connnect:
+            self._ws.send(get_ping_info())        
+        # while True:
+        #     time.sleep(self._ping_secs)
+        #     if self._is_connnect:
+        #         self._ws.send(get_ping_info())
 
 def test_ftx():
     ftx_obj = FTX()
