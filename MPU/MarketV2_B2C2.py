@@ -10,7 +10,13 @@ from datetime import datetime
 import time
 from settings import REDIS_CONFIG
 
-
+'''
+"BTCUSD.SPOT": "BTC_USD",
+"BTCUST.SPOT": "BTC_USDT",
+"ETHUSD.SPOT": "ETH_USD",
+"ETHUST.SPOT": "ETH_USDT",
+"USTUSD.SPOT": "USDT_USD"
+'''
 class MarketData_B2C2:
     def __init__(self, debug_mode: bool = True, redis_config: dict = None):
         # Initialize REDIS Connection
@@ -26,10 +32,7 @@ class MarketData_B2C2:
 
         self.__symbol_book = {
                 "BTCUSD.SPOT": "BTC_USD",
-                "BTCUST.SPOT": "BTC_USDT",
-                "ETHUSD.SPOT": "ETH_USD",
-                "ETHUST.SPOT": "ETH_USDT",
-                "USTUSD.SPOT": "USDT_USD"
+                "ETHUSD.SPOT": "ETH_USD"
         }
 
         self.ws_session = None
@@ -66,56 +69,69 @@ class MarketData_B2C2:
                         self.__publisher.logger(level=self.__publisher.info,
                                                 event=MDEvent.CONNECTED())
 
-                        data = {
+                        symbol_list = list(self.__symbol_book.keys())
+
+                        for symbol in symbol_list:
+                            data = {
                                   "event": "subscribe",
-                                  "instrument": "BTCUSD.SPOT",
-                                  "levels": [50,250],
+                                  "instrument": symbol,
+                                  "levels": [1,5],
                                   "tag": ""
                                }
-                        await ws.send_json(data)
-                        response = await ws.receive()
-                        print(f"\nR \n{response}")
+                            await ws.send_json(data)
+                            response = await ws.receive()     
+                            print(f"\nsub %s \n{response}" % (symbol))                          
 
-                        data1 = {
-                                  "event": "subscribe",
-                                  "instrument": "BTCUST.SPOT",
-                                  "levels": [50,250],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data1)
-                        response1 = await ws.receive()
-                        print(f"\nR1 \n{response1}")
+                        # data = {
+                        #           "event": "subscribe",
+                        #           "instrument": "BTCUSD.SPOT",
+                        #           "levels": [50,250],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data)
+                        # response = await ws.receive()
+                        # print(f"\nR \n{response}")
+
+                        # data1 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "BTCUST.SPOT",
+                        #           "levels": [50,250],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data1)
+                        # response1 = await ws.receive()
+                        # print(f"\nR1 \n{response1}")
 
 
-                        data2 = {
-                                  "event": "subscribe",
-                                  "instrument": "ETHUSD.SPOT",
-                                  "levels": [50,250],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data2)
-                        response2 = await ws.receive()
-                        print(f"\nR2 \n{response2}")
+                        # data2 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "ETHUSD.SPOT",
+                        #           "levels": [50,250],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data2)
+                        # response2 = await ws.receive()
+                        # print(f"\nR2 \n{response2}")
 
-                        data3 = {
-                                  "event": "subscribe",
-                                  "instrument": "ETHUST.SPOT",
-                                  "levels": [50,250],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data3)
-                        response2 = await ws.receive()
-                        print(f"\nR3 \n{response2}")
+                        # data3 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "ETHUST.SPOT",
+                        #           "levels": [50,250],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data3)
+                        # response2 = await ws.receive()
+                        # print(f"\nR3 \n{response2}")
 
-                        data4 = {
-                                  "event": "subscribe",
-                                  "instrument": "USTUSD.SPOT",
-                                  "levels": [100000,500000],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data4)
-                        response2 = await ws.receive()
-                        print(f"\nR4 \n{response2}")
+                        # data4 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "USTUSD.SPOT",
+                        #           "levels": [100000,500000],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data4)
+                        # response2 = await ws.receive()
+                        # print(f"\nR4 \n{response2}")
 
 
                         async for ws_msg in ws:
@@ -128,14 +144,15 @@ class MarketData_B2C2:
                             msg = json.loads(ws_msg.data, parse_float=float)
                             if msg['event'] == "subscribe":
                                 continue
+
                             depth_update = {"ASK": {}, "BID": {}}
                             for level in msg["levels"]["buy"]:
                                 depth_update["ASK"][float(level["price"])] = float(level["quantity"])
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
-                            # print("\n%s PUBLISH: \n" % (self.__exchange_name))
-                            # print(depth_update)
+                            print("\n%s PUBLISH: \n" % (self.__exchange_name))
+                            print(depth_update)
 
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
                                 self.__publisher.pub_depthx(symbol=self.__symbol_book[msg["instrument"]],

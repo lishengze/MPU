@@ -75,13 +75,17 @@ def get_ping_info():
     
     return sub_info_str       
 
+'''
+Trade InstrumentID
+BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
+'''
 class FTX(object):
     def __init__(self, debug_mode: bool = True, redis_config: dict = None):
         self._ws_url = "wss://ftx.com/ws/"
         self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
         self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
         self._ping_secs = 10
-        self._symbol_list = ["BTC/USDT", "ETH/USDT"]
+        self._symbol_list = ["BTC/USD", "ETH/USD"]
         self._error_msg_list = ["", ""]
         self.__exchange_name = "FTX"
         self._is_connnect = False
