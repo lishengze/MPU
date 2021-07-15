@@ -196,7 +196,7 @@ class FTX(object):
                 "asks": [[12969.5, 3.36], [12968.5, 0.06], [13700.0, 0.0]], "action": "update"}
                 }
             '''            
-            data = msg.get('data', None)
+            data = msg
 
             if not data:
                 return
