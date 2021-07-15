@@ -10,6 +10,18 @@ from datetime import datetime
 import time
 from settings import REDIS_CONFIG
 
+
+g_redis_config_file_name = "../redis_config.json"
+
+def get_redis_config():    
+    json_file = open(g_redis_config_file_name,'r')
+    json_dict = json.load(json_file)
+    print("\n******* redis_config *******")
+    print(json_dict)
+    time.sleep(3)
+
+    return json_dict
+
 '''
 "BTCUSD.SPOT": "BTC_USD",
 "BTCUST.SPOT": "BTC_USDT",
@@ -21,7 +33,7 @@ class MarketData_B2C2:
     def __init__(self, debug_mode: bool = True, redis_config: dict = None):
         # Initialize REDIS Connection
         if redis_config is None:            
-            redis_config = REDIS_CONFIG
+            redis_config = get_redis_config
 
         self.__exchange_name = "B2C2"
 
@@ -31,9 +43,11 @@ class MarketData_B2C2:
         self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
 
         self.__symbol_book = {
-                "BTCUSD.SPOT": "BTC_USD",
-                "ETHUSD.SPOT": "ETH_USD"
+                "USTUSD.SPOT": "USDT_USD",
+                "ETHBTC.SPOT": "ETH_BTC"
         }
+        self.__lever_1 = 5
+        self.__lever_2 = 10
 
         self.ws_session = None
         self.ws_conn = None
@@ -75,11 +89,11 @@ class MarketData_B2C2:
                             data = {
                                   "event": "subscribe",
                                   "instrument": symbol,
-                                  "levels": [1,5],
+                                  "levels": [self.__lever_1, self.__lever_2],
                                   "tag": ""
                                }
                             await ws.send_json(data)
-                            response = await ws.receive()     
+                            response = await ws.receive()    
                             print(f"\nsub %s \n{response}" % (symbol))                          
 
                         # data = {
