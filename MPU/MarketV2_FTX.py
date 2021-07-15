@@ -155,6 +155,7 @@ class FTX(object):
             #                             event=MDEvent.WSERROR(ws_msg.type))
             #     return
 
+            print("\nOriginalMsg: ")
             print(ws_msg)
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" :
                 return
@@ -162,10 +163,7 @@ class FTX(object):
             if "data" not in ws_msg:
                 return
 
-            # msg = json.loads()
-
             msg = ws_msg["data"]
-
             ex_symbol = ws_msg.get('market', '')
             channel_type = ws_msg.get('channel', '')
 
@@ -214,7 +212,7 @@ class FTX(object):
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
 
-            print("%s PUBLISH: \n" % (self.__exchange_name))
+            print("%s PUBLISH:" % (self.__exchange_name))
             print(depths)
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')

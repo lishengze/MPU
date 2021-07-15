@@ -123,6 +123,7 @@ class Publisher:
         book = self.__orderbook[symbol]
 
         if not is_snapshot:  # Depth Update
+            print("Is Update")
             raise_exception_flag = False
             revised_ask = dict()
             revised_bid = dict()
@@ -235,6 +236,7 @@ class Publisher:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
 
         else:  # Depth Snapshot
+            print("Is Snapshot")
             update_book = {"AskUpdate": {}, "BidUpdate": {}}
             for side in depth_update.keys():
                 if side == "ASK":
@@ -258,6 +260,9 @@ class Publisher:
                             update_book[update_side][px] = depth_update[side][px]
 
                     book[depth_side] = SortedDict(depth_update[side])
+
+            print("Build msg to publish(Publish if any update)")
+            print(update_book)
 
             # Build msg to publish(Publish if any update)
             if len(update_book["AskUpdate"]) or len(update_book["BidUpdate"]):
@@ -314,6 +319,9 @@ class Publisher:
 
                 self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
                                message=json.dumps(update_msg))
+            else:
+                print("Nothing To Update")
+
 
     def pub_tradex(self, symbol: str, direction: str, exg_time: str, px_qty: tuple):
         """
