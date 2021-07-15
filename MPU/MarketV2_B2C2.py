@@ -46,8 +46,8 @@ class MarketData_B2C2:
                 "USTUSD.SPOT": "USDT_USD",
                 "ETHBTC.SPOT": "ETH_BTC"
         }
-        self.__lever_1 = 5
-        self.__lever_2 = 10
+        self.__lever_1 = 1
+        self.__lever_2 = 2
 
         self.ws_session = None
         self.ws_conn = None

@@ -131,8 +131,8 @@ class FTX(object):
 
         time.sleep(3)
         for symbol in self._symbol_list:
-            # self._ws.send(get_sub_order_info(symbol))
-            self._ws.send(get_sub_trade_info(symbol))
+            self._ws.send(get_sub_order_info(symbol))
+            # self._ws.send(get_sub_trade_info(symbol))
 
     def on_error(self):
         print("on_error")
@@ -155,7 +155,7 @@ class FTX(object):
             #                             event=MDEvent.WSERROR(ws_msg.type))
             #     return
 
-            print(ws_msg)
+            # print(ws_msg)
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" :
                 return
 
@@ -197,14 +197,17 @@ class FTX(object):
                 }
             '''            
             data = msg.get('data', None)
+
             if not data:
                 return
+
             if 'asks' not in data and 'bids' not in data:
                 return
+
             subscribe_type = data.get('action', '')
             if subscribe_type not in ['partial', 'update']:
-
                 return
+
             depths = {"ASK": {}, "BID": {}}
             for info in data.get('asks', []):
                 depths["ASK"][float(info[0])] = float(info[1])
