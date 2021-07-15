@@ -155,7 +155,7 @@ class FTX(object):
             #                             event=MDEvent.WSERROR(ws_msg.type))
             #     return
 
-            # print(ws_msg)
+            print(ws_msg)
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" :
                 return
 
