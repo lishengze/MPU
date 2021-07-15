@@ -33,7 +33,7 @@ class MarketData_B2C2:
     def __init__(self, debug_mode: bool = True, redis_config: dict = None):
         # Initialize REDIS Connection
         if redis_config is None:            
-            redis_config = get_redis_config
+            redis_config = get_redis_config()
 
         self.__exchange_name = "B2C2"
 
