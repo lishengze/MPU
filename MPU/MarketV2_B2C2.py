@@ -102,7 +102,7 @@ class MarketData_B2C2:
 
                         data = {
                                   "event": "subscribe",
-                                  "instrument": "BTCUSDT.SPOT",
+                                  "instrument": "BTCUST.SPOT",
                                   "levels": [1,100],
                                   "tag": ""
                                }
