@@ -254,7 +254,7 @@ class FTX(object):
             print(e)
 
 def test_ftx():
-    ftx_obj = FTX()
+    ftx_obj = FTX(debug_mode=False)
     ftx_obj.start()
 
 if __name__ == "__main__":
