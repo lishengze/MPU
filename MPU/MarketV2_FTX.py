@@ -167,19 +167,14 @@ class FTX(object):
                 return
 
             msg = ws_msg["data"]
-            print(0)
             ex_symbol = ws_msg["market"]
-            print(1)
             channel_type = ws_msg["channel"]
-            print(2)
             
             if ex_symbol in self._symbol_dict:
                 sys_symbol = self._symbol_dict[ex_symbol]
             else:
                 print("%s is not in symbol_dict" % (ex_symbol))
                 return
-
-            print(3)
 
             if channel_type == 'orderbook':
                 self.__parse_orderbook(sys_symbol, msg)
