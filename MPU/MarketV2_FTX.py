@@ -160,13 +160,11 @@ class FTX(object):
             print("\nOriginalMsg: ")
             print(ws_msg)
 
-            if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" :
+            if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" or "data" not in ws_msg:
+                print("ws_msg is error")
                 return
 
-            if "data" not in ws_msg:
-                return
-
-            msg = ws_msg["data"]
+            data = ws_msg["data"]
             ex_symbol = ws_msg["market"]
             channel_type = ws_msg["channel"]
             
@@ -177,11 +175,11 @@ class FTX(object):
                 return
 
             if channel_type == 'orderbook':
-                self.__parse_orderbook(sys_symbol, msg)
+                self.__parse_orderbook(sys_symbol, data)
             elif channel_type == 'trades':
-                self.__parse_trades(sys_symbol, msg)
+                self.__parse_trades(sys_symbol, data)
             else:
-                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(msg)))
+                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
                 self.__publisher.logger(level="WARNING", msg=error_msg)                                        
         except Exception as e:
             print("[E] process_msg: %s" % (str(ws_msg)))
@@ -229,7 +227,7 @@ class FTX(object):
             print("[E] __parse_orderbook: ")
             print(e)
 
-    def __parse_trades(self, symbol, msg):
+    def __parse_trades(self, symbol, data_list):
         try:
             '''
             {"channel": "trades", "market": "BTC/USDT", "type": "update", 
@@ -237,11 +235,11 @@ class FTX(object):
                 {"id": 150635419, "price": 12946.5, "size": 0.0402, "side": "sell", "liquidation": false, "time": "2020-10-23T06:09:42.188834+00:00"}
             ]}
             '''
-            if 'data' not in msg:
-                error_msg = ("__parse_trades data is not in msg:  %s" % (str(msg)))
-                return
+            # if 'data' not in msg:
+            #     error_msg = ("__parse_trades data is not in msg:  %s" % (str(msg)))
+            #     return
 
-            for trade in msg.get('data', []):
+            for trade in data_list:
                 side = trade['side']
                 exg_time = trade['time'].replace('T', ' ')[:-6]
                 self.__publisher.pub_tradex(symbol=symbol,
