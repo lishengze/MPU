@@ -168,7 +168,7 @@ class FTX(object):
 
             msg = ws_msg["data"]
             ex_symbol = ws_msg["market"]
-            channel_type = ws_msg["channnel"]
+            channel_type = ws_msg["channel"]
 
             sys_symbol = self._symbol_dict[ex_symbol]
 
