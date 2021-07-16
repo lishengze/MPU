@@ -85,7 +85,9 @@ class FTX(object):
         self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
         self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
         self._ping_secs = 10
-        self._symbol_list = ["USDT/USD", "ETH/BTC"]
+        self._symbol_dict = {
+            "BTC/USDT", "BTC_USDT"
+        }
         self._error_msg_list = ["", ""]
         self.__exchange_name = "FTX"
         self._is_connnect = False
@@ -130,7 +132,7 @@ class FTX(object):
         self._ws.send(sub_info_str)
 
         time.sleep(3)
-        for symbol in self._symbol_list:
+        for symbol in self._symbol_dict:
             self._ws.send(get_sub_order_info(symbol))
             # self._ws.send(get_sub_trade_info(symbol))
 
@@ -157,6 +159,7 @@ class FTX(object):
 
             print("\nOriginalMsg: ")
             print(ws_msg)
+
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" :
                 return
 
@@ -167,10 +170,12 @@ class FTX(object):
             ex_symbol = ws_msg.get('market', '')
             channel_type = ws_msg.get('channel', '')
 
+            sys_symbol = self._symbol_dict[ex_symbol]
+
             if channel_type == 'orderbook':
-                self.__parse_orderbook(ex_symbol, msg)
+                self.__parse_orderbook(sys_symbol, msg)
             elif channel_type == 'trades':
-                self.__parse_trades(ex_symbol, msg)
+                self.__parse_trades(sys_symbol, msg)
             else:
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(msg)))
                 self.__publisher.logger(level="WARNING", msg=error_msg)                                        
