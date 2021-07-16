@@ -95,7 +95,7 @@ class FTX(object):
         if redis_config is None:
             self._redis_config = get_redis_config()
 
-        self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
+        self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode)
 
     def start(self):
         print("\n\n***** Start Connect %s *****" % (self._ws_url))
