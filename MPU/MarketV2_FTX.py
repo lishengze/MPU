@@ -86,7 +86,7 @@ class FTX(object):
         self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
         self._ping_secs = 10
         self._symbol_dict = {
-            "BTC/USDT", "BTC_USDT"
+            "BTC/USDT":"BTC_USDT"
         }
         self._error_msg_list = ["", ""]
         self.__exchange_name = "FTX"
