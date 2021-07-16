@@ -79,6 +79,9 @@ class KLineSvc:
                 __pubsub_marketdata.psubscribe("TRADEx*")
 
                 for marketdata in __pubsub_marketdata.listen():
+                    print("marketdata: ")
+                    print(marketdata)
+                    
                     if marketdata["type"] == "pmessage":
                         # MarketMatch Resolution
                         trade_topic = marketdata["channel"].decode().split("|")[1]
