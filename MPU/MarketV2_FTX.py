@@ -134,7 +134,7 @@ class FTX(object):
         time.sleep(3)
         for symbol in self._symbol_dict:
             self._ws.send(get_sub_order_info(symbol))
-            # self._ws.send(get_sub_trade_info(symbol))
+            self._ws.send(get_sub_trade_info(symbol))
 
     def on_error(self):
         print("on_error")
@@ -178,7 +178,6 @@ class FTX(object):
 
             if channel_type == 'orderbook':
                 self.__parse_orderbook(sys_symbol, msg)
-                print(4)
             elif channel_type == 'trades':
                 self.__parse_trades(sys_symbol, msg)
             else:

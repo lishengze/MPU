@@ -261,8 +261,8 @@ class Publisher:
 
                     book[depth_side] = SortedDict(depth_update[side])
 
-            print("Build msg to publish(Publish if any update)")
-            print(update_book)
+            # print("Build msg to publish(Publish if any update)")
+            # print(update_book)
 
             # Build msg to publish(Publish if any update)
             if len(update_book["AskUpdate"]) or len(update_book["BidUpdate"]):
