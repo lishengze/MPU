@@ -172,10 +172,13 @@ class FTX(object):
             print(1)
             channel_type = ws_msg["channel"]
             print(2)
-
             
+            if ex_symbol in self._symbol_dict:
+                sys_symbol = self._symbol_dict[ex_symbol]
+            else:
+                print("%s is not in symbol_dict" % (ex_symbol))
+                return
 
-            sys_symbol = self._symbol_dict[ex_symbol]
             print(3)
 
             if channel_type == 'orderbook':
