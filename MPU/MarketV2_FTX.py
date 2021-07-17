@@ -168,8 +168,7 @@ class FTX(object):
                 # print("ws_msg is error")
                 return
 
-            print("\nOriginalMsg: ")
-            print(ws_msg)
+            # print("\nOriginalMsg: %s" % (str(ws_msg)))
 
             data = ws_msg["data"]
             ex_symbol = ws_msg["market"]
@@ -226,8 +225,7 @@ class FTX(object):
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
 
-            print("%s PUBLISH:" % (self.__exchange_name))
-            print(depths)
+            print("%s PUBLISH: %s" % (self.__exchange_name, str(depths)))
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:

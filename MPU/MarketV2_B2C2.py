@@ -100,46 +100,46 @@ class MarketData_B2C2:
                         #     response = await ws.receive()    
                         #     print(f"\nsub %s \n{response}" % (symbol))                          
 
-                        data = {
-                                  "event": "subscribe",
-                                  "instrument": "BTCUST.SPOT",
-                                  "levels": [1,100],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data)
-                        response = await ws.receive()
-                        print(f"\nR \n{response}")
+                        # data = {
+                        #           "event": "subscribe",
+                        #           "instrument": "BTCUST.SPOT",
+                        #           "levels": [1,100],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data)
+                        # response = await ws.receive()
+                        # print(f"\nR \n{response}")
 
-                        data1 = {
-                                  "event": "subscribe",
-                                  "instrument": "BTCUSD.SPOT",
-                                  "levels": [1, 100],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data1)
-                        response1 = await ws.receive()
-                        print(f"\nR1 \n{response1}")
+                        # data1 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "BTCUSD.SPOT",
+                        #           "levels": [1, 100],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data1)
+                        # response1 = await ws.receive()
+                        # print(f"\nR1 \n{response1}")
 
 
-                        data2 = {
-                                  "event": "subscribe",
-                                  "instrument": "ETHUSD.SPOT",
-                                  "levels": [5,500],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data2)
-                        response2 = await ws.receive()
-                        print(f"\nR2 \n{response2}")
+                        # data2 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "ETHUSD.SPOT",
+                        #           "levels": [5,500],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data2)
+                        # response2 = await ws.receive()
+                        # print(f"\nR2 \n{response2}")
 
-                        data3 = {
-                                  "event": "subscribe",
-                                  "instrument": "ETHUST.SPOT",
-                                  "levels": [5,500],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data3)
-                        response2 = await ws.receive()
-                        print(f"\nR3 \n{response2}")
+                        # data3 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "ETHUST.SPOT",
+                        #           "levels": [5,500],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data3)
+                        # response2 = await ws.receive()
+                        # print(f"\nR3 \n{response2}")
 
                         data4 = {
                                   "event": "subscribe",
@@ -180,8 +180,7 @@ class MarketData_B2C2:
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
-                            print("\n%s PUBLISH:" % (self.__exchange_name))
-                            print(depth_update)
+                            print("\n%s PUBLISH: %s" % (self.__exchange_name, str(depth_update)))
 
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
                                 self.__publisher.pub_depthx(symbol=self.__symbol_book[msg["instrument"]],

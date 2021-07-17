@@ -236,7 +236,7 @@ class Publisher:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
 
         else:  # Depth Snapshot
-            print("Is Snapshot")
+            # print("Is Snapshot")
             update_book = {"AskUpdate": {}, "BidUpdate": {}}
             for side in depth_update.keys():
                 if side == "ASK":
@@ -320,7 +320,8 @@ class Publisher:
                 self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
                                message=json.dumps(update_msg))
             else:
-                print("Nothing To Update")
+                pass
+                # print("Nothing To Update")
 
 
     def pub_tradex(self, symbol: str, direction: str, exg_time: str, px_qty: tuple):
