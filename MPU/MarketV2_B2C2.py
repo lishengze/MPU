@@ -180,10 +180,11 @@ class MarketData_B2C2:
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
-                            print("\n%s PUBLISH: %s" % (self.__exchange_name, str(depth_update)))
+                            sys_symbol = self.__symbol_book[msg["instrument"]]
+                            print("\n%s.%s PUBLISH: %s" % (self.__exchange_name, sys_symbol, str(depth_update)))
 
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
-                                self.__publisher.pub_depthx(symbol=self.__symbol_book[msg["instrument"]],
+                                self.__publisher.pub_depthx(symbol=sys_symbol,
                                                             depth_update=depth_update, is_snapshot=True)
 
             except Exception:

@@ -225,7 +225,7 @@ class FTX(object):
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
 
-            print("%s PUBLISH: %s" % (self.__exchange_name, str(depths)))
+            print("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:

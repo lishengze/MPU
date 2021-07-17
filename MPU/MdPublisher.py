@@ -123,7 +123,7 @@ class Publisher:
         book = self.__orderbook[symbol]
 
         if not is_snapshot:  # Depth Update
-            print("Is Update")
+            # print("Is Update")
             raise_exception_flag = False
             revised_ask = dict()
             revised_bid = dict()
