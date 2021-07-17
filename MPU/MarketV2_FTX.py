@@ -71,7 +71,7 @@ def get_ping_info():
     sub_info = {'op': 'ping'}  
 
     sub_info_str = json.dumps(sub_info)
-    print(sub_info_str)
+    # print(sub_info_str)
     
     return sub_info_str       
 
@@ -144,7 +144,7 @@ class FTX(object):
         print("on_close")
 
     def on_timer(self):
-        print("on_timer: ")
+        # print("on_timer: ")
         if self._is_connnect:
             self._ws.send(get_ping_info())        
 
