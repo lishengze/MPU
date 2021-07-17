@@ -82,8 +82,8 @@ class KLineSvc:
                 __pubsub_marketdata.psubscribe("TRADEx*")
 
                 for marketdata in __pubsub_marketdata.listen():
-                    print("marketdata: ")
-                    print(marketdata)
+                    # print("marketdata: ")
+                    # print(marketdata)
 
                     if marketdata["type"] == "pmessage":
                         # MarketMatch Resolution
@@ -132,9 +132,15 @@ class KLineSvc:
 
     async def __auto_timer(self):
         while True:
-            now_time = datetime.datetime.now()
+            now_time = datetime.datetime.now() 
+            
+            f_now_time = float(now_time.strftime("%S.%f"))
 
-            wait_secs = 60 - float(now_time.strftime("%S.%f"))
+            # print("now_time: %f" % (f_now_time))
+
+            wait_secs = 60 - f_now_time
+
+            # print("wait_secs %f" % (wait_secs))
 
             await asyncio.sleep(wait_secs)
 
@@ -149,7 +155,7 @@ class KLineSvc:
                     kline = self.__topic_list[topic]
                     for kline_type, klines in kline.klines.items():
                         data = json.dumps(list(klines))
-                        print("publish ")
+                        print("publish %s" % (f"{kline_type}x|{topic}"))
                         print(data)
 
                         self.__svc_marketdata.publish(channel=f"{kline_type}x|{topic}", message=json.dumps(list(klines)[-120:]))
@@ -158,6 +164,8 @@ class KLineSvc:
                 pipeline.execute(False)
 
                 self.__verification_tag = (now_time.minute + 1) % 60
+            else:
+                print("__verification_tag: %d" % (self.__verification_tag))
 
 
 class KLine:
