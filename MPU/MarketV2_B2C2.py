@@ -110,46 +110,57 @@ class MarketData_B2C2:
                         response = await ws.receive()
                         print(f"\nR \n{response}")
 
-                        # data1 = {
-                        #           "event": "subscribe",
-                        #           "instrument": "BTCUST.SPOT",
-                        #           "levels": [1, 100],
-                        #           "tag": ""
-                        #        }
-                        # await ws.send_json(data1)
-                        # response1 = await ws.receive()
-                        # print(f"\nR1 \n{response1}")
+                        data1 = {
+                                  "event": "subscribe",
+                                  "instrument": "BTCUSD.SPOT",
+                                  "levels": [1, 100],
+                                  "tag": ""
+                               }
+                        await ws.send_json(data1)
+                        response1 = await ws.receive()
+                        print(f"\nR1 \n{response1}")
 
 
-                        # data2 = {
-                        #           "event": "subscribe",
-                        #           "instrument": "ETHUSD.SPOT",
-                        #           "levels": [5,500],
-                        #           "tag": ""
-                        #        }
-                        # await ws.send_json(data2)
-                        # response2 = await ws.receive()
-                        # print(f"\nR2 \n{response2}")
+                        data2 = {
+                                  "event": "subscribe",
+                                  "instrument": "ETHUSD.SPOT",
+                                  "levels": [5,500],
+                                  "tag": ""
+                               }
+                        await ws.send_json(data2)
+                        response2 = await ws.receive()
+                        print(f"\nR2 \n{response2}")
 
-                        # data3 = {
-                        #           "event": "subscribe",
-                        #           "instrument": "ETHUST.SPOT",
-                        #           "levels": [5,500],
-                        #           "tag": ""
-                        #        }
-                        # await ws.send_json(data3)
-                        # response2 = await ws.receive()
-                        # print(f"\nR3 \n{response2}")
+                        data3 = {
+                                  "event": "subscribe",
+                                  "instrument": "ETHUST.SPOT",
+                                  "levels": [5,500],
+                                  "tag": ""
+                               }
+                        await ws.send_json(data3)
+                        response2 = await ws.receive()
+                        print(f"\nR3 \n{response2}")
 
-                        # data4 = {
-                        #           "event": "subscribe",
-                        #           "instrument": "USTUSD.SPOT",
-                        #           "levels": [100000,500000],
-                        #           "tag": ""
-                        #        }
-                        # await ws.send_json(data4)
-                        # response2 = await ws.receive()
-                        # print(f"\nR4 \n{response2}")
+                        data4 = {
+                                  "event": "subscribe",
+                                  "instrument": "USTUSD.SPOT",
+                                  "levels": [100000,500000],
+                                  "tag": ""
+                               }
+                        await ws.send_json(data4)
+                        response2 = await ws.receive()
+                        print(f"\nR4 \n{response2}")
+
+
+                        data5 = {
+                                  "event": "subscribe",
+                                  "instrument": "ETHBTC.SPOT",
+                                  "levels": [5,500],
+                                  "tag": ""
+                               }
+                        await ws.send_json(data4)
+                        response2 = await ws.receive()
+                        print(f"\nR5 \n{response2}")
 
 
                         async for ws_msg in ws:

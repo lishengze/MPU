@@ -87,7 +87,11 @@ class FTX(object):
         self._ping_secs = 10
         self._symbol_dict = {
             "BTC/USDT":"BTC_USDT",
-            "ETH/USDT":"ETH_USDT"
+            "ETH/USDT":"ETH_USDT",
+            "BTC/USD":"BTC_USD",
+            "ETH/USD":"ETH_USD",
+            "USDT/USD":"USDT_USD",
+            "ETH/BTC":"ETH_BTC"                        
         }
         self._error_msg_list = ["", ""]
         self.__exchange_name = "FTX"
@@ -134,7 +138,7 @@ class FTX(object):
 
         time.sleep(3)
         for symbol in self._symbol_dict:
-            # self._ws.send(get_sub_order_info(symbol))
+            self._ws.send(get_sub_order_info(symbol))
             self._ws.send(get_sub_trade_info(symbol))
 
     def on_error(self):
