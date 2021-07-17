@@ -156,7 +156,7 @@ class KLineSvc:
                     for kline_type, klines in kline.klines.items():
                         data = json.dumps(list(klines))
                         print("publish %s" % (f"{kline_type}x|{topic}"))
-                        print(data)
+                        # print(data)
 
                         self.__svc_marketdata.publish(channel=f"{kline_type}x|{topic}", message=json.dumps(list(klines)[-120:]))
                         self.__redis_hmset(marketdata_pipe=pipeline, data={topic:data}, kline_type=kline_type)
