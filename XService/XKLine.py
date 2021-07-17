@@ -17,7 +17,7 @@ kline60_topic = "SLOW_KLINE"
 #klineday_topic = "KLINEd"
 total_kline_type = [kline1_topic, kline60_topic]
 
-g_redis_config_file_name = "../redis_config.json"
+g_redis_config_file_name = "./kline_redis_config.json"
 
 def get_redis_config():    
     json_file = open(g_redis_config_file_name,'r')
@@ -65,6 +65,9 @@ class KLineSvc:
 
             datas = pipeline.execute()
 
+            print("HGet Datas:")
+            print(datas)
+
             index = 0
             for data in datas:
                 kline_obj = self.__topic_list[kline_keys[index].decode()]
@@ -81,7 +84,7 @@ class KLineSvc:
                 for marketdata in __pubsub_marketdata.listen():
                     print("marketdata: ")
                     print(marketdata)
-                    
+
                     if marketdata["type"] == "pmessage":
                         # MarketMatch Resolution
                         trade_topic = marketdata["channel"].decode().split("|")[1]
@@ -146,6 +149,9 @@ class KLineSvc:
                     kline = self.__topic_list[topic]
                     for kline_type, klines in kline.klines.items():
                         data = json.dumps(list(klines))
+                        print("publish ")
+                        print(data)
+
                         self.__svc_marketdata.publish(channel=f"{kline_type}x|{topic}", message=json.dumps(list(klines)[-120:]))
                         self.__redis_hmset(marketdata_pipe=pipeline, data={topic:data}, kline_type=kline_type)
 

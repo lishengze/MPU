@@ -12,7 +12,7 @@ import json
 import hmac
 import threading
 
-g_redis_config_file_name = "../redis_config.json"
+g_redis_config_file_name = "./redis_config.json"
 
 def get_redis_config():    
     json_file = open(g_redis_config_file_name,'r')
@@ -86,7 +86,8 @@ class FTX(object):
         self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
         self._ping_secs = 10
         self._symbol_dict = {
-            "BTC/USDT":"BTC_USDT"
+            "BTC/USDT":"BTC_USDT",
+            "ETH/USDT":"ETH_USDT"
         }
         self._error_msg_list = ["", ""]
         self.__exchange_name = "FTX"
@@ -157,12 +158,14 @@ class FTX(object):
             #                             event=MDEvent.WSERROR(ws_msg.type))
             #     return
 
-            print("\nOriginalMsg: ")
-            print(ws_msg)
+
 
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" or "data" not in ws_msg:
-                print("ws_msg is error")
+                # print("ws_msg is error")
                 return
+
+            print("\nOriginalMsg: ")
+            print(ws_msg)
 
             data = ws_msg["data"]
             ex_symbol = ws_msg["market"]
