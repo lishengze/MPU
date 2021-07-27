@@ -195,7 +195,7 @@ class KLineSvc:
                             else:
                                 self._publish_count_dict[kline_type][topic] = 1
 
-                        print("publish %s" % (f"{kline_type}x|{topic}"))
+                        # print("publish %s" % (f"{kline_type}x|{topic}"))
                         # print(data)
 
                         self.__svc_marketdata.publish(channel=f"{kline_type}x|{topic}", message=json.dumps(list(klines)[-120:]))
