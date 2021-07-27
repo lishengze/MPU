@@ -98,8 +98,8 @@ class KLineSvc:
 
             datas = pipeline.execute()
 
-            print("HGet Datas:")
-            print(datas)
+            # print("HGet Datas:")
+            # print(datas)
 
             index = 0
             for data in datas:
@@ -194,7 +194,7 @@ class KLineSvc:
                                 self._publish_count_dict[kline_type][topic] += 1
                             else:
                                 self._publish_count_dict[kline_type][topic] = 0
-                                
+
                         print("publish %s" % (f"{kline_type}x|{topic}"))
                         # print(data)
 
