@@ -101,14 +101,19 @@ class FTX(object):
             self._redis_config = get_redis_config()
 
         self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode)
-        self._publish_count_dict = {}
+        self._publish_count_dict = {
+            "depth":{},
+            "trade":{},
+            "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        }
 
         for item in self._symbol_dict:
             sys_symbol = self._symbol_dict[item]
-            self._publish_count_dict[sys_symbol] = 0
+            self._publish_count_dict["depth"][sys_symbol] = 0
+            self._publish_count_dict["trade"][sys_symbol] = 0
 
-        self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
 
     def start(self):
         print("\n\n***** Start Connect %s *****" % (self._ws_url))
@@ -159,9 +164,10 @@ class FTX(object):
         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         print("From %s to %s Publish Statics: \n"% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
         for item in self._publish_count_dict:
-            if item != "start_time" and item != "end_time":
-                print("%s: %d" % (item, self._publish_count_dict[item]))
-                self._publish_count_dict[item] = 0
+            if item == "depth" or item == "trade":
+                for symbol in self._publish_count_dict[item]:
+                    print("%s: %d" % (symbol, self._publish_count_dict[item][symbol]))
+                    self._publish_count_dict[item][symbol] = 0
 
         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
@@ -170,8 +176,8 @@ class FTX(object):
         if self._is_connnect:
             self._ws.send(get_ping_info())        
 
-        print_publish_info()
-        
+        self.print_publish_info()
+
         self._timer = threading.Timer(self._ping_secs, self.on_timer)
         self._timer.start()
 
@@ -201,8 +207,12 @@ class FTX(object):
                 return
 
             if channel_type == 'orderbook':
+                if symbol in self._publish_count_dict["depth"]:
+                    self._publish_count_dict["depth"][symbol] += 1
                 self.__parse_orderbook(sys_symbol, data)
             elif channel_type == 'trades':
+                if symbol in self._publish_count_dict["trade"]:
+                    self._publish_count_dict["trade"][symbol] += 1                
                 self.__parse_trades(sys_symbol, data)
             else:
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
@@ -245,8 +255,7 @@ class FTX(object):
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
 
-            if symbol in self._publish_count_dict:
-                self._publish_count_dict[symbol] += 1
+
 
             # print("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
 

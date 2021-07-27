@@ -380,8 +380,8 @@ class Publisher:
                "LastPx": px,
                "Qty": qty}
 
-        print("TradeInfo: ")
-        print(msg)
+        # print("TradeInfo: ")
+        # print(msg)
 
         # channel TRADEx|ETH_USDT.BINANCE
         self.__publish(channel=f"TRADEx|{symbol}.{self.__exchange_topic}", message=json.dumps(msg))
