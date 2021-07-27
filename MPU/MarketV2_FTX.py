@@ -162,7 +162,7 @@ class FTX(object):
 
     def print_publish_info(self):
         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        print("From %s to %s Publish Statics: \n"% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+        print("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
         for item in self._publish_count_dict:
             if item == "depth" or item == "trade":
                 for symbol in self._publish_count_dict[item]:

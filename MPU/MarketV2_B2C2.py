@@ -43,12 +43,11 @@ class MarketData_B2C2:
         self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
 
         self.__symbol_book = {
-                "BTCUSD.SPOT": "BTC_USD",
-                "BTCUST.SPOT": "BTC_USDT",
-                "ETHUSD.SPOT": "ETH_USD",
-                "ETHUST.SPOT": "ETH_USDT",
-                "USTUSD.SPOT": "USDT_USD",
-                "ETHBTC.SPOT": "ETH_BTC"
+                "BTCUSD.SPOT" : ["BTC_USD", 1, 100],
+                "BTCUST.SPOT" : ["BTC_USDT", 1, 100], 
+                "ETHUSD.SPOT" : ["ETH_USD", 5, 500],
+                "ETHUST.SPOT" : ["ETH_USDT", 5, 500],
+                "USTUSD.SPOT" : ["USDT_USD", 100000, 500000]
         }
         self.__lever_1 = 1
         self.__lever_2 = 2
@@ -58,6 +57,7 @@ class MarketData_B2C2:
         self.ws = None
 
         self.ws_loop = asyncio.new_event_loop()
+        self._ping_secs = 10
 
         self.executor = ThreadPoolExecutor(max_workers=2)
         self.executor.submit(self.asyncio_initiator, self.ws_loop)
@@ -66,8 +66,53 @@ class MarketData_B2C2:
                                 event=MDEvent.INITIALIZED())
         self.ws_future = asyncio.run_coroutine_threadsafe(self.ws_listener(), self.ws_loop)
 
+        self._timer = threading.Timer(self._ping_secs, self.on_timer)
+        self._timer.start()
+
+        self._publish_count_dict = {
+            "depth":{},
+            "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        }
+
+        for symbol in self.__symbol_book:
+            self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
+
         while True:
             time.sleep(3)
+
+    def print_publish_info(self):
+        self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        print("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+        for item in self._publish_count_dict:
+            if item == "depth" or item == "trade":
+                for symbol in self._publish_count_dict[item]:
+                    print("%s: %d" % (symbol, self._publish_count_dict[item][symbol]))
+                    self._publish_count_dict[item][symbol] = 0
+
+        self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+    def subscribe_symbol(self):
+        for symbol in self.__symbol_book:
+            data = {
+                    "event": "subscribe",
+                    "instrument": symbol,
+                    "levels": [self.__symbol_book[symbol][1], self.__symbol_book[symbol][2]],
+                    "tag": ""
+                }
+            await ws.send_json(data)
+            response = await ws.receive()    
+            print(f"\nsub %s \n{response}" % (symbol))      
+
+    def on_timer(self):
+        self.subscribe_symbol()   
+
+        self.print_publish_info()
+
+        self._timer = threading.Timer(self._ping_secs, self.on_timer)
+        self._timer.start()
+
+
 
     def asyncio_initiator(self, loop):
         # Thread Worker for aio_initiator Method
@@ -89,78 +134,69 @@ class MarketData_B2C2:
 
                         symbol_list = list(self.__symbol_book.keys())
 
-                        for symbol in symbol_list:
-                            data = {
-                                  "event": "subscribe",
-                                  "instrument": symbol,
-                                  "levels": [self.__lever_1, self.__lever_2],
-                                  "tag": ""
-                               }
-                            await ws.send_json(data)
-                            response = await ws.receive()    
-                            print(f"\nsub %s \n{response}" % (symbol))                          
+                        self.subscribe_symbol()
 
-                        data = {
-                                  "event": "subscribe",
-                                  "instrument": "BTCUST.SPOT",
-                                  "levels": [1,100],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data)
-                        response = await ws.receive()
-                        print(f"\nR \n{response}")
+                        # data = {
+                        #           "event": "subscribe",
+                        #           "instrument": "BTCUST.SPOT",
+                        #           "levels": [1,100],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data)
+                        # response = await ws.receive()
+                        # print(f"\nR \n{response}")
 
-                        data1 = {
-                                  "event": "subscribe",
-                                  "instrument": "BTCUSD.SPOT",
-                                  "levels": [1, 100],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data1)
-                        response1 = await ws.receive()
-                        print(f"\nR1 \n{response1}")
+                        # data1 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "BTCUSD.SPOT",
+                        #           "levels": [1, 100],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data1)
+                        # response1 = await ws.receive()
+                        # print(f"\nR1 \n{response1}")
 
 
-                        data2 = {
-                                  "event": "subscribe",
-                                  "instrument": "ETHUSD.SPOT",
-                                  "levels": [5,500],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data2)
-                        response2 = await ws.receive()
-                        print(f"\nR2 \n{response2}")
+                        # data2 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "ETHUSD.SPOT",
+                        #           "levels": [5,500],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data2)
+                        # response2 = await ws.receive()
+                        # print(f"\nR2 \n{response2}")
 
-                        data3 = {
-                                  "event": "subscribe",
-                                  "instrument": "ETHUST.SPOT",
-                                  "levels": [5,500],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data3)
-                        response2 = await ws.receive()
-                        print(f"\nR3 \n{response2}")
+                        # data3 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "ETHUST.SPOT",
+                        #           "levels": [5,500],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data3)
+                        # response2 = await ws.receive()
+                        # print(f"\nR3 \n{response2}")
 
-                        data4 = {
-                                  "event": "subscribe",
-                                  "instrument": "USTUSD.SPOT",
-                                  "levels": [100000,500000],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data4)
-                        response2 = await ws.receive()
-                        print(f"\nR4 \n{response2}")
+                        # data4 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "USTUSD.SPOT",
+                        #           "levels": [100000,500000],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data4)
+                        # response2 = await ws.receive()
+                        # print(f"\nR4 \n{response2}")
 
 
-                        data5 = {
-                                  "event": "subscribe",
-                                  "instrument": "ETHBTC.SPOT",
-                                  "levels": [5,500],
-                                  "tag": ""
-                               }
-                        await ws.send_json(data4)
-                        response2 = await ws.receive()
-                        print(f"\nR5 \n{response2}")
+                        # data5 = {
+                        #           "event": "subscribe",
+                        #           "instrument": "ETHBTC.SPOT",
+                        #           "levels": [5,500],
+                        #           "tag": ""
+                        #        }
+                        # await ws.send_json(data4)
+                        # response2 = await ws.receive()
+                        # print(f"\nR5 \n{response2}")
 
 
                         async for ws_msg in ws:
@@ -180,10 +216,12 @@ class MarketData_B2C2:
                             for level in msg["levels"]["sell"]:
                                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
-                            sys_symbol = self.__symbol_book[msg["instrument"]]
-                            print("\n%s.%s PUBLISH: %s" % (self.__exchange_name, sys_symbol, str(depth_update)))
+                            sys_symbol = self.__symbol_book[msg["instrument"]][0]
+                            # print("\n%s.%s PUBLISH: %s" % (self.__exchange_name, sys_symbol, str(depth_update)))
 
                             if len(depth_update["ASK"]) or len(depth_update["BID"]):
+                                if sys_symbol in self._publish_count_dict["depth"]:
+                                    self._publish_count_dict["depth"][sys_symbol] += 1
                                 self.__publisher.pub_depthx(symbol=sys_symbol,
                                                             depth_update=depth_update, is_snapshot=True)
 
