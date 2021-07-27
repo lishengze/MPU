@@ -104,8 +104,8 @@ class MarketData_B2C2:
             # await ws.send_json(data)
             # response = await ws.receive()  
 
-            ws.send_json(data)
-            response = ws.receive()                
+            self._ws.send_json(data)
+            response = self._ws.receive()                
             print(f"\nsub %s \n{response}" % (symbol))      
 
     def on_timer(self):
@@ -131,6 +131,8 @@ class MarketData_B2C2:
                 async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as ws_session:
                     #async with ws_session.ws_connect('wss://localhost:5000/v1/portal/ws') as ws:
                     async with ws_session.ws_connect(url=self.__ws_url, headers=header, heartbeat=10, autoclose=False) as ws:
+                        self._ws = ws
+
                         response = await ws.receive()
                         print(response)
                         self.__publisher.logger(level=self.__publisher.info,
