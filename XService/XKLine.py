@@ -44,6 +44,16 @@ class KLineSvc:
                                             port=self.__redis_config["PORT"],
                                             password=self.__redis_config["PWD"])
 
+        self._publish_count_dict = {
+            "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        }
+
+        for kline_type in total_kline_type:
+            self._publish_count_dict[kline_type] = {}
+
+
+
         self.__data_recover()
 
         self.__match_listener_thread = threading.Thread(target=self.__match_listener, name="SUBCRIBERMatch")
@@ -53,19 +63,9 @@ class KLineSvc:
         self.__task = asyncio.gather(self.__auto_timer(), self.__auto_delist())
         self.__loop.run_until_complete(self.__task)
 
-        self._publish_count_dict = {
-            "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        }
-
-        for kline_type in total_kline_type:
-            self._publish_count_dict[kline_type] = {}
-            
         self._timer_secs = 10
         self._timer = threading.Timer(self._timer_secs, self.on_timer)
         self._timer.start()
-
-
 
         while True:
             time.sleep(3)
