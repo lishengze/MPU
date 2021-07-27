@@ -100,8 +100,11 @@ class MarketData_B2C2:
                     "levels": [self.__symbol_book[symbol][1], self.__symbol_book[symbol][2]],
                     "tag": ""
                 }
-            await ws.send_json(data)
-            response = await ws.receive()    
+            # await ws.send_json(data)
+            # response = await ws.receive()  
+
+            ws.send_json(data)
+            response = ws.receive()                
             print(f"\nsub %s \n{response}" % (symbol))      
 
     def on_timer(self):
