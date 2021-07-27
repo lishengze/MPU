@@ -207,12 +207,12 @@ class FTX(object):
                 return
 
             if channel_type == 'orderbook':
-                if symbol in self._publish_count_dict["depth"]:
-                    self._publish_count_dict["depth"][symbol] += 1
+                if sys_symbol in self._publish_count_dict["depth"]:
+                    self._publish_count_dict["depth"][sys_symbol] += 1
                 self.__parse_orderbook(sys_symbol, data)
             elif channel_type == 'trades':
-                if symbol in self._publish_count_dict["trade"]:
-                    self._publish_count_dict["trade"][symbol] += 1                
+                if sys_symbol in self._publish_count_dict["trade"]:
+                    self._publish_count_dict["trade"][sys_symbol] += 1                
                 self.__parse_trades(sys_symbol, data)
             else:
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
