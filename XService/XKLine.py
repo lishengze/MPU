@@ -52,7 +52,9 @@ class KLineSvc:
         for kline_type in total_kline_type:
             self._publish_count_dict[kline_type] = {}
 
-
+        self._timer_secs = 10
+        self._timer = threading.Timer(self._timer_secs, self.on_timer)
+        self._timer.start()
 
         self.__data_recover()
 
@@ -62,10 +64,6 @@ class KLineSvc:
         self.__loop = asyncio.get_event_loop()
         self.__task = asyncio.gather(self.__auto_timer(), self.__auto_delist())
         self.__loop.run_until_complete(self.__task)
-
-        self._timer_secs = 10
-        self._timer = threading.Timer(self._timer_secs, self.on_timer)
-        self._timer.start()
 
         while True:
             time.sleep(3)
