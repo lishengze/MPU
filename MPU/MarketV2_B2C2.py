@@ -101,15 +101,16 @@ class MarketData_B2C2:
                     "levels": [self.__symbol_book[symbol][1], self.__symbol_book[symbol][2]],
                     "tag": ""
                 }
-            # await ws.send_json(data)
-            # response = await ws.receive()  
+            await ws.send_json(data)
+            response = await ws.receive()  
+            print(f"\nsub %s \n{response}" % (symbol))              
 
             self._ws.send_json(data)
             response = self._ws.receive()                
             print(f"\nsub %s \n{response}" % (symbol))      
 
     def on_timer(self):
-        self.subscribe_symbol()   
+        # self.subscribe_symbol()   
 
         self.print_publish_info()
 
@@ -140,7 +141,16 @@ class MarketData_B2C2:
 
                         symbol_list = list(self.__symbol_book.keys())
 
-                        self.subscribe_symbol()
+                        for symbol in self.__symbol_book:
+                            data = {
+                                    "event": "subscribe",
+                                    "instrument": symbol,
+                                    "levels": [self.__symbol_book[symbol][1], self.__symbol_book[symbol][2]],
+                                    "tag": ""
+                                }
+                            await ws.send_json(data)
+                            response = await ws.receive()  
+                            print(f"\nsub %s \n{response}" % (symbol))         
 
                         # data = {
                         #           "event": "subscribe",
