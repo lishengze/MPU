@@ -53,6 +53,39 @@ class KLineSvc:
         self.__task = asyncio.gather(self.__auto_timer(), self.__auto_delist())
         self.__loop.run_until_complete(self.__task)
 
+        self._timer_secs = 10
+        self._timer = threading.Timer(self._timer_secs, self.on_timer)
+        self._timer.start()
+
+        self._publish_count_dict = {
+            "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        }
+
+        for kline_type in total_kline_type:
+            self._publish_count_dict[kline_type] = {}
+
+        while True:
+            time.sleep(3)
+
+    def print_publish_info(self):
+        self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        print("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+        for item in self._publish_count_dict:
+            if item != "start_time" and item != "end_time":
+                for symbol in self._publish_count_dict[item]:
+                    print("%s: %d" % (symbol, self._publish_count_dict[item][symbol]))
+                    self._publish_count_dict[item][symbol] = 0
+
+        self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+    def on_timer(self):
+        self.print_publish_info()
+
+        self._timer = threading.Timer(self._timer_secs, self.on_timer)
+        self._timer.start()
+
+
     def __data_recover(self):
         kline_keys = self.__svc_marketdata.hkeys(kline1_topic)
 
@@ -155,6 +188,13 @@ class KLineSvc:
                     kline = self.__topic_list[topic]
                     for kline_type, klines in kline.klines.items():
                         data = json.dumps(list(klines))
+
+                        if kline_type in self._publish_count_dict:
+                            if topic in self._publish_count_dict[kline_type]:
+                                self._publish_count_dict[kline_type][topic] += 1
+                            else:
+                                self._publish_count_dict[kline_type][topic] = 0
+                                
                         print("publish %s" % (f"{kline_type}x|{topic}"))
                         # print(data)
 

@@ -58,7 +58,7 @@ class MarketData_B2C2:
         self.ws = None
 
         self.ws_loop = asyncio.new_event_loop()
-        self._ping_secs = 10
+        
 
         self.executor = ThreadPoolExecutor(max_workers=2)
         self.executor.submit(self.asyncio_initiator, self.ws_loop)
@@ -67,6 +67,7 @@ class MarketData_B2C2:
                                 event=MDEvent.INITIALIZED())
         self.ws_future = asyncio.run_coroutine_threadsafe(self.ws_listener(), self.ws_loop)
 
+        self._ping_secs = 10
         self._timer = threading.Timer(self._ping_secs, self.on_timer)
         self._timer.start()
 
@@ -107,7 +108,7 @@ class MarketData_B2C2:
 
             self._ws.send_json(data)
             response = self._ws.receive()                
-            print(f"\nsub %s \n{response}" % (symbol))      
+            # print(f"\nsub %s \n{response}" % (symbol))      
 
     def on_timer(self):
         self.subscribe_symbol()   
