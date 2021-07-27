@@ -110,7 +110,7 @@ class MarketData_B2C2:
             print(f"\nsub %s \n{response}" % (symbol))      
 
     def on_timer(self):
-        # self.subscribe_symbol()   
+        self.subscribe_symbol()   
 
         self.print_publish_info()
 
