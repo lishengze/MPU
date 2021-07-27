@@ -193,7 +193,7 @@ class KLineSvc:
                             if topic in self._publish_count_dict[kline_type]:
                                 self._publish_count_dict[kline_type][topic] += 1
                             else:
-                                self._publish_count_dict[kline_type][topic] = 0
+                                self._publish_count_dict[kline_type][topic] = 1
 
                         print("publish %s" % (f"{kline_type}x|{topic}"))
                         # print(data)
