@@ -74,8 +74,8 @@ class KLineSvc:
         for item in self._publish_count_dict:
             if item != "start_time" and item != "end_time":
                 for symbol in self._publish_count_dict[item]:
-                    print("%s: %d" % (symbol, self._publish_count_dict[item][symbol]))
-                    self._publish_count_dict[item][symbol] = 0
+                    print("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+                    self._publish_count_dict[item][symbol] = 1
 
         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 

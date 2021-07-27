@@ -89,7 +89,7 @@ class MarketData_B2C2:
         for item in self._publish_count_dict:
             if item == "depth" or item == "trade":
                 for symbol in self._publish_count_dict[item]:
-                    print("%s: %d" % (symbol, self._publish_count_dict[item][symbol]))
+                    print("%s.%s: %d" % (symbol, self._publish_count_dict[item][symbol]))
                     self._publish_count_dict[item][symbol] = 0
 
         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
