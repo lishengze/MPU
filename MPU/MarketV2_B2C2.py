@@ -100,15 +100,17 @@ class MarketData_B2C2(object):
 
             sub_info_str = json.dumps(data)
 
+            print(sub_info_str)
+
             self._ws.send(data)
 
     def on_msg(self, msg):
         try:
             print(msg)
 
-            # dic = json.loads(msg)
+            dic = json.loads(msg)
 
-            self.process_msg(msg)
+            self.process_msg(dic)
 
         except Exception as e:
             print("[E] on_msg: ")
@@ -116,16 +118,10 @@ class MarketData_B2C2(object):
 
 
     def on_open(self):
-        print("\nftx_on_open")
+        print("\nB2C2_on_open")
         self._is_connnect = True
 
-        sub_info_str = get_login_info(self._api_key, self._api_secret)
-        self._ws.send(sub_info_str)
-
-        time.sleep(3)
-        for symbol in self._symbol_dict:
-            self._ws.send(get_sub_order_info(symbol))
-            self._ws.send(get_sub_trade_info(symbol))
+        self.subscribe_symbol()
 
     def on_error(self):
         print("on_error")
@@ -155,9 +151,13 @@ class MarketData_B2C2(object):
 
     def process_msg(self, ws_msg):
         try:
-            msg = json.loads(ws_msg.data, parse_float=float)
-            if msg['event'] == "subscribe":
+            if ws_msg['event'] == "subscribe" or ws_msg['event'] == "tradable_instruments":
                 return
+
+            if "data" not in ws_msg:
+                return
+
+            msg = ws_msg["data"]
 
             depth_update = {"ASK": {}, "BID": {}}
             for level in msg["levels"]["buy"]:
