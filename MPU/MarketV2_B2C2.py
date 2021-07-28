@@ -106,8 +106,8 @@ class MarketData_B2C2(object):
 
     def on_msg(self, msg):
         try:
-            print("\n------- on_msg -------")
-            print(msg)
+            # print("\n------- on_msg -------")
+            # print(msg)
 
             dic = json.loads(msg)
 
@@ -167,7 +167,7 @@ class MarketData_B2C2(object):
                 depth_update["BID"][float(level["price"])] = float(level["quantity"])
 
             sys_symbol = self.__symbol_book[msg["instrument"]][0]
-            print("\n%s.%s PUBLISH: %s" % (self.__exchange_name, sys_symbol, str(depth_update)))
+            # print("\n%s.%s PUBLISH: %s" % (self.__exchange_name, sys_symbol, str(depth_update)))
 
             if len(depth_update["ASK"]) or len(depth_update["BID"]):
                 if sys_symbol in self._publish_count_dict["depth"]:
