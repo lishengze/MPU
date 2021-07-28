@@ -50,6 +50,7 @@ class MarketData_B2C2(object):
         self._is_connnect = False
         self._ws = None
         self._ping_secs = 10
+        self._reconnect_secs = 5
 
         self._publish_count_dict = {
             "depth":{},
@@ -60,9 +61,8 @@ class MarketData_B2C2(object):
         for symbol in self.__symbol_book:
             self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
 
-
-    def start(self):
-        print("\n\n***** Start Connect %s *****" % (self._ws_url))
+    def connect_ws_server(self, info):
+        print("\n\n***** %s %s *****" % (info, self._ws_url))
         # websocket.enableTrace(True)
         header = {'Authorization': 'Token %s' % self.__token}
         self._ws = websocket.WebSocketApp(self._ws_url)
@@ -73,10 +73,20 @@ class MarketData_B2C2(object):
         self._ws.on_close = self.on_close
         self._ws.header = header
 
+        self._ws.run_forever()
+
+    def start_reconnect(self):
+        while(self._is_connnect == False)
+            connect_ws_server("Reconnect Server")
+            time.sleep(self._reconnect_secs)
+
+    def start_timer(self):
         self._timer = threading.Timer(self._ping_secs, self.on_timer)
         self._timer.start()
 
-        self._ws.run_forever()
+    def start(self):
+        self.start_timer()
+        self.connect_ws_server("Start Connect")        
 
     def print_publish_info(self):
         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -90,6 +100,7 @@ class MarketData_B2C2(object):
         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
     def subscribe_symbol(self):
+        # print("----- subscribe_symbol ------")
         for symbol in self.__symbol_book:
             data = {
                     "event": "subscribe",
@@ -100,7 +111,7 @@ class MarketData_B2C2(object):
 
             sub_info_str = json.dumps(data)
 
-            print(sub_info_str)
+            # print(sub_info_str)
 
             self._ws.send(sub_info_str)
 
@@ -128,7 +139,11 @@ class MarketData_B2C2(object):
         print("on_error")
 
     def on_close(self):
-        print("on_close")
+        print("\n******* on_close *******")
+
+        self._is_connnect = False
+        
+        self.start_reconnect()
 
     def print_publish_info(self):
         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
