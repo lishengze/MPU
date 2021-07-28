@@ -113,10 +113,8 @@ class FTX(object):
             self._publish_count_dict["depth"][sys_symbol] = 0
             self._publish_count_dict["trade"][sys_symbol] = 0
 
-
-
-    def start(self):
-        print("\n\n***** Start Connect %s *****" % (self._ws_url))
+    def connect_ws_server(self, info):
+        print("\n\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
         # websocket.enableTrace(True)
         self._ws = websocket.WebSocketApp(self._ws_url)
         self._ws.on_message = self.on_msg
@@ -124,10 +122,21 @@ class FTX(object):
         self._ws.on_open = self.on_open
         self._ws.on_close = self.on_close
 
+        self._ws.run_forever()
+
+    def start_reconnect(self):
+        print("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+        while self._is_connnect == False:
+            self.connect_ws_server("Reconnect Server")
+            time.sleep(self._reconnect_secs)
+
+    def start_timer(self):
         self._timer = threading.Timer(self._ping_secs, self.on_timer)
         self._timer.start()
 
-        self._ws.run_forever()
+    def start(self):
+        self.start_timer()
+        self.connect_ws_server("Start Connect")
 
     def on_msg(self, msg):
         try:
@@ -158,7 +167,9 @@ class FTX(object):
         print("on_error")
 
     def on_close(self):
-        print("on_close")
+        print("\n******* on_close *******")
+        self._is_connnect = False        
+        self.start_reconnect()
 
     def print_publish_info(self):
         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

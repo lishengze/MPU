@@ -76,8 +76,9 @@ class MarketData_B2C2(object):
         self._ws.run_forever()
 
     def start_reconnect(self):
+        print("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
         while self._is_connnect == False:
-            connect_ws_server("Reconnect Server")
+            self.connect_ws_server("Reconnect Server")
             time.sleep(self._reconnect_secs)
 
     def start_timer(self):
@@ -119,7 +120,6 @@ class MarketData_B2C2(object):
         try:
             # print("\n------- on_msg -------")
             # print(msg)
-
             dic = json.loads(msg)
 
             self.process_msg(dic)
@@ -130,9 +130,8 @@ class MarketData_B2C2(object):
 
 
     def on_open(self):
-        print("\nB2C2_on_open")
+        print("\nB2C2 Connect Server %s Successfully!" % (self._ws_url))
         self._is_connnect = True
-
         self.subscribe_symbol()
 
     def on_error(self):
@@ -171,6 +170,7 @@ class MarketData_B2C2(object):
             #     return
 
             if ws_msg["event"] != "price":
+                print(ws_msg)
                 return
 
             msg = ws_msg
