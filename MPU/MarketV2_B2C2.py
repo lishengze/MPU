@@ -158,7 +158,7 @@ class MarketData_B2C2(object):
             if ws_msg["event"] != "price":
                 return
 
-            msg = ws_msg["data"]
+            msg = ws_msg
 
             depth_update = {"ASK": {}, "BID": {}}
             for level in msg["levels"]["buy"]:
