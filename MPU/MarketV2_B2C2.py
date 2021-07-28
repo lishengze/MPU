@@ -155,7 +155,7 @@ class MarketData_B2C2(object):
             # if ws_msg['event'] == "subscribe" or ws_msg['event'] == "tradable_instruments":
             #     return
 
-            if ws_msg["event"] != price:
+            if ws_msg["event"] != "price":
                 return
 
             msg = ws_msg["data"]
