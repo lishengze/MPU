@@ -102,7 +102,7 @@ class MarketData_B2C2(object):
 
             print(sub_info_str)
 
-            self._ws.send(data)
+            self._ws.send(sub_info_str)
 
     def on_msg(self, msg):
         try:
