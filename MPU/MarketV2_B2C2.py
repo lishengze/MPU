@@ -106,6 +106,7 @@ class MarketData_B2C2(object):
 
     def on_msg(self, msg):
         try:
+            print("\n------- on_msg -------")
             print(msg)
 
             dic = json.loads(msg)
@@ -151,10 +152,10 @@ class MarketData_B2C2(object):
 
     def process_msg(self, ws_msg):
         try:
-            if ws_msg['event'] == "subscribe" or ws_msg['event'] == "tradable_instruments":
-                return
+            # if ws_msg['event'] == "subscribe" or ws_msg['event'] == "tradable_instruments":
+            #     return
 
-            if "data" not in ws_msg:
+            if ws_msg["event"] != price:
                 return
 
             msg = ws_msg["data"]
