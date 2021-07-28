@@ -50,7 +50,6 @@ class MarketData_B2C2(object):
         self._is_connnect = False
         self._ws = None
 
-        self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode)
         self._publish_count_dict = {
             "depth":{},
             "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
@@ -101,10 +100,6 @@ class MarketData_B2C2(object):
             sub_info_str = json.dumps(data)
 
             self._ws.send(data)
-
-            # response = self._ws.receive()                
-            # print(f"\nsub %s \n{response}" % (symbol))      
-
 
     def on_msg(self, msg):
         try:
@@ -185,3 +180,4 @@ class MarketData_B2C2(object):
 
 if __name__ == '__main__':
     a = MarketData_B2C2(debug_mode=False)
+    a.start()
