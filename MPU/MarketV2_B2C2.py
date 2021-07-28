@@ -36,7 +36,7 @@ class MarketData_B2C2(object):
 
         self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
 
-        self.__ws_url = "wss://socket.uat.b2c2.net/quotes"
+        self._ws_url = "wss://socket.uat.b2c2.net/quotes"
         self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
 
         self.__symbol_book = {
@@ -49,6 +49,7 @@ class MarketData_B2C2(object):
 
         self._is_connnect = False
         self._ws = None
+        self._ping_secs = 10
 
         self._publish_count_dict = {
             "depth":{},
@@ -56,9 +57,9 @@ class MarketData_B2C2(object):
             "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         }
 
-        for item in self._symbol_dict:
-            sys_symbol = self._symbol_dict[item]
-            self._publish_count_dict["depth"][sys_symbol] = 0
+        for symbol in self.__symbol_book:
+            self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
+
 
     def start(self):
         print("\n\n***** Start Connect %s *****" % (self._ws_url))
@@ -70,7 +71,7 @@ class MarketData_B2C2(object):
         self._ws.on_error = self.on_error                                    
         self._ws.on_open = self.on_open
         self._ws.on_close = self.on_close
-        self._ws.header = heaer
+        self._ws.header = header
 
         self._timer = threading.Timer(self._ping_secs, self.on_timer)
         self._timer.start()
@@ -156,7 +157,7 @@ class MarketData_B2C2(object):
         try:
             msg = json.loads(ws_msg.data, parse_float=float)
             if msg['event'] == "subscribe":
-                continue
+                return
 
             depth_update = {"ASK": {}, "BID": {}}
             for level in msg["levels"]["buy"]:
