@@ -62,7 +62,7 @@ class MarketData_B2C2(object):
             self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
 
     def connect_ws_server(self, info):
-        print("\n\n***** %s %s *****" % (info, self._ws_url))
+        print("\n\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
         # websocket.enableTrace(True)
         header = {'Authorization': 'Token %s' % self.__token}
         self._ws = websocket.WebSocketApp(self._ws_url)
@@ -76,7 +76,7 @@ class MarketData_B2C2(object):
         self._ws.run_forever()
 
     def start_reconnect(self):
-        while(self._is_connnect == False)
+        while self._is_connnect == False:
             connect_ws_server("Reconnect Server")
             time.sleep(self._reconnect_secs)
 
