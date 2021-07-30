@@ -101,8 +101,25 @@ class MarketData_B2C2(object):
         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
     def subscribe_symbol(self):
+        if self._is_connnect == True:
         # print("----- subscribe_symbol ------")
-        for symbol in self.__symbol_book:
+            for symbol in self.__symbol_book:
+                data = {
+                        "event": "subscribe",
+                        "instrument": symbol,
+                        "levels": [self.__symbol_book[symbol][1], self.__symbol_book[symbol][2]],
+                        "tag": ""
+                    }
+
+                sub_info_str = json.dumps(data)
+
+                # print(sub_info_str)
+
+                self._ws.send(sub_info_str)
+
+    def keep_alive(self):
+        if self._is_connnect == True:
+            symbol = "BTCUSD.SPOT"
             data = {
                     "event": "subscribe",
                     "instrument": symbol,
@@ -114,7 +131,7 @@ class MarketData_B2C2(object):
 
             # print(sub_info_str)
 
-            self._ws.send(sub_info_str)
+            self._ws.send(sub_info_str)        
 
     def on_msg(self, msg):
         try:
@@ -156,8 +173,8 @@ class MarketData_B2C2(object):
         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
     def on_timer(self):
-        if self._is_connnect:
-            self.subscribe_symbol()      
+        if self._is_connnect == True:
+            self.keep_alive()      
 
         self.print_publish_info()
 
