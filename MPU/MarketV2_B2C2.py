@@ -40,11 +40,11 @@ class MarketData_B2C2(object):
         self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
 
         self.__symbol_book = {
-                "BTCUSD.SPOT" : ["BTC_USD", 1, 100],
-                "BTCUST.SPOT" : ["BTC_USDT", 1, 100], 
-                "ETHUSD.SPOT" : ["ETH_USD", 5, 500],
-                "ETHUST.SPOT" : ["ETH_USDT", 5, 500],
-                "USTUSD.SPOT" : ["USDT_USD", 100000, 500000]
+                "BTCUSD.SPOT" : ["BTC_USD", 1, 50],
+                "BTCUST.SPOT" : ["BTC_USDT", 1, 50], 
+                "ETHUSD.SPOT" : ["ETH_USD", 10, 500],
+                "ETHUST.SPOT" : ["ETH_USDT", 10, 500],
+                "USTUSD.SPOT" : ["USDT_USD", 50000, 1000000]
         }
 
         self._is_connnect = False
