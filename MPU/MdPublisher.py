@@ -40,9 +40,10 @@ from collections import defaultdict
 
 
 class Publisher:
-    def __init__(self, exchange: str, redis_config: dict, exchange_topic: str = None, debug_mode: bool = False):
+    def __init__(self, exchange: str, redis_config: dict, exchange_topic: str = None, debug_mode: bool = False, logger=None):
         self.__debug = debug_mode
         self.__crossing_flag = dict()  # {"Symbol": "Date"}
+        self.__logger = logger
 
         if not self.__debug:
             self.__redis_conn = redis.Redis(host=redis_config["HOST"],
@@ -262,7 +263,8 @@ class Publisher:
                     book[depth_side] = SortedDict(depth_update[side])
 
             # print("Build msg to publish(Publish if any update)")
-            # print(update_book)
+            if self.__logger is not None:
+                slef.__logger.Debug(str(update_book))
 
             # Build msg to publish(Publish if any update)
             if len(update_book["AskUpdate"]) or len(update_book["BidUpdate"]):

@@ -12,13 +12,15 @@ import json
 import hmac
 import threading
 
+from Logger import *
+
 g_redis_config_file_name = "./redis_config.json"
 
 def get_redis_config():    
     json_file = open(g_redis_config_file_name,'r')
     json_dict = json.load(json_file)
-    print("\n******* redis_config *******")
-    print(json_dict)
+    self._logger.Info("\n******* redis_config *******")
+    self._logger.Info(json_dict)
     time.sleep(3)
 
     return json_dict
@@ -26,11 +28,11 @@ def get_redis_config():
 def get_login_info(api_key, api_secret):
     ts = int(time.time() * 1000)
 
-    # print("0")
+    # self._logger.Info("0")
     tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
-    # print(tmp_sign_origin)
+    # self._logger.Info(tmp_sign_origin)
     tmp_sign_hex = tmp_sign_origin.hexdigest()
-    # print(tmp_sign_hex)
+    # self._logger.Info(tmp_sign_hex)
 
     
     sub_info = {'op': 'login', 
@@ -43,7 +45,7 @@ def get_login_info(api_key, api_secret):
     }
 
     sub_info_str = json.dumps(sub_info)
-    print(sub_info_str)
+    self._logger.Info(sub_info_str)
     
     return sub_info_str
 
@@ -53,7 +55,7 @@ def get_sub_order_info(symbol_name):
                 'market': symbol_name}  
 
     sub_info_str = json.dumps(sub_info)
-    print(sub_info_str)
+    self._logger.Info(sub_info_str)
     
     return sub_info_str           
 
@@ -63,7 +65,7 @@ def get_sub_trade_info(symbol_name):
                 'market': symbol_name}  
 
     sub_info_str = json.dumps(sub_info)
-    print(sub_info_str)
+    self._logger.Info(sub_info_str)
     
     return sub_info_str         
 
@@ -71,7 +73,7 @@ def get_ping_info():
     sub_info = {'op': 'ping'}  
 
     sub_info_str = json.dumps(sub_info)
-    # print(sub_info_str)
+    # self._logger.Info(sub_info_str)
     
     return sub_info_str       
 
@@ -93,6 +95,7 @@ class FTX(object):
             "USDT/USD":"USDT_USD",
             "ETH/BTC":"ETH_BTC"                        
         }
+        self._logger = Logger()
         self._error_msg_list = ["", ""]
         self.__exchange_name = "FTX"
         self._is_connnect = False
@@ -114,7 +117,7 @@ class FTX(object):
             self._publish_count_dict["trade"][sys_symbol] = 0
 
     def connect_ws_server(self, info):
-        print("\n\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+        self._logger.Info("\n\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
         # websocket.enableTrace(True)
         self._ws = websocket.WebSocketApp(self._ws_url)
         self._ws.on_message = self.on_msg
@@ -125,7 +128,7 @@ class FTX(object):
         self._ws.run_forever()
 
     def start_reconnect(self):
-        print("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+        self._logger.Info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
         while self._is_connnect == False:
             self.connect_ws_server("Reconnect Server")
             time.sleep(self._reconnect_secs)
@@ -140,19 +143,19 @@ class FTX(object):
 
     def on_msg(self, msg):
         try:
-            # print(msg)
+            # self._logger.Info(msg)
 
             dic = json.loads(msg)
 
             self.process_msg(dic)
 
         except Exception as e:
-            print("[E] on_msg: ")
-            print(e)
+            self._logger.Warning("[E] on_msg: ")
+            self._logger.Warning(e)
 
 
     def on_open(self):
-        print("\nftx_on_open")
+        self._logger.Info("\nftx_on_open")
         self._is_connnect = True
 
         sub_info_str = get_login_info(self._api_key, self._api_secret)
@@ -164,48 +167,39 @@ class FTX(object):
             self._ws.send(get_sub_trade_info(symbol))
 
     def on_error(self):
-        print("on_error")
+        self._logger.Info("on_error")
 
     def on_close(self):
-        print("\n******* on_close *******")
+        self._logger.Info("\n******* on_close *******")
         self._is_connnect = False        
         self.start_reconnect()
 
-    def print_publish_info(self):
+    def self._logger.Info_publish_info(self):
         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        print("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+        self._logger.Info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
         for item in self._publish_count_dict:
             if item == "depth" or item == "trade":
                 for symbol in self._publish_count_dict[item]:
-                    print("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+                    self._logger.Info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                     self._publish_count_dict[item][symbol] = 0
 
         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
     def on_timer(self):
-        # print("on_timer: ")
+        # self._logger.Info("on_timer: ")
         if self._is_connnect:
             self._ws.send(get_ping_info())        
 
-        self.print_publish_info()
+        self.self._logger.Info_publish_info()
 
         self._timer = threading.Timer(self._ping_secs, self.on_timer)
         self._timer.start()
 
     def process_msg(self, ws_msg):
         try:
-            # if ws_msg.type in [aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR]:
-            #     self.__publisher.logger(level=self.__publisher.error,
-            #                             event=MDEvent.WSERROR(ws_msg.type))
-            #     return
-
-
-
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" or "data" not in ws_msg:
-                # print("ws_msg is error")
+                # self._logger.Info("ws_msg is error")
                 return
-
-            # print("\nOriginalMsg: %s" % (str(ws_msg)))
 
             data = ws_msg["data"]
             ex_symbol = ws_msg["market"]
@@ -214,7 +208,7 @@ class FTX(object):
             if ex_symbol in self._symbol_dict:
                 sys_symbol = self._symbol_dict[ex_symbol]
             else:
-                print("%s is not in symbol_dict" % (ex_symbol))
+                self._logger.Info("%s is not in symbol_dict" % (ex_symbol))
                 return
 
             if channel_type == 'orderbook':
@@ -229,9 +223,8 @@ class FTX(object):
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
                 self.__publisher.logger(level="WARNING", msg=error_msg)                                        
         except Exception as e:
-            print("[E] process_msg: %s" % (str(ws_msg)))
-            print(e)
-            print("")
+            self.Warning.Info("[E] process_msg: %s" % (str(ws_msg)))
+            self.Warning.Info(e)
 
     def __parse_orderbook(self, symbol, msg):
         try:
@@ -266,14 +259,13 @@ class FTX(object):
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
 
-
-
-            # print("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
+            if symbol == "ETH_BTC":
+                self._logger.Debug("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
-            print("[E] __parse_orderbook: ")
-            print(e)
+            self._logger.Warning("[E] __parse_orderbook: ")
+            self._logger.Warning(e)
 
     def __parse_trades(self, symbol, data_list):
         try:
@@ -295,8 +287,8 @@ class FTX(object):
                                             exg_time=exg_time,
                                             px_qty=(float(trade['price']), float(trade['size'])))
         except Exception as e:
-            print("[E] __parse_trades: ")
-            print(e)
+            self._logger.Warning("[E] __parse_trades: ")
+            self._logger.Warning(e)
 
 def test_ftx():
     ftx_obj = FTX(debug_mode=False)
