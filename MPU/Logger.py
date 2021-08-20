@@ -12,6 +12,15 @@ class Logger(object):
         DATE_FORMAT = "%Y/%m/%d %H:%M:%S"    
         logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
 
+        self._debug_logger = logging.getLogger('debug_logger')
+        self._debug_logger.setLevel(logging.DEBUG)         
+
+        debug_handler = logging.handlers.TimedRotatingFileHandler("log/"+get_datetime_str()+"_debug.log", when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
+        debug_handler.setLevel(logging.DEBUG)
+        debug_handler.setFormatter(logging.Formatter(fmt="%(asctime)s-%(levelname)s-%(filename)s[:%(lineno)d]-%(message)s"))
+
+        self._debug_logger.addHandler(debug_handler)
+
         self._logger = logging.getLogger('user_logger')
         self._logger.setLevel(logging.DEBUG)
 
@@ -30,15 +39,6 @@ class Logger(object):
 
         self._logger.addHandler(detail_handler)
         self._logger.addHandler(error_handler)       
-
-        self._debug_logger = logging.getLogger('debug_logger')
-        self._debug_logger.setLevel(logging.DEBUG)         
-
-        debug_handler = logging.handlers.TimedRotatingFileHandler("log/"+get_datetime_str()+"_debug.log", when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
-        debug_handler.setLevel(logging.DEBUG)
-        debug_handler.setFormatter(logging.Formatter(fmt="%(asctime)s-%(levelname)s-%(filename)s[:%(lineno)d]-%(message)s"))
-
-        self._debug_logger.addHandler(debug_handler)
 
     def Debug(self, info):
         self._debug_logger.debug(info)

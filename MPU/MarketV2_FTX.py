@@ -19,8 +19,8 @@ g_redis_config_file_name = "./redis_config.json"
 def get_redis_config():    
     json_file = open(g_redis_config_file_name,'r')
     json_dict = json.load(json_file)
-    self._logger.Info("\n******* redis_config *******")
-    self._logger.Info(json_dict)
+    print("\n******* redis_config *******")
+    print(json_dict)
     time.sleep(3)
 
     return json_dict
@@ -45,7 +45,7 @@ def get_login_info(api_key, api_secret):
     }
 
     sub_info_str = json.dumps(sub_info)
-    self._logger.Info(sub_info_str)
+    print(sub_info_str)
     
     return sub_info_str
 
@@ -55,7 +55,7 @@ def get_sub_order_info(symbol_name):
                 'market': symbol_name}  
 
     sub_info_str = json.dumps(sub_info)
-    self._logger.Info(sub_info_str)
+    print(sub_info_str)
     
     return sub_info_str           
 
@@ -65,7 +65,7 @@ def get_sub_trade_info(symbol_name):
                 'market': symbol_name}  
 
     sub_info_str = json.dumps(sub_info)
-    self._logger.Info(sub_info_str)
+    print(sub_info_str)
     
     return sub_info_str         
 
