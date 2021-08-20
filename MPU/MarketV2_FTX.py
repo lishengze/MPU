@@ -174,7 +174,7 @@ class FTX(object):
         self._is_connnect = False        
         self.start_reconnect()
 
-    def self._logger.Info_publish_info(self):
+    def print_publish_info(self):
         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         self._logger.Info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
         for item in self._publish_count_dict:
@@ -190,7 +190,7 @@ class FTX(object):
         if self._is_connnect:
             self._ws.send(get_ping_info())        
 
-        self.self._logger.Info_publish_info()
+        self.print_publish_info()
 
         self._timer = threading.Timer(self._ping_secs, self.on_timer)
         self._timer.start()
