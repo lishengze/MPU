@@ -43,7 +43,7 @@ class Publisher:
     def __init__(self, exchange: str, redis_config: dict, exchange_topic: str = None, debug_mode: bool = False, logger=None):
         self.__debug = debug_mode
         self.__crossing_flag = dict()  # {"Symbol": "Date"}
-        self.__logger = logger
+        self._logger = logger
 
         if not self.__debug:
             self.__redis_conn = redis.Redis(host=redis_config["HOST"],
@@ -72,7 +72,7 @@ class Publisher:
                                 format="[%(levelname)s-DebugMode]: %(message)s @(Local)%(asctime)s",
                                 datefmt="%Y-%m-%d %H:%M:%S")
 
-        self.__logger = logging.getLogger(self.__exchange_topic)
+        # self.__logger = logging.getLogger(self.__exchange_topic)
 
         self.__orderbook = dict()
 
@@ -200,6 +200,10 @@ class Publisher:
             self.__set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}",
                        message=json.dumps(depth_msg))
 
+            if self._logger is not None:
+                self._logger.Debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
+                                    + "\nmsg: " + json.dumps(depth_msg)))
+
             # Publish Crossing_Snapshot while date-crossing(UTC)
             if symbol in self.__crossing_flag:
                 if depth_msg["TimeArrive"][:10] != self.__crossing_flag[symbol]:
@@ -233,6 +237,10 @@ class Publisher:
             self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
                            message=json.dumps(update_msg))
 
+            if self._logger is not None:
+                self._logger.Debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" 
+                                    + "\nmsg: " + json.dumps(update_msg)))
+
             if raise_exception_flag:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
 
@@ -263,8 +271,8 @@ class Publisher:
                     book[depth_side] = SortedDict(depth_update[side])
 
             # print("Build msg to publish(Publish if any update)")
-            if self.__logger is not None:
-                slef.__logger.Debug(str(update_book))
+            # if self.__logger is not None:
+            #     slef.__logger.Debug(str(update_book))
 
             # Build msg to publish(Publish if any update)
             if len(update_book["AskUpdate"]) or len(update_book["BidUpdate"]):
@@ -290,6 +298,11 @@ class Publisher:
 
                 self.__set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}",
                            message=json.dumps(depth_msg))
+
+                if self._logger is not None:
+                    self._logger.Debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
+                                        + "\nmsg: " + json.dumps(depth_msg)))
+
 
                 # Publish Crossing_Snapshot while date-crossing(UTC)
                 if symbol in self.__crossing_flag:
@@ -321,6 +334,11 @@ class Publisher:
 
                 self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
                                message=json.dumps(update_msg))
+
+                if self._logger is not None:
+                    self._logger.Debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" \
+                                        + "\nmsg: " + json.dumps(update_msg)))
+
             else:
                 pass
                 # print("Nothing To Update")
