@@ -15,7 +15,7 @@ class Logger(object):
         self._debug_logger = logging.getLogger('debug_logger')
         self._debug_logger.setLevel(logging.DEBUG)         
 
-        log_dir = program_name + "_log/"
+        log_dir = "log/" + program_name + "/"
 
         debug_handler = logging.handlers.TimedRotatingFileHandler(log_dir + get_datetime_str()+"_debug.log", when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
         debug_handler.setLevel(logging.DEBUG)

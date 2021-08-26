@@ -5,6 +5,7 @@ kill -9 $PID
 
 sleep 2s
 
-rm -fr B2C2_log/
+
+rm -fr log/B2C2/*
 
 ps -aux|grep python3
