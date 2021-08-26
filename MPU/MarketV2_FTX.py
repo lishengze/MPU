@@ -95,7 +95,7 @@ class FTX(object):
             "USDT/USD":"USDT_USD",
             "ETH/BTC":"ETH_BTC"                        
         }
-        self._logger = Logger()
+        self._logger = Logger(program_name="FTX")
         self._error_msg_list = ["", ""]
         self.__exchange_name = "FTX"
         self._is_connnect = False

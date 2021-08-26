@@ -4,4 +4,4 @@ nohup python3 MarketV2_FTX.py > ftx.log &
 
 sleep 2s
 
-ps -aux|grep FTX
+ps -aux|grep python3

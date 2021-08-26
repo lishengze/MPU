@@ -4,10 +4,10 @@ import datetime
 import time
 
 def get_datetime_str():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 
 class Logger(object):
-    def __init__(self, all_file_Name="log/all.log", error_file_name="log/error.log"):
+    def __init__(self, program_name=""):
         LOG_FORMAT = "%(pathname)s-%(lineno)s - %(asctime)s - %(levelname)s - %(message)s"
         DATE_FORMAT = "%Y/%m/%d %H:%M:%S"    
         logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
@@ -15,7 +15,9 @@ class Logger(object):
         self._debug_logger = logging.getLogger('debug_logger')
         self._debug_logger.setLevel(logging.DEBUG)         
 
-        debug_handler = logging.handlers.TimedRotatingFileHandler("log/"+get_datetime_str()+"_debug.log", when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
+        log_dir = program_name + "_log/"
+
+        debug_handler = logging.handlers.TimedRotatingFileHandler(log_dir + get_datetime_str()+"_debug.log", when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
         debug_handler.setLevel(logging.DEBUG)
         debug_handler.setFormatter(logging.Formatter(fmt="%(asctime)s-%(levelname)s-%(filename)s[:%(lineno)d]-%(message)s"))
 
@@ -24,8 +26,8 @@ class Logger(object):
         self._logger = logging.getLogger('user_logger')
         self._logger.setLevel(logging.DEBUG)
 
-        all_file_Name = "log/"+get_datetime_str()+"_info.log"
-        error_file_name = "log/"+get_datetime_str()+"_warn.log"
+        all_file_Name = log_dir+get_datetime_str()+"_info.log"
+        error_file_name = log_dir+get_datetime_str()+"_warn.log"
 
         # detail_handler = logging.handlers.TimedRotatingFileHandler('log/all.log', when='midnight', interval=1, backupCount=7, atTime=datetime.time(0, 0, 0, 0))
 

@@ -12,6 +12,8 @@ import json
 import hmac
 import threading
 
+from Logger import *
+
 g_redis_config_file_name = "./redis_config.json"
 
 def get_redis_config():    
@@ -46,6 +48,8 @@ class MarketData_B2C2(object):
                 "ETHUST.SPOT" : ["ETH_USDT", 10, 500],
                 "USTUSD.SPOT" : ["USDT_USD", 50000, 1000000]
         }
+
+        self._logger = Logger(program_name="B2C2")
 
         self._is_connnect = False
         self._ws = None

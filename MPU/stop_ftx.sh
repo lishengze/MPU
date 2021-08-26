@@ -5,4 +5,6 @@ kill -9 $PID
 
 sleep 2s
 
-ps -aux|grep FTX
+rm -fr FTX_log/
+
+ps -aux|grep python3
