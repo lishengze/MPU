@@ -200,7 +200,7 @@ class Publisher:
             self.__set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}",
                        message=json.dumps(depth_msg))
 
-            if self._logger is not None:
+            if self._logger is not None && symbol == "ETH_BTC":
                 self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
                                     + "\nmsg: " + json.dumps(depth_msg)))
 
@@ -237,7 +237,7 @@ class Publisher:
             self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
                            message=json.dumps(update_msg))
 
-            if self._logger is not None:
+            if self._logger is not None && symbol == "ETH_BTC":
                 self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" 
                                                     + "\nmsg: " + json.dumps(update_msg)))
 
@@ -299,7 +299,7 @@ class Publisher:
                 self.__set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}",
                            message=json.dumps(depth_msg))
 
-                if self._logger is not None:
+                if self._logger is not None && symbol == "ETH_BTC":
                     self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
                                         + "\nmsg: " + json.dumps(depth_msg)))
 
@@ -335,7 +335,7 @@ class Publisher:
                 self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
                                message=json.dumps(update_msg))
 
-                if self._logger is not None:
+                if self._logger is not None && symbol == "ETH_BTC":
                     self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" \
                                         + "\nmsg: " + json.dumps(update_msg)))
 
