@@ -103,7 +103,7 @@ class FTX(object):
         if redis_config is None:
             self._redis_config = get_redis_config()
 
-        self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode)
+        self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode, logger=self._logger)
         self._publish_count_dict = {
             "depth":{},
             "trade":{},
