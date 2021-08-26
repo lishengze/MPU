@@ -201,7 +201,7 @@ class Publisher:
                        message=json.dumps(depth_msg))
 
             if self._logger is not None:
-                self._logger.Debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
+                self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
                                     + "\nmsg: " + json.dumps(depth_msg)))
 
             # Publish Crossing_Snapshot while date-crossing(UTC)
@@ -238,8 +238,8 @@ class Publisher:
                            message=json.dumps(update_msg))
 
             if self._logger is not None:
-                self._logger.Debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" 
-                                    + "\nmsg: " + json.dumps(update_msg)))
+                self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" 
+                                                    + "\nmsg: " + json.dumps(update_msg)))
 
             if raise_exception_flag:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
@@ -300,7 +300,7 @@ class Publisher:
                            message=json.dumps(depth_msg))
 
                 if self._logger is not None:
-                    self._logger.Debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
+                    self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
                                         + "\nmsg: " + json.dumps(depth_msg)))
 
 
@@ -336,7 +336,7 @@ class Publisher:
                                message=json.dumps(update_msg))
 
                 if self._logger is not None:
-                    self._logger.Debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" \
+                    self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" \
                                         + "\nmsg: " + json.dumps(update_msg)))
 
             else:
