@@ -35,6 +35,8 @@ def to_datetime(s):
 
 class KLineSvc:
     def __init__(self, slow_period: int = 60, running_mode: str = "DEBUG"):
+        print("slow_period: %d, running_mode: %s" % (slow_period, running_mode))
+        
         self.__slow_period = int(slow_period)
         self.__mode = running_mode
         self.__verification_tag = False
@@ -251,6 +253,7 @@ class KLine:
 
 if __name__ == '__main__':
     # 运行脚本：[exe] 60 PRODUCTION
+    print(sys.argv)
     if len(sys.argv) == 3:
         svc = KLineSvc(slow_period=sys.argv[1], running_mode=sys.argv[2])
     else:
