@@ -30,16 +30,25 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class MarketData_B2C2(object):
-    def __init__(self, debug_mode: bool = True, redis_config: dict = None):
+    def __init__(self, debug_mode: bool = True, redis_config: dict = None, env_name="-qa"):
         if redis_config is None:            
             redis_config = get_redis_config()
 
         self.__exchange_name = "B2C2"
-
+        self._logger = Logger(program_name="B2C2")
         self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
 
+
         self._ws_url = "wss://socket.uat.b2c2.net/quotes"
-        self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
+
+        if env_name == "-qa":
+            self.__token = "eabe0596c453786c0ecee81978140fad58daf881"
+        elif env_name == "-stg":
+            self.__token = "6a0c8b12ecf5f82763d86547da61c8cfc1ebbaa3"
+        elif env_name == "-prd":
+            self.__token = "8f5300e0a56777cae6d2b08e46d7edfcfb7e21aa"        
+
+        print("env_name: %s, token: %s" % (env_name, self.__token))    
 
         self.__symbol_book = {
                 "BTCUSD.SPOT" : ["BTC_USD", 1, 50],
@@ -49,7 +58,7 @@ class MarketData_B2C2(object):
                 "USTUSD.SPOT" : ["USDT_USD", 50000, 1000000]
         }
 
-        self._logger = Logger(program_name="B2C2")
+        
 
         self._is_connnect = False
         self._ws = None
@@ -217,5 +226,10 @@ class MarketData_B2C2(object):
             print("")
 
 if __name__ == '__main__':
-    a = MarketData_B2C2(debug_mode=False)
+    print(sys.argv)
+    env_name = "-qa"
+    if len(sys.argv) == 2:
+        env_name = sys.argv[1]
+
+    a = MarketData_B2C2(debug_mode=False, env_name=env_name)
     a.start()
