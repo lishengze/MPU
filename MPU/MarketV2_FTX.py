@@ -237,10 +237,12 @@ class FTX(object):
 
     def process_msg(self, ws_msg):
         try:
+            if  ws_msg["type"] == "pong" || ws_msg["type"] == "subscribed":
+                return
+
             if "data" not in ws_msg:
-                if  ws_msg["type"] != "pong" and ws_msg["type"] != "subscribed":
-                    self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
-                    return
+                self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
+                return
 
             data = ws_msg["data"]
             ex_symbol = ws_msg["market"]
