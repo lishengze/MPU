@@ -103,216 +103,115 @@ class Publisher:
         :param raise_exception: Quality control option, "true" raise exception while Ask/Bid crossing
         :return: Void
         """
-        if len(depth_update["ASK"]) == 0 and len(depth_update["BID"]) == 0:
-            return None
+        try:
+            if len(depth_update["ASK"]) == 0 and len(depth_update["BID"]) == 0:
+                return None
 
-        if symbol not in self.__orderbook:
-            self.__orderbook.setdefault(symbol, {"AskDepth": SortedDict(), "BidDepth": SortedDict()})
-            if not self.__debug:
-                cache_data = self.__redis_conn.get(f"DEPTHx|{symbol}.{self.__exchange_topic}")
-            else:
-                cache_data = None
-
-            if cache_data:
-                snapshot_cache = eval(cache_data)
-                for px, qty in snapshot_cache["AskDepth"].items():
-                    self.__orderbook[symbol]["AskDepth"][float(px)] = qty
-
-                for px, qty in snapshot_cache["BidDepth"].items():
-                    self.__orderbook[symbol]["BidDepth"][float(px)] = qty
-
-        book = self.__orderbook[symbol]
-
-        if not is_snapshot:  # Depth Update
-            # print("Is Update")
-            raise_exception_flag = False
-            revised_ask = dict()
-            revised_bid = dict()
-            for side in depth_update.keys():
-                if side == "ASK":
-                    depth_side = "AskDepth"
+            if symbol not in self.__orderbook:
+                self.__orderbook.setdefault(symbol, {"AskDepth": SortedDict(), "BidDepth": SortedDict()})
+                if not self.__debug:
+                    cache_data = self.__redis_conn.get(f"DEPTHx|{symbol}.{self.__exchange_topic}")
                 else:
-                    depth_side = "BidDepth"
+                    cache_data = None
 
-                for px, qty in depth_update[side].items():
-                    if qty == 0:
-                        book[depth_side].pop(px, None)
+                if cache_data:
+                    snapshot_cache = eval(cache_data)
+                    for px, qty in snapshot_cache["AskDepth"].items():
+                        self.__orderbook[symbol]["AskDepth"][float(px)] = qty
+
+                    for px, qty in snapshot_cache["BidDepth"].items():
+                        self.__orderbook[symbol]["BidDepth"][float(px)] = qty
+
+            book = self.__orderbook[symbol]
+
+            if not is_snapshot:  # Depth Update
+                # print("Is Update")
+                raise_exception_flag = False
+                revised_ask = dict()
+                revised_bid = dict()
+                for side in depth_update.keys():
+                    if side == "ASK":
+                        depth_side = "AskDepth"
                     else:
-                        book[depth_side][px] = qty
+                        depth_side = "BidDepth"
 
-            # Quality Control
-            if len(book["AskDepth"]) and len(book["BidDepth"]):
+                    for px, qty in depth_update[side].items():
+                        if qty == 0:
+                            book[depth_side].pop(px, None)
+                        else:
+                            book[depth_side][px] = qty
 
-                best_ask = book["AskDepth"].peekitem(0)
-                best_bid = book["BidDepth"].peekitem(-1)
-                if best_bid >= best_ask:
-                    if raise_exception:
-                        # Solution 1: Raise Exception force WS broken
-                        raise_exception_flag = True
+                # Quality Control
+                if len(book["AskDepth"]) and len(book["BidDepth"]):
 
-                    else:
-                        ask_depth = book["AskDepth"]
-                        bid_depth = book["BidDepth"]
-                        # Solution 2: Replace Price-level which crossing
-                        new_bid_update = [px for px, qty in depth_update["BID"].items() if qty > 0]
-                        if len(new_bid_update):
-                            max_bid_update = max(new_bid_update)
-                            for px in ask_depth.keys():
-                                if px <= max_bid_update:
-                                    obj = ask_depth.pop(px, None)
-                                    revised_ask[px] = 0
-                                    # print(f"Error {obj}\n{json.dumps([depth_update])}\n{json.dumps(book)}")
-                                else:
-                                    break
+                    best_ask = book["AskDepth"].peekitem(0)
+                    best_bid = book["BidDepth"].peekitem(-1)
+                    if best_bid >= best_ask:
+                        if raise_exception:
+                            # Solution 1: Raise Exception force WS broken
+                            raise_exception_flag = True
 
-                        new_ask_update = [px for px, qty in depth_update["ASK"].items() if qty > 0]
-                        if len(new_ask_update):
-                            min_ask_update = min(new_ask_update)
-                            for px in bid_depth.keys()[::-1]:
-                                if px >= min_ask_update:
-                                    obj = bid_depth.pop(px, None)
-                                    revised_bid[px] = 0
-                                    # print(f"Error {obj}\n{json.dumps([depth_update])}\n{json.dumps(book)}")
-                                else:
-                                    break
+                        else:
+                            ask_depth = book["AskDepth"]
+                            bid_depth = book["BidDepth"]
+                            # Solution 2: Replace Price-level which crossing
+                            new_bid_update = [px for px, qty in depth_update["BID"].items() if qty > 0]
+                            if len(new_bid_update):
+                                max_bid_update = max(new_bid_update)
+                                for px in ask_depth.keys():
+                                    if px <= max_bid_update:
+                                        obj = ask_depth.pop(px, None)
+                                        revised_ask[px] = 0
+                                        # print(f"Error {obj}\n{json.dumps([depth_update])}\n{json.dumps(book)}")
+                                    else:
+                                        break
 
-            # Build msg to publish
-            self.__msg_seq += 1
-            self.__msg_seq_symbol[symbol] += 1
+                            new_ask_update = [px for px, qty in depth_update["ASK"].items() if qty > 0]
+                            if len(new_ask_update):
+                                min_ask_update = min(new_ask_update)
+                                for px in bid_depth.keys()[::-1]:
+                                    if px >= min_ask_update:
+                                        obj = bid_depth.pop(px, None)
+                                        revised_bid[px] = 0
+                                        # print(f"Error {obj}\n{json.dumps([depth_update])}\n{json.dumps(book)}")
+                                    else:
+                                        break
 
-            time_arrive = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
-
-            if not exg_time:
-                exg_time = time_arrive
-
-            # Publish Depth
-            depth_msg = {"Msg_seq": self.__msg_seq,
-                         "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                         "Exchange": self.__exchange,
-                         "Symbol": symbol,
-                         "Time": exg_time,
-                         "TimeArrive": time_arrive,
-                         "AskDepth": {px: qty for px, qty in book["AskDepth"].items()[:100]},
-                         "BidDepth": {px: qty for px, qty in book["BidDepth"].items()[:-100:-1]}
-                         }
-
-            # "DEPTHx|ETH_USDT.BINANCE" key-value 实时更新
-            self.__set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}",
-                       message=json.dumps(depth_msg))
-
-            if self._logger is not None and symbol == "ETH_BTC":
-                self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
-                                    + "\nmsg: " + json.dumps(depth_msg)))
-
-            # Publish Crossing_Snapshot while date-crossing(UTC)
-            if symbol in self.__crossing_flag:
-                if depth_msg["TimeArrive"][:10] != self.__crossing_flag[symbol]:
-                    depth_msg["AskDepth"] = book["AskDepth"]
-                    depth_msg["BidDepth"] = book["BidDepth"]
-                    self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-                                             message=json.dumps(depth_msg))
-                    self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
-
-            else:
-                self.__crossing_flag.setdefault(symbol, depth_msg["TimeArrive"][:10])
-                depth_msg["AskDepth"] = book["AskDepth"]
-                depth_msg["BidDepth"] = book["BidDepth"]
-                self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-                                         message=json.dumps(depth_msg))
-
-            # Publish Update
-            depth_update["ASK"].update(revised_ask)
-            depth_update["BID"].update(revised_bid)
-
-            update_msg = {"Msg_seq": self.__msg_seq,
-                          "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                          "Exchange": self.__exchange,
-                          "Symbol": symbol,
-                          "Time": exg_time,
-                          "TimeArrive": time_arrive,
-                          "AskUpdate": depth_update["ASK"],
-                          "BidUpdate": depth_update["BID"]}
-
-            # chanel "UPDATEx|ETH_USDT.BINANCE"
-            self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
-                           message=json.dumps(update_msg))
-
-            if self._logger is not None and symbol == "ETH_BTC":
-                self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" 
-                                                    + "\nmsg: " + json.dumps(update_msg)))
-
-            if raise_exception_flag:
-                raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
-
-        else:  # Depth Snapshot
-            # print("Is Snapshot")
-            update_book = {"AskUpdate": {}, "BidUpdate": {}}
-            for side in depth_update.keys():
-                if side == "ASK":
-                    depth_side = "AskDepth"
-                    update_side = "AskUpdate"
-                else:
-                    depth_side = "BidDepth"
-                    update_side = "BidUpdate"
-
-                if not operator.eq(book[depth_side], depth_update[side]):
-                    local_px_set = set(book[depth_side].keys())
-                    update_px_set = set(depth_update[side].keys())
-                    for px in update_px_set.difference(local_px_set):
-                        update_book[update_side][px] = depth_update[side][px]
-
-                    for px in local_px_set.difference(update_px_set):
-                        update_book[update_side][px] = 0
-
-                    for px in local_px_set.intersection(update_px_set):
-                        if book[depth_side][px] != depth_update[side][px]:
-                            update_book[update_side][px] = depth_update[side][px]
-
-                    book[depth_side] = SortedDict(depth_update[side])
-
-            # print("Build msg to publish(Publish if any update)")
-            # if self.__logger is not None:
-            #     slef.__logger.Debug(str(update_book))
-
-            # Build msg to publish(Publish if any update)
-            if len(update_book["AskUpdate"]) or len(update_book["BidUpdate"]):
+                # Build msg to publish
                 self.__msg_seq += 1
                 self.__msg_seq_symbol[symbol] += 1
 
                 time_arrive = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
-                # '2020-04-13 08:14:44.754154'
 
                 if not exg_time:
                     exg_time = time_arrive
 
                 # Publish Depth
                 depth_msg = {"Msg_seq": self.__msg_seq,
-                             "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                             "Exchange": self.__exchange,
-                             "Symbol": symbol,
-                             "Time": exg_time,
-                             "TimeArrive": time_arrive,
-                             "AskDepth": {px: qty for px, qty in book["AskDepth"].items()[:100]},
-                             "BidDepth": {px: qty for px, qty in book["BidDepth"].items()[:-100:-1]}
-                             }
+                            "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
+                            "Exchange": self.__exchange,
+                            "Symbol": symbol,
+                            "Time": exg_time,
+                            "TimeArrive": time_arrive,
+                            "AskDepth": {px: qty for px, qty in book["AskDepth"].items()[:100]},
+                            "BidDepth": {px: qty for px, qty in book["BidDepth"].items()[:-100:-1]}
+                            }
 
+                # "DEPTHx|ETH_USDT.BINANCE" key-value 实时更新
                 self.__set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}",
-                           message=json.dumps(depth_msg))
+                        message=json.dumps(depth_msg))
 
-                if self._logger is not None and symbol == "ETH_BTC":
-                    self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
-                                        + "\nmsg: " + json.dumps(depth_msg)))
-
+                # if self._logger is not None and symbol == "ETH_BTC":
+                #     self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
+                #                         + "\nmsg: " + json.dumps(depth_msg)))
 
                 # Publish Crossing_Snapshot while date-crossing(UTC)
                 if symbol in self.__crossing_flag:
-                    # 前十位是 2020-04-13
                     if depth_msg["TimeArrive"][:10] != self.__crossing_flag[symbol]:
                         depth_msg["AskDepth"] = book["AskDepth"]
                         depth_msg["BidDepth"] = book["BidDepth"]
-                        # CROSSING_SNAPSHOT hash key ETH_USDT.BINANCE
                         self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-                                                 message=json.dumps(depth_msg))
+                                                message=json.dumps(depth_msg))
                         self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
 
                 else:
@@ -320,28 +219,134 @@ class Publisher:
                     depth_msg["AskDepth"] = book["AskDepth"]
                     depth_msg["BidDepth"] = book["BidDepth"]
                     self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-                                             message=json.dumps(depth_msg))
+                                            message=json.dumps(depth_msg))
 
                 # Publish Update
+                depth_update["ASK"].update(revised_ask)
+                depth_update["BID"].update(revised_bid)
+
                 update_msg = {"Msg_seq": self.__msg_seq,
-                              "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                              "Exchange": self.__exchange,
-                              "Symbol": symbol,
-                              "Time": exg_time,
-                              "TimeArrive": time_arrive,
-                              "AskUpdate": update_book["AskUpdate"],
-                              "BidUpdate": update_book["BidUpdate"]}
+                            "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
+                            "Exchange": self.__exchange,
+                            "Symbol": symbol,
+                            "Time": exg_time,
+                            "TimeArrive": time_arrive,
+                            "AskUpdate": depth_update["ASK"],
+                            "BidUpdate": depth_update["BID"]}
 
+                # chanel "UPDATEx|ETH_USDT.BINANCE"
                 self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
-                               message=json.dumps(update_msg))
+                            message=json.dumps(update_msg))
 
-                if self._logger is not None and symbol == "ETH_BTC":
-                    self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" \
-                                        + "\nmsg: " + json.dumps(update_msg)))
+                # if self._logger is not None and symbol == "ETH_BTC":
+                #     self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" 
+                #                                         + "\nmsg: " + json.dumps(update_msg)))
 
-            else:
-                pass
-                # print("Nothing To Update")
+                if raise_exception_flag:
+                    raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
+
+            else:  # Depth Snapshot
+                # print("Is Snapshot")
+                update_book = {"AskUpdate": {}, "BidUpdate": {}}
+                for side in depth_update.keys():
+                    if side == "ASK":
+                        depth_side = "AskDepth"
+                        update_side = "AskUpdate"
+                    else:
+                        depth_side = "BidDepth"
+                        update_side = "BidUpdate"
+
+                    if not operator.eq(book[depth_side], depth_update[side]):
+                        local_px_set = set(book[depth_side].keys())
+                        update_px_set = set(depth_update[side].keys())
+                        for px in update_px_set.difference(local_px_set):
+                            update_book[update_side][px] = depth_update[side][px]
+
+                        for px in local_px_set.difference(update_px_set):
+                            update_book[update_side][px] = 0
+
+                        for px in local_px_set.intersection(update_px_set):
+                            if book[depth_side][px] != depth_update[side][px]:
+                                update_book[update_side][px] = depth_update[side][px]
+
+                        book[depth_side] = SortedDict(depth_update[side])
+
+                # print("Build msg to publish(Publish if any update)")
+                # if self.__logger is not None:
+                #     slef.__logger.Debug(str(update_book))
+
+                # Build msg to publish(Publish if any update)
+                if len(update_book["AskUpdate"]) or len(update_book["BidUpdate"]):
+                    self.__msg_seq += 1
+                    self.__msg_seq_symbol[symbol] += 1
+
+                    time_arrive = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
+                    # '2020-04-13 08:14:44.754154'
+
+                    if not exg_time:
+                        exg_time = time_arrive
+
+                    # Publish Depth
+                    depth_msg = {"Msg_seq": self.__msg_seq,
+                                "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
+                                "Exchange": self.__exchange,
+                                "Symbol": symbol,
+                                "Time": exg_time,
+                                "TimeArrive": time_arrive,
+                                "AskDepth": {px: qty for px, qty in book["AskDepth"].items()[:100]},
+                                "BidDepth": {px: qty for px, qty in book["BidDepth"].items()[:-100:-1]}
+                                }
+
+                    self.__set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}",
+                            message=json.dumps(depth_msg))
+
+                    # if self._logger is not None and symbol == "ETH_BTC":
+                    #     self._logger._debug_logger.debug((f"\nDEPTHx|{symbol}.{self.__exchange_topic}" 
+                    #                         + "\nmsg: " + json.dumps(depth_msg)))
+
+
+                    # Publish Crossing_Snapshot while date-crossing(UTC)
+                    if symbol in self.__crossing_flag:
+                        # 前十位是 2020-04-13
+                        if depth_msg["TimeArrive"][:10] != self.__crossing_flag[symbol]:
+                            depth_msg["AskDepth"] = book["AskDepth"]
+                            depth_msg["BidDepth"] = book["BidDepth"]
+                            # CROSSING_SNAPSHOT hash key ETH_USDT.BINANCE
+                            self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
+                                                    message=json.dumps(depth_msg))
+                            self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
+
+                    else:
+                        self.__crossing_flag.setdefault(symbol, depth_msg["TimeArrive"][:10])
+                        depth_msg["AskDepth"] = book["AskDepth"]
+                        depth_msg["BidDepth"] = book["BidDepth"]
+                        self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
+                                                message=json.dumps(depth_msg))
+
+                    # Publish Update
+                    update_msg = {"Msg_seq": self.__msg_seq,
+                                "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
+                                "Exchange": self.__exchange,
+                                "Symbol": symbol,
+                                "Time": exg_time,
+                                "TimeArrive": time_arrive,
+                                "AskUpdate": update_book["AskUpdate"],
+                                "BidUpdate": update_book["BidUpdate"]}
+
+                    self.__publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}",
+                                message=json.dumps(update_msg))
+
+                    # if self._logger is not None and symbol == "ETH_BTC":
+                    #     self._logger._debug_logger.debug((f"\nUPDATEx|{symbol}.{self.__exchange_topic}" \
+                    #                         + "\nmsg: " + json.dumps(update_msg)))
+
+                else:
+                    pass
+                    # print("Nothing To Update")
+
+        except Exception as e:
+            self._logger.Warning("[E] pub_depthx: ")
+            self._logger.Warning(str(e))
 
 
     def pub_tradex(self, symbol: str, direction: str, exg_time: str, px_qty: tuple):
@@ -354,75 +359,89 @@ class Publisher:
         :return: Void
         """
         # Publish Crossing_Snapshot while date-crossing(UTC)
-        if symbol in self.__crossing_flag:
-            if datetime.utcnow().strftime('%Y-%m-%d') != self.__crossing_flag[symbol]:
+        try:
+            if symbol in self.__crossing_flag:
+                if datetime.utcnow().strftime('%Y-%m-%d') != self.__crossing_flag[symbol]:
+                    book = self.__orderbook[symbol]
+                    depth_msg = {"Msg_seq": self.__msg_seq,
+                                "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
+                                "Exchange": self.__exchange,
+                                "Symbol": symbol,
+                                "Time": exg_time,
+                                "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
+                                "AskDepth": book["AskDepth"],
+                                "BidDepth": book["BidDepth"]
+                                }
+
+                    self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
+                                            message=json.dumps(depth_msg))
+                    self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
+
+            elif symbol in self.__orderbook:  # Data's first day(not in __crossing_flag)
                 book = self.__orderbook[symbol]
                 depth_msg = {"Msg_seq": self.__msg_seq,
-                             "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                             "Exchange": self.__exchange,
-                             "Symbol": symbol,
-                             "Time": exg_time,
-                             "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
-                             "AskDepth": book["AskDepth"],
-                             "BidDepth": book["BidDepth"]
-                             }
-
+                            "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
+                            "Exchange": self.__exchange,
+                            "Symbol": symbol,
+                            "Time": exg_time,
+                            "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
+                            "AskDepth": book["AskDepth"],
+                            "BidDepth": book["BidDepth"]
+                            }
                 self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-                                         message=json.dumps(depth_msg))
+                                        message=json.dumps(depth_msg))
                 self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
 
-        elif symbol in self.__orderbook:  # Data's first day(not in __crossing_flag)
-            book = self.__orderbook[symbol]
-            depth_msg = {"Msg_seq": self.__msg_seq,
-                         "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                         "Exchange": self.__exchange,
-                         "Symbol": symbol,
-                         "Time": exg_time,
-                         "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
-                         "AskDepth": book["AskDepth"],
-                         "BidDepth": book["BidDepth"]
-                         }
-            self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-                                     message=json.dumps(depth_msg))
-            self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
+                self.__crossing_flag.setdefault(symbol, depth_msg["TimeArrive"][:10])
+                self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
+                                        message=json.dumps(depth_msg))
 
-            self.__crossing_flag.setdefault(symbol, depth_msg["TimeArrive"][:10])
-            self.__crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-                                     message=json.dumps(depth_msg))
+            px, qty = px_qty
 
-        px, qty = px_qty
+            msg = {"Exchange": self.__exchange,
+                "Symbol": symbol,
+                "Time": exg_time,
+                "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
+                "Direction": direction,
+                "LastPx": px,
+                "Qty": qty}
 
-        msg = {"Exchange": self.__exchange,
-               "Symbol": symbol,
-               "Time": exg_time,
-               "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
-               "Direction": direction,
-               "LastPx": px,
-               "Qty": qty}
-
-        # print("TradeInfo: ")
-        # print(msg)
-
-        # channel TRADEx|ETH_USDT.BINANCE
-        self.__publish(channel=f"TRADEx|{symbol}.{self.__exchange_topic}", message=json.dumps(msg))
+            # channel TRADEx|ETH_USDT.BINANCE
+            self.__publish(channel=f"TRADEx|{symbol}.{self.__exchange_topic}", message=json.dumps(msg))
+        except Exception as e:
+            self._logger.Warning("[E] pub_tradex: ")
+            self._logger.Warning(str(e))
 
     def __publish(self, channel: str, message):
-        if not self.__debug:
-            self.__redis_conn.publish(channel=channel, message=message)
-        else:
-            print(f"{channel}\n{message}")
+        try:
+            if not self.__debug:
+                self.__redis_conn.publish(channel=channel, message=message)
+            else:
+                self._logger.Info(f"{channel}\n{message}")
+        except Exception as e:
+            self._logger.Warning("[E] __publish: ")
+            self._logger.Warning(str(e))
 
     def __set(self, channel: str, message):
-        if not self.__debug:  # All value in redis will expire after 2 days
-            self.__redis_conn.set(name=channel, value=message, ex=172800)
-        else:
-            print(f"{channel}\n{message}")
+        try:
+            if not self.__debug:  # All value in redis will expire after 2 days
+                self.__redis_conn.set(name=channel, value=message, ex=172800)
+            else:
+                self._logger.Info(f"{channel}\n{message}")
+        except Exception as e:
+            self._logger.Warning("[E] __set: ")
+            self._logger.Warning(str(e))
+
 
     def __crossing_snapshot(self, channel: str, message):
-        if not self.__debug:
-            self.__redis_conn.hset(name="CROSSING_SNAPSHOT", key=channel, value=message)
-        else:
-            print(f"CROSSING_SNAPSHOT/{channel}\n{message}")
+        try:
+            if not self.__debug:
+                self.__redis_conn.hset(name="CROSSING_SNAPSHOT", key=channel, value=message)
+            else:
+                self._logger.Info(f"CROSSING_SNAPSHOT/{channel}\n{message}")
+        except Exception as e:
+            self._logger.Warning("[E] __crossing_snapshot: ")
+            self._logger.Warning(str(e))
 
     def logger(self, level: str, msg: str = "", event: dict = None, use_dingrobot: bool = True):
         if event:
