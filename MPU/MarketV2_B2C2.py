@@ -72,6 +72,8 @@ class MarketData_B2C2(object):
             for symbol in self.__symbol_book:
                 self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
 
+            self.connect_ws_server("Start Connect")
+
         except Exception as e:
             self._logger._logger.warning("[E]%s__init__: %s" %(str(sys._getframe().f_code.co_name), str(e)))
 
@@ -115,9 +117,7 @@ class MarketData_B2C2(object):
 
 
     def start(self):
-        try:
-            self.connect_ws_server("Start Connect")
-
+        try:            
             self.start_timer()            
         except Exception as e:
             self._logger._logger.warning("[E]start: " + str(e))
@@ -256,4 +256,4 @@ if __name__ == '__main__':
         env_name = sys.argv[1]
 
     a = MarketData_B2C2(debug_mode=False, env_name=env_name)
-    a.start()
+    # a.start()
