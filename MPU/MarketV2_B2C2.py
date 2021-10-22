@@ -229,7 +229,7 @@ class MarketData_B2C2(object):
     def process_msg(self, ws_msg):
         try:
             if ws_msg["event"] != "price":
-                self._logger._logger.info("process_msg: " + ws_msg)
+                self._logger._logger.info("process_msg: " + str(ws_msg))
                 return
 
             msg = ws_msg
