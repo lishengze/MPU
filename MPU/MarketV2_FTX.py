@@ -216,6 +216,7 @@ class FTX(object):
                     for symbol in self._publish_count_dict[item]:
                         self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
+            self._logger._logger.info("\n")
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
