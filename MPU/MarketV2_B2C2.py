@@ -55,7 +55,7 @@ class MarketData_B2C2(object):
                     "BTCUST.SPOT" : ["BTC_USDT", 1, 50], 
                     "ETHUSD.SPOT" : ["ETH_USD", 10, 500],
                     "ETHUST.SPOT" : ["ETH_USDT", 10, 500],
-                    "USTUSD.SPOT" : ["USDT_USD", 50000, 600000]
+                    "USTUSD.SPOT" : ["USDT_USD", 50000, 60000]
             }
 
             self._is_connnect = False
@@ -189,11 +189,11 @@ class MarketData_B2C2(object):
             self._logger._logger.warning("[E]on_open: " + str(e))
 
     def on_error(self):
-        self._logger.Error("on_error: " + msg)
+        self._logger._logger.error("on_error")
 
     def on_close(self):
         try:
-            self._logger._logger.info("\n******* on_close *******")
+            self._logger._logger.warning("\n******* on_close *******")
             self._is_connnect = False
             self.start_reconnect()
         except Exception as e:
