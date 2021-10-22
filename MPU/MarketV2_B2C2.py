@@ -32,10 +32,11 @@ class MarketData_B2C2(object):
         try:
             self.__exchange_name = "B2C2"
             self._logger = Logger(program_name="B2C2")
-            self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
 
             if redis_config is None:            
                 redis_config = get_redis_config()
+                        
+            self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode, logger=self._logger)
 
             self._logger._logger.info("\n******* redis_config *******\n" + str(redis_config))
 
@@ -253,4 +254,4 @@ if __name__ == '__main__':
         env_name = sys.argv[1]
 
     a = MarketData_B2C2(debug_mode=False, env_name=env_name)
-    a.start()
+    # a.start()
