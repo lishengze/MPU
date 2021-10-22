@@ -118,7 +118,7 @@ class FTX(object):
                 self._redis_config = get_redis_config(logger=self._logger)
 
             self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode, logger=self._logger)
-            
+
             self._publish_count_dict = {
                 "depth":{},
                 "trade":{},
@@ -136,7 +136,7 @@ class FTX(object):
 
     def connect_ws_server(self, info):
         try:
-            self._logger._logger.info("\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+            self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
             # websocket.enableTrace(True)
             self._ws = websocket.WebSocketApp(self._ws_url)
             self._ws.on_message = self.on_msg
@@ -247,7 +247,7 @@ class FTX(object):
             if ex_symbol in self._symbol_dict:
                 sys_symbol = self._symbol_dict[ex_symbol]
             else:
-                self._logger._logger.info("%s is not in symbol_dict" % (ex_symbol))
+                self._logger._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
                 return
 
             if channel_type == 'orderbook':

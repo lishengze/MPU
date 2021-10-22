@@ -48,14 +48,14 @@ class MarketData_B2C2(object):
             elif env_name == "-prd":
                 self.__token = "8f5300e0a56777cae6d2b08e46d7edfcfb7e21aa"        
 
-            self._logger._logger.info("env_name: %s, token: %s" % (env_name, self.__token))    
+            self._logger._logger.info("%s, env_name: %s, token: %s" % (str(sys._getframe().f_code.co_name), env_name, self.__token))    
 
             self.__symbol_book = {
                     "BTCUSD.SPOT" : ["BTC_USD", 1, 50],
                     "BTCUST.SPOT" : ["BTC_USDT", 1, 50], 
                     "ETHUSD.SPOT" : ["ETH_USD", 10, 500],
                     "ETHUST.SPOT" : ["ETH_USDT", 10, 500],
-                    "USTUSD.SPOT" : ["USDT_USD", 50000, 1000000]
+                    "USTUSD.SPOT" : ["USDT_USD", 50000, 600000]
             }
 
             self._is_connnect = False
@@ -73,12 +73,12 @@ class MarketData_B2C2(object):
                 self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
 
         except Exception as e:
-            self._logger._logger.warning("[E]__init__: " + str(e))
+            self._logger._logger.warning("[E]%s__init__: %s" %(str(sys._getframe().f_code.co_name), str(e)))
 
 
     def connect_ws_server(self, info):
         try:
-            self._logger._logger.info("\n\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+            self._logger._logger.info("\n\n*****connect_ws_server %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
             # websocket.enableTrace(True)
             header = {'Authorization': 'Token %s' % self.__token}
             self._ws = websocket.WebSocketApp(self._ws_url)
@@ -182,7 +182,7 @@ class MarketData_B2C2(object):
 
     def on_open(self):
         try:
-            self._logger._logger.info("\nB2C2 Connect Server %s Successfully!" % (self._ws_url))
+            self._logger._logger.info("\non_open B2C2 Connect Server %s Successfully!" % (self._ws_url))
             self._is_connnect = True
             self.subscribe_symbol()
         except Exception as e:
@@ -229,7 +229,7 @@ class MarketData_B2C2(object):
     def process_msg(self, ws_msg):
         try:
             if ws_msg["event"] != "price":
-                self._logger._logger.info(ws_msg)
+                self._logger._logger.info("process_msg: " + ws_msg)
                 return
 
             msg = ws_msg
