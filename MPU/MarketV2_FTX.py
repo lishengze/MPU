@@ -20,7 +20,7 @@ def get_redis_config(logger = None):
     json_file = open(g_redis_config_file_name,'r')
     json_dict = json.load(json_file)
     if logger is not None:
-        logger.Info("\n******* redis_config *******\n" + str(json_dict))
+        logger._logger.info("\n******* redis_config *******\n" + str(json_dict))
     else:
         print("\n******* redis_config *******\n" + str(json_dict))
     time.sleep(3)
@@ -49,7 +49,7 @@ def get_login_info(api_key, api_secret, logger = None):
     sub_info_str = json.dumps(sub_info)
 
     if logger is not None:
-        logger.Info("\nsub_info: \n" + sub_info_str)
+        logger._logger.info("\nsub_info: \n" + sub_info_str)
     else:
         print("\nsub_info: \n" + sub_info_str)
     return sub_info_str
@@ -62,7 +62,7 @@ def get_sub_order_info(symbol_name, logger = None):
     sub_info_str = json.dumps(sub_info)
 
     if logger is not None:
-        logger.Info("\nsub_info: \n" + sub_info_str)
+        logger._logger.info("\nsub_info: \n" + sub_info_str)
     else:
         print("\nsub_info: \n" + sub_info_str)
     
@@ -76,7 +76,7 @@ def get_sub_trade_info(symbol_name, logger = None):
     sub_info_str = json.dumps(sub_info)
 
     if logger is not None:
-        logger.Info("\nsub_trade_info: \n" + sub_info_str)
+        logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
     else:
         print("\nsub_trade_info: \n" + sub_info_str)
     
