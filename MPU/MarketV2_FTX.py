@@ -260,7 +260,7 @@ class FTX(object):
                 self.__parse_trades(sys_symbol, data)
             else:
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
-                self.__publisher.logger(level="WARNING", msg=error_msg)                                        
+                self._logger._logger.warning("[E]process_msg: " + error_msg)                                  
         except Exception as e:
             self._logger._logger.warning("[E] process_msg: %s" % (str(ws_msg)))
             self._logger._logger.warning(e)

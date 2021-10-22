@@ -126,6 +126,8 @@ class MarketData_B2C2(object):
                     for symbol in self._publish_count_dict[item]:
                         self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
+            
+            self._logger._logger.info("\n")
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
@@ -204,10 +206,10 @@ class MarketData_B2C2(object):
 
     def process_msg(self, ws_msg):
         try:
-            self._logger._debug_logger.info("process_msg: " + str(ws_msg))
+            self._logger._debug_logger.info("process_msg: " + str(ws_msg) + "\n")
 
             if ws_msg["event"] != "price":
-                self._logger._logger.info("process_msg: " + str(ws_msg))
+                self._logger._logger.info("process_msg: " + str(ws_msg) + "\n")
                 return
 
             msg = ws_msg
