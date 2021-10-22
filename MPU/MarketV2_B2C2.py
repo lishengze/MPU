@@ -16,15 +16,11 @@ from Logger import *
 
 g_redis_config_file_name = "./redis_config.json"
 
-def get_redis_config(logger = None):    
+def get_redis_config():    
     json_file = open(g_redis_config_file_name,'r')
     json_dict = json.load(json_file)
-    if logger is not None:
-        logger.Info("\n******* redis_config *******\n" + str(json_dict))
-    else:
-        print("\n******* redis_config *******\n" + str(json_dict))
-    time.sleep(3)
 
+    time.sleep(3)
     return json_dict
 
 '''
@@ -39,7 +35,9 @@ class MarketData_B2C2(object):
             self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode)
 
             if redis_config is None:            
-                redis_config = get_redis_config(logger=self._logger)
+                redis_config = get_redis_config()
+
+            self._logger._logger.info("\n******* redis_config *******\n" + str(redis_config))
 
             self._ws_url = "wss://socket.uat.b2c2.net/quotes"
             if env_name == "-qa":
@@ -59,8 +57,6 @@ class MarketData_B2C2(object):
                     "USTUSD.SPOT" : ["USDT_USD", 50000, 1000000]
             }
 
-            
-
             self._is_connnect = False
             self._ws = None
             self._ping_secs = 10
@@ -74,6 +70,7 @@ class MarketData_B2C2(object):
 
             for symbol in self.__symbol_book:
                 self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
+
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
 
