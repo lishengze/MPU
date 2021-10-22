@@ -256,4 +256,4 @@ if __name__ == '__main__':
         env_name = sys.argv[1]
 
     a = MarketData_B2C2(debug_mode=False, env_name=env_name)
-    # a.start()
+    a.start()
