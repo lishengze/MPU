@@ -238,7 +238,7 @@ class FTX(object):
     def process_msg(self, ws_msg):
         try:
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" or "data" not in ws_msg:
-                self._logger._logger.warning("ws_msg is error: " + ws_msg)
+                self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
                 return
 
             data = ws_msg["data"]
