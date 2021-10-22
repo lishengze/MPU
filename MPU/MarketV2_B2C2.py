@@ -107,6 +107,7 @@ class MarketData_B2C2(object):
 
     def start_timer(self):
         try:
+            self._logger._logger.info("start_timer")
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
@@ -115,8 +116,9 @@ class MarketData_B2C2(object):
 
     def start(self):
         try:
-            self.start_timer()
             self.connect_ws_server("Start Connect")
+
+            self.start_timer()            
         except Exception as e:
             self._logger._logger.warning("[E]start: " + str(e))
         
