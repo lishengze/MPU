@@ -107,7 +107,7 @@ class MarketData_B2C2(object):
             self._timer.start()
 
             self.connect_ws_server("Start Connect")
-            
+
         except Exception as e:
             self._logger._logger.warning("[E]start_timer: " + str(e))
 
@@ -234,4 +234,4 @@ if __name__ == '__main__':
         env_name = sys.argv[1]
 
     a = MarketData_B2C2(debug_mode=False, env_name=env_name)
-    # a.start()
+    a.start()
