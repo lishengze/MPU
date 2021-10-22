@@ -49,7 +49,7 @@ class MarketData_B2C2(object):
             elif env_name == "-prd":
                 self.__token = "8f5300e0a56777cae6d2b08e46d7edfcfb7e21aa"        
 
-            self._logger.Info("env_name: %s, token: %s" % (env_name, self.__token))    
+            self._logger._logger.info("env_name: %s, token: %s" % (env_name, self.__token))    
 
             self.__symbol_book = {
                     "BTCUSD.SPOT" : ["BTC_USD", 1, 50],
@@ -75,12 +75,12 @@ class MarketData_B2C2(object):
             for symbol in self.__symbol_book:
                 self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
         except Exception as e:
-            self._logger.Warning("[E]__init__: " + str(e))
+            self._logger._logger.warning("[E]__init__: " + str(e))
 
 
     def connect_ws_server(self, info):
         try:
-            self._logger.Info("\n\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+            self._logger._logger.info("\n\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
             # websocket.enableTrace(True)
             header = {'Authorization': 'Token %s' % self.__token}
             self._ws = websocket.WebSocketApp(self._ws_url)
@@ -93,18 +93,18 @@ class MarketData_B2C2(object):
 
             self._ws.run_forever()
         except Exception as e:
-            self._logger.Warning("[E]connect_ws_server: " + str(e))
+            self._logger._logger.warning("[E]connect_ws_server: " + str(e))
 
 
 
     def start_reconnect(self):
         try:
-            self._logger.Info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+            self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
             while self._is_connnect == False:
                 self.connect_ws_server("Reconnect Server")
                 time.sleep(self._reconnect_secs)
         except Exception as e:
-            self._logger.Warning("[E]start_reconnect: " + str(e))
+            self._logger._logger.warning("[E]start_reconnect: " + str(e))
 
 
     def start_timer(self):
@@ -112,7 +112,7 @@ class MarketData_B2C2(object):
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger.Warning("[E]start_timer: " + str(e))
+            self._logger._logger.warning("[E]start_timer: " + str(e))
 
 
     def start(self):
@@ -120,22 +120,22 @@ class MarketData_B2C2(object):
             self.start_timer()
             self.connect_ws_server("Start Connect")
         except Exception as e:
-            self._logger.Warning("[E]start: " + str(e))
+            self._logger._logger.warning("[E]start: " + str(e))
         
 
     def print_publish_info(self):
         try:
             self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            self._logger.Info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+            self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
             for item in self._publish_count_dict:
                 if item == "depth" or item == "trade":
                     for symbol in self._publish_count_dict[item]:
-                        self._logger.Info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+                        self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
-            self._logger.Warning("[E]print_publish_info: " + str(e))
+            self._logger._logger.warning("[E]print_publish_info: " + str(e))
 
 
     def subscribe_symbol(self):
@@ -152,7 +152,7 @@ class MarketData_B2C2(object):
                     sub_info_str = json.dumps(data)
                     self._ws.send(sub_info_str)
         except Exception as e:
-            self._logger.Warning("[E]subscribe_symbol: " + str(e))
+            self._logger._logger.warning("[E]subscribe_symbol: " + str(e))
 
 
     def keep_alive(self):
@@ -169,7 +169,7 @@ class MarketData_B2C2(object):
                 sub_info_str = json.dumps(data)
                 self._ws.send(sub_info_str)   
         except Exception as e:
-            self._logger.Warning("[E]keep_alive: " + str(e))
+            self._logger._logger.warning("[E]keep_alive: " + str(e))
      
 
     def on_msg(self, msg):
@@ -177,41 +177,41 @@ class MarketData_B2C2(object):
             dic = json.loads(msg)
             self.process_msg(dic)
         except Exception as e:
-            self._logger.Warning("[E]on_msg: " + str(e))
+            self._logger._logger.warning("[E]on_msg: " + str(e))
 
 
     def on_open(self):
         try:
-            self._logger.Info("\nB2C2 Connect Server %s Successfully!" % (self._ws_url))
+            self._logger._logger.info("\nB2C2 Connect Server %s Successfully!" % (self._ws_url))
             self._is_connnect = True
             self.subscribe_symbol()
         except Exception as e:
-            self._logger.Warning("[E]on_open: " + str(e))
+            self._logger._logger.warning("[E]on_open: " + str(e))
 
     def on_error(self):
         self._logger.Error("on_error: " + msg)
 
     def on_close(self):
         try:
-            self._logger.Info("\n******* on_close *******")
+            self._logger._logger.info("\n******* on_close *******")
             self._is_connnect = False
             self.start_reconnect()
         except Exception as e:
-            self._logger.Warning("[E]on_close: " + str(e))
+            self._logger._logger.warning("[E]on_close: " + str(e))
 
     def print_publish_info(self):
         try:
             self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            self._logger.Info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+            self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
             for item in self._publish_count_dict:
                 if item == "depth" or item == "trade":
                     for symbol in self._publish_count_dict[item]:
-                        self._logger.Info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+                        self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
-            self._logger.Warning("[E]print_publish_info: " + str(e))
+            self._logger._logger.warning("[E]print_publish_info: " + str(e))
 
     def on_timer(self):
         try:
@@ -223,13 +223,13 @@ class MarketData_B2C2(object):
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger.Warning("[E]on_timer: " + str(e))
+            self._logger._logger.warning("[E]on_timer: " + str(e))
 
 
     def process_msg(self, ws_msg):
         try:
             if ws_msg["event"] != "price":
-                self._logger.Info(ws_msg)
+                self._logger._logger.info(ws_msg)
                 return
 
             msg = ws_msg
@@ -247,7 +247,7 @@ class MarketData_B2C2(object):
                 self.__publisher.pub_depthx(symbol=sys_symbol,
                                             depth_update=depth_update, is_snapshot=True)                        
         except Exception as e:
-            self._logger.Warning("[E]process_msg: " + str(e))
+            self._logger._logger.warning("[E]process_msg: " + str(e))
 
 if __name__ == '__main__':
     print(sys.argv)

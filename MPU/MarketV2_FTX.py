@@ -30,11 +30,11 @@ def get_redis_config(logger = None):
 def get_login_info(api_key, api_secret, logger = None):
     ts = int(time.time() * 1000)
 
-    # self._logger.Info("0")
+    # self._logger._logger.info("0")
     tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
-    # self._logger.Info(tmp_sign_origin)
+    # self._logger._logger.info(tmp_sign_origin)
     tmp_sign_hex = tmp_sign_origin.hexdigest()
-    # self._logger.Info(tmp_sign_hex)
+    # self._logger._logger.info(tmp_sign_hex)
 
     
     sub_info = {'op': 'login', 
@@ -86,7 +86,7 @@ def get_ping_info():
     sub_info = {'op': 'ping'}  
 
     sub_info_str = json.dumps(sub_info)
-    # self._logger.Info(sub_info_str)
+    # self._logger._logger.info(sub_info_str)
     
     return sub_info_str       
 
@@ -130,12 +130,12 @@ class FTX(object):
                 self._publish_count_dict["depth"][sys_symbol] = 0
                 self._publish_count_dict["trade"][sys_symbol] = 0
         except Exception as e:
-            self._logger.Warning("[E]__init__: " + str(e))
+            self._logger._logger.warning("[E]__init__: " + str(e))
 
 
     def connect_ws_server(self, info):
         try:
-            self._logger.Info("\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+            self._logger._logger.info("\n*****%s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
             # websocket.enableTrace(True)
             self._ws = websocket.WebSocketApp(self._ws_url)
             self._ws.on_message = self.on_msg
@@ -146,42 +146,42 @@ class FTX(object):
             self._ws.run_forever()
 
         except Exception as e:
-            self._logger.Warning("[E]connect_ws_server: " + str(e))
+            self._logger._logger.warning("[E]connect_ws_server: " + str(e))
 
 
     def start_reconnect(self):
         try:
-            self._logger.Info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+            self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
             while self._is_connnect == False:
                 self.connect_ws_server("Reconnect Server")
                 time.sleep(self._reconnect_secs)
         except Exception as e:
-            self._logger.Warning("[E]start_reconnect: " + str(e))
+            self._logger._logger.warning("[E]start_reconnect: " + str(e))
 
     def start_timer(self):
         try:
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger.Warning("[E]start_timer: " + str(e))
+            self._logger._logger.warning("[E]start_timer: " + str(e))
 
     def start(self):
         try:
             self.start_timer()
             self.connect_ws_server("Start Connect")
         except Exception as e:
-            self._logger.Warning("[E]start: " + str(e))
+            self._logger._logger.warning("[E]start: " + str(e))
 
     def on_msg(self, msg):
         try:
             dic = json.loads(msg)
             self.process_msg(dic)
         except Exception as e:
-            self._logger.Warning("[E]on_msg: " + str(e))
+            self._logger._logger.warning("[E]on_msg: " + str(e))
 
     def on_open(self):
         try:
-            self._logger.Info("\nftx_on_open")
+            self._logger._logger.info("\nftx_on_open")
             self._is_connnect = True
 
             sub_info_str = get_login_info(self._api_key, self._api_secret, logger=self._logger)
@@ -192,7 +192,7 @@ class FTX(object):
                 self._ws.send(get_sub_order_info(symbol, logger=self._logger))
                 self._ws.send(get_sub_trade_info(symbol, logger=self._logger))
         except Exception as e:
-            self._logger.Warning("[E]on_open: " + str(e))
+            self._logger._logger.warning("[E]on_open: " + str(e))
 
 
     def on_error(self):
@@ -200,25 +200,25 @@ class FTX(object):
 
     def on_close(self):
         try:
-            self._logger.Warning("\n******* on_close *******")
+            self._logger._logger.warning("\n******* on_close *******")
             self._is_connnect = False        
             self.start_reconnect()
         except Exception as e:
-            self._logger.Warning("[E]on_close: " + str(e))
+            self._logger._logger.warning("[E]on_close: " + str(e))
 
     def print_publish_info(self):
         try:
             self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            self._logger.Info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+            self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
             for item in self._publish_count_dict:
                 if item == "depth" or item == "trade":
                     for symbol in self._publish_count_dict[item]:
-                        self._logger.Info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+                        self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
-            self._logger.Warning("[E]print_publish_info: " + str(e))
+            self._logger._logger.warning("[E]print_publish_info: " + str(e))
 
     def on_timer(self):
         try:
@@ -230,13 +230,13 @@ class FTX(object):
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger.Warning("[E]on_timer: " + str(e))
+            self._logger._logger.warning("[E]on_timer: " + str(e))
 
 
     def process_msg(self, ws_msg):
         try:
             if ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed" or "data" not in ws_msg:
-                self._logger.Warning("ws_msg is error: " + ws_msg)
+                self._logger._logger.warning("ws_msg is error: " + ws_msg)
                 return
 
             data = ws_msg["data"]
@@ -246,7 +246,7 @@ class FTX(object):
             if ex_symbol in self._symbol_dict:
                 sys_symbol = self._symbol_dict[ex_symbol]
             else:
-                self._logger.Info("%s is not in symbol_dict" % (ex_symbol))
+                self._logger._logger.info("%s is not in symbol_dict" % (ex_symbol))
                 return
 
             if channel_type == 'orderbook':
@@ -261,8 +261,8 @@ class FTX(object):
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
                 self.__publisher.logger(level="WARNING", msg=error_msg)                                        
         except Exception as e:
-            self._logger.Warning("[E] process_msg: %s" % (str(ws_msg)))
-            self._logger.Warning(e)
+            self._logger._logger.warning("[E] process_msg: %s" % (str(ws_msg)))
+            self._logger._logger.warning(e)
 
     def __parse_orderbook(self, symbol, msg):
         try:
@@ -302,8 +302,8 @@ class FTX(object):
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
-            self._logger.Warning("[E] __parse_orderbook: ")
-            self._logger.Warning(e)
+            self._logger._logger.warning("[E] __parse_orderbook: ")
+            self._logger._logger.warning(e)
 
     def __parse_trades(self, symbol, data_list):
         try:
@@ -325,8 +325,8 @@ class FTX(object):
                                             exg_time=exg_time,
                                             px_qty=(float(trade['price']), float(trade['size'])))
         except Exception as e:
-            self._logger.Warning("[E] __parse_trades: ")
-            self._logger.Warning(str(e))
+            self._logger._logger.warning("[E] __parse_trades: ")
+            self._logger._logger.warning(str(e))
 
 def test_ftx():
     ftx_obj = FTX(debug_mode=False)
