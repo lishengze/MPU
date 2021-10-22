@@ -71,12 +71,8 @@ class MarketData_B2C2(object):
 
             for symbol in self.__symbol_book:
                 self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
-
-            self.connect_ws_server("Start Connect")
-
         except Exception as e:
             self._logger._logger.warning("[E]%s__init__: %s" %(str(sys._getframe().f_code.co_name), str(e)))
-
 
     def connect_ws_server(self, info):
         try:
@@ -95,8 +91,6 @@ class MarketData_B2C2(object):
         except Exception as e:
             self._logger._logger.warning("[E]connect_ws_server: " + str(e))
 
-
-
     def start_reconnect(self):
         try:
             self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
@@ -106,15 +100,16 @@ class MarketData_B2C2(object):
         except Exception as e:
             self._logger._logger.warning("[E]start_reconnect: " + str(e))
 
-
     def start_timer(self):
         try:
             self._logger._logger.info("start_timer")
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
+
+            self.connect_ws_server("Start Connect")
+            
         except Exception as e:
             self._logger._logger.warning("[E]start_timer: " + str(e))
-
 
     def start(self):
         try:            
@@ -122,7 +117,6 @@ class MarketData_B2C2(object):
         except Exception as e:
             self._logger._logger.warning("[E]start: " + str(e))
         
-
     def print_publish_info(self):
         try:
             self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -136,7 +130,6 @@ class MarketData_B2C2(object):
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
             self._logger._logger.warning("[E]print_publish_info: " + str(e))
-
 
     def subscribe_symbol(self):
         try:
@@ -154,7 +147,6 @@ class MarketData_B2C2(object):
         except Exception as e:
             self._logger._logger.warning("[E]subscribe_symbol: " + str(e))
 
-
     def keep_alive(self):
         try:
             if self._is_connnect == True:
@@ -171,14 +163,12 @@ class MarketData_B2C2(object):
         except Exception as e:
             self._logger._logger.warning("[E]keep_alive: " + str(e))
      
-
     def on_msg(self, msg):
         try:
             dic = json.loads(msg)
             self.process_msg(dic)
         except Exception as e:
             self._logger._logger.warning("[E]on_msg: " + str(e))
-
 
     def on_open(self):
         try:
@@ -198,20 +188,6 @@ class MarketData_B2C2(object):
             self.start_reconnect()
         except Exception as e:
             self._logger._logger.warning("[E]on_close: " + str(e))
-
-    def print_publish_info(self):
-        try:
-            self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
-            for item in self._publish_count_dict:
-                if item == "depth" or item == "trade":
-                    for symbol in self._publish_count_dict[item]:
-                        self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
-                        self._publish_count_dict[item][symbol] = 0
-
-            self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        except Exception as e:
-            self._logger._logger.warning("[E]print_publish_info: " + str(e))
 
     def on_timer(self):
         try:
