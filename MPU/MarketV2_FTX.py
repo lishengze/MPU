@@ -237,7 +237,7 @@ class FTX(object):
 
     def process_msg(self, ws_msg):
         try:
-            if  ws_msg["type"] == "pong" || ws_msg["type"] == "subscribed":
+            if  ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed":
                 return
 
             if "data" not in ws_msg:
