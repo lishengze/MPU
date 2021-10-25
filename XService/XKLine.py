@@ -37,12 +37,12 @@ def to_datetime(s):
 class KLineSvc:
     def __init__(self, slow_period: int = 60, running_mode: str = "DEBUG"):
         try:
-            self._logger._logger.info("slow_period: %d, running_mode: %s" % (int(slow_period), running_mode))
+            self._logger = Logger(program_name="")
+            self._logger._logger.info("slow_period: %d, running_mode: %s" % (int(slow_period), running_mode))            
             self.__slow_period = int(slow_period)
             self.__mode = running_mode
             self.__verification_tag = False
             self.__topic_list = dict()
-            self._logger = Logger(program_name="")
             
             self.__redis_config = get_redis_config(logger=self._logger)
 
