@@ -2,6 +2,7 @@ import asyncio
 import json
 import aiohttp
 import sys
+import os
 from MdPublisher import *
 from concurrent.futures import ThreadPoolExecutor
 
@@ -12,6 +13,7 @@ import json
 import hmac
 import threading
 
+sys.path.append(os.getcwd())
 from Logger import *
 
 g_redis_config_file_name = "./redis_config.json"
