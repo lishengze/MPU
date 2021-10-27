@@ -16,13 +16,17 @@ import threading
 sys.path.append(os.getcwd())
 from Logger import *
 
-g_redis_config_file_name = os.getcwd() + "/redis_config.json"
+g_redis_config_file_name = os.path.abspath(__file__) + "/redis_config.json"
 
-def get_redis_config():    
-    json_file = open(g_redis_config_file_name,'r')
+def get_redis_config(logger = None, config_file=""):    
+    json_file = open(config_file,'r')
     json_dict = json.load(json_file)
-
+    if logger is not None:
+        logger._logger.info("\n******* redis_config *******\n" + str(json_dict))
+    else:
+        print("\n******* redis_config *******\n" + str(json_dict))
     time.sleep(3)
+
     return json_dict
 
 '''
@@ -34,9 +38,10 @@ class MarketData_B2C2(object):
         try:
             self.__exchange_name = "B2C2"
             self._logger = Logger(program_name="B2C2")
+            self._config_name = os.path.abspath(__file__) + "/redis_config.json"
 
             if redis_config is None:            
-                redis_config = get_redis_config()
+                redis_config = get_redis_config(logger=self._logger, config_file = self._config_name)
                         
             self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=redis_config, debug_mode=debug_mode, logger=self._logger)
 
@@ -74,7 +79,7 @@ class MarketData_B2C2(object):
             for symbol in self.__symbol_book:
                 self._publish_count_dict["depth"][ self.__symbol_book[symbol][0]] = 0
         except Exception as e:
-            self._logger._logger.warning("[E]%s__init__: %s" %(str(sys._getframe().f_code.co_name), str(e)))
+            self._logger._logger.warning("[E]%s: %s" %(str(sys._getframe().f_code.co_name), str(e)))
 
     def connect_ws_server(self, info):
         try:

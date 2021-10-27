@@ -18,8 +18,8 @@ from Logger import *
 
 g_redis_config_file_name = os.getcwd() + "/redis_config.json"
 
-def get_redis_config(logger = None):    
-    json_file = open(g_redis_config_file_name,'r')
+def get_redis_config(logger = None, config_file=""):    
+    json_file = open(config_file,'r')
     json_dict = json.load(json_file)
     if logger is not None:
         logger._logger.info("\n******* redis_config *******\n" + str(json_dict))
@@ -116,8 +116,10 @@ class FTX(object):
             self.__exchange_name = "FTX"
             self._is_connnect = False
             self._ws = None
+            self._config_name = os.path.abspath(__file__) + "/redis_config.json"
+            
             if redis_config is None:
-                self._redis_config = get_redis_config(logger=self._logger)
+                self._redis_config = get_redis_config(logger=self._logger, config_file=self._config_name)
 
             self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode, logger=self._logger)
 
