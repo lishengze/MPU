@@ -22,9 +22,10 @@ def get_redis_config(logger = None, config_file=""):
     json_file = open(config_file,'r')
     json_dict = json.load(json_file)
 
-    print("\nconfig_file: %s\n" + str(config_file))
+    
 
     if logger is not None:
+        logger._logger.info("\nconfig_file: %s\n" % str(config_file))
         logger._logger.info("\n******* redis_config *******\n" + str(json_dict))
     else:
         print("\n******* redis_config *******\n" + str(json_dict))

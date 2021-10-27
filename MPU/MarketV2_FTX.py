@@ -116,7 +116,7 @@ class FTX(object):
             self.__exchange_name = "FTX"
             self._is_connnect = False
             self._ws = None
-            self._config_name = os.path.abspath(__file__) + "/redis_config.json"
+            self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"
             
             if redis_config is None:
                 self._redis_config = get_redis_config(logger=self._logger, config_file=self._config_name)

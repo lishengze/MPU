@@ -17,7 +17,7 @@ class Logger(object):
         self._debug_logger = logging.getLogger('debug_logger')
         self._debug_logger.setLevel(logging.DEBUG)     
 
-        log_dir = os.getcwd() + "/log/" 
+        log_dir = os.path.dirname(os.path.abspath(__file__)) + "/log/" 
         if program_name !="":
             log_dir = log_dir + program_name + "/"
 
