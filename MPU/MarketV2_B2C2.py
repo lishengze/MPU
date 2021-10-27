@@ -41,7 +41,7 @@ class MarketData_B2C2(object):
         try:
             self.__exchange_name = "B2C2"
             self._logger = Logger(program_name="B2C2")
-            self._config_name = os.path.abspath(__file__) + "/redis_config.json"
+            self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"
 
             if redis_config is None:            
                 redis_config = get_redis_config(logger=self._logger, config_file = self._config_name)
