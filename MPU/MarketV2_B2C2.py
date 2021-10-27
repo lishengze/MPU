@@ -16,7 +16,7 @@ import threading
 sys.path.append(os.getcwd())
 from Logger import *
 
-g_redis_config_file_name = "./redis_config.json"
+g_redis_config_file_name = os.getcwd() + "/redis_config.json"
 
 def get_redis_config():    
     json_file = open(g_redis_config_file_name,'r')

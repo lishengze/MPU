@@ -8,7 +8,10 @@ import sys
 import time
 
 from collections import deque
+
+sys.path.append(os.getcwd())
 from Logger import *
+
 
 from pprint import pprint
 
@@ -18,7 +21,7 @@ kline60_topic = "SLOW_KLINE"
 #klineday_topic = "KLINEd"
 total_kline_type = [kline1_topic, kline60_topic]
 
-g_redis_config_file_name = "./kline_redis_config.json"
+g_redis_config_file_name = os.getcwd() + "./kline_redis_config.json"
 
 def get_redis_config(logger = None):    
     json_file = open(g_redis_config_file_name,'r')
