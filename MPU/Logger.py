@@ -2,6 +2,7 @@ import logging
 import logging.handlers
 import datetime
 import time
+import os
 
 def get_datetime_str():
     return datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
@@ -15,7 +16,7 @@ class Logger(object):
         self._debug_logger = logging.getLogger('debug_logger')
         self._debug_logger.setLevel(logging.DEBUG)     
 
-        log_dir = "log/" 
+        log_dir = os.getcwd() + "/log/" 
         if program_name !="":
             log_dir = log_dir + program_name + "/"
 
