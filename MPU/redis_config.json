@@ -1,5 +1,5 @@
 {
     "HOST": "127.0.0.1",
-    "PORT": 8379,
+    "PORT": 7379,
     "PWD": "test_broker"    
 }
