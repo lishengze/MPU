@@ -19,6 +19,7 @@ class Logger(object):
         log_dir = os.path.dirname(os.path.abspath(__file__)) + "/log/" 
         if program_name !="":
             log_dir = log_dir + program_name + "/"
+        print("log_dir: %s" % log_dir)
 
         # debug_handler = logging.handlers.TimedRotatingFileHandler(log_dir + get_datetime_str()+"_debug.log", when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
         debug_handler = logging.handlers.RotatingFileHandler(log_dir + get_datetime_str()+"_debug.log", maxBytes=5*1024*1024, backupCount=5)
