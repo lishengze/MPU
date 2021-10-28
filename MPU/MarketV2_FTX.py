@@ -12,6 +12,8 @@ import json
 import hmac
 import threading
 
+import os
+
 sys.path.append(os.getcwd())
 from Logger import *
 
