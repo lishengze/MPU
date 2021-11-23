@@ -7,4 +7,4 @@ kill -9 $PID
 
 sleep 1s
 
-ps aux|grep  XKLine.py 
+ps aux|grep python
