@@ -112,7 +112,7 @@ class MiddleConn:
             self._logger.info(config)
             self._kafka_con = KafkaConn(config, self._logger, debug)  
             self._kafka_depth_update_count = config["depth_update_count"]
-            self._kafka_curr_pubed_update_count = 0              
+            self._kafka_curr_pubed_update_count = {}            
         
     def publish_depth(self, symbol, book, depth_json, update_json):
         try:
@@ -153,16 +153,19 @@ class MiddleConn:
             
     def _kafka_publish_depth(self, symbol, book, depth_json, update_json):
         try:
-            if self._kafka_curr_pubed_update_count < self._kafka_depth_update_count:
+            if symbol not in self._kafka_curr_pubed_update_count:
+                self._kafka_curr_pubed_update_count[symbol] = self._kafka_depth_update_count
+                
+            if self._kafka_curr_pubed_update_count[symbol] < self._kafka_depth_update_count:
                 if update_json:
                     self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(update_json))
-                    self._kafka_curr_pubed_update_count += 1
+                    self._kafka_curr_pubed_update_count[symbol] += 1
                 else:
                     self._logger.info("update_json is None")
             else:
                 if depth_json:
                     self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(depth_json))
-                    self._kafka_curr_pubed_update_count = 0
+                    self._kafka_curr_pubed_update_count[symbol] = 0
                 else:
                     self._logger.info("depth_json is None")                    
                 
