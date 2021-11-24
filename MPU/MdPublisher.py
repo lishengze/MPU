@@ -221,7 +221,7 @@ class Publisher:
         try:
             if symbol not in self.__orderbook:
                 if is_snapshot:
-                    self.__orderbook[symbol] = {"AskDepth": {}, "BidDepth": {}}
+                    self.__orderbook.setdefault(symbol, {"AskDepth": SortedDict(), "BidDepth": SortedDict()})
                     for px, qty in depth_update["ASK"].items():
                         self.__orderbook[symbol]["AskDepth"][float(px)] = qty
 
