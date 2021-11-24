@@ -147,10 +147,10 @@ class MiddleConn:
     def _kafka_publish_depth(self, symbol, book, depth_json, update_json):
         try:
             if self._kafka_curr_pubed_update_count < self._kafka_depth_update_count:
-                self._kafka_con.publish_msg("depth",  message=json.dumps(update_json))
+                self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(update_json))
                 self._kafka_curr_pubed_update_count += 1
             else:
-                self._kafka_con.publish_msg("depth",  message=json.dumps(depth_json))
+                self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(depth_json))
                 self._kafka_curr_pubed_update_count = 0
                 
         except Exception as e:
@@ -170,7 +170,7 @@ class MiddleConn:
             
     def _kafka_publish_trade(self, trade_json):
         try:
-            self._kafka_con.publish_msg("trade",  message=json.dumps(trade_json))
+            self._kafka_con.publish_msg(topic="trade",  msg=json.dumps(trade_json))
         except Exception as e:
             self._logger.warning("[E] _kafka_publish_trade: ")
             self._logger.warning(str(e))                       
