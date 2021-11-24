@@ -433,13 +433,15 @@ class Publisher:
         try:
             if self._is_depth_invalid(depth_update):
                 return None
+            
+            self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
 
             book = self._get_cached_book(symbol, is_snapshot, depth_update)
 
             if is_snapshot: 
-                self.process_depth_snap(symbol, depth_update, book, exg_time, raise_exception)
+                self.process_depth_snap(symbol, depth_update, book, exg_time)
             else: 
-                self.process_depth_update(symbol, depth_update, book, exg_time)
+                self.process_depth_update(symbol, depth_update, book, exg_time, raise_exception)
 
         except Exception as e:
             self._logger.warning("[E] pub_depthx: ")
