@@ -58,7 +58,7 @@ class KafkaConn:
         try:
             if self._producer.bootstrap_connected() or True:
                 self._producer.send(topic, value=bytes(msg.encode()))
-                self._logger.info(topic + " " + msg)
+                # self._logger.info(topic + " " + msg)
             else:
                 self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
         except Exception as e:
@@ -373,7 +373,9 @@ class Publisher:
             
             update_json = self._get_update_json(symbol, depth_update, depth_json["Time"], depth_json["TimeArrive"], revised_ask, revised_bid)
             
-            # self._connector.publish_depth(symbol, book, depth_json, update_json)
+            self._logger.info("\nupdate_json %s " % (json.dumps(update_json)))
+            
+            self._connector.publish_depth(symbol, book, depth_json, update_json)
             
             if raise_exception_flag:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
@@ -416,7 +418,7 @@ class Publisher:
         try:
             update_book = self._get_update_book(depth_update, book)
             
-            self._logger.info("%s, update_book: %s\n" %(symbol, str(update_book)))
+            # self._logger.info("%s, update_book: %s\n" %(symbol, str(update_book)))
               
             self._update_msg_seq(symbol)
             
@@ -424,7 +426,7 @@ class Publisher:
                             
             update_json = self._get_update_json(symbol, update_book, depth_json["Time"], depth_json["TimeArrive"])
             
-            self._logger.info("\n%s, depth_json: %s" % (symbol, json.dumps(depth_json)))
+            # self._logger.info("\n%s, depth_json: %s" % (symbol, json.dumps(depth_json)))
 
             self._connector.publish_depth(symbol, book, depth_json, update_json)
                            
