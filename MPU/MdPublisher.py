@@ -215,9 +215,7 @@ class Publisher:
             return result
         except Exception as e:
             self._logger.warning("[E] _is_depth_invalid: \n%s" % (traceback.format_exc()))     
-            
-        finally:
-            return True      
+            return True   
         
     def _get_cached_book(self, symbol, is_snapshot, depth_update):
         try:
@@ -238,8 +236,8 @@ class Publisher:
             return book
         except Exception as e:
             self._logger.warning("[E] _get_cached_book: \n%s" % (traceback.format_exc()))      
-        finally:
             return None
+
     
     def _update_depth_volume(self, depth_update, book):
         try:
@@ -436,11 +434,11 @@ class Publisher:
         :return: Void
         """
         try:
+            self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
+            
             if self._is_depth_invalid(depth_update):
                 return None
-            
-            self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
-
+                        
             book = self._get_cached_book(symbol, is_snapshot, depth_update)
 
             if is_snapshot: 
