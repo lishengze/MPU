@@ -34,7 +34,7 @@ import operator
 import logging
 import requests
 import sys
-from sortedcontainers import SortedDict
+from sortedcontainers import SortedDict, sorteddict
 from datetime import datetime
 from collections import defaultdict
 
@@ -205,6 +205,7 @@ class Publisher:
         try:
             if symbol not in self.__orderbook:
                 if is_snapshot:
+                    self.__orderbook[symbol] = {"AskDepth": {}, "BidDepth": {}}
                     for px, qty in depth_update["ASK"].items():
                         self.__orderbook[symbol]["AskDepth"][float(px)] = qty
 
