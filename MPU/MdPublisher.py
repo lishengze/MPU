@@ -50,7 +50,8 @@ class KafkaConn:
         
         if self._producer.bootstrap_connected():
             self._logger.info("Connect %s Successfully" % (str(self._server_list)))
-        
+        else:
+             self._logger.warning("Producer Not Connected %s" % (str(self._server_list)))
         
     def publish_msg(self, topic:str, msg:str):
         try:
@@ -196,26 +197,38 @@ class Publisher:
 
     def _is_depth_invalid(self, depth):
         try:
-            return len(depth["ASK"]) == 0 and len(depth["BID"]) == 0
+            return  len(depth["ASK"]) == 0 and len(depth["BID"]) == 0
         except Exception as e:
             self._logger.warning("[E] _is_depth_invalid: \n%s" % (str(e)))           
         
-    def _get_cached_book(self, symbol):
+    def _get_cached_book(self, symbol, is_snapshot, depth_update):
         try:
             if symbol not in self.__orderbook:
-                self.__orderbook.setdefault(symbol, {"AskDepth": SortedDict(), "BidDepth": SortedDict()})
-                if not self.__debug:
-                    cache_data = self.__redis_conn.get(f"DEPTHx|{symbol}.{self.__exchange_topic}")
-                else:
-                    cache_data = None
-
-                if cache_data:
-                    snapshot_cache = eval(cache_data)
-                    for px, qty in snapshot_cache["AskDepth"].items():
+                if is_snapshot:
+                    for px, qty in depth_update["ASK"].items():
                         self.__orderbook[symbol]["AskDepth"][float(px)] = qty
 
-                    for px, qty in snapshot_cache["BidDepth"].items():
+                    for px, qty in depth_update["BID"].items():
                         self.__orderbook[symbol]["BidDepth"][float(px)] = qty   
+                        
+                    self._logger.info("\nInit Snap: %s " %(str(self.__orderbook[symbol])))
+                else:
+                    return None
+                
+                # self.__orderbook.setdefault(symbol, {"AskDepth": SortedDict(), "BidDepth": SortedDict()})
+                # if not self.__debug:
+                #     cache_data = self.__redis_conn.get(f"DEPTHx|{symbol}.{self.__exchange_topic}")
+                # else:
+                #     cache_data = None
+                
+                # cache_data = None
+                # if cache_data:
+                #     snapshot_cache = eval(cache_data)
+                #     for px, qty in snapshot_cache["AskDepth"].items():
+                #         self.__orderbook[symbol]["AskDepth"][float(px)] = qty
+
+                #     for px, qty in snapshot_cache["BidDepth"].items():
+                #         self.__orderbook[symbol]["BidDepth"][float(px)] = qty   
             
             book = self.__orderbook[symbol]
             return book
@@ -301,6 +314,7 @@ class Publisher:
                         "Symbol": symbol,
                         "Time": exg_time,
                         "TimeArrive": time_arrive,
+                        "Type": "snap",
                         "AskDepth": {px: qty for px, qty in book["AskDepth"].items()[:100]},
                         "BidDepth": {px: qty for px, qty in book["BidDepth"].items()[:-100:-1]}
                         }
@@ -322,14 +336,19 @@ class Publisher:
                             "Symbol": symbol,
                             "Time": exg_time,
                             "TimeArrive": time_arrive,
+                            "Type": "update",
                             "AskUpdate": depth_update["ASK"],
                             "BidUpdate": depth_update["BID"]}
             return update_msg
         except Exception as e:
             self._logger.warning("[E] _get_update_json: \n%s" % (str(e)))              
             
-    def process_depth_snap(self, symbol, depth_update, book, exg_time, raise_exception):
+    def process_depth_update(self, symbol, depth_update, book, exg_time, raise_exception):
         try:
+            if book is None:
+                self._logger.warning("%s snapshoot was not stored, can't process update data " % (symbol))
+                return
+            
             self._update_depth_volume(depth_update, book)
 
             revised_ask, revised_bid, raise_exception_flag = self._quality_control(book, raise_exception, depth_update)
@@ -340,7 +359,7 @@ class Publisher:
             
             update_json = self._get_update_json(symbol, depth_update, depth_json["Time"], depth_json["TimeArrive"], revised_ask, revised_bid)
             
-            self._connector.publish_depth(symbol, book, depth_json, update_json)
+            # self._connector.publish_depth(symbol, book, depth_json, update_json)
             
             if raise_exception_flag:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
@@ -378,19 +397,21 @@ class Publisher:
         except Exception as e:
             self._logger.warning("[E] _get_update_book: \n%s" % (str(e)))      
             
-    def process_depth_update(self, symbol, depth_update, book, exg_time):   
+    def process_depth_snap(self, symbol, depth_update, book, exg_time):   
         try:
             update_book = self._get_update_book(depth_update, book)
+            
+            self._logger.info("\ndepth_update:%s; \nupdate_book: %s\n" %(str(depth_update), str(update_book)))
                 
             if not self._is_depth_invalid(update_book):
                 
-                self._update_msg_seq()
+                self._update_msg_seq(symbol)
                 
                 depth_json = self._get_depth_json(exg_time, symbol, book)
                                 
                 update_json = self._get_update_json(symbol, update_book, depth_json["Time"], depth_json["TimeArrive"])
 
-                self._connector.publish_depth(symbol, book, depth_json, update_json)
+                # self._connector.publish_depth(symbol, book, depth_json, update_json)
                 
             else:
                 self._logger.warning("[E] update_book is invalid") 
@@ -413,9 +434,9 @@ class Publisher:
             if self._is_depth_invalid(depth_update):
                 return None
 
-            book = self._get_cached_book(symbol)
+            book = self._get_cached_book(symbol, is_snapshot, depth_update)
 
-            if not is_snapshot: 
+            if is_snapshot: 
                 self.process_depth_snap(symbol, depth_update, book, exg_time, raise_exception)
             else: 
                 self.process_depth_update(symbol, depth_update, book, exg_time)
@@ -499,7 +520,7 @@ class Publisher:
                         "LastPx": px,
                         "Qty": qty}
             
-            self._connector.publish_trade(trade_json)
+            # self._connector.publish_trade(trade_json)
             
         except Exception as e:
             self._logger.warning("[E] pub_tradex: ")
