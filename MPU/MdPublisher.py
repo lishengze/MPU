@@ -417,7 +417,7 @@ class Publisher:
                             
             update_json = self._get_update_json(symbol, update_book, depth_json["Time"], depth_json["TimeArrive"])
 
-            self._connector.publish_depth(symbol, book, depth_json, update_json)
+            # self._connector.publish_depth(symbol, book, depth_json, update_json)
                            
         except Exception as e:
             self._logger.warning("[E] process_depth_update: \n%s" % (traceback.format_exc()))   
@@ -434,7 +434,7 @@ class Publisher:
         :return: Void
         """
         try:
-            self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
+            # self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
             
             if self._is_depth_invalid(depth_update):
                 return None
