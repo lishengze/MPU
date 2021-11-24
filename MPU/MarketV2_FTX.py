@@ -20,13 +20,13 @@ from Logger import *
 
 g_redis_config_file_name = os.getcwd() + "/redis_config.json"
 
-def get_redis_config(logger = None, config_file=""):    
+def get_config(logger = None, config_file=""):    
     json_file = open(config_file,'r')
     json_dict = json.load(json_file)
     if logger is not None:
-        logger._logger.info("\n******* redis_config *******\n" + str(json_dict))
+        logger._logger.info("\n******* config *******\n" + str(json_dict))
     else:
-        print("\n******* redis_config *******\n" + str(json_dict))
+        print("\n******* config *******\n" + str(json_dict))
     time.sleep(3)
 
     return json_dict
@@ -99,7 +99,7 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(object):
-    def __init__(self, debug_mode: bool = True, redis_config: dict = None):
+    def __init__(self, debug_mode: bool = True, is_redis:bool = False):
         try:
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
@@ -118,12 +118,14 @@ class FTX(object):
             self.__exchange_name = "FTX"
             self._is_connnect = False
             self._ws = None
-            self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"
             
-            if redis_config is None:
-                self._redis_config = get_redis_config(logger=self._logger, config_file=self._config_name)
-
-            self.__publisher = Publisher(exchange=self.__exchange_name, redis_config=self._redis_config, debug_mode=debug_mode, logger=self._logger)
+            if is_redis:
+                self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"                
+            else:
+                self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/kafka_config.json"
+ 
+            self._config = get_config(logger=self._logger, config_file=self._config_name)
+            self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, is_redis=is_redis, debug_mode=debug_mode, logger=self._logger)
 
             self._publish_count_dict = {
                 "depth":{},
@@ -139,7 +141,6 @@ class FTX(object):
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
 
-
     def connect_ws_server(self, info):
         try:
             self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
@@ -154,7 +155,6 @@ class FTX(object):
 
         except Exception as e:
             self._logger._logger.warning("[E]connect_ws_server: " + str(e))
-
 
     def start_reconnect(self):
         try:
@@ -201,7 +201,6 @@ class FTX(object):
         except Exception as e:
             self._logger._logger.warning("[E]on_open: " + str(e))
 
-
     def on_error(self):
         self._logger.Error("on_error")
 
@@ -239,7 +238,6 @@ class FTX(object):
             self._timer.start()
         except Exception as e:
             self._logger._logger.warning("[E]on_timer: " + str(e))
-
 
     def process_msg(self, ws_msg):
         try:
@@ -340,7 +338,7 @@ class FTX(object):
             self._logger._logger.warning(str(e))
 
 def test_ftx():
-    ftx_obj = FTX(debug_mode=False)
+    ftx_obj = FTX(debug_mode=False, is_redis=False)
     ftx_obj.start()
 
 if __name__ == "__main__":
