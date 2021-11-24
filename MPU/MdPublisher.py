@@ -417,7 +417,7 @@ class Publisher:
                             
             update_json = self._get_update_json(symbol, update_book, depth_json["Time"], depth_json["TimeArrive"])
 
-            # self._connector.publish_depth(symbol, book, depth_json, update_json)
+            self._connector.publish_depth(symbol, book, depth_json, update_json)
                            
         except Exception as e:
             self._logger.warning("[E] process_depth_update: \n%s" % (traceback.format_exc()))   
