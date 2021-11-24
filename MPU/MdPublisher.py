@@ -157,10 +157,14 @@ class MiddleConn:
                 if update_json:
                     self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(update_json))
                     self._kafka_curr_pubed_update_count += 1
+                else:
+                    self._logger.info("update_json is None")
             else:
                 if depth_json:
                     self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(depth_json))
                     self._kafka_curr_pubed_update_count = 0
+                else:
+                    self._logger.info("depth_json is None")                    
                 
         except Exception as e:
             self._logger.warning("[E] _kafka_publish_depth: %s" % (traceback.format_exc()))
@@ -416,6 +420,8 @@ class Publisher:
             depth_json = self._get_depth_json(exg_time, symbol, book)
                             
             update_json = self._get_update_json(symbol, update_book, depth_json["Time"], depth_json["TimeArrive"])
+            
+            self._logger.info("\n%s, depth_json: %s" % (symbol, json.dumps(depth_json)))
 
             self._connector.publish_depth(symbol, book, depth_json, update_json)
                            
