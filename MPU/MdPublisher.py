@@ -56,7 +56,7 @@ class KafkaConn:
         
     def publish_msg(self, topic:str, msg:str):
         try:
-            if self._producer.bootstrap_connected():
+            if self._producer.bootstrap_connected() or True:
                 self._producer.send(topic, value=bytes(msg.encode()))
                 self._logger.info(topic + " " + msg)
             else:
