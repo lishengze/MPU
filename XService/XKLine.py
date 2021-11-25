@@ -96,6 +96,9 @@ class KafkaConn(MiddleConnector):
                 try:  
                     self._consumer.subscribe(topics="trade")
                     for msg in self._consumer:
+
+                        self._logger.info(msg.value)
+
                         trade_data =  json.loads(msg.value)
                         symbol = trade_data["Symbol"]
                         exchange = trade_data["Exchange"]
@@ -106,6 +109,7 @@ class KafkaConn(MiddleConnector):
                         # Update Local KLine Service
                         kline = self._kline_main.__topic_list[trade_topic]
                         kline.new_trade(exg_time=to_datetime(trade_data["Time"]), price=float(trade_data["LastPx"]), volume=float(trade_data["Qty"]))
+
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
                     
@@ -124,7 +128,8 @@ class KafkaConn(MiddleConnector):
 
     def publish_kline(self, kline_type, topic, msg):
         try:
-            print("MiddleConnector publish_kline")            
+            self._logger.info(msg)   
+            self.publish("trade", msg)                 
         except Exception as e:
             self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
                         
@@ -176,6 +181,8 @@ class RedisConn(MiddleConnector):
 
     def publish_kline(self, kline_type, topic, msg):
         try:
+            self.publish(channel=f"{kline_type}x|{topic}", message = msg)
+
             print("RedisConn publish_kline")            
         except Exception as e:
             self._logger.warning("[E] RedisConn publish_kline: %s" % (traceback.format_exc()))                                
@@ -191,7 +198,6 @@ class KLine:
                 self.klines[kline_type] = deque(maxlen=1440)
         except Exception as e:
             self._logger.warning("[E]KLine: " + traceback.format_exc())
-
 
     def _update_klines(self, klines, klinetime, price, volume):
         try:
@@ -422,9 +428,6 @@ class KLineSvc:
                             # data = json.dumps(list(klines))
 
                             self._connector.publish_kline(kline_type, topic, json.dumps(list(klines)[-120:]))
-
-                            # self.__svc_marketdata.publish(channel=f"{kline_type}x|{topic}", message=json.dumps(list(klines)[-120:]))                            
-                            # self.__redis_hmset(marketdata_pipe=pipeline, data={topic:data}, kline_type=kline_type)
                             
                             self._update_statistic_info(kline_type, topic)
 
