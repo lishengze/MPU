@@ -64,8 +64,13 @@ class MiddleConnector:
         try:
             print("MiddleConnector publish")            
         except Exception as e:
-            self._logger.warning("[E] publish_kline: %s" % (traceback.format_exc()))    
-                            
+            self._logger.warning("[E] publish: %s" % (traceback.format_exc()))    
+            
+    def publish_kline(self, kline_type, topic, msg):
+        try:
+            print("MiddleConnector publish_kline")            
+        except Exception as e:
+            self._logger.warning("[E] publish_kline: %s" % (traceback.format_exc()))                                
             
 class KafkaConn(MiddleConnector):
     def __init__(self, kline_main, config:dict, logger = None, debug=False):
@@ -85,7 +90,7 @@ class KafkaConn(MiddleConnector):
         else:
              self._logger.warning("Consumer Not Connected %s" % (str(self._server_list)))             
                          
-    def listen_main(self):
+    def _listen_main(self):
         try:            
             while True:
                 try:  
@@ -116,7 +121,13 @@ class KafkaConn(MiddleConnector):
                 self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
         except Exception as e:
             self._logger.warning("[E] publish_msg: \n%s" % (traceback.format_exc()))    
-            
+
+    def publish_kline(self, kline_type, topic, msg):
+        try:
+            print("MiddleConnector publish_kline")            
+        except Exception as e:
+            self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
+                        
 class RedisConn(MiddleConnector):
     def __init__(self, kline_main, config:dict, logger = None, debug=False):
         self.__debug = debug
@@ -127,7 +138,6 @@ class RedisConn(MiddleConnector):
                                         password=config["PWD"])
         self.__redis_pubsub = self.__redis_conn.pubsub()
         self._logger = logger
-
             
     def _listen_main(self):
         try:
@@ -154,7 +164,6 @@ class RedisConn(MiddleConnector):
                     self._logger.warning(traceback.format_exc())
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
-
                      
     def publish(self, topic: str, message):
         try:
@@ -165,6 +174,12 @@ class RedisConn(MiddleConnector):
         except Exception as e:
             self._logger.warning("[E] __publish: %s" % (traceback.format_exc()))
 
+    def publish_kline(self, kline_type, topic, msg):
+        try:
+            print("RedisConn publish_kline")            
+        except Exception as e:
+            self._logger.warning("[E] RedisConn publish_kline: %s" % (traceback.format_exc()))                                
+            
 class KLine:
     def __init__(self, slow_period: int = 60, Logger=None):
         try:
@@ -406,8 +421,9 @@ class KLineSvc:
                         for kline_type, klines in kline.klines.items():
                             # data = json.dumps(list(klines))
 
-                            self.__svc_marketdata.publish(channel=f"{kline_type}x|{topic}", message=json.dumps(list(klines)[-120:]))
-                            
+                            self._connector.publish_kline(kline_type, topic, json.dumps(list(klines)[-120:]))
+
+                            # self.__svc_marketdata.publish(channel=f"{kline_type}x|{topic}", message=json.dumps(list(klines)[-120:]))                            
                             # self.__redis_hmset(marketdata_pipe=pipeline, data={topic:data}, kline_type=kline_type)
                             
                             self._update_statistic_info(kline_type, topic)
