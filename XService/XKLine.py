@@ -71,7 +71,7 @@ class MiddleConnector:
             print("MiddleConnector publish_kline")            
         except Exception as e:
             self._logger.warning("[E] publish_kline: %s" % (traceback.format_exc()))                                
-            
+          
 class KafkaConn(MiddleConnector):
     def __init__(self, kline_main, config:dict, logger = None, debug=False):
         self._server_list = config["server_list"]
@@ -361,17 +361,42 @@ class KLineSvc:
             self._logger.warning("[E]_update_statistic_info: " + traceback.format_exc())
         
 
-    def __redis_hmset(self, marketdata_pipe: redis.client.Pipeline, data: dict, kline_type: str):
-        try:
-            if self.__mode == "PRODUCTION":
-                marketdata_pipe.hmset(kline_type, data)
-            else:
-                for topic, kline in data.items():
-                    self._logger.info(f"{kline_type}/{topic}\n" f" {kline}")
+    # def __redis_hmset(self, marketdata_pipe: redis.client.Pipeline, data: dict, kline_type: str):
+    #     try:
+    #         if self.__mode == "PRODUCTION":
+    #             marketdata_pipe.hmset(kline_type, data)
+    #         else:
+    #             for topic, kline in data.items():
+    #                 self._logger.info(f"{kline_type}/{topic}\n" f" {kline}")
 
-        except Exception as e:
-            self._logger.warning("[E]__redis_hmset: " + traceback.format_exc())
+    #     except Exception as e:
+    #         self._logger.warning("[E]__redis_hmset: " + traceback.format_exc())
 
+    # async def __auto_delist(self):
+    #     try:
+    #         while True:
+    #             exist_keys = self.__svc_marketdata.keys("DEPTHx*")
+    #             live_topics = set()
+    #             for key in exist_keys:
+    #                 live_topics.add(key.decode().replace("DEPTHx|", ""))
+    #             now_topics = set(self.__topic_list.keys())
+
+    #             pipeline = self.__svc_marketdata.pipeline(False)
+    #             for expire_key in now_topics.difference(live_topics):
+    #                 if self.__mode == "PRODUCTION":
+    #                     for kline_type in total_kline_type:
+    #                         pipeline.hdel(kline_type, expire_key)
+    #                 else:
+    #                     self._logger.info(f"KLINE/{expire_key} Expired")
+
+    #                 self.__topic_list.pop(expire_key, None)
+
+    #             pipeline.execute(False)
+
+    #             await asyncio.sleep(3600)  # Scan every hour
+    #     except Exception as e:
+    #         self._logger.warning("[E]__auto_delist: " + traceback.format_exc())
+    
     async def _log_updater(self):
         try:
             while True:
@@ -381,30 +406,7 @@ class KLineSvc:
         except Exception as e:
             self._logger.warning("[E]_log_updater: " + traceback.format_exc())
             
-    async def __auto_delist(self):
-        try:
-            while True:
-                exist_keys = self.__svc_marketdata.keys("DEPTHx*")
-                live_topics = set()
-                for key in exist_keys:
-                    live_topics.add(key.decode().replace("DEPTHx|", ""))
-                now_topics = set(self.__topic_list.keys())
 
-                pipeline = self.__svc_marketdata.pipeline(False)
-                for expire_key in now_topics.difference(live_topics):
-                    if self.__mode == "PRODUCTION":
-                        for kline_type in total_kline_type:
-                            pipeline.hdel(kline_type, expire_key)
-                    else:
-                        self._logger.info(f"KLINE/{expire_key} Expired")
-
-                    self.__topic_list.pop(expire_key, None)
-
-                pipeline.execute(False)
-
-                await asyncio.sleep(3600)  # Scan every hour
-        except Exception as e:
-            self._logger.warning("[E]__auto_delist: " + traceback.format_exc())
 
     async def __kline_updater(self):
         try:
@@ -425,13 +427,9 @@ class KLineSvc:
                         kline = self.__topic_list[topic]
                         
                         for kline_type, klines in kline.klines.items():
-                            # data = json.dumps(list(klines))
-
-                            self._connector.publish_kline(kline_type, topic, json.dumps(list(klines)[-120:]))
+                            self._connector.publish_kline(kline_type, topic, json.dumps(list(klines)[-1:]))
                             
                             self._update_statistic_info(kline_type, topic)
-
-                    # pipeline.execute(False)
 
                     self.__verification_tag = (now_time.minute + 1) % 60
                 else:
@@ -442,6 +440,9 @@ class KLineSvc:
 if __name__ == '__main__':
     # 运行脚本：[exe] 60 PRODUCTION
     print(sys.argv)
+    
+    svc = KLineSvc(slow_period=60, running_mode=sys.argv[2], is_redis=False, is_debug=False)
+    
     if len(sys.argv) == 3:
         svc = KLineSvc(slow_period=sys.argv[1], running_mode=sys.argv[2])
     else:
