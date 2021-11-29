@@ -28,6 +28,7 @@ MdPublisher & MarketData Service:
         Revised: Improved Performance while combine DEPTHx
 
 """
+from kafka.admin.client import KafkaAdminClient
 import redis
 import json
 import operator
@@ -39,21 +40,82 @@ from sortedcontainers import SortedDict, sorteddict
 from datetime import datetime
 from collections import defaultdict
 
-from kafka import KafkaProducer
+from kafka import KafkaProducer, consumer
 from kafka import KafkaConsumer
+from kafka import KafkaClient
 from kafka import TopicPartition
 
+from kafka.admin import KafkaAdminClient, NewTopic
+
+def get_depth_topic(symbol, exchange, logger=None):
+    try:
+        return f"DEPTHx|{symbol}.{exchange}"
+    except Exception as e:
+        if logger:
+            logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
+        
+def get_depth_update_topic(symbol, exchange, logger=None):
+    try:
+        return f"UPDATEx|{symbol}.{exchange}"
+    except Exception as e:
+        if logger:
+            logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))           
+        
+def get_trade_topic(symbol, exchange, logger=None):
+    try:
+        return f"TRADEx|{symbol}.{exchange}"
+    except Exception as e:
+        if logger:
+            logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
+            
 class KafkaConn:
     def __init__(self, config:dict, logger = None, debug=False):
         self._server_list = config["server_list"]
         self._logger = logger
-        self._producer = KafkaProducer(bootstrap_servers=self._server_list)
+        self._client = KafkaAdminClient(bootstrap_servers=self._server_list, client_id='test')
+        self._producer = KafkaProducer(bootstrap_servers=self._server_list)        
+        self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=['server'])
+        self._topic_list = []
         
         if self._producer.bootstrap_connected():
             self._logger.info("Connect %s Successfully" % (str(self._server_list)))
         else:
-             self._logger.warning("Producer Not Connected %s" % (str(self._server_list)))
+             self._logger.warning("Producer Not Connected %s" % (str(self._server_list)))        
+             
+    def create_topic(self, topic):
+        try:
+    
+            self._logger.info("Original TopicList: \n%s" % (str(consumer.topics())))
+    
+            topic_list = []
+            topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=3))
+            self._client.create_topics(new_topics=topic_list, validate_only=False)
         
+        
+            self._logger.info("After Create Topic %s, TopicList: \n%s" % (topic, str(consumer.topics())))                
+            return self._consumer.topics()
+        except Exception as e:
+            self._logger.warning("[E] create_topic: \n%s" % (traceback.format_exc()))   
+                     
+    def get_created_topic(self):
+        try:
+            return self._consumer.topics()
+        except Exception as e:
+            self._logger.warning("[E] get_created_topic: \n%s" % (traceback.format_exc()))            
+        
+    def check_topic(self, topic):
+        try:
+            if topic in self._topic_list:
+                return True
+            else:
+                create_topics = self.get_created_topic
+                if topic not in create_topics:
+                    pass
+                    self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
+                    
+        except Exception as e:
+            self._logger.warning("[E] check_topic: \n%s" % (traceback.format_exc()))    
+            
     def publish_msg(self, topic:str, msg:str):
         try:
             if self._producer.bootstrap_connected() or True:
@@ -139,12 +201,14 @@ class MiddleConn:
     def _redis_publish_depth(self, symbol, book, depth_json, update_json):
         try:
             if depth_json:
-                self._redis_con.set(channel=f"DEPTHx|{symbol}.{self.__exchange_topic}", message=json.dumps(depth_json))
+                self._redis_con.set(channel=get_depth_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger),
+                                    message=json.dumps(depth_json))
                 
                 self._redis_con.crossing_snapshot(symbol, depth_json, book)
             
             if update_json:
-                self._redis_con.publish(channel=f"UPDATEx|{symbol}.{self.__exchange_topic}", message=json.dumps(update_json))
+                self._redis_con.publish(channel=get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger), 
+                                        message=json.dumps(update_json))
 
             # self._process_crossing_date(symbol, depth_json, book)
             
@@ -158,13 +222,15 @@ class MiddleConn:
                 
             if self._kafka_curr_pubed_update_count[symbol] < self._kafka_depth_update_count:
                 if update_json:
-                    self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(update_json))
+                    self._kafka_con.publish_msg(topic=get_depth_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger),  
+                                                msg=json.dumps(update_json))
                     self._kafka_curr_pubed_update_count[symbol] += 1
                 else:
                     self._logger.info("update_json is None")
             else:
                 if depth_json:
-                    self._kafka_con.publish_msg(topic="depth",  msg=json.dumps(depth_json))
+                    self._kafka_con.publish_msg(topic=get_depth_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger),  
+                                                msg=json.dumps(depth_json))
                     self._kafka_curr_pubed_update_count[symbol] = 0
                 else:
                     self._logger.info("depth_json is None")                    
@@ -173,12 +239,9 @@ class MiddleConn:
             self._logger.warning("[E] _kafka_publish_depth: %s" % (traceback.format_exc()))
                                         
     def _redis_publish_trade(self, trade_json):
-        try:
-            symbol = trade_json["Symbol"]
-            
-            # self._process_crossing_date_trade(symbol, trade_json["Time"])      
-            
-            self._redis_con.publish(channel=f"TRADEx|{symbol}.{self.__exchange_topic}", message=json.dumps(trade_json))
+        try:            
+            self._redis_con.publish(channel=get_trade_topic(trade_json["Symbol"], trade_json["Exchange"], self._logger), 
+                                    message=json.dumps(trade_json))
                         
         except Exception as e:
             self._logger.warning("[E] _redis_publish_trade: ")
@@ -186,7 +249,8 @@ class MiddleConn:
             
     def _kafka_publish_trade(self, trade_json):
         try:
-            self._kafka_con.publish_msg(topic="trade",  msg=json.dumps(trade_json))
+            self._kafka_con.publish_msg(topic=get_trade_topic(trade_json["Symbol"], trade_json["Exchange"], self._logger),  
+                                        msg=json.dumps(trade_json))
         except Exception as e:
             self._logger.warning("[E] _kafka_publish_trade: ")
             self._logger.warning(traceback.format_exc())                       

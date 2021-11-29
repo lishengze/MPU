@@ -108,7 +108,7 @@ class KafkaConn(MiddleConnector):
                         
                         # Update Local KLine Service
                         kline = self._kline_main.__topic_list[trade_topic]
-                        kline.new_trade(exg_time=to_datetime(trade_data["Time"]), price=float(trade_data["LastPx"]), volume=float(trade_data["Qty"]))
+                        kline.new_trade(exg_time=to_datetime(trade_data["Time"]), price=float(trade_data["LastPx"]), volume=float(trade_data["Qty"]), symbol=symbol, exchange=exchange)
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
@@ -161,9 +161,12 @@ class RedisConn(MiddleConnector):
                             trade_data = json.loads(marketdata["data"])
                             self._kline_main.__topic_list.setdefault(trade_topic, KLine(slow_period=self.__slow_period, Logger= self._logger))
 
+                            symbol = trade_data["Symbol"]
+                            exchange = trade_data["Exchange"]
+                        
                             # Update Local KLine Service
                             kline = self._kline_main.__topic_list[trade_topic]
-                            kline.new_trade(exg_time=to_datetime(trade_data["Time"]), price=float(trade_data["LastPx"]), volume=float(trade_data["Qty"]))
+                            kline.new_trade(exg_time=to_datetime(trade_data["Time"]), price=float(trade_data["LastPx"]), volume=float(trade_data["Qty"]), symbol=symbol, exchange=exchange)
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
@@ -199,12 +202,12 @@ class KLine:
         except Exception as e:
             self._logger.warning("[E]KLine: " + traceback.format_exc())
 
-    def _update_klines(self, klines, klinetime, price, volume):
+    def _update_klines(self, klines, klinetime, price, volume, symbol, exchange):
         try:
             ts = int((klinetime - self.epoch).total_seconds())
             if len(klines) == 0 or ts > klines[-1][0]:
                 # new kline
-                kline = [ts, price, price, price, price, volume, 1.0]
+                kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange]
                 klines.append(kline)
             else:
                 kline = klines[-1]
@@ -219,17 +222,18 @@ class KLine:
         except Exception as e:
             self._logger.warning("[E]_update_klines: " + traceback.format_exc())
 
-    def new_trade(self, exg_time: datetime.datetime, price: float, volume: float):
+    def new_trade(self, exg_time: datetime.datetime, price: float, volume: float, symbol:str, exchange:str):
         try:
             # 1min kline
             wait_secs = float(exg_time.strftime("%S.%f"))
             tval = exg_time - datetime.timedelta(seconds=wait_secs)
-            self._update_klines(self.klines[kline1_topic], tval, price, volume)
+            self._update_klines(self.klines[kline1_topic], tval, price, volume, symbol, exchange)
 
             # 60min kline
             wait_mins = float(tval.strftime("%M"))
             tval = tval - datetime.timedelta(minutes=wait_mins)
-            self._update_klines(self.klines[kline60_topic], tval, price, volume)
+            self._update_klines(self.klines[kline60_topic], tval, price, volume, symbol, exchange)
+            
         except Exception as e:
             self._logger.warning("[E]new_trade: " + traceback.format_exc())
 
@@ -441,10 +445,10 @@ if __name__ == '__main__':
     # 运行脚本：[exe] 60 PRODUCTION
     print(sys.argv)
     
-    svc = KLineSvc(slow_period=60, running_mode=sys.argv[2], is_redis=False, is_debug=False)
+    svc = KLineSvc(slow_period=60, running_mode="PRODUCTION", is_redis=False, is_debug=False)
     
-    if len(sys.argv) == 3:
-        svc = KLineSvc(slow_period=sys.argv[1], running_mode=sys.argv[2])
-    else:
-        svc = KLineSvc(slow_period=2, running_mode="DEBUG")
+    # if len(sys.argv) == 3:
+    #     svc = KLineSvc(slow_period=sys.argv[1], running_mode=sys.argv[2])
+    # else:
+    #     svc = KLineSvc(slow_period=2, running_mode="DEBUG")
 
