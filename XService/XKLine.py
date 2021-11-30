@@ -32,7 +32,7 @@ def get_config(logger = None, config_file=""):
     json_file = open(config_file,'r')
     json_dict = json.load(json_file)
     if logger is not None:
-        logger._logger.info("\n******* config *******\n" + str(json_dict))
+        logger.info("\n******* config *******\n" + str(json_dict))
     else:
         print("\n******* config *******\n" + str(json_dict))
 
