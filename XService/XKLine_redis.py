@@ -28,9 +28,9 @@ def get_redis_config(logger = None):
     json_file = open(g_redis_config_file_name,'r')
     json_dict = json.load(json_file)
     if logger is not None:
-        logger._logger.info("\n******* redis_config *******\n" + str(json_dict))
+        logger.info("\n******* redis_config *******\n" + str(json_dict))
     else:
-        self._logger._logger.info("\n******* redis_config *******\n" + str(json_dict))
+        print("\n******* redis_config *******\n" + str(json_dict))
     time.sleep(3)
 
     return json_dict
