@@ -192,7 +192,7 @@ class KafkaConn(MiddleConnector):
     def publish_kline(self, kline_type, symbol, exchange, msg):
         try:            
             topic = kline_type + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR + exchange
-            self._logger.info( get_datetime_str() + "  " + topic + "\n" + msg) 
+            self._logger.info( "\n" + topic + "\n" + msg + "\n") 
             self.publish(topic, msg)                 
         except Exception as e:
             self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
