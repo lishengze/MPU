@@ -70,20 +70,31 @@ def get_trade_topic(symbol, exchange, logger=None):
             
 class KafkaConn:
     def __init__(self, config:dict, logger = None, debug=False):
-        self._server_list = config["server_list"]
-        self._logger = logger
-        
-        self._client = KafkaAdminClient(bootstrap_servers=self._server_list, client_id='test')
-        self._producer = KafkaProducer(bootstrap_servers=self._server_list)        
-        self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=self._server_list)
-        
-        self._topic_list = []
-        
-        if self._producer.bootstrap_connected():
-            self._logger.info("Connect %s Successfully" % (str(self._server_list)))
-        else:
-             self._logger.warning("Producer Not Connected %s" % (str(self._server_list)))        
-             
+        try:
+            self._server_list = config["server_list"]
+            self._logger = logger
+            
+            self._client = KafkaAdminClient(bootstrap_servers=self._server_list, client_id='test')
+            
+            
+            self._producer = KafkaProducer(bootstrap_servers=self._server_list)        
+            if self._producer.bootstrap_connected():
+                self._logger.info("Producer Connect %s Successfully" % (str(self._server_list)))
+            else:
+                self._logger.warning("Producer Not Connected %s" % (str(self._server_list)))    
+                        
+            self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=self._server_list)
+            if self._consumer.bootstrap_connected():
+                self._logger.info("Consumer Connect %s Successfully" % (str(self._server_list)))
+            else:
+                self._logger.warning("Consumer Not Connected %s" % (str(self._server_list)))              
+            
+            self._topic_list = []
+                    
+        except Exception as e:
+            if self._logger:
+                self._logger.warning("[E] __init__: \n%s" % (traceback.format_exc()))   
+                    
     def create_topic(self, topic):
         try:
     
