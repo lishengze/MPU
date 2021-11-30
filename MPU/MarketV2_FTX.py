@@ -118,6 +118,13 @@ class FTX(object):
             self.__exchange_name = "FTX"
             self._is_connnect = False
             self._ws = None
+            self._publish_count_dict = {
+                "depth":{},
+                "trade":{},
+                "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            }
+
             
             if is_redis:
                 self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"                
@@ -128,12 +135,6 @@ class FTX(object):
             self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
                                          is_redis=is_redis, debug_mode=debug_mode, logger=self._logger._logger)
 
-            self._publish_count_dict = {
-                "depth":{},
-                "trade":{},
-                "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            }
 
             for item in self._symbol_dict:
                 sys_symbol = self._symbol_dict[item]

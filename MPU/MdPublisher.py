@@ -72,9 +72,11 @@ class KafkaConn:
     def __init__(self, config:dict, logger = None, debug=False):
         self._server_list = config["server_list"]
         self._logger = logger
+        
         self._client = KafkaAdminClient(bootstrap_servers=self._server_list, client_id='test')
         self._producer = KafkaProducer(bootstrap_servers=self._server_list)        
-        self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=['server'])
+        self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=self._server_list)
+        
         self._topic_list = []
         
         if self._producer.bootstrap_connected():
