@@ -143,6 +143,8 @@ class KafkaConn(MiddleConnector):
             for topic in all_topics:
                 if TRADE_HEAD in topic:
                     trade_topics.append(topic)
+                    
+            return trade_topics
         except Exception as e:
             self._logger.warning("[E] get_trade_topics: \n%s" % (traceback.format_exc()))         
                          
