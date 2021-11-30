@@ -316,7 +316,20 @@ class KLineSvc:
             self._is_debug = is_debug 
             self._name = "KlineSvc"
             self.__topic_list = dict()
-            
+            self.__slow_period = int(slow_period)
+            self.__mode = running_mode
+            self.__verification_tag = False
+                        
+            self._publish_count_dict = {
+                "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            }
+
+            for kline_type in total_kline_type:
+                self._publish_count_dict[kline_type] = {}
+
+            self._timer_secs = 10
+                                    
             if is_redis:
                 self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"                
             else:
@@ -328,27 +341,11 @@ class KLineSvc:
             else:
                 self._connector = KafkaConn(self, self._config, self._logger, self._is_debug)
                                
-            self.__slow_period = int(slow_period)
-            self.__mode = running_mode
-            self.__verification_tag = False
-
-            self._publish_count_dict = {
-                "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            }
-            
             self._connector.start_listen_data()
-
-            for kline_type in total_kline_type:
-                self._publish_count_dict[kline_type] = {}
-
-            self._timer_secs = 10
-
             self.__loop = asyncio.get_event_loop()
             self.__task = asyncio.gather(self.__kline_updater(), self._log_updater())
             self.__loop.run_until_complete(self.__task)
             
-
             while True:
                 time.sleep(3)
                 
