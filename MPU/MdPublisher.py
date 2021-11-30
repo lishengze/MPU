@@ -47,23 +47,26 @@ from kafka import TopicPartition
 
 from kafka.admin import KafkaAdminClient, NewTopic
 
+TYPE_SEPARATOR = "-"
+SYMBOL_EXCHANGE_SEPARATOR = "."
+
 def get_depth_topic(symbol, exchange, logger=None):
     try:
-        return f"DEPTHx|{symbol}.{exchange}"
+        return "DEPTHx" + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
         
 def get_depth_update_topic(symbol, exchange, logger=None):
     try:
-        return f"UPDATEx|{symbol}.{exchange}"
+        return "UPDATEx" + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))           
         
 def get_trade_topic(symbol, exchange, logger=None):
     try:
-        return f"TRADEx|{symbol}.{exchange}"
+        return "TRADEx" + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
