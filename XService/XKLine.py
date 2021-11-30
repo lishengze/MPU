@@ -137,7 +137,7 @@ class KafkaConn(MiddleConnector):
         try:
             all_topics = self.get_created_topic()   
             
-            self._logger.info("All Topics: %s " % (str(all_topics)))         
+            # self._logger.info("All Topics: %s " % (str(all_topics)))         
             trade_topics = []
             
             for topic in all_topics:
@@ -155,7 +155,7 @@ class KafkaConn(MiddleConnector):
                 try:  
                     trade_topics = self.get_trade_topics()
                     if len(trade_topics) !=0:
-                        self._logger.info("Trade Topics: \n%s" % (str(self.get_trade_topics())))
+                        # self._logger.info("Trade Topics: \n%s" % (str(self.get_trade_topics())))
                         self._consumer.subscribe(topics=self.get_trade_topics())
                     else:
                         self._logger.info("Trade Topics Is Empty!")
@@ -169,11 +169,9 @@ class KafkaConn(MiddleConnector):
                         exchange = trade_data["Exchange"]
                         trade_topic = symbol+ SYMBOL_EXCHANGE_SEPARATOR + exchange
                         
-                        self._kline_main.__topic_list.setdefault(trade_topic, KLine(slow_period=self.__slow_period, Logger= self._logger))                    
-                        
-                        # Update Local KLine Service
-                        kline = self._kline_main.__topic_list[trade_topic]
-                        kline.new_trade(exg_time=to_datetime(trade_data["Time"]), price=float(trade_data["LastPx"]), volume=float(trade_data["Qty"]), symbol=symbol, exchange=exchange)
+                        self._kline_main.update_kline(trade_topic, to_datetime(trade_data["Time"]), 
+                                                      float(trade_data["LastPx"]), float(trade_data["Qty"]), 
+                                                      symbol, exchange)
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
@@ -378,6 +376,35 @@ class KLineSvc:
         except Exception as e:
             self._logger.warning("[E]_update_statistic_info: " + traceback.format_exc())
         
+    def set_default_trade_topic(self, topic):
+        try:
+            self.__topic_list.setdefault(topic, KLine(slow_period=self.__slow_period, Logger= self._logger))                                
+        except Exception as e:
+            self._logger.warning("[E]set_default_trade_topic: " + traceback.format_exc())   
+            
+    def get_kline_atom(self, trade_topic):
+        try:
+            if trade_topic in self.__topic_list:
+                return self.__topic_list[trade_topic]
+            else:
+                return None                              
+        except Exception as e:
+            self._logger.warning("[E]get_kline_atom: " + traceback.format_exc())   
+            
+    def update_kline(self, trade_topic, exg_time, price, volume, symbol, exchange):
+        try:
+            if trade_topic not in self.__topic_list:
+                self.__topic_list.setdefault(trade_topic, KLine(slow_period=self.__slow_period, Logger= self._logger))         
+                        
+            kline = self.__topic_list[trade_topic]
+            kline.new_trade(exg_time=exg_time, price=price, volume=volume, symbol=symbol, exchange=exchange)
+                                                           
+        except Exception as e:
+            self._logger.warning("[E]get_kline_atom: " + traceback.format_exc())   
+            
+                    
+                            
+        
     async def _log_updater(self):
         try:
             while True:
@@ -387,8 +414,6 @@ class KLineSvc:
         except Exception as e:
             self._logger.warning("[E]_log_updater: " + traceback.format_exc())
             
-
-
     async def __kline_updater(self):
         try:
             while True:
