@@ -135,7 +135,9 @@ class KafkaConn(MiddleConnector):
                          
     def get_trade_topics(self):
         try:
-            all_topics = self.get_created_topic()            
+            all_topics = self.get_created_topic()   
+            
+            self._logger.info("All Topics: %s " % (str(all_topics)))         
             trade_topics = []
             
             for topic in all_topics:
@@ -149,8 +151,13 @@ class KafkaConn(MiddleConnector):
             self._logger.info("------ listen begin -------")
             while True:
                 try:  
-                    self._logger.info("Trade Topics: \n%s" % (str(self.get_trade_topics())))
-                    self._consumer.subscribe(topics=self.get_trade_topics())
+                    trade_topics = self.get_trade_topics()
+                    if len(trade_topics) !=0:
+                        self._logger.info("Trade Topics: \n%s" % (str(self.get_trade_topics())))
+                        self._consumer.subscribe(topics=self.get_trade_topics())
+                    else:
+                        self._logger.info("Trade Topics Is Empty!")
+                        
                     for msg in self._consumer:
 
                         self._logger.info(msg.value)
