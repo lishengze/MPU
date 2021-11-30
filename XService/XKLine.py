@@ -415,7 +415,7 @@ class KLineSvc:
     async def _log_updater(self):
         try:
             while True:
-                # self.print_publish_info()
+                self.print_publish_info()
                 await asyncio.sleep(self._timer_secs)
             
         except Exception as e:
