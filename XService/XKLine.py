@@ -192,7 +192,8 @@ class KafkaConn(MiddleConnector):
     def publish_kline(self, kline_type, symbol, exchange, msg):
         try:            
             topic = kline_type + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR + exchange
-            self._logger.info( "\n" + topic + "\n" + msg + "\n") 
+            if symbol == "BTC_USDT":
+                self._logger.info( "\n" + topic + "\n" + msg + "\n") 
             self.publish(topic, msg)                 
         except Exception as e:
             self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
@@ -272,7 +273,9 @@ class KLine:
             if len(klines) == 0 or ts > klines[-1][0]:
                 # new kline
                 kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange]
-                self._logger.info("New Kline" + str(kline))
+                
+                if symbol == "BTC_USDT":
+                    self._logger.info("New Kline" + str(kline))
                 klines.append(kline)
             else:
                 kline = klines[-1]
