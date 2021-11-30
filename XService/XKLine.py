@@ -12,6 +12,7 @@ from collections import deque
 from kafka import KafkaProducer
 from kafka import KafkaConsumer
 from kafka import TopicPartition
+from kafka.admin import KafkaAdminClient, NewTopic
 
 import os
 sys.path.append(os.getcwd())
@@ -25,6 +26,12 @@ kline1_topic = "KLINE"
 kline60_topic = "SLOW_KLINE"
 #klineday_topic = "KLINEd"
 total_kline_type = [kline1_topic, kline60_topic]
+
+TYPE_SEPARATOR = "-"
+SYMBOL_EXCHANGE_SEPARATOR = "."
+DEPTH_HEAD = "DEPTHx"
+DEPTH_UPDATE_HEAD = "UPDATEx"
+TRADE_HEAD = "TRADEx"
 
 g_redis_config_file_name = os.path.dirname(os.path.abspath(__file__))+ "/kline_redis_config.json"
 
@@ -66,7 +73,7 @@ class MiddleConnector:
         except Exception as e:
             self._logger.warning("[E] publish: %s" % (traceback.format_exc()))    
             
-    def publish_kline(self, kline_type, topic, msg):
+    def publish_kline(self, kline_type, symbol, exchange, msg):
         try:
             print("MiddleConnector publish_kline")            
         except Exception as e:
@@ -77,8 +84,10 @@ class KafkaConn(MiddleConnector):
         self._server_list = config["server_list"]
         self._logger = logger
         self._kline_main = kline_main
+        self._topic_list = []
         self._producer = KafkaProducer(bootstrap_servers=self._server_list)
         self._consumer = KafkaConsumer(bootstrap_servers=self._server_list, auto_offset_reset='latest')
+        self._client = KafkaAdminClient(bootstrap_servers=self._server_list, client_id='test')
                 
         if self._producer.bootstrap_connected():
             self._logger.info("Producer Connect %s Successfully" % (str(self._server_list)))
@@ -88,13 +97,60 @@ class KafkaConn(MiddleConnector):
         if self._consumer.bootstrap_connected():
             self._logger.info("Consumer Connect %s Successfully" % (str(self._server_list)))
         else:
-             self._logger.warning("Consumer Not Connected %s" % (str(self._server_list)))             
+             self._logger.warning("Consumer Not Connected %s" % (str(self._server_list)))     
+
+    def create_topic(self, topic):
+        try:
+    
+            self._logger.info("Original TopicList: \n%s" % (str(self.get_created_topic())))
+    
+            topic_list = []
+            topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=3))
+            self._client.create_topics(new_topics=topic_list, validate_only=False)
+        
+        
+            self._logger.info("After Create Topic %s, TopicList: \n%s" % (topic, str(self.get_created_topic())))                
+            return self._consumer.topics()
+        except Exception as e:
+            self._logger.warning("[E] create_topic: \n%s" % (traceback.format_exc()))   
+                     
+    def get_created_topic(self):
+        try:
+            return self._consumer.topics()
+        except Exception as e:
+            self._logger.warning("[E] get_created_topic: \n%s" % (traceback.format_exc()))            
+        
+    def check_topic(self, topic):
+        try:
+            if topic in self._topic_list:
+                return True
+            else:
+                create_topics = self.get_created_topic()
+                if topic not in create_topics:
+                    self.create_topic(topic)   
+                else:
+                    self._topic_list.append(topic) 
+        except Exception as e:
+            self._logger.warning("[E] check_topic: \n%s" % (traceback.format_exc()))  
+                         
+    def get_trade_topics(self):
+        try:
+            all_topics = self.get_created_topic()            
+            trade_topics = []
+            
+            for topic in all_topics:
+                if TRADE_HEAD in topic:
+                    trade_topics.append(topic)
+        except Exception as e:
+            self._logger.warning("[E] get_trade_topics: \n%s" % (traceback.format_exc()))         
                          
     def _listen_main(self):
         try:            
+            self._logger.info("------ listen begin -------")
             while True:
                 try:  
-                    self._consumer.subscribe(topics="trade")
+                    self._logger.info("Trade Topics: \n%s" % (str(self.get_trade_topics())))
+                    self._consumer.subscribe(topics=self.get_trade_topics())
                     for msg in self._consumer:
 
                         self._logger.info(msg.value)
@@ -102,7 +158,7 @@ class KafkaConn(MiddleConnector):
                         trade_data =  json.loads(msg.value)
                         symbol = trade_data["Symbol"]
                         exchange = trade_data["Exchange"]
-                        trade_topic = symbol+ "_" + exchange
+                        trade_topic = symbol+ SYMBOL_EXCHANGE_SEPARATOR + exchange
                         
                         self._kline_main.__topic_list.setdefault(trade_topic, KLine(slow_period=self.__slow_period, Logger= self._logger))                    
                         
@@ -118,18 +174,16 @@ class KafkaConn(MiddleConnector):
             
     def publish(self, topic:str, msg:str):
         try:
-            if self._producer.bootstrap_connected() or True:
-                self._producer.send(topic, value=bytes(msg.encode()))
-                # self._logger.info(topic + " " + msg)
-            else:
-                self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
+            self.check_topic(topic)
+            self._producer.send(topic, value=bytes(msg.encode()))
         except Exception as e:
-            self._logger.warning("[E] publish_msg: \n%s" % (traceback.format_exc()))    
+            self._logger.warning("[E] publish: \n%s" % (traceback.format_exc()))    
 
-    def publish_kline(self, kline_type, topic, msg):
-        try:
-            self._logger.info(msg)   
-            self.publish("trade", msg)                 
+    def publish_kline(self, kline_type, symbol, exchange, msg):
+        try:            
+            topic = kline_type + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR + exchange
+            self._logger.info(topic + "\n" + msg) 
+            self.publish(topic, msg)                 
         except Exception as e:
             self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
                         
@@ -182,9 +236,9 @@ class RedisConn(MiddleConnector):
         except Exception as e:
             self._logger.warning("[E] __publish: %s" % (traceback.format_exc()))
 
-    def publish_kline(self, kline_type, topic, msg):
+    def publish_kline(self, kline_type, symbol, exchange, msg):
         try:
-            self.publish(channel=f"{kline_type}x|{topic}", message = msg)
+            self.publish(channel=f"{kline_type}x|{symbol}.{exchange}", message = msg)
 
             print("RedisConn publish_kline")            
         except Exception as e:
@@ -280,10 +334,8 @@ class KLineSvc:
                 self._publish_count_dict[kline_type] = {}
 
             self._timer_secs = 10
-            # self.__data_recover()
 
             self.__loop = asyncio.get_event_loop()
-            # self.__task = asyncio.gather(self.__kline_updater(), self.__auto_delist(), self._log_updater())
             self.__task = asyncio.gather(self.__kline_updater(), self._log_updater())
             self.__loop.run_until_complete(self.__task)
             
@@ -309,50 +361,6 @@ class KLineSvc:
         except Exception as e:
             self._logger.warning("[E]print_publish_info: " + traceback.format_exc())
 
-    # def __data_recover(self):
-    #     try:
-    #         kline_keys = self.__svc_marketdata.hkeys(kline1_topic)
-    #         for kline_type in total_kline_type:
-    #             pipeline = self.__svc_marketdata.pipeline(False)
-
-    #             for key in kline_keys:
-    #                 self.__topic_list.setdefault(key.decode(), KLine(slow_period=self.__slow_period, Logger= self._logger))
-    #                 pipeline.hget(kline_type, key=key.decode())
-
-    #             datas = pipeline.execute()
-
-    #             index = 0
-    #             for data in datas:
-    #                 kline_obj = self.__topic_list[kline_keys[index].decode()]
-    #                 if data:
-    #                     kline_obj.recover_kline(kline_data=json.loads(data), kline_type=kline_type)
-    #                 index += 1
-    #     except Exception as e:
-    #         self._logger.warning("[E]__data_recover: " + traceback.format_exc())
-            
-    # def __match_listener(self):
-    #     while True:
-    #         try:
-    #             __pubsub_marketdata = self.__svc_marketdata.pubsub()
-    #             __pubsub_marketdata.psubscribe("TRADEx*")
-
-    #             for marketdata in __pubsub_marketdata.listen():
-    #                 # self._logger.info("marketdata: ")
-    #                 # self._logger.info(marketdata)
-
-    #                 if marketdata["type"] == "pmessage":
-    #                     # MarketMatch Resolution
-    #                     trade_topic = marketdata["channel"].decode().split("|")[1]
-    #                     trade_data = json.loads(marketdata["data"])
-    #                     self.__topic_list.setdefault(trade_topic, KLine(slow_period=self.__slow_period, Logger= self._logger))
-
-    #                     # Update Local KLine Service
-    #                     kline = self.__topic_list[trade_topic]
-    #                     kline.new_trade(exg_time=to_datetime(trade_data["Time"]), price=float(trade_data["LastPx"]), volume=float(trade_data["Qty"]))
-
-    #         except Exception as e:
-    #             self._logger.warning("[E]__match_listener: " + traceback.format_exc())
-
     def _update_statistic_info(self, kline_type, topic):
         try:
             if kline_type in self._publish_count_dict:
@@ -364,43 +372,6 @@ class KLineSvc:
         except Exception as e:
             self._logger.warning("[E]_update_statistic_info: " + traceback.format_exc())
         
-
-    # def __redis_hmset(self, marketdata_pipe: redis.client.Pipeline, data: dict, kline_type: str):
-    #     try:
-    #         if self.__mode == "PRODUCTION":
-    #             marketdata_pipe.hmset(kline_type, data)
-    #         else:
-    #             for topic, kline in data.items():
-    #                 self._logger.info(f"{kline_type}/{topic}\n" f" {kline}")
-
-    #     except Exception as e:
-    #         self._logger.warning("[E]__redis_hmset: " + traceback.format_exc())
-
-    # async def __auto_delist(self):
-    #     try:
-    #         while True:
-    #             exist_keys = self.__svc_marketdata.keys("DEPTHx*")
-    #             live_topics = set()
-    #             for key in exist_keys:
-    #                 live_topics.add(key.decode().replace("DEPTHx|", ""))
-    #             now_topics = set(self.__topic_list.keys())
-
-    #             pipeline = self.__svc_marketdata.pipeline(False)
-    #             for expire_key in now_topics.difference(live_topics):
-    #                 if self.__mode == "PRODUCTION":
-    #                     for kline_type in total_kline_type:
-    #                         pipeline.hdel(kline_type, expire_key)
-    #                 else:
-    #                     self._logger.info(f"KLINE/{expire_key} Expired")
-
-    #                 self.__topic_list.pop(expire_key, None)
-
-    #             pipeline.execute(False)
-
-    #             await asyncio.sleep(3600)  # Scan every hour
-    #     except Exception as e:
-    #         self._logger.warning("[E]__auto_delist: " + traceback.format_exc())
-    
     async def _log_updater(self):
         try:
             while True:
@@ -422,16 +393,17 @@ class KLineSvc:
 
                 if self.__verification_tag is False or self.__verification_tag == now_time.minute:
 
-                    # Create pipeline of redis
-                    # pipeline = self.__svc_marketdata.pipeline(False)
-
                     topic_key_list = list(self.__topic_list.keys())
                     for topic in topic_key_list:
                         
                         kline = self.__topic_list[topic]
                         
+                        topic_atom_list = topic.split(SYMBOL_EXCHANGE_SEPARATOR)
+                        symbol = topic_atom_list[0]
+                        exchange = topic_atom_list[1]
+                        
                         for kline_type, klines in kline.klines.items():
-                            self._connector.publish_kline(kline_type, topic, json.dumps(list(klines)[-1:]))
+                            self._connector.publish_kline(kline_type, symbol, exchange, json.dumps(list(klines)[-1:]))
                             
                             self._update_statistic_info(kline_type, topic)
 

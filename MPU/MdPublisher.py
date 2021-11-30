@@ -49,24 +49,27 @@ from kafka.admin import KafkaAdminClient, NewTopic
 
 TYPE_SEPARATOR = "-"
 SYMBOL_EXCHANGE_SEPARATOR = "."
+DEPTH_HEAD = "DEPTHx"
+DEPTH_UPDATE_HEAD = "UPDATEx"
+TRADE_HEAD = "TRADEx"
 
 def get_depth_topic(symbol, exchange, logger=None):
     try:
-        return "DEPTHx" + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
+        return DEPTH_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
         
 def get_depth_update_topic(symbol, exchange, logger=None):
     try:
-        return "UPDATEx" + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
+        return DEPTH_UPDATE_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))           
         
 def get_trade_topic(symbol, exchange, logger=None):
     try:
-        return "TRADEx" + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
+        return TRADE_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
@@ -126,7 +129,10 @@ class KafkaConn:
             else:
                 create_topics = self.get_created_topic()
                 if topic not in create_topics:
-                    self.create_topic(topic)                    
+                    self.create_topic(topic)        
+                else:
+                    self._topic_list.append(topic)    
+                                                    
         except Exception as e:
             self._logger.warning("[E] check_topic: \n%s" % (traceback.format_exc()))    
             
