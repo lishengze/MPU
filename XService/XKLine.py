@@ -25,7 +25,7 @@ kline1_topic = "KLINE"
 #kline5_topic = "KLINE5"
 kline60_topic = "SLOW_KLINE"
 #klineday_topic = "KLINEd"
-total_kline_type = [kline1_topic, kline60_topic]
+total_kline_type = [kline1_topic]
 
 TYPE_SEPARATOR = "-"
 SYMBOL_EXCHANGE_SEPARATOR = "."
@@ -192,8 +192,8 @@ class KafkaConn(MiddleConnector):
     def publish_kline(self, kline_type, symbol, exchange, msg):
         try:            
             topic = kline_type + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR + exchange
-            if symbol == "BTC_USDT":
-                self._logger.info( "\n" + topic + "\n" + msg + "\n") 
+            # if symbol == "BTC_USDT":
+            #     self._logger.info( "\n" + topic + "\n" + msg + "\n") 
             self.publish(topic, msg)                 
         except Exception as e:
             self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
@@ -274,8 +274,8 @@ class KLine:
                 # new kline
                 kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange]
                 
-                if symbol == "BTC_USDT":
-                    self._logger.info("New Kline" + str(kline))
+                # if symbol == "BTC_USDT":
+                #     self._logger.info("New Kline" + str(kline))
                 klines.append(kline)
             else:
                 kline = klines[-1]
@@ -298,9 +298,9 @@ class KLine:
             self._update_klines(self.klines[kline1_topic], tval, price, volume, symbol, exchange)
 
             # 60min kline
-            wait_mins = float(tval.strftime("%M"))
-            tval = tval - datetime.timedelta(minutes=wait_mins)
-            self._update_klines(self.klines[kline60_topic], tval, price, volume, symbol, exchange)
+            # wait_mins = float(tval.strftime("%M"))
+            # tval = tval - datetime.timedelta(minutes=wait_mins)
+            # self._update_klines(self.klines[kline60_topic], tval, price, volume, symbol, exchange)
             
         except Exception as e:
             self._logger.warning("[E]new_trade: " + traceback.format_exc())
