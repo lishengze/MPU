@@ -35,6 +35,9 @@ TRADE_HEAD = "TRADEx"
 
 g_redis_config_file_name = os.path.dirname(os.path.abspath(__file__))+ "/kline_redis_config.json"
 
+def get_datetime_str():
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 def get_config(logger = None, config_file=""):    
     json_file = open(config_file,'r')
     json_dict = json.load(json_file)
@@ -162,7 +165,7 @@ class KafkaConn(MiddleConnector):
                         
                     for msg in self._consumer:
 
-                        self._logger.info(msg.value)
+                        # self._logger.info(msg.value)
 
                         trade_data =  json.loads(msg.value)
                         symbol = trade_data["Symbol"]
@@ -189,7 +192,7 @@ class KafkaConn(MiddleConnector):
     def publish_kline(self, kline_type, symbol, exchange, msg):
         try:            
             topic = kline_type + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR + exchange
-            self._logger.info(topic + "\n" + msg) 
+            self._logger.info( get_datetime_str() + "  " + topic + "\n" + msg) 
             self.publish(topic, msg)                 
         except Exception as e:
             self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
@@ -408,7 +411,7 @@ class KLineSvc:
     async def _log_updater(self):
         try:
             while True:
-                self.print_publish_info()
+                # self.print_publish_info()
                 await asyncio.sleep(self._timer_secs)
             
         except Exception as e:

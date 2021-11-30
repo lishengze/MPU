@@ -53,6 +53,9 @@ DEPTH_HEAD = "DEPTHx"
 DEPTH_UPDATE_HEAD = "UPDATEx"
 TRADE_HEAD = "TRADEx"
 
+def get_datetime_str():
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 def get_depth_topic(symbol, exchange, logger=None):
     try:
         return DEPTH_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
