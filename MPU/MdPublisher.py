@@ -98,14 +98,14 @@ class KafkaConn:
     def create_topic(self, topic):
         try:
     
-            self._logger.info("Original TopicList: \n%s" % (str(consumer.topics())))
+            self._logger.info("Original TopicList: \n%s" % (str(self.get_created_topic())))
     
             topic_list = []
             topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=3))
             self._client.create_topics(new_topics=topic_list, validate_only=False)
         
         
-            self._logger.info("After Create Topic %s, TopicList: \n%s" % (topic, str(consumer.topics())))                
+            self._logger.info("After Create Topic %s, TopicList: \n%s" % (topic, str(self.get_created_topic())))                
             return self._consumer.topics()
         except Exception as e:
             self._logger.warning("[E] create_topic: \n%s" % (traceback.format_exc()))   
