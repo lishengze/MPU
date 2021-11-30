@@ -260,9 +260,9 @@ class KLineSvc:
             self._config = get_config(logger=self._logger, config_file=self._config_name)
             
             if is_redis:
-                self._connector = RedisConn(self, self._config, is_redis, self._logger, self._is_debug)
+                self._connector = RedisConn(self, self._config, self._logger, self._is_debug)
             else:
-                self._connector = KafkaConn(self, self._config, is_redis, self._logger, self._is_debug)
+                self._connector = KafkaConn(self, self._config, self._logger, self._is_debug)
                                
             self.__slow_period = int(slow_period)
             self.__mode = running_mode
