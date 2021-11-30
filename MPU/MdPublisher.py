@@ -452,7 +452,7 @@ class Publisher:
             
             update_json = self._get_update_json(symbol, depth_update, depth_json["Time"], depth_json["TimeArrive"], revised_ask, revised_bid)
             
-            self._logger.info("\nupdate_json %s " % (json.dumps(update_json)))
+            # self._logger.info("\nupdate_json %s " % (json.dumps(update_json)))
             
             self._connector.publish_depth(symbol, book, depth_json, update_json)
             
@@ -615,7 +615,7 @@ class Publisher:
                         "LastPx": px,
                         "Qty": qty}
             
-            # self._connector.publish_trade(trade_json)
+            self._connector.publish_trade(trade_json)
             
         except Exception as e:
             self._logger.warning("[E] pub_tradex: ")
