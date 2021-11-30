@@ -315,6 +315,7 @@ class KLineSvc:
             self._logger.info("slow_period: %d, running_mode: %s" % (int(slow_period), running_mode))    
             self._is_debug = is_debug 
             self._name = "KlineSvc"
+            self.__topic_list = dict()
             
             if is_redis:
                 self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"                
@@ -330,7 +331,6 @@ class KLineSvc:
             self.__slow_period = int(slow_period)
             self.__mode = running_mode
             self.__verification_tag = False
-            self.__topic_list = dict()
 
             self._publish_count_dict = {
                 "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
