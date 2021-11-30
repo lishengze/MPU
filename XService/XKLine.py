@@ -172,7 +172,7 @@ class KafkaConn(MiddleConnector):
                         exchange = trade_data["Exchange"]
                         trade_topic = symbol+ SYMBOL_EXCHANGE_SEPARATOR + exchange
                         
-                        self._kline_main.update_kline(trade_topic, to_datetime(trade_data["Time"]), 
+                        self._kline_main.update_kline(trade_topic, to_datetime(trade_data["TimeArrive"]), 
                                                       float(trade_data["LastPx"]), float(trade_data["Qty"]), 
                                                       symbol, exchange)
 
@@ -272,6 +272,7 @@ class KLine:
             if len(klines) == 0 or ts > klines[-1][0]:
                 # new kline
                 kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange]
+                self._logger.info("New Kline" + str(kline))
                 klines.append(kline)
             else:
                 kline = klines[-1]
