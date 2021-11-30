@@ -108,17 +108,16 @@ class KafkaConn:
             if topic in self._topic_list:
                 return True
             else:
-                create_topics = self.get_created_topic
+                create_topics = self.get_created_topic()
                 if topic not in create_topics:
-                    pass
-                    self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
-                    
+                    self.create_topic(topic)                    
         except Exception as e:
             self._logger.warning("[E] check_topic: \n%s" % (traceback.format_exc()))    
             
     def publish_msg(self, topic:str, msg:str):
         try:
             if self._producer.bootstrap_connected() or True:
+                self.check_topic(topic)
                 self._producer.send(topic, value=bytes(msg.encode()))
                 # self._logger.info(topic + " " + msg)
             else:
