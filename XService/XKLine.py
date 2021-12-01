@@ -21,9 +21,9 @@ from Logger import *
 
 from pprint import pprint
 
-kline1_topic = "KLINE"
+kline1_topic = "KLINEx"
 #kline5_topic = "KLINE5"
-kline60_topic = "SLOW_KLINE"
+kline60_topic = "SLOW_KLINEx"
 #klineday_topic = "KLINEd"
 total_kline_type = [kline1_topic]
 
