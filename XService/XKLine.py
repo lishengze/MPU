@@ -267,12 +267,12 @@ class KLine:
         except Exception as e:
             self._logger.warning("[E]KLine: " + traceback.format_exc())
 
-    def _update_klines(self, klines, klinetime, price, volume, symbol, exchange):
+    def _update_klines(self, klines, klinetime, price, volume, symbol, exchange, resolution):
         try:
             ts = int((klinetime - self.epoch).total_seconds())
             if len(klines) == 0 or ts > klines[-1][0]:
                 # new kline
-                kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange]
+                kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange, resolution]
                 
                 # if symbol == "BTC_USDT":
                 #     self._logger.info("New Kline" + str(kline))
@@ -295,12 +295,12 @@ class KLine:
             # 1min kline
             wait_secs = float(exg_time.strftime("%S.%f"))
             tval = exg_time - datetime.timedelta(seconds=wait_secs)
-            self._update_klines(self.klines[kline1_topic], tval, price, volume, symbol, exchange)
+            self._update_klines(self.klines[kline1_topic], tval, price, volume, symbol, exchange, 60)
 
             # 60min kline
             # wait_mins = float(tval.strftime("%M"))
             # tval = tval - datetime.timedelta(minutes=wait_mins)
-            # self._update_klines(self.klines[kline60_topic], tval, price, volume, symbol, exchange)
+            # self._update_klines(self.klines[kline60_topic], tval, price, volume, symbol, exchange, 3600)
             
         except Exception as e:
             self._logger.warning("[E]new_trade: " + traceback.format_exc())
@@ -441,7 +441,9 @@ class KLineSvc:
                         exchange = topic_atom_list[1]
                         
                         for kline_type, klines in kline.klines.items():
-                            self._connector.publish_kline(kline_type, symbol, exchange, json.dumps(list(klines)[-1:]))
+                            # self._connector.publish_kline(kline_type, symbol, exchange, json.dumps(list(klines)[-1:]))
+                            
+                            self._connector.publish_kline(kline_type, symbol, exchange, json.dumps(klines[-1]))
                             
                             self._update_statistic_info(kline_type, topic)
 
