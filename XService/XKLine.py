@@ -33,6 +33,12 @@ DEPTH_HEAD = "DEPTHx"
 DEPTH_UPDATE_HEAD = "UPDATEx"
 TRADE_HEAD = "TRADEx"
 
+def get_trade_statistic_type(trade_type):
+    return "In_" + trade_type;
+
+def get_kline_statistic_type(kline_type):
+    return "Out_" + kline_type;
+
 g_redis_config_file_name = os.path.dirname(os.path.abspath(__file__))+ "/kline_redis_config.json"
 
 def get_datetime_str():
@@ -171,6 +177,8 @@ class KafkaConn(MiddleConnector):
                         symbol = trade_data["Symbol"]
                         exchange = trade_data["Exchange"]
                         trade_topic = symbol+ SYMBOL_EXCHANGE_SEPARATOR + exchange
+                        
+                        self._kline_main._update_statistic_info(get_trade_statistic_type(TRADE_HEAD), trade_topic)
                         
                         self._kline_main.update_kline(trade_topic, to_datetime(trade_data["TimeArrive"]), 
                                                       float(trade_data["LastPx"]), float(trade_data["Qty"]), 
@@ -334,7 +342,8 @@ class KLineSvc:
             }
 
             for kline_type in total_kline_type:
-                self._publish_count_dict[kline_type] = {}
+                self._publish_count_dict[get_kline_statistic_type(kline_type)] = {}
+            self._publish_count_dict[get_trade_statistic_type(TRADE_HEAD)] = {}
 
             self._timer_secs = 10
                                     
@@ -375,13 +384,13 @@ class KLineSvc:
         except Exception as e:
             self._logger.warning("[E]print_publish_info: " + traceback.format_exc())
 
-    def _update_statistic_info(self, kline_type, topic):
+    def _update_statistic_info(self, item_type, topic):
         try:
-            if kline_type in self._publish_count_dict:
-                if topic in self._publish_count_dict[kline_type]:
-                    self._publish_count_dict[kline_type][topic] += 1
+            if item_type in self._publish_count_dict:
+                if topic in self._publish_count_dict[item_type]:
+                    self._publish_count_dict[item_type][topic] += 1
                 else:
-                    self._publish_count_dict[kline_type][topic] = 1                
+                    self._publish_count_dict[item_type][topic] = 1                
 
         except Exception as e:
             self._logger.warning("[E]_update_statistic_info: " + traceback.format_exc())
@@ -448,7 +457,7 @@ class KLineSvc:
                             
                             self._connector.publish_kline(kline_type, symbol, exchange, json.dumps(klines[-1]))
                             
-                            self._update_statistic_info(kline_type, topic)
+                            self._update_statistic_info(get_kline_statistic_type(kline_type), topic)
 
                     self.__verification_tag = (now_time.minute + 1) % 60
                 else:
