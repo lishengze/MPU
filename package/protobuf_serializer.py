@@ -2,20 +2,23 @@ import  os
 import  sys
 
 from data_struct import *
-# from proto.python.market_data_pb2 import *
 
 def get_grandfather_dir():
     parent = os.path.dirname(os.path.realpath(__file__))
     garder = os.path.dirname(parent)    
     return garder
 
-g_proto_dir = get_grandfather_dir() +"/proto/python"
-
-print(g_proto_dir)
-sys.path.append(g_proto_dir)
+def get_proto_dir():
+    garder = get_grandfather_dir()
+    if garder.find('\\') != -1:
+        return garder + "\proto\python"
+    else:
+        return garder + "/proto/python"
+        
+print(get_proto_dir())
+sys.path.append(get_proto_dir())    
 
 from market_data_pb2 import *
-
 
 def set_proto_depth_list(dst_depth_list_proto, src_depth_list_local):
     
@@ -34,90 +37,160 @@ def set_proto_depth_list(dst_depth_list_proto, src_depth_list_local):
             exchange_volume.precise = depth.volume_by_exchanges[symbol].precise
             new_depth.volume_by_exchanges[symbol] = exchange_volume
     
-        dst_depth_list_proto.append(new_depth)
+        dst_depth_list_proto.append(new_depth)        
 
+def set_local_depth_list(dst_depth_list_local, src_depth_list_proto):    
+    for depth in src_depth_list_proto:
+        new_depth = SDepth()
+        
+        new_depth.price.value = depth.price.value
+        new_depth.price.precise = depth.price.precise
+        
+        new_depth.volume.value = depth.volume.value
+        new_depth.volume.precise = depth.volume.precise      
+        
+        for symbol in depth.volume_by_exchanges:
+            exchange_volume = SDecimal()
+            exchange_volume.value = depth.volume_by_exchanges[symbol].value
+            exchange_volume.precise = depth.volume_by_exchanges[symbol].precise
+            new_depth.volume_by_exchanges[symbol] = exchange_volume
+    
+        # print('**')
+        
+        dst_depth_list_local.append(new_depth)
+
+    # print(len(dst_depth_list_local))
+        
 class ProtoSerializer:
     def __init__(self, logger=None):
         self._logger = logger
         
     def decode_depth(self, src_str):
-        pass
-    
+        proto_quote = DepthQuote()
+        proto_quote.ParseFromString(src_str)
+
+        local_quote = SDepthQuote()
+
+        local_quote.symbol = proto_quote.symbol
+        local_quote.exchange = proto_quote.exchange
+        local_quote.sequence_no = proto_quote.sequence_no        
+        local_quote.origin_time = proto_quote.origin_time
+        local_quote.arrive_time = proto_quote.arrive_time
+        local_quote.server_time = proto_quote.server_time        
+        local_quote.price_precise = proto_quote.price_precise
+        local_quote.volume_precise = proto_quote.volume_precise
+        local_quote.amount_precise = proto_quote.amount_precise 
+        
+        local_quote.is_snap = proto_quote.is_snap
+
+        # print(len(local_quote.asks), len(local_quote.bids))
+
+        set_local_depth_list(local_quote.asks, proto_quote.asks)
+        set_local_depth_list(local_quote.bids, proto_quote.bids)
+
+        return local_quote
+
     def decode_kline(self, src_str):
-        pass
+        proto_kline = KlineData()
+        proto_kline.ParseFromString(src_str)
+
+        local_kline = SKlineData()
+    
+        local_kline.time = proto_kline.time
+        local_kline.symbol = proto_kline.symbol
+        local_kline.exchange = proto_kline.exchange
+        local_kline.resolution = proto_kline.resolution
+        
+        local_kline.px_open.value = proto_kline.px_open.value
+        local_kline.px_open.precise = proto_kline.px_open.precise
+        
+        local_kline.px_high.value = proto_kline.px_high.value
+        local_kline.px_high.precise = proto_kline.px_high.precise       
+        
+        local_kline.px_low.value = proto_kline.px_low.value
+        local_kline.px_low.precise = proto_kline.px_low.precise       
+        
+        local_kline.px_close.value = proto_kline.px_close.value
+        local_kline.px_close.precise = proto_kline.px_close.precise    
+        
+        local_kline.volume.value = proto_kline.volume.value
+        local_kline.volume.precise = proto_kline.volume.precise    
+
+        return local_kline
     
     def decode_trade(self, src_str):
-        new_trade = TradeData()
-        new_trade.ParseFromString(src_str)
+        proto_trade = TradeData()
+        proto_trade.ParseFromString(src_str)
         
-        trade_data = STradeData()        
+        local_trade = STradeData()        
         
-        trade_data.time = new_trade.time;
-        trade_data.exchange = new_trade.exchange;
-        trade_data.symbol = new_trade.symbol;
+        local_trade.time = proto_trade.time;
+        local_trade.exchange = proto_trade.exchange;
+        local_trade.symbol = proto_trade.symbol;
         
-        trade_data.price.value = new_trade.price.value
-        trade_data.price.precise = new_trade.price.precise
+        local_trade.price.value = proto_trade.price.value
+        local_trade.price.precise = proto_trade.price.precise
         
-        trade_data.volume.value = new_trade.volume.value
-        trade_data.volume.precise = new_trade.volume.precise
+        local_trade.volume.value = proto_trade.volume.value
+        local_trade.volume.precise = proto_trade.volume.precise
         
-        return trade_data
+        return local_trade
         
-    def encode_depth(self, quote_src:SDepthQuote):
-        new_quote = DepthQuote()
-        new_quote.symbol = quote_src.symbol
-        new_quote.exchange = quote_src.exchange
-        new_quote.sequence_no = quote_src.sequence_no        
-        new_quote.origin_time = quote_src.origin_time
-        new_quote.arrive_time = quote_src.arrive_time
-        new_quote.server_time = quote_src.server_time        
-        new_quote.price_precise = quote_src.price_precise
-        new_quote.volume_precise = quote_src.volume_precise
-        new_quote.amount_precise = quote_src.amount_precise 
+    def encode_depth(self, local_quote:SDepthQuote):
+        proto_quote = DepthQuote()
+        proto_quote.symbol = local_quote.symbol
+        proto_quote.exchange = local_quote.exchange
+        proto_quote.sequence_no = local_quote.sequence_no        
+        proto_quote.origin_time = local_quote.origin_time
+        proto_quote.arrive_time = local_quote.arrive_time
+        proto_quote.server_time = local_quote.server_time        
+        proto_quote.price_precise = local_quote.price_precise
+        proto_quote.volume_precise = local_quote.volume_precise
+        proto_quote.amount_precise = local_quote.amount_precise 
         
-        new_quote.is_snap = quote_src.is_snap
+        proto_quote.is_snap = local_quote.is_snap
         
-        set_proto_depth_list(new_quote.asks, quote_src.asks)
-        set_proto_depth_list(new_quote.bids, quote_src.bids)
+        set_proto_depth_list(proto_quote.asks, local_quote.asks)
+        set_proto_depth_list(proto_quote.bids, local_quote.bids)
                                  
-        return new_quote.SerializeToString()
+        return proto_quote.SerializeToString(), proto_quote
     
-    def encode_kline(self, kline_src:SKlineData):
-        new_kline = KlineData()
-        new_kline.time = kline_src.time
-        new_kline.symbol = kline_src.symbol
-        new_kline.exchange = kline_src.exchange
-        new_kline.resolution = kline_src.resolution
+    def encode_kline(self, local_kline:SKlineData):
+        proto_kline = KlineData()
+        proto_kline.time = local_kline.time
+        proto_kline.symbol = local_kline.symbol
+        proto_kline.exchange = local_kline.exchange
+        proto_kline.resolution = local_kline.resolution
         
-        new_kline.px_open.value = kline_src.px_open.value
-        new_kline.px_open.precise = kline_src.px_open.precise
+        proto_kline.px_open.value = local_kline.px_open.value
+        proto_kline.px_open.precise = local_kline.px_open.precise
         
-        new_kline.px_high.value = kline_src.px_high.value
-        new_kline.px_high.precise = kline_src.px_high.precise       
+        proto_kline.px_high.value = local_kline.px_high.value
+        proto_kline.px_high.precise = local_kline.px_high.precise       
         
-        new_kline.px_low.value = kline_src.px_low.value
-        new_kline.px_low.precise = kline_src.px_low.precise       
+        proto_kline.px_low.value = local_kline.px_low.value
+        proto_kline.px_low.precise = local_kline.px_low.precise       
         
-        new_kline.px_close.value = kline_src.px_close.value
-        new_kline.px_close.precise = kline_src.px_close.precise    
+        proto_kline.px_close.value = local_kline.px_close.value
+        proto_kline.px_close.precise = local_kline.px_close.precise    
         
-        new_kline.volume.value = kline_src.volume.value
-        new_kline.volume.precise = kline_src.volume.precise                               
+        proto_kline.volume.value = local_kline.volume.value
+        proto_kline.volume.precise = local_kline.volume.precise                               
         
-        return new_kline.SerializeToString()        
+        return proto_kline.SerializeToString(), proto_kline
     
-    def encode_trade(self, trade_src:STradeData):
-        new_trade = TradeData()
-        new_trade.time = trade_src.time
-        new_trade.symbol = trade_src.symbol
-        new_trade.price.value = trade_src.price.value
-        new_trade.price.precise = trade_src.price.precise
+    def encode_trade(self, local_trade:STradeData):
+        proto_trade = TradeData()
+        proto_trade.time = local_trade.time
+        proto_trade.symbol = local_trade.symbol
+        proto_trade.exchange = local_trade.exchange
+        proto_trade.price.value = local_trade.price.value
+        proto_trade.price.precise = local_trade.price.precise
         
-        new_trade.volume.value = trade_src.volume.value
-        new_trade.volume.precise = trade_src.volume.precise       
+        proto_trade.volume.value = local_trade.volume.value
+        proto_trade.volume.precise = local_trade.volume.precise       
         
-        return new_trade.SerializeToString()
+        return proto_trade.SerializeToString(), proto_trade
     
 
 def test_market_data():
@@ -138,8 +211,103 @@ def test_market_data():
     print(trans_quote.asks[0].price.value)
     print(trans_quote.asks[0].price.precise)
 
+def get_proto_decimal_value(src:Decimal):
+        if src.precise == 0:
+            return src.value
+        else:
+            return float(src.value) / (10**src.precise)
+
+def get_proto_quote_meta(quote):
+    return ("exchange: %s, symbol: %s, ask.len: %d, bids.len: %d \n" % \
+            (quote.exchange, quote.symbol, len(quote.asks), len(quote.bids)) )
+
+def get_proto_kline_meta(kline):
+    return ("exchange: %s, symbol: %s, px_open: %f, px_high: %f, px_low:%f, px_close: %f \n" % \
+            (kline.exchange, kline.symbol, \
+            get_proto_decimal_value(kline.px_open),  \
+            get_proto_decimal_value(kline.px_high), \
+            get_proto_decimal_value(kline.px_low), \
+            get_proto_decimal_value(kline.px_close)))
+
+def get_proto_trade_meta(trade):
+    result =  ("exchange: %s, symbol: %s, price: %f, volume: %f" % \
+                (trade.exchange, trade.symbol, \
+                get_proto_decimal_value(trade.price), \
+                get_proto_decimal_value(trade.volume)))
+
+    return result
+class TestMain(object):
+    def __init__(self) -> None:
+        self.serializer = ProtoSerializer()
+
+        
+
+    def test_quote(self):
+        new_quote = SDepthQuote()
+
+        new_depth = SDepth()
+        price = new_depth.price
+        price.value = 10000
+        price.precise = 4
+                
+        new_quote.asks.append(new_depth)
+        new_quote.bids.append(new_depth)
+
+        new_quote.exchange = "FTX"
+        new_quote.symbol = "BTC_USDT"
+
+        se_str, new_quote = self.serializer.encode_depth(new_quote)
+
+        print(get_proto_quote_meta(new_quote))
+        print("se_str.len: %d, : %s" % (len(se_str), se_str))
+
+        new_local_quote = self.serializer.decode_depth(se_str)
+        print(new_local_quote.meta_str())
+                
+    def test_kline(self):
+        local_kline = SKlineData()
+        local_kline.exchange = "FTX"
+        local_kline.symbol = "BTC_USDT"
+
+        local_kline.px_open = SDecimal(56789.11)
+        local_kline.px_high = SDecimal(55555.11)
+        local_kline.px_low = SDecimal(54555.11)
+        local_kline.px_close = SDecimal(57555.11)
+
+        se_str, new_kline = self.serializer.encode_kline(local_kline)
+
+        print(get_proto_kline_meta(new_kline))
+        print("se_str.len: %d, : %s" % (len(se_str), se_str))
+
+        new_local_kline = self.serializer.decode_kline(se_str)
+        print(new_local_kline.meta_str())        
+
+
+    def test_trade(self):
+        local_trade = STradeData()
+        local_trade.exchange = "FTX"
+        local_trade.symbol = "BTC_USDT"
+
+        local_trade.price = SDecimal(55555.1)  
+        local_trade.volume = SDecimal(0.0001)        
+
+        se_str, new_trade = self.serializer.encode_trade(local_trade)
+
+        print("se_str.len: %d, : %s" % (len(se_str), se_str))
+        print(get_proto_trade_meta(new_trade))
+
+        local_new_trade = self.serializer.decode_trade(se_str)
+
+        print(local_new_trade.meta_str())
+
+
 
 
 if __name__ == "__main__":
-    # TestPrtPwd()
-    test_market_data()
+    test_main = TestMain()
+
+    test_main.test_quote()
+
+    # test_main.test_kline()
+
+    # test_main.test_trade()

@@ -55,6 +55,14 @@ class SDepthQuote(object):
         self.is_snap = is_snap_
         self.asks = asks_
         self.bids = bids_
+        
+        # print(len(asks_), len(bids_))
+        
+    def meta_str(self):
+        result = ("exchange: %s, symbol: %s, ask.len: %d, bid.len: %d" % \
+                    (self.exchange, self.symbol, len(self.asks), len(self.bids)))
+
+        return result
 
 class STradeData(object):
     def __init__(self):
@@ -64,6 +72,10 @@ class STradeData(object):
         self.symbol = ""
         self.exchange = ""
         
+    def meta_str(self):
+        result =  ("exchange: %s, symbol: %s, price: %f, volume: %f" % \
+                    (self.exchange, self.symbol, self.price.get_value(), self.volume.get_value()))
+        return result
 class SKlineData(object):
     def __init__(self):
         self.time=0
@@ -78,6 +90,11 @@ class SKlineData(object):
         
         self.volume = SDecimal()
  
+    def meta_str(self):
+        result =  ("exchange: %s, symbol: %s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \
+                    (self.exchange, self.symbol, self.px_open.get_value(), self.px_high.get_value(), \
+                     self.px_low.get_value(), self.px_close.get_value()))
+        return result
  
 def test_decimal():
     a = 10000

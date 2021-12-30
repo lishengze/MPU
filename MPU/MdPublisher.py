@@ -36,6 +36,8 @@ import logging
 import requests
 import traceback
 import sys
+from package.data_struct import SDecimal, SDepth, SDepthQuote
+from package.tool import get_nano_time
 from sortedcontainers import SortedDict, sorteddict
 from datetime import datetime
 from collections import defaultdict
@@ -46,6 +48,37 @@ from kafka import KafkaClient
 from kafka import TopicPartition
 
 from kafka.admin import KafkaAdminClient, NewTopic
+
+def get_grandfather_dir():
+    parent = os.path.dirname(os.path.realpath(__file__))
+    garder = os.path.dirname(parent)    
+    return garder
+
+def get_proto_dir():
+    garder = get_grandfather_dir()
+    if garder.find('\\') != -1:
+        return garder + "\proto\python"
+    else:
+        return garder + "/proto/python"
+
+print(get_proto_dir())
+sys.path.append(get_proto_dir())    
+
+def get_package_dir():
+    garder = get_grandfather_dir()
+    if garder.find('\\') != -1:
+        return garder + "\package"
+    else:
+        return garder + "/package"
+
+print(get_package_dir())
+sys.path.append(get_package_dir())
+
+
+from market_data_pb2 import *
+from data_struct import *
+from protobuf_serializer import *
+from tool import *
 
 TYPE_SEPARATOR = "-"
 SYMBOL_EXCHANGE_SEPARATOR = "."
@@ -400,27 +433,38 @@ class Publisher:
         except Exception as e:
             self._logger.warning("[E] _update_msg_seq: \n%s" % (traceback.format_exc()))      
             
+    def _set_depth_from_book(self, dst_depth:list, book:list):
+        dst_depth.clear()
+        for price in book:
+            new_depth = SDepth()
+            new_depth.price = SDecimal(price)
+            new_depth.volume = SDecimal(book[price])
+            dst_depth.append(new_depth)
+
     def _get_depth_json(self, exg_time, symbol, book):
         try:
-            time_arrive = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
             if not exg_time:
-                exg_time = time_arrive
+                exg_time = get_nano_time()
 
-            depth_msg = {"Msg_seq": self.__msg_seq,
-                        "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                        "Exchange": self.__exchange,
-                        "Symbol": symbol,
-                        "Time": exg_time,
-                        "TimeArrive": time_arrive,
-                        "Type": "snap",
-                        "AskDepth": {px: qty for px, qty in book["AskDepth"].items()[:100]},
-                        "BidDepth": {px: qty for px, qty in book["BidDepth"].items()[:-100:-1]}
-                        }
-            return depth_msg
+            depth_quote = SDepthQuote()
+            depth_quote.symbol =  symbol
+            depth_quote.exchange = self.__exchange
+            depth_quote.sequence_no = self.__msg_seq_symbol[symbol]
+            depth_quote.origin_time = exg_time
+            depth_quote.server_time = get_nano_time()
+            depth_quote.arrive_time = 0
+            depth_quote.is_snap = True
+
+            self._set_depth_from_book(depth_quote.asks, book["AskDepth"])
+            self._set_depth_from_book(depth_quote.bids, book["BidDepth"])
+
+            return depth_quote
+
+
         except Exception as e:
             self._logger.warning("[E] _get_depth_json: \n%s" % (traceback.format_exc()))     
     
-    def _get_update_json(self, symbol, depth_update,  exg_time, time_arrive, revised_ask=None, revised_bid=None,):
+    def _get_update_json(self, symbol, depth_update, revised_ask=None, revised_bid=None,):
         try:
             if self._is_depth_invalid(depth_update):
                 return None
@@ -431,16 +475,19 @@ class Publisher:
             if revised_bid:
                 depth_update["BID"].update(revised_bid)
 
-            update_msg = {"Msg_seq": self.__msg_seq,
-                            "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-                            "Exchange": self.__exchange,
-                            "Symbol": symbol,
-                            "Time": exg_time,
-                            "TimeArrive": time_arrive,
-                            "Type": "update",
-                            "AskUpdate": depth_update["ASK"],
-                            "BidUpdate": depth_update["BID"]}
-            return update_msg
+            depth_quote = SDepthQuote()
+            depth_quote.symbol =  symbol
+            depth_quote.exchange = self.__exchange
+            depth_quote.sequence_no = self.__msg_seq_symbol[symbol]
+            depth_quote.origin_time = update_quote.origin_time
+            depth_quote.server_time = get_nano_time()
+            depth_quote.arrive_time = 0
+            depth_quote.is_snap = False
+
+            self._set_depth_from_book(depth_quote.asks, depth_update["ASK"])
+            self._set_depth_from_book(depth_quote.bids, depth_update["BID"])
+            
+            return depth_quote
         except Exception as e:
             self._logger.warning("[E] _get_update_json: \n%s" % (traceback.format_exc()))              
             
@@ -456,13 +503,13 @@ class Publisher:
 
             self._update_msg_seq(symbol)
 
-            depth_json = self._get_depth_json(exg_time, symbol, book)
+            snap_quote = self._get_depth_json(exg_time, symbol, book)
             
-            update_json = self._get_update_json(symbol, depth_update, depth_json["Time"], depth_json["TimeArrive"], revised_ask, revised_bid)
+            update_quote = self._get_update_json(symbol, depth_update, revised_ask, revised_bid)
             
             # self._logger.info("\nupdate_json %s " % (json.dumps(update_json)))
             
-            self._connector.publish_depth(symbol, book, depth_json, update_json)
+            self._connector.publish_depth(symbol, book, snap_quote, update_quote)
             
             if raise_exception_flag:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
@@ -509,13 +556,13 @@ class Publisher:
               
             self._update_msg_seq(symbol)
             
-            depth_json = self._get_depth_json(exg_time, symbol, book)
+            snap_quote = self._get_depth_json(exg_time, symbol, book)
                             
-            update_json = self._get_update_json(symbol, update_book, depth_json["Time"], depth_json["TimeArrive"])
+            update_quote = self._get_update_json(symbol, update_book)
             
             # self._logger.info("\n%s, depth_json: %s" % (symbol, json.dumps(depth_json)))
 
-            self._connector.publish_depth(symbol, book, depth_json, update_json)
+            self._connector.publish_depth(symbol, book, snap_quote, update_quote)
                            
         except Exception as e:
             self._logger.warning("[E] process_depth_update: \n%s" % (traceback.format_exc()))   
