@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package Proto3.MarketData;
+
+// struct SDepthQuote {
+//     type_uint32 raw_length; // 原始包大小（用来比较压缩效率）
+//     string exchange;        // 交易所
+//     string symbol;          // 代码
+//     type_seqno sequence_no; // 序号
+//     type_tick origin_time;  // 交易所时间  单位微妙
+//     type_tick arrive_time;  // 服务器收到时间 单位毫秒
+//     type_tick server_time;  // 服务器处理完成时间 单位毫秒
+//     uint32 price_precise;   // 价格精度（来自配置中心）
+//     uint32 volume_precise;  // 成交量精度（来自配置中心）
+//     uint32 amount_precise;  // 成交额精度（来自配置中心）
+//     map<SDecimal, SDepth> asks; // 买盘
+//     map<SDecimal, SDepth> bids; // 卖盘
+//     bool is_snap{false};
+// }
+
+message Decimal
+{
+    uint64 value = 1;
+    uint32 precise = 2;
+};
+
+message Depth
+{
+    Decimal price  = 1;
+    Decimal volume = 2;
+    map<string, Decimal> volume_by_exchanges = 3;
+};
+
+message DepthQuote
+{
+    string exchange = 1;
+    string symbol = 2;
+    uint64 sequence_no = 3;
+    uint64 origin_time = 4;
+    uint64 arrive_time = 5;
+    uint64 server_time = 6;
+    uint32 price_precise = 7;
+    uint32 volume_precise = 8;
+    uint32 amount_precise = 9;
+    bool   is_snap = 10;
+    repeated Depth asks = 11;
+    repeated Depth bids = 12;
+};
+
+message KlineData
+{
+    uint64  time = 1;
+    string  exchange = 2;
+    string  symbol = 3;    
+    Decimal px_open = 4;
+    Decimal px_high = 5;
+    Decimal px_low = 6;
+    Decimal px_close = 7;
+    Decimal volume = 8;
+    uint32  resolution = 9;
+};    
+
+message TradeData
+{
+    uint64   time = 1;
+    Decimal  price = 2;
+    Decimal  volume = 3;
+    string   symbol = 4;
+    string   exchange = 5;
+};    

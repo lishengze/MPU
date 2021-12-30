@@ -333,7 +333,6 @@ class Publisher:
             self._logger.warning("[E] _get_cached_book: \n%s" % (traceback.format_exc()))      
             return None
 
-    
     def _update_depth_volume(self, depth_update, book):
         try:
             for side in depth_update.keys():
