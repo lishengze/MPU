@@ -2,6 +2,24 @@
 import os
 import sys
 
+from enum import Enum
+
+DEPTH_TYPE = "DEPTHx"
+TRADE_TYPE = "TRADEx"
+KLINE_TYPE = "KLINEx"
+
+class SERIALIXER_TYPE(Enum):
+    JSON = 1
+    PROTOBUF = 2
+    
+class NET_SERVER_TYPE(Enum):
+    REDIS = 1
+    KAFKA = 2
+    
+class DATA_TYPE(Enum):
+    DEPTH = 1
+    KLINE = 2
+    TRADE = 3
 class SDecimal(object):
     def __init__(self, value_:int=0, precise_:int=0):
         self.value = value_
@@ -22,10 +40,7 @@ class SDecimal(object):
             
             tmp_value = str_value.replace('.', '')
             self.value = int(tmp_value)
-            
-        # print("precise: %d, value: %d \n" % (self.precise, self.value))
         
-    
     def get_value(self):
         if self.precise == 0:
             return self.value
@@ -77,7 +92,7 @@ class STradeData(object):
                     (self.exchange, self.symbol, self.price.get_value(), self.volume.get_value()))
         return result
 class SKlineData(object):
-    def __init__(self):
+    def __init__(self, ):
         self.time=0
         self.symbol = ""
         self.exchange = ""

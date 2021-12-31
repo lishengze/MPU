@@ -1,4 +1,7 @@
 {
     "server_list":["127.0.0.1:9117"],
-    "depth_update_count":5
+    "depth_update_count":5,
+    "symbol_list": ["BTC_USDT"],
+    "exchange_list": ["FTX"],
+    "data_type": ["TRADEx"]
 }

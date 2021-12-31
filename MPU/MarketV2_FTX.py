@@ -105,14 +105,19 @@ class FTX(object):
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
             self._ping_secs = 10
+            # self._symbol_dict = {
+            #     "BTC/USDT":"BTC_USDT",
+            #     "ETH/USDT":"ETH_USDT",
+            #     "BTC/USD":"BTC_USD",
+            #     "ETH/USD":"ETH_USD",
+            #     "USDT/USD":"USDT_USD",
+            #     "ETH/BTC":"ETH_BTC"                        
+            # }
+            
             self._symbol_dict = {
-                "BTC/USDT":"BTC_USDT",
-                "ETH/USDT":"ETH_USDT",
-                "BTC/USD":"BTC_USD",
-                "ETH/USD":"ETH_USD",
-                "USDT/USD":"USDT_USD",
-                "ETH/BTC":"ETH_BTC"                        
+                "BTC/USDT":"BTC_USDT"                      
             }
+                       
             self._logger = Logger(program_name="FTX")
             self._error_msg_list = ["", ""]
             self.__exchange_name = "FTX"

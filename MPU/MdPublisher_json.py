@@ -49,16 +49,16 @@ from kafka.admin import KafkaAdminClient, NewTopic
 
 TYPE_SEPARATOR = "-"
 SYMBOL_EXCHANGE_SEPARATOR = "."
-DEPTH_HEAD = "DEPTHx"
+DEPTH_TYPE = "DEPTHx"
 DEPTH_UPDATE_HEAD = "UPDATEx"
-TRADE_HEAD = "TRADEx"
+TRADE_TYPE = "TRADEx"
 
 def get_datetime_str():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 def get_depth_topic(symbol, exchange, logger=None):
     try:
-        return DEPTH_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
+        return DEPTH_TYPE + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
@@ -72,7 +72,7 @@ def get_depth_update_topic(symbol, exchange, logger=None):
         
 def get_trade_topic(symbol, exchange, logger=None):
     try:
-        return TRADE_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
+        return TRADE_TYPE + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
     except Exception as e:
         if logger:
             logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   

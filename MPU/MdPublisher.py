@@ -54,16 +54,6 @@ def get_grandfather_dir():
     garder = os.path.dirname(parent)    
     return garder
 
-def get_proto_dir():
-    garder = get_grandfather_dir()
-    if garder.find('\\') != -1:
-        return garder + "\proto\python"
-    else:
-        return garder + "/proto/python"
-
-print(get_proto_dir())
-sys.path.append(get_proto_dir())    
-
 def get_package_dir():
     garder = get_grandfather_dir()
     if garder.find('\\') != -1:
@@ -74,251 +64,17 @@ def get_package_dir():
 print(get_package_dir())
 sys.path.append(get_package_dir())
 
+from package.tool import *
+from package.kafka_server import *
+from package.data_struct import *
 
-from market_data_pb2 import *
-from data_struct import *
-from protobuf_serializer import *
-from tool import *
-
-TYPE_SEPARATOR = "-"
-SYMBOL_EXCHANGE_SEPARATOR = "."
-DEPTH_HEAD = "DEPTHx"
-DEPTH_UPDATE_HEAD = "UPDATEx"
-TRADE_HEAD = "TRADEx"
-
-def get_datetime_str():
-    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-def get_depth_topic(symbol, exchange, logger=None):
-    try:
-        return DEPTH_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
-    except Exception as e:
-        if logger:
-            logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
-        
-def get_depth_update_topic(symbol, exchange, logger=None):
-    try:
-        return DEPTH_UPDATE_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
-    except Exception as e:
-        if logger:
-            logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))           
-        
-def get_trade_topic(symbol, exchange, logger=None):
-    try:
-        return TRADE_HEAD + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
-    except Exception as e:
-        if logger:
-            logger.warning("[E] get_depth_topic: \n%s" % (traceback.format_exc()))   
-            
-class KafkaConn:
-    def __init__(self, config:dict, logger = None, debug=False):
-        try:
-            self._server_list = config["server_list"]
-            self._logger = logger
-            
-            self._client = KafkaAdminClient(bootstrap_servers=self._server_list, client_id='test')
-            
-            
-            self._producer = KafkaProducer(bootstrap_servers=self._server_list)        
-            if self._producer.bootstrap_connected():
-                self._logger.info("Producer Connect %s Successfully" % (str(self._server_list)))
-            else:
-                self._logger.warning("Producer Not Connected %s" % (str(self._server_list)))    
-                        
-            self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=self._server_list)
-            if self._consumer.bootstrap_connected():
-                self._logger.info("Consumer Connect %s Successfully" % (str(self._server_list)))
-            else:
-                self._logger.warning("Consumer Not Connected %s" % (str(self._server_list)))              
-            
-            self._topic_list = []
-                    
-        except Exception as e:
-            if self._logger:
-                self._logger.warning("[E] __init__: \n%s" % (traceback.format_exc()))   
-                    
-    def create_topic(self, topic):
-        try:
-    
-            self._logger.info("Original TopicList: \n%s" % (str(self.get_created_topic())))
-    
-            topic_list = []
-            topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=3))
-            self._client.create_topics(new_topics=topic_list, validate_only=False)
-        
-        
-            self._logger.info("After Create Topic %s, TopicList: \n%s" % (topic, str(self.get_created_topic())))                
-            return self._consumer.topics()
-        except Exception as e:
-            self._logger.warning("[E] create_topic: \n%s" % (traceback.format_exc()))   
-                     
-    def get_created_topic(self):
-        try:
-            return self._consumer.topics()
-        except Exception as e:
-            self._logger.warning("[E] get_created_topic: \n%s" % (traceback.format_exc()))            
-        
-    def check_topic(self, topic):
-        try:
-            if topic in self._topic_list:
-                return True
-            else:
-                create_topics = self.get_created_topic()
-                if topic not in create_topics:
-                    self.create_topic(topic)        
-                else:
-                    self._topic_list.append(topic)    
-                                                    
-        except Exception as e:
-            self._logger.warning("[E] check_topic: \n%s" % (traceback.format_exc()))    
-            
-    def publish_msg(self, topic:str, msg:str):
-        try:
-            if self._producer.bootstrap_connected() or True:
-                self.check_topic(topic)
-                self._producer.send(topic, value=bytes(msg.encode()))
-                # self._logger.info(topic + " " + msg)
-            else:
-                self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
-        except Exception as e:
-            self._logger.warning("[E] publish_msg: \n%s" % (traceback.format_exc()))    
-            
-class RedisConn:
-    def __init__(self, config:dict, logger = None, debug=False):
-        self.__debug = debug
-        self._server_list = config["server_list"]
-        self.__redis_conn = redis.Redis(host=config["HOST"],
-                                        port=config["PORT"],
-                                        password=config["PWD"])
-        self.__redis_pubsub = self.__redis_conn.pubsub()
-        self._logger = logger
-                 
-    def publish(self, channel: str, message):
-        try:
-            if not self.__debug:
-                self.__redis_conn.publish(channel=channel, message=message)
-            else:
-                self._logger.info(f"{channel}\n{message}")
-        except Exception as e:
-            self._logger.warning("[E] __publish: %s" % (traceback.format_exc()))
-
-    def set(self, channel: str, message):
-        try:
-            if not self.__debug:  # All value in redis will expire after 2 days
-                self.__redis_conn.set(name=channel, value=message, ex=172800)
-            else:
-                self._logger.info(f"{channel}\n{message}")
-        except Exception as e:
-            self._logger.warning("[E] __set: %s" % (traceback.format_exc()))
-
-    def crossing_snapshot(self, channel: str, message):
-        try:
-            if not self.__debug:
-                self.__redis_conn.hset(name="CROSSING_SNAPSHOT", key=channel, value=message)
-            else:
-                self._logger.info(f"CROSSING_SNAPSHOT/{channel}\n{message}")
-        except Exception as e:
-            self._logger.warning("[E] crossing_snapshot: %s" % (traceback.format_exc()))
-              
-class MiddleConn:
-    def __init__(self, config:dict, is_redis = False , logger = None, debug=False):
-        self._is_redis = is_redis
-        self._logger = logger
-
-        if is_redis:
-            self._redis_con = RedisConn(config, self._logger, debug)
-        else:
-            self._logger.info(config)
-            self._kafka_con = KafkaConn(config, self._logger, debug)  
-            self._kafka_depth_update_count = config["depth_update_count"]
-            self._kafka_curr_pubed_update_count = {}            
-        
-    def publish_depth(self, symbol, book, depth_json, update_json):
-        try:
-            if self._is_redis:
-                self._redis_publish_depth(symbol, book, depth_json, update_json)
-            else:
-                self._kafka_publish_depth(symbol, book, depth_json, update_json)
-            
-        except Exception as e:
-            self._logger.warning("[E] publish_depth: %s" % (traceback.format_exc()))    
-            
-    def publish_trade(self, trade_json):
-        try:
-            if not trade_json:
-                return
-            
-            if self._is_redis:
-                self._redis_publish_trade(trade_json)
-            else:
-                self._kafka_publish_trade(trade_json)
-        except Exception as e:
-            self._logger.warning("[E] publish_trade: %s" % (traceback.format_exc()))                    
-
-    def _redis_publish_depth(self, symbol, book, depth_json, update_json):
-        try:
-            if depth_json:
-                self._redis_con.set(channel=get_depth_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger),
-                                    message=json.dumps(depth_json))
-                
-                self._redis_con.crossing_snapshot(symbol, depth_json, book)
-            
-            if update_json:
-                self._redis_con.publish(channel=get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger), 
-                                        message=json.dumps(update_json))
-
-            # self._process_crossing_date(symbol, depth_json, book)
-            
-        except Exception as e:
-            self._logger.warning("[E] _redis_publish_depth: %s" % (traceback.format_exc()))
-            
-    def _kafka_publish_depth(self, symbol, book, depth_json, update_json):
-        try:
-            if symbol not in self._kafka_curr_pubed_update_count:
-                self._kafka_curr_pubed_update_count[symbol] = self._kafka_depth_update_count
-                
-            if self._kafka_curr_pubed_update_count[symbol] < self._kafka_depth_update_count:
-                if update_json:
-                    self._kafka_con.publish_msg(topic=get_depth_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger),  
-                                                msg=json.dumps(update_json))
-                    self._kafka_curr_pubed_update_count[symbol] += 1
-                else:
-                    self._logger.info("update_json is None")
-            else:
-                if depth_json:
-                    self._kafka_con.publish_msg(topic=get_depth_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger),  
-                                                msg=json.dumps(depth_json))
-                    self._kafka_curr_pubed_update_count[symbol] = 0
-                else:
-                    self._logger.info("depth_json is None")                    
-                
-        except Exception as e:
-            self._logger.warning("[E] _kafka_publish_depth: %s" % (traceback.format_exc()))
-                                        
-    def _redis_publish_trade(self, trade_json):
-        try:            
-            self._redis_con.publish(channel=get_trade_topic(trade_json["Symbol"], trade_json["Exchange"], self._logger), 
-                                    message=json.dumps(trade_json))
-                        
-        except Exception as e:
-            self._logger.warning("[E] _redis_publish_trade: ")
-            self._logger.warning(traceback.format_exc())    
-            
-    def _kafka_publish_trade(self, trade_json):
-        try:
-            self._kafka_con.publish_msg(topic=get_trade_topic(trade_json["Symbol"], trade_json["Exchange"], self._logger),  
-                                        msg=json.dumps(trade_json))
-        except Exception as e:
-            self._logger.warning("[E] _kafka_publish_trade: ")
-            self._logger.warning(traceback.format_exc())                       
-        
 class Publisher:
     def __init__(self, exchange: str, config: dict, is_redis = False , exchange_topic: str = None, debug_mode: bool = False, logger=None):
         self.__debug = debug_mode
         self.__crossing_flag = dict()  # {"Symbol": "Date"}
         self._logger = logger
 
-        self._connector = MiddleConn(config, is_redis, logger, debug_mode)
+        self._net_server = KafkaServer(config = config, serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
         
         self.__exchange = exchange
         self.__msg_seq = 0
@@ -441,7 +197,7 @@ class Publisher:
             new_depth.volume = SDecimal(book[price])
             dst_depth.append(new_depth)
 
-    def _get_depth_json(self, exg_time, symbol, book):
+    def _get_snap_quote(self, exg_time, symbol, book):
         try:
             if not exg_time:
                 exg_time = get_nano_time()
@@ -462,9 +218,9 @@ class Publisher:
 
 
         except Exception as e:
-            self._logger.warning("[E] _get_depth_json: \n%s" % (traceback.format_exc()))     
+            self._logger.warning("[E] _get_snap_quote: \n%s" % (traceback.format_exc()))     
     
-    def _get_update_json(self, symbol, depth_update, revised_ask=None, revised_bid=None,):
+    def _get_update_quote(self, symbol, depth_update, revised_ask=None, revised_bid=None,):
         try:
             if self._is_depth_invalid(depth_update):
                 return None
@@ -479,7 +235,7 @@ class Publisher:
             depth_quote.symbol =  symbol
             depth_quote.exchange = self.__exchange
             depth_quote.sequence_no = self.__msg_seq_symbol[symbol]
-            depth_quote.origin_time = update_quote.origin_time
+            depth_quote.origin_time = get_nano_time()
             depth_quote.server_time = get_nano_time()
             depth_quote.arrive_time = 0
             depth_quote.is_snap = False
@@ -489,7 +245,7 @@ class Publisher:
             
             return depth_quote
         except Exception as e:
-            self._logger.warning("[E] _get_update_json: \n%s" % (traceback.format_exc()))              
+            self._logger.warning("[E] _get_update_quote: \n%s" % (traceback.format_exc()))              
             
     def process_depth_update(self, symbol, depth_update, book, exg_time, raise_exception):
         try:
@@ -503,13 +259,13 @@ class Publisher:
 
             self._update_msg_seq(symbol)
 
-            snap_quote = self._get_depth_json(exg_time, symbol, book)
+            snap_quote = self._get_snap_quote(exg_time, symbol, book)
             
-            update_quote = self._get_update_json(symbol, depth_update, revised_ask, revised_bid)
+            update_quote = self._get_update_quote(symbol, depth_update, revised_ask, revised_bid)
             
-            # self._logger.info("\nupdate_json %s " % (json.dumps(update_json)))
+            # self._logger.info("\nupdate_json %s " % (json.dumps(update_quote)))
             
-            self._connector.publish_depth(symbol, book, snap_quote, update_quote)
+            self._net_server.publish_depth(symbol, book, snap_quote, update_quote)
             
             if raise_exception_flag:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
@@ -560,9 +316,9 @@ class Publisher:
                             
             update_quote = self._get_update_json(symbol, update_book)
             
-            # self._logger.info("\n%s, depth_json: %s" % (symbol, json.dumps(depth_json)))
+            # self._logger.info("\n%s, snap_quote: %s" % (symbol, json.dumps(snap_quote)))
 
-            self._connector.publish_depth(symbol, book, snap_quote, update_quote)
+            self._net_server.publish_depth(symbol, book, snap_quote, update_quote)
                            
         except Exception as e:
             self._logger.warning("[E] process_depth_update: \n%s" % (traceback.format_exc()))   
@@ -595,62 +351,6 @@ class Publisher:
             self._logger.warning("[E] pub_depthx: ")
             self._logger.warning(traceback.format_exc())
 
-    # def _process_crossing_date(self,symbol, depth_msg, book):
-    #     try:
-    #         if symbol in self.__crossing_flag:
-    #             if depth_msg["TimeArrive"][:10] != self.__crossing_flag[symbol]:
-    #                 depth_msg["AskDepth"] = book["AskDepth"]
-    #                 depth_msg["BidDepth"] = book["BidDepth"]
-    #                 self.self._redis_con.crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}", message=json.dumps(depth_msg))
-    #                 self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
-
-    #         else:
-    #             self.__crossing_flag.setdefault(symbol, depth_msg["TimeArrive"][:10])
-    #             depth_msg["AskDepth"] = book["AskDepth"]
-    #             depth_msg["BidDepth"] = book["BidDepth"]
-    #             self.self._redis_con.crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}", message=json.dumps(depth_msg))                                        
-    #     except Exception as e:
-    #         self._logger.warning("[E] _process_crossing_date: \n%s" % (traceback.format_exc()))        
-    
-    # def _process_crossing_date_trade(self, symbol, exg_time):
-    #     try:
-    #         if self._is_redis:
-    #             if symbol in self.__crossing_flag:
-    #                 if datetime.utcnow().strftime('%Y-%m-%d') != self.__crossing_flag[symbol]:
-    #                     book = self.__orderbook[symbol]
-    #                     depth_msg = {"Msg_seq": self.__msg_seq,
-    #                                 "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-    #                                 "Exchange": self.__exchange,
-    #                                 "Symbol": symbol,
-    #                                 "Time": exg_time,
-    #                                 "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
-    #                                 "AskDepth": book["AskDepth"],
-    #                                 "BidDepth": book["BidDepth"]
-    #                                 }
-
-    #                     self._redis_con.crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}", message=json.dumps(depth_msg))
-    #                     self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
-
-    #             elif symbol in self.__orderbook:  # Data's first day(not in __crossing_flag)
-    #                 book = self.__orderbook[symbol]
-    #                 depth_msg = {"Msg_seq": self.__msg_seq,
-    #                             "Msg_seq_symbol": self.__msg_seq_symbol[symbol],
-    #                             "Exchange": self.__exchange,
-    #                             "Symbol": symbol,
-    #                             "Time": exg_time,
-    #                             "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
-    #                             "AskDepth": book["AskDepth"],
-    #                             "BidDepth": book["BidDepth"]
-    #                             }
-    #                 self.self._redis_con.crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}", message=json.dumps(depth_msg))
-    #                 self.__crossing_flag[symbol] = depth_msg["TimeArrive"][:10]
-
-    #                 self.__crossing_flag.setdefault(symbol, depth_msg["TimeArrive"][:10])
-    #                 self.self._redis_con.crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}",
-    #                                         message=json.dumps(depth_msg))                                  
-    #     except Exception as e:
-    #         self._logger.warning("[E] _process_crossing_date_trade: \n%s" % (traceback.format_exc()))           
-
     def pub_tradex(self, symbol: str, direction: str, exg_time: str, px_qty: tuple):
         """
         Publish Trade record
@@ -662,18 +362,17 @@ class Publisher:
         """
         try:                  
             px, qty = px_qty
-            trade_json = {"Exchange": self.__exchange,
-                        "Symbol": symbol,
-                        "Time": exg_time,
-                        "TimeArrive": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f'),
-                        "Direction": direction,
-                        "LastPx": px,
-                        "Qty": qty}
+            trade_data = STradeData()
             
-            self._connector.publish_trade(trade_json)
+            trade_data.time = get_utc_nano_time()
+            trade_data.symbol = symbol
+            trade_data.exchange = self.__exchange
+            trade_data.price = SDecimal(px)
+            trade_data.exchange = SDecimal(px_qty)
+                    
+            self._net_server.publish_trade(trade_data)
             
         except Exception as e:
-            self._logger.warning("[E] pub_tradex: ")
             self._logger.warning(traceback.format_exc())
 
     def ding_robot(self, level: str, msg: str = "", event=None):

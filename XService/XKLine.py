@@ -29,9 +29,13 @@ total_kline_type = [kline1_topic]
 
 TYPE_SEPARATOR = "-"
 SYMBOL_EXCHANGE_SEPARATOR = "."
-DEPTH_HEAD = "DEPTHx"
+
 DEPTH_UPDATE_HEAD = "UPDATEx"
-TRADE_HEAD = "TRADEx"
+
+DEPTH_TYPE = "DEPTHx"
+TRADE_TYPE = "TRADEx"
+KLINE_TYPE = "KLINEx"
+
 
 def get_trade_statistic_type(trade_type):
     return "In_" + trade_type;
@@ -150,7 +154,7 @@ class KafkaConn(MiddleConnector):
             trade_topics = []
             
             for topic in all_topics:
-                if TRADE_HEAD in topic:
+                if TRADE_TYPE in topic:
                     trade_topics.append(topic)
                     
             return trade_topics
@@ -178,7 +182,7 @@ class KafkaConn(MiddleConnector):
                         exchange = trade_data["Exchange"]
                         trade_topic = symbol+ SYMBOL_EXCHANGE_SEPARATOR + exchange
                         
-                        self._kline_main._update_statistic_info(get_trade_statistic_type(TRADE_HEAD), trade_topic)
+                        self._kline_main._update_statistic_info(get_trade_statistic_type(TRADE_TYPE), trade_topic)
                         
                         self._kline_main.update_kline(trade_topic, to_datetime(trade_data["TimeArrive"]), 
                                                       float(trade_data["LastPx"]), float(trade_data["Qty"]), 
@@ -343,7 +347,7 @@ class KLineSvc:
 
             for kline_type in total_kline_type:
                 self._publish_count_dict[get_kline_statistic_type(kline_type)] = {}
-            self._publish_count_dict[get_trade_statistic_type(TRADE_HEAD)] = {}
+            self._publish_count_dict[get_trade_statistic_type(TRADE_TYPE)] = {}
 
             self._timer_secs = 10
                                     
