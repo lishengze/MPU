@@ -4,6 +4,9 @@ import sys
 
 from enum import Enum
 
+TYPE_SEPARATOR = "-"
+SYMBOL_EXCHANGE_SEPARATOR = "."
+
 DEPTH_TYPE = "DEPTHx"
 TRADE_TYPE = "TRADEx"
 KLINE_TYPE = "KLINEx"

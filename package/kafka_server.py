@@ -5,7 +5,6 @@ import time
 import traceback
 import datetime
 
-from _typeshed import NoneType
 from logging import log
 from net_server import *
 from data_struct import *
@@ -20,14 +19,6 @@ from kafka import KafkaClient
 from kafka import TopicPartition
 
 from Logger import *
-
-TYPE_SEPARATOR = "-"
-SYMBOL_EXCHANGE_SEPARATOR = "."
-DEPTH_TYPE = "DEPTHx"
-DEPTH_UPDATE_HEAD = "UPDATEx"
-TRADE_TYPE = "TRADEx"
-
-
 
 class KafkaServer(NetServer):
     def __init__(self, config:dict,  depth_processor=None, kline_processor=None, trade_processor=None,serializer_type: SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF, logger=None, debug=False):
@@ -180,7 +171,6 @@ class KafkaServer(NetServer):
     
     def process_trade(self, msg):
         try:
-            # trade_data = STradeData()
             trade_data = self.serializer.decode_trade(msg)
             
             if self._trade_processor:

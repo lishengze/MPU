@@ -20,7 +20,7 @@ def get_utc_nano_minute():
     utc_time_sec_int = time.mktime(time_array) 
     
     utc_time_sec_int = utc_time_sec_int - utc_time_sec_int % 60    
-    utc_minute_nano = utc_time_sec_int * 
+    utc_minute_nano = utc_time_sec_int * 1000000000
     
     return utc_minute_nano
 

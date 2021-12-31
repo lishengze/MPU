@@ -36,8 +36,8 @@ import logging
 import requests
 import traceback
 import sys
-from package.data_struct import SDecimal, SDepth, SDepthQuote
-from package.tool import get_nano_time
+import os
+
 from sortedcontainers import SortedDict, sorteddict
 from datetime import datetime
 from collections import defaultdict
@@ -64,9 +64,13 @@ def get_package_dir():
 print(get_package_dir())
 sys.path.append(get_package_dir())
 
-from package.tool import *
-from package.kafka_server import *
-from package.data_struct import *
+from tool import *
+from kafka_server import *
+from data_struct import *
+
+# from package.tool import *
+# from package.kafka_server import *
+# from package.data_struct import *
 
 class Publisher:
     def __init__(self, exchange: str, config: dict, is_redis = False , exchange_topic: str = None, debug_mode: bool = False, logger=None):

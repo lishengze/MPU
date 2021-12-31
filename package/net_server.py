@@ -7,7 +7,6 @@ import numpy
 import sys
 import time
 import traceback
-from XService.XKLine import KLine
 from data_struct import *
 
 from abc import ABC,abstractmethod

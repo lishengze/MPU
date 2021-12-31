@@ -119,6 +119,7 @@ class FTX(object):
             }
                        
             self._logger = Logger(program_name="FTX")
+            
             self._error_msg_list = ["", ""]
             self.__exchange_name = "FTX"
             self._is_connnect = False
