@@ -23,6 +23,27 @@ class DATA_TYPE(Enum):
     DEPTH = 1
     KLINE = 2
     TRADE = 3
+    
+# class SymbolItem(object):
+#     def __init__(self, exchange:str, exchange_symbol:str="", sys_symbol:str="") -> None:
+#         if exchange_symbol == "" and sys_symbol != "":
+#             self.init_from_sys_symbol(sys_symbol=sys_symbol, exchange=exchange)
+#         elif exchange_symbol != "" and sys_symbol == "":
+#             self.init_from_exchange_symbol(exchange_symbol=exchange_symbol, exchange=exchange)
+#         elif exchange_symbol != "" and sys_symbol != "":
+#             self._exchange_symbol = exchange_symbol
+#             self._sys_symbol = sys_symbol
+#         else:
+#             print("exchange_symbol and sys_symbol are all null")
+                
+#     def init_from_exchange_symbol(self, exchange_symbol:str, exchange:str):
+#         pass
+    
+#     def init_from_sys_symbol(self, sys_symbol:str, exchange:str):
+#         if exchange == "FTX":
+#             self._sys_symbol = sys_symbol;    
+
+    
 class SDecimal(object):
     def __init__(self, value_:int=0, precise_:int=0):
         self.value = value_

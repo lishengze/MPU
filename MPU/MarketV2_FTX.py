@@ -14,22 +14,28 @@ import threading
 
 import os
 
+def get_grandfather_dir():
+    parent = os.path.dirname(os.path.realpath(__file__))
+    garder = os.path.dirname(parent)    
+    return garder
+
+def get_package_dir():
+    garder = get_grandfather_dir()
+    if garder.find('\\') != -1:
+        return garder + "\package"
+    else:
+        return garder + "/package"
+
+print(get_package_dir())
+sys.path.append(get_package_dir())
+
+from tool import *
+
 sys.path.append(os.getcwd())
 from Logger import *
 
 
 g_redis_config_file_name = os.getcwd() + "/redis_config.json"
-
-def get_config(logger = None, config_file=""):    
-    json_file = open(config_file,'r')
-    json_dict = json.load(json_file)
-    if logger is not None:
-        logger._logger.info("\n******* config *******\n" + str(json_dict))
-    else:
-        print("\n******* config *******\n" + str(json_dict))
-    time.sleep(3)
-
-    return json_dict
 
 def get_login_info(api_key, api_secret, logger = None):
     ts = int(time.time() * 1000)
@@ -99,12 +105,13 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(object):
-    def __init__(self, debug_mode: bool = True, is_redis:bool = False):
+    def __init__(self, symbol_dict:dict, debug_mode: bool = True, is_redis:bool = False):
         try:
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
             self._ping_secs = 10
+            
             # self._symbol_dict = {
             #     "BTC/USDT":"BTC_USDT",
             #     "ETH/USDT":"ETH_USDT",
@@ -113,10 +120,13 @@ class FTX(object):
             #     "USDT/USD":"USDT_USD",
             #     "ETH/BTC":"ETH_BTC"                        
             # }
+            self._symbol_dict = symbol_dict
             
-            self._symbol_dict = {
-                "BTC/USDT":"BTC_USDT"                      
-            }
+            # self._symbol_dict = {
+            #     "BTC/USDT":"BTC_USDT"                      
+            # }
+            
+            
                        
             self._logger = Logger(program_name="FTX")
             
@@ -344,9 +354,13 @@ class FTX(object):
         except Exception as e:
             self._logger._logger.warning("[E] __parse_trades: ")
             self._logger._logger.warning(str(e))
-
+    
+def test_get_ori_sys_config():
+    print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))
+    
 def test_ftx():
-    ftx_obj = FTX(debug_mode=False, is_redis=False)
+    ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
+                  debug_mode=False, is_redis=False)
     ftx_obj.start()
 
 if __name__ == "__main__":
@@ -354,4 +368,6 @@ if __name__ == "__main__":
     # test_websocket()
     # test_http_restful()
 
-    test_ftx()
+    # test_ftx()
+    
+    test_get_ori_sys_config()
