@@ -11,6 +11,7 @@ import websocket
 import json
 import hmac
 import threading
+from MarketBase import ExchangeBase
 
 import os
 
@@ -104,58 +105,22 @@ def get_ping_info():
 Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
-class FTX(object):
-    def __init__(self, symbol_dict:dict, debug_mode: bool = True, is_redis:bool = False):
+class FTX(ExchangeBase):    
+    def __init__(self, symbol_dict:dict, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
+                debug_mode: bool = True, is_test_exchange_con: bool = False):
         try:
+            super().__init__(exchange_name="FTX", symbol_dict=symbol_dict, net_server_type=net_server_type,
+                              debug_mode=debug_mode, is_test_exchange_con=is_test_exchange_con)            
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
             self._ping_secs = 10
-            
-            # self._symbol_dict = {
-            #     "BTC/USDT":"BTC_USDT",
-            #     "ETH/USDT":"ETH_USDT",
-            #     "BTC/USD":"BTC_USD",
-            #     "ETH/USD":"ETH_USD",
-            #     "USDT/USD":"USDT_USD",
-            #     "ETH/BTC":"ETH_BTC"                        
-            # }
-            self._symbol_dict = symbol_dict
-            
-            # self._symbol_dict = {
-            #     "BTC/USDT":"BTC_USDT"                      
-            # }
-            
-            
-                       
-            self._logger = Logger(program_name="FTX")
-            
+                        
             self._error_msg_list = ["", ""]
             self.__exchange_name = "FTX"
             self._is_connnect = False
             self._ws = None
-            self._publish_count_dict = {
-                "depth":{},
-                "trade":{},
-                "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            }
 
-            
-            if is_redis:
-                self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"                
-            else:
-                self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/kafka_config.json"
- 
-            self._config = get_config(logger=self._logger, config_file=self._config_name)
-            self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
-                                         is_redis=is_redis, debug_mode=debug_mode, logger=self._logger._logger)
-
-
-            for item in self._symbol_dict:
-                sys_symbol = self._symbol_dict[item]
-                self._publish_count_dict["depth"][sys_symbol] = 0
-                self._publish_count_dict["trade"][sys_symbol] = 0
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
 
