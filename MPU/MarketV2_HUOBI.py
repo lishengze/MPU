@@ -132,7 +132,7 @@ class HUOBI(ExchangeBase):
         try:
             # print(ws_msg)
             
-            # self._logger._logger.info(str(ws_msg))
+            self._logger._logger.info(str(ws_msg))
             
             if ws_msg is None:
                 return
