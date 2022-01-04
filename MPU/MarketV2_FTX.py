@@ -282,8 +282,7 @@ class FTX(ExchangeBase):
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
                 self._logger._logger.warning("[E]process_msg: " + error_msg)                                  
         except Exception as e:
-            self._logger._logger.warning("[E] process_msg: %s" % (str(ws_msg)))
-            self._logger._logger.warning(e)
+            self._logger.warning(traceback.format_exc())
 
     def __parse_orderbook(self, symbol, msg):
         try:
@@ -323,8 +322,8 @@ class FTX(ExchangeBase):
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
-            self._logger._logger.warning("[E] __parse_orderbook: ")
-            self._logger._logger.warning(e)
+            self._logger.warning(traceback.format_exc())
+
 
     def __parse_trades(self, symbol, data_list):
         try:
@@ -349,8 +348,8 @@ class FTX(ExchangeBase):
                                             exg_time=exg_time,
                                             px_qty=(float(trade['price']), float(trade['size'])))
         except Exception as e:
-            self._logger._logger.warning("[E] __parse_trades: ")
-            self._logger._logger.warning(str(e))
+            self._logger.warning(traceback.format_exc())
+
     
 def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))
