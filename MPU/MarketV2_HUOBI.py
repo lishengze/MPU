@@ -75,7 +75,9 @@ class HUOBI(ExchangeBase):
     def decode_msg(self, msg):
         try:
             msg = zlib.decompress(msg.data, 16 + zlib.MAX_WBITS)
+            print(msg)
             msg = json.loads(msg, parse_float=float)
+            print(msg)
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())      
 
