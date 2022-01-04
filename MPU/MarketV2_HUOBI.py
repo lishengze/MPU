@@ -42,7 +42,8 @@ class HUOBI(ExchangeBase):
                 debug_mode: bool = True, is_test_currency: bool = False):
         try:
             super().__init__(exchange_name="HUOBI", symbol_dict=symbol_dict, net_server_type=net_server_type,
-                              debug_mode=debug_mode, is_test_currency=is_test_currency)            
+                              debug_mode=debug_mode, is_test_currency=is_test_currency)  
+                      
             self._ws_url = "wss://api.huobi.pro/ws"
             self._ping_secs = 30
 
@@ -75,12 +76,11 @@ class HUOBI(ExchangeBase):
         try:
             msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
             # print(msg)
-            msg = json.loads(msg, parse_float=float)
-            self._logger._logger.info(str(msg))
+            msg = json.loads(msg, parse_float=float)            
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())      
 
-    def get_sub_order_info(self, symbol_name:str, logger = None):
+    def get_sub_trade_info(self, symbol_name:str, logger = None):
         sub_info = {'sub': f"market.{symbol_name.lower()}.trade.detail", 
                     'channel': 'orderbook', 
                     'market': self._sub_client_id}  
@@ -96,7 +96,7 @@ class HUOBI(ExchangeBase):
         
         return sub_info_str           
 
-    def get_sub_trade_info(self, symbol_name, logger = None):
+    def get_sub_order_info(self, symbol_name, logger = None):
         sub_info = {'sub': f"market.{symbol_name.lower()}.depth.step0", 
                     'channel': 'orderbook', 
                     'market': self._sub_client_id}  
@@ -108,7 +108,7 @@ class HUOBI(ExchangeBase):
         if logger is not None:
             self._logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
         else:
-            print("\nsub_trade_info: \n" + sub_info_str)
+            print("\nsub_info: \n" + sub_info_str)
         
         return sub_info_str  
 
@@ -129,6 +129,8 @@ class HUOBI(ExchangeBase):
     def process_msg(self, ws_msg):
         try:
             # print(ws_msg)
+            
+            self._logger._logger.info(str(ws_msg))
             
             if ws_msg is None:
                 return
