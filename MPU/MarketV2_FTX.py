@@ -233,11 +233,10 @@ class FTX(ExchangeBase):
             if  ws_msg["type"] == "pong":
                 return
             
-            self._logger._logger.info(str(ws_msg))
+            # self._logger._logger.info(str(ws_msg))
             
             if  ws_msg["type"] == "subscribed" and self._is_test_currency:
-                self._logger._logger.info(str(ws_msg))
-                self._write_successful_currency(str(ws_msg))
+                self._write_successful_currency(ws_msg["market"])
                 
             if ws_msg["type"] == "error" and ws_msg["code"] == 404:
                 err_msg = ws_msg["msg"]
