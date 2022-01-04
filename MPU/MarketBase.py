@@ -13,7 +13,7 @@ import hmac
 import threading
 
 import os
-from package.data_struct import NET_SERVER_TYPE
+# from package.data_struct import NET_SERVER_TYPE
 
 def get_grandfather_dir():
     parent = os.path.dirname(os.path.realpath(__file__))
@@ -107,9 +107,9 @@ BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class ExchangeBase(object):
     def __init__(self, exchange_name:str, symbol_dict:dict, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
-                 debug_mode: bool = True, is_test_exchange_con:bool = False):
+                 debug_mode: bool = True, is_test_currency:bool = False):
         try:
-            self._is_test_exhange_conn = is_test_exchange_con
+            self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
             self._net_server_type = net_server_type
             self.__exchange_name = exchange_name                                                   
@@ -131,9 +131,9 @@ class ExchangeBase(object):
                 self._publish_count_dict["trade"][sys_symbol] = 0
                             
             self._config = self._get_net_config(net_server_type)
-            self._is_test_exchange_con = is_test_exchange_con
+            self._is_test_currency = is_test_currency
             
-            if self._is_test_exchange_con == False:                   
+            if self._is_test_currency == False:                   
                 self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
                                             net_server_type=net_server_type, debug_mode=debug_mode, 
                                             logger=self._logger._logger)

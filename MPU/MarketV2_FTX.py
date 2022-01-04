@@ -107,10 +107,10 @@ BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(ExchangeBase):    
     def __init__(self, symbol_dict:dict, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
-                debug_mode: bool = True, is_test_exchange_con: bool = False):
+                debug_mode: bool = True, is_test_currency: bool = False):
         try:
             super().__init__(exchange_name="FTX", symbol_dict=symbol_dict, net_server_type=net_server_type,
-                              debug_mode=debug_mode, is_test_exchange_con=is_test_exchange_con)            
+                              debug_mode=debug_mode, is_test_currency=is_test_currency)            
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
@@ -126,7 +126,8 @@ class FTX(ExchangeBase):
 
     def connect_ws_server(self, info):
         try:
-            self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+            self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % \
+                                        (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
             # websocket.enableTrace(True)
             self._ws = websocket.WebSocketApp(self._ws_url)
             self._ws.on_message = self.on_msg
@@ -150,6 +151,7 @@ class FTX(ExchangeBase):
 
     def start_timer(self):
         try:
+            self._logger._logger.info("start_timer")
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
@@ -179,7 +181,9 @@ class FTX(ExchangeBase):
 
             time.sleep(3)
             for symbol in self._symbol_dict:
-                self._ws.send(get_sub_order_info(symbol, logger=self._logger))
+                if not self._is_test_currency:
+                    self._ws.send(get_sub_order_info(symbol, logger=self._logger))
+                    
                 self._ws.send(get_sub_trade_info(symbol, logger=self._logger))
         except Exception as e:
             self._logger._logger.warning("[E]on_open: " + str(e))
@@ -325,7 +329,7 @@ def test_get_ori_sys_config():
     
 def test_ftx():
     ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
-                  debug_mode=False, is_redis=False)
+                  debug_mode=False, is_test_currency=True)
     ftx_obj.start()
 
 if __name__ == "__main__":
@@ -333,6 +337,6 @@ if __name__ == "__main__":
     # test_websocket()
     # test_http_restful()
 
-    # test_ftx()
+    test_ftx()
     
-    test_get_ori_sys_config()
+    # test_get_ori_sys_config()

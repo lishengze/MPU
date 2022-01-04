@@ -50,7 +50,7 @@ from kafka import TopicPartition
 from kafka.admin import KafkaAdminClient, NewTopic
 
 
-from package.data_struct import NET_SERVER_TYPE
+# from package.data_struct import NET_SERVER_TYPE
 
 def get_grandfather_dir():
     parent = os.path.dirname(os.path.realpath(__file__))
