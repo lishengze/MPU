@@ -131,6 +131,9 @@ class HUOBI(ExchangeBase):
         try:
             # print(ws_msg)
             
+            if ws_msg is None:
+                return
+            
             if 'ping' in ws_msg:
                 return
             
