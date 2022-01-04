@@ -156,7 +156,7 @@ class HUOBI(ExchangeBase):
                 err_msg = ws_msg["err-msg"]
                 pos = err_msg.find("invalid symbol")
                 if pos != -1:
-                    failed_symbol = err_msg[pos:]
+                    failed_symbol = err_msg[(pos+len("invalid symbol")):]
                     print("[F]: " + failed_symbol)
                     self._write_failed_currency(failed_symbol)
                 
