@@ -157,7 +157,7 @@ class HUOBI(ExchangeBase):
                     print("[F]: " + failed_symbol)
                     self._write_failed_currency(failed_symbol)
                 
-            return
+            return 
             if "data" not in ws_msg:
                 self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
                 return
