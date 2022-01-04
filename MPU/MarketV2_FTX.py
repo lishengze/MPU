@@ -313,6 +313,12 @@ class FTX(ExchangeBase):
             #     error_msg = ("__parse_trades data is not in msg:  %s" % (str(msg)))
             #     return
 
+            if symbol in self._symbol_dict:
+                self._publish_count_dict["trade"][self._symbol_dict[symbol]] = self._publish_count_dict["trade"][self._symbol_dict[symbol]] + 1
+                                            
+            if self._is_test_currency:
+                return
+                
             for trade in data_list:
                 side = trade['side']
                 exg_time = trade['time'].replace('T', ' ')[:-6]
