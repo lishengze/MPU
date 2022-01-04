@@ -233,11 +233,17 @@ class FTX(ExchangeBase):
             if  ws_msg["type"] == "pong":
                 return
             
+            self._logger._logger.info(str(ws_msg))
+            
             if  ws_msg["type"] == "subscribed" and self._is_test_currency:
-                self._write_successful_currency(ws_msg)
+                self._logger._logger.info(str(ws_msg))
+                self._write_successful_currency(str(ws_msg))
                 
             if ws_msg["type"] == "error" and ws_msg["code"] == 404:
-                self._write_failed_currency(ws_msg)
+                err_msg = ws_msg["msg"]
+                err_msg.split(":")
+                failed_symbol = err_msg[1]
+                self._write_failed_currency(failed_symbol)
                 
             if "data" not in ws_msg:
                 self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
