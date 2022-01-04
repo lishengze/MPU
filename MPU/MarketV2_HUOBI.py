@@ -43,7 +43,7 @@ class HUOBI(ExchangeBase):
         try:
             super().__init__(exchange_name="HUOBI", symbol_dict=symbol_dict, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)            
-            self.__ws_url = "wss://api.huobi.pro/ws"
+            self._ws_url = "wss://api.huobi.pro/ws"
             self._ping_secs = 30
 
             self._sub_type_list = ["trade.detail"]
