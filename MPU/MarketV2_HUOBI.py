@@ -98,6 +98,7 @@ class MarketData_HUOBI(ExchangeBase):
                             if ws_msg.type in [aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR]:
                                 # Websocket Forced Close, Break the Loop and Reconnect Websocket
                                 self._logger._logger.warning(ws_msg)
+                                break
                                 
                                 # self.__publisher.logger(level=self.__publisher.error,
                                 #                         event=MDEvent.WSERROR(ws_msg.type))
@@ -144,9 +145,6 @@ class MarketData_HUOBI(ExchangeBase):
                                                                 "Invalid message type %s \n".join(msg)))
                             else:
                                 pass
-                                # self.__publisher.logger(level=self.__publisher.warning,
-                                #                         event=MDEvent.CONNECTIONERROR(
-                                #                             "Invalid message type %s \n".join(msg)))
             except Exception:
                 err = sys.exc_info()
                 self.__publisher.logger(level=self.__publisher.critical,
