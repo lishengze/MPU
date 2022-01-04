@@ -232,7 +232,7 @@ class HUOBI(ExchangeBase):
             self._logger.warning(traceback.format_exc())
 
 def huobi_start():
-    huobi = HUOBI(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json"), \
+    huobi = HUOBI(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json"), "HUOBI") \
                   debug_mode=False, is_test_currency=True)
     huobi.start()
         
