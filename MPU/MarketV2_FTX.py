@@ -114,12 +114,14 @@ class FTX(ExchangeBase):
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
-            self._ping_secs = 10
+            self._ping_secs = 30
                         
             self._error_msg_list = ["", ""]
             self.__exchange_name = "FTX"
             self._is_connnect = False
             self._ws = None
+            
+            self._logger._logger.info(str(self._symbol_dict))
 
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
