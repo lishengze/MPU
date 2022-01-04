@@ -154,7 +154,7 @@ class HUOBI(ExchangeBase):
                 
             if "status" in ws_msg and ws_msg["status"] == "error":
                 err_msg = ws_msg["err-msg"]
-                pos = err_msg.find("err-msg")
+                pos = err_msg.find("invalid symbol")
                 if pos != -1:
                     failed_symbol = err_msg[pos:]
                     print("[F]: " + failed_symbol)
