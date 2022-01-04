@@ -116,6 +116,13 @@ class ExchangeBase(object):
             self._is_test_currency = is_test_currency             
             self._logger = Logger(program_name=self.__exchange_name)
             
+            if self._is_test_currency:
+                self._success_log_file_name = os.getcwd() + "log/" + self.__exchange_name + "/suceess_currency.log"
+                self._success_log_file = open(self._success_log_file_name, 'a')
+                
+                self._failed_log_file_name = os.getcwd() + "log/" + self.__exchange_name + "/failed_currency.log"
+                self._failed_log_file = open(self._failed_log_file_name, 'a')
+            
             self._error_msg_list = ["", ""]
             
             self._is_connnect = False
@@ -147,7 +154,21 @@ class ExchangeBase(object):
         elif net_server_type == NET_SERVER_TYPE.REDIS:
             self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"
 
-        return get_config(logger=self._logger, config_file=self._config_name)       
+        return get_config(logger=self._logger, config_file=self._config_name)     
+    
+    def _write_successful_currency(self, symbol):
+        if not self._success_log_file.writable():
+            self._success_log_file = open(self._success_log_file_name, 'a')
+            
+        self._success_log_file.write(symbol + "\n")
+        self._success_log_file.close()
+        
+    def _write_failed_currency(self, symbol):
+        if not self._failed_log_file.writable():
+            self._failed_log_file = open(self._failed_log_file_name, 'a')
+            
+        self._failed_log_file.write(symbol + "\n")
+        self._failed_log_file.close()        
                 
 def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))

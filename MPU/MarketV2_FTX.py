@@ -230,9 +230,15 @@ class FTX(ExchangeBase):
 
     def process_msg(self, ws_msg):
         try:
-            if  ws_msg["type"] == "pong" or ws_msg["type"] == "subscribed":
+            if  ws_msg["type"] == "pong":
                 return
-
+            
+            if  ws_msg["type"] == "subscribed" and self._is_test_currency:
+                self._write_successful_currency(ws_msg)
+                
+            if ws_msg["type"] == "error" and ws_msg["code"] == 404:
+                self._write_failed_currency(ws_msg)
+                
             if "data" not in ws_msg:
                 self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
                 return
