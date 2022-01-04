@@ -118,6 +118,7 @@ class ExchangeBase(ABC):
             self.__exchange_name = exchange_name             
             self._is_test_currency = is_test_currency             
             self._logger = Logger(program_name=self.__exchange_name)
+            self._reconnect_secs = 5
             
             if self._is_test_currency:
                 self._success_log_file_name = os.getcwd() + "/log/" + self.__exchange_name + "/suceess_currency.log"
@@ -221,7 +222,6 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-
     def on_open(self):
         try:
             self._logger._logger.info("\nftx_on_open")
@@ -232,21 +232,7 @@ class ExchangeBase(ABC):
                 self.subscribe_depth()
                     
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
-
-    @abstractmethod
-    def subscribe_depth(self):
-        try:
-            pass
-        except Exception as e:
-            self._logger.warning(traceback.format_exc())        
-            
-    @abstractmethod
-    def subscribe_trade(self):
-        try:
-            pass
-        except Exception as e:
-            self._logger.warning(traceback.format_exc())                    
+            self._logger.warning(traceback.format_exc())                
 
     def on_error(self):
         self._logger.Error("on_error")
@@ -258,7 +244,6 @@ class ExchangeBase(ABC):
             self.start_reconnect()
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-
 
     def print_publish_info(self):
         try:
@@ -275,7 +260,6 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-
     def on_timer(self):
         try:
             if self._is_connnect:
@@ -287,14 +271,27 @@ class ExchangeBase(ABC):
             self._timer.start()
         except Exception as e:
             self._logger.warning(traceback.format_exc())
+
+    @abstractmethod
+    def subscribe_depth(self):
+        try:
+            pass
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())        
             
+    @abstractmethod
+    def subscribe_trade(self):
+        try:
+            pass
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())    
+                        
     @abstractmethod
     def process_msg(self, ws_msg):
         try:
             print(ws_msg)                              
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-
             
     @abstractmethod
     def __parse_orderbook(self, symbol, msg):
@@ -302,7 +299,6 @@ class ExchangeBase(ABC):
             print(symbol, msg)
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-
 
     @abstractmethod
     def __parse_trades(self, symbol, data_list):
