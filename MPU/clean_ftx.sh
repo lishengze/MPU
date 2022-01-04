@@ -5,6 +5,6 @@ kill -9 $PID
 
 sleep 2s
 
-# rm -fr log/FTX/*.log*
+rm -fr log/FTX/*.log*
 
 ps -aux|grep python3
