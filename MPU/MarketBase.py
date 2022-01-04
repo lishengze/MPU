@@ -157,14 +157,14 @@ class ExchangeBase(object):
         return get_config(logger=self._logger, config_file=self._config_name)     
     
     def _write_successful_currency(self, symbol):
-        if not self._success_log_file.closed:
+        if self._success_log_file.closed:
             self._success_log_file = open(self._success_log_file_name, 'a')
             
         self._success_log_file.write(symbol + "\n")
         self._success_log_file.close()
         
     def _write_failed_currency(self, symbol):
-        if not self._failed_log_file.closed:
+        if self._failed_log_file.closed:
             self._failed_log_file = open(self._failed_log_file_name, 'a')
             
         self._failed_log_file.write(symbol + "\n")

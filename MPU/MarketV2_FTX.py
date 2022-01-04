@@ -72,10 +72,10 @@ def get_sub_order_info(symbol_name, logger = None):
 
     sub_info_str = json.dumps(sub_info)
 
-    if logger is not None:
-        logger._logger.info("\nsub_info: \n" + sub_info_str)
-    else:
-        print("\nsub_info: \n" + sub_info_str)
+    # if logger is not None:
+    #     logger._logger.info("\nsub_info: \n" + sub_info_str)
+    # else:
+    #     print("\nsub_info: \n" + sub_info_str)
     
     return sub_info_str           
 
@@ -86,10 +86,10 @@ def get_sub_trade_info(symbol_name, logger = None):
 
     sub_info_str = json.dumps(sub_info)
 
-    if logger is not None:
-        logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
-    else:
-        print("\nsub_trade_info: \n" + sub_info_str)
+    # if logger is not None:
+    #     logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
+    # else:
+    #     print("\nsub_trade_info: \n" + sub_info_str)
     
     return sub_info_str         
 
