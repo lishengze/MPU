@@ -75,9 +75,9 @@ class HUOBI(ExchangeBase):
     def decode_msg(self, msg):
         try:
             msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
-            print(msg)
+            # print(msg)
             msg = json.loads(msg, parse_float=float)
-            print(msg)
+            # print(msg)
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())      
 
@@ -136,19 +136,25 @@ class HUOBI(ExchangeBase):
             
             # print(ws_msg)
             
-            return
+            # return
             # self._logger._logger.info(str(ws_msg))
             
-            if  ws_msg["type"] == "subscribed" and self._is_test_currency:
-                self._write_successful_currency(ws_msg["market"])
+            if  ws_msg["status"] == "ok" and 'subbed' in ws_msg:
+                detail_msg = ws_msg['subbed']
+                msg_list = detail_msg.split('.')
+                symbol = msg_list[1]
+                print("[S]: " + symbol)
+                self._write_successful_currency(symbol)
                 
-            if ws_msg["type"] == "error" and ws_msg["code"] == 404:
-                err_msg = ws_msg["msg"]
-                err_msg = err_msg.split(":")
-                # self._logger._logger.info(str(err_msg))
-                failed_symbol = err_msg[1]
-                self._write_failed_currency(failed_symbol)
+            if ws_msg["status"] == "error":
+                err_msg = ws_msg["err-msg"]
+                pos = err_msg.find("err-msg")
+                if pos != -1:
+                    failed_symbol = err_msg[pos:]
+                    print("[F]: " + failed_symbol)
+                    self._write_failed_currency(failed_symbol)
                 
+            return
             if "data" not in ws_msg:
                 self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
                 return
