@@ -112,7 +112,8 @@ class ExchangeBase(object):
             self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
             self._net_server_type = net_server_type
-            self.__exchange_name = exchange_name                                                   
+            self.__exchange_name = exchange_name             
+            self._is_test_currency = is_test_currency             
             self._logger = Logger(program_name=self.__exchange_name)
             
             self._error_msg_list = ["", ""]
@@ -127,12 +128,12 @@ class ExchangeBase(object):
             }
             for item in self._symbol_dict:
                 sys_symbol = self._symbol_dict[item]
-                self._publish_count_dict["depth"][sys_symbol] = 0
+                if not self._is_test_currency:
+                    self._publish_count_dict["depth"][sys_symbol] = 0
                 self._publish_count_dict["trade"][sys_symbol] = 0
                             
             self._config = self._get_net_config(net_server_type)
-            self._is_test_currency = is_test_currency
-            
+                        
             if self._is_test_currency == False:                   
                 self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
                                             net_server_type=net_server_type, debug_mode=debug_mode, 
