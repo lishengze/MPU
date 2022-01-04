@@ -10,67 +10,86 @@ from datetime import datetime
 import time
 from settings import REDIS_CONFIG
 
-from MarketBase import ExchangeBase
 
-# self._symbol_dict = {"BTCUSDT": "BTC_USDT",  # the exchange needs 'btcusdt'
-#                       "HTUSDT": "HT_USDT",
-#                       "IRISBTC": "IRIS_BTC",
-#                       "IRISUSDT": "IRIS_USDT",
+class MarketData_HUOBI:
+    def __init__(self, debug_mode: bool = True, redis_config: dict = None):
+        # Initialize REDIS Connection
+        if redis_config is None:
+            redis_config = REDIS_CONFIG
 
+        exchange = "HUOBI"
 
-def get_grandfather_dir():
-    parent = os.path.dirname(os.path.realpath(__file__))
-    garder = os.path.dirname(parent)    
-    return garder
+        self.__publisher = Publisher(exchange=exchange, redis_config=redis_config, debug_mode=debug_mode)
 
-def get_package_dir():
-    garder = get_grandfather_dir()
-    if garder.find('\\') != -1:
-        return garder + "\package"
-    else:
-        return garder + "/package"
+        self.__ws_url = "wss://api.huobi.pro/ws"
+        self.__rest_depth_url = ""
 
-print(get_package_dir())
-sys.path.append(get_package_dir())
+        # You can hard code the pair_mapping or get all active pair mapping when you launch this script.
+        # def huobi_pairs():
+        #     r = requests.get('https://api.huobi.pro/v1/common/symbols').json()
+        #     return {'{}_{}'.format(e['base-currency'].upper(), e['quote-currency'].upper()): '{}{}'.format(
+        #         e['base-currency'], e['quote-currency']) for e in r['data']}
+        self.__symbol_book = {"BTCUSDT": "BTC_USDT",  # the exchange needs 'btcusdt'
+                              "HTUSDT": "HT_USDT",
+                              "IRISBTC": "IRIS_BTC",
+                              "IRISUSDT": "IRIS_USDT",
 
-from tool import *
+                              "ETHBTC": "ETH_BTC",
+                              "ETHUSDT": "ETH_USDT",
 
-sys.path.append(os.getcwd())
-from Logger import *
-                              
-class MarketData_HUOBI(ExchangeBase):
-    def __init__(self, symbol_dict:dict, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
-                debug_mode: bool = True, is_test_currency: bool = False):
-        try:
-            super().__init__(exchange_name="HUOBI", symbol_dict=symbol_dict, net_server_type=net_server_type,
-                              debug_mode=debug_mode, is_test_currency=is_test_currency)  
+                              "ZRXETH": "ZRX_ETH",
+                              "ZRXBTC": "ZRX_BTC",
+                              "ZRXUSDT": "ZRX_USDT",
 
-            self.__ws_url = "wss://api.huobi.pro/ws"
-            self.__rest_depth_url = ""
+                              "GNTETH": "GNT_ETH",
+                              "GNTBTC": "GNT_BTC",
+                              "GNTUSDT": "GNT_USDT",
 
-            self.ws_session = None
-            self.ws_conn = None
-            self.ws = None
+                              "VETETH": "VET_ETH",
+                              "VETBTC": "VET_BTC",
+                              "VETUSDT": "VET_USDT",
 
+                              "LTCBTC": "LTC_BTC",
+                              "LTCUSDT": "LTC_USDT",
 
-            self._sub_type_list = ["trade.detail"]
-            if not self._is_test_currency:
-                self._sub_type_list.append("depth.step0")
+                              "EOSETH": "EOS_ETH",
+                              "EOSBTC": "EOS_BTC",
+                              "EOSUSDT": "EOS_USDT",
 
-            self.ws_loop = asyncio.new_event_loop()
+                              "XRPBTC": "XRP_BTC",
+                              "XRPETH": "XRP_ETH",
+                              "XRPUSDT": "XRP_USDT",
 
-            self.executor = ThreadPoolExecutor(max_workers=2)
-            self.executor.submit(self.asyncio_initiator, self.ws_loop)
+                              "XLMBTC": "XLM_BTC",
+                              "XLMETH": "XLM_ETH",
+                              "XLMUSDT": "XLM_USDT",
 
-            # self.__publisher.logger(level=self.__publisher.info,
-            #                         event=MDEvent.INITIALIZED())
-            self.ws_future = asyncio.run_coroutine_threadsafe(self.ws_listener(), self.ws_loop)
+                              "QTUMBTC": "QTUM_BTC",
+                              "QTUMETH": "QTUM_ETH",
+                              "QTUMUSDT": "QTUM_USDT",
 
-            while True:
-                time.sleep(10)
-        except Exception as e:
-            self._logger._logger.warning("[E]__init__: " + str(e))
-                        
+                              "ATOMBTC": "ATOM_BTC",
+                              "ATOMUSDT": "ATOM_USDT",
+
+                              "CMTBTC": "CMT_BTC",
+                              "CMTETH": "CMT_ETH",
+                              }
+
+        self.ws_session = None
+        self.ws_conn = None
+        self.ws = None
+
+        self.ws_loop = asyncio.new_event_loop()
+
+        self.executor = ThreadPoolExecutor(max_workers=2)
+        self.executor.submit(self.asyncio_initiator, self.ws_loop)
+
+        self.__publisher.logger(level=self.__publisher.info,
+                                event=MDEvent.INITIALIZED())
+        self.ws_future = asyncio.run_coroutine_threadsafe(self.ws_listener(), self.ws_loop)
+
+        while True:
+            time.sleep(10)
 
     # Thread Worker for aio_initiator Method
     def asyncio_initiator(self, loop):
@@ -87,8 +106,8 @@ class MarketData_HUOBI(ExchangeBase):
                                                 event=MDEvent.CONNECTED())
 
                         client_id = 0
-                        for chan in self._sub_type_list:
-                            for pair in self._symbol_dict.keys():
+                        for chan in ["trade.detail", "depth.step0"]:
+                            for pair in self.__symbol_book.keys():
                                 client_id += 1
                                 await ws.send_json({
                                     "sub": f"market.{pair.lower()}.{chan}",
@@ -97,11 +116,9 @@ class MarketData_HUOBI(ExchangeBase):
                         async for ws_msg in ws:
                             if ws_msg.type in [aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR]:
                                 # Websocket Forced Close, Break the Loop and Reconnect Websocket
-                                self._logger._logger.warning(ws_msg)
-                                
-                                # self.__publisher.logger(level=self.__publisher.error,
-                                #                         event=MDEvent.WSERROR(ws_msg.type))
-                                # break
+                                self.__publisher.logger(level=self.__publisher.error,
+                                                        event=MDEvent.WSERROR(ws_msg.type))
+                                break
 
                             msg = zlib.decompress(ws_msg.data, 16 + zlib.MAX_WBITS)
                             msg = json.loads(msg, parse_float=float)
@@ -113,11 +130,7 @@ class MarketData_HUOBI(ExchangeBase):
                             elif 'status' in msg and msg['status'] == 'ok':
                                 pass
                             elif 'ch' in msg:
-                                
-                                if self._is_test_currency:
-                                    pass
-                                
-                                symbol = self._symbol_dict[(msg['ch'].split('.')[1]).upper()]
+                                symbol = self.__symbol_book[(msg['ch'].split('.')[1]).upper()]
                                 if 'trade' in msg['ch']:
                                     for trade in msg['tick']['data']:
                                         direction = "Buy" if trade['direction'] == 'buy' else "Sell"
@@ -164,5 +177,4 @@ class MarketData_HUOBI(ExchangeBase):
 
 
 if __name__ == '__main__':
-    exchange = MarketData_HUOBI(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "HUOBI"), \
-                                debug_mode=False, is_test_currency=True)
+    a = MarketData_HUOBI(debug_mode=True)
