@@ -292,20 +292,20 @@ class ExchangeBase(ABC):
             print(ws_msg)                              
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-            
-    # @abstractmethod
-    def __parse_orderbook(self, symbol, msg):
+
+    @abstractmethod
+    def _process_orderbook(self, symbol, msg):
         try:
             print(symbol, msg)
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-    # @abstractmethod
-    def __parse_trades(self, symbol, data_list):
+    @abstractmethod
+    def _process_trades(self, symbol, data_list):
         try:
             print(symbol, data_list)
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())            
 
             
                 
