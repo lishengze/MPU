@@ -62,8 +62,7 @@ class HUOBI(ExchangeBase):
             self._logger._logger.warning("[E]__init__: " + str(e))
 
     def on_open(self):
-        try:            
-            self._logger._logger.info("\nftx_on_open")
+        try:     
             self._is_connnect = True
             
             self.subscribe_trade()
@@ -77,7 +76,7 @@ class HUOBI(ExchangeBase):
             msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
             # print(msg)
             msg = json.loads(msg, parse_float=float)
-            # print(msg)
+            self._logger._logger.info(str(msg))
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())      
 
@@ -90,10 +89,10 @@ class HUOBI(ExchangeBase):
 
         sub_info_str = json.dumps(sub_info)
 
-        # if logger is not None:
-        #     logger._logger.info("\nsub_info: \n" + sub_info_str)
-        # else:
-        #     print("\nsub_info: \n" + sub_info_str)
+        if logger is not None:
+            self._logger._logger.info("\nsub_info: \n" + sub_info_str)
+        else:
+            print("\nsub_info: \n" + sub_info_str)
         
         return sub_info_str           
 
@@ -106,10 +105,10 @@ class HUOBI(ExchangeBase):
 
         sub_info_str = json.dumps(sub_info)
 
-        # if logger is not None:
-        #     logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
-        # else:
-        #     print("\nsub_trade_info: \n" + sub_info_str)
+        if logger is not None:
+            self._logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
+        else:
+            print("\nsub_trade_info: \n" + sub_info_str)
         
         return sub_info_str  
 
