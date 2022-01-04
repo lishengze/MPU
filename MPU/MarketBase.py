@@ -117,10 +117,10 @@ class ExchangeBase(object):
             self._logger = Logger(program_name=self.__exchange_name)
             
             if self._is_test_currency:
-                self._success_log_file_name = os.getcwd() + "log/" + self.__exchange_name + "/suceess_currency.log"
+                self._success_log_file_name = os.getcwd() + "/log/" + self.__exchange_name + "/suceess_currency.log"
                 self._success_log_file = open(self._success_log_file_name, 'a')
                 
-                self._failed_log_file_name = os.getcwd() + "log/" + self.__exchange_name + "/failed_currency.log"
+                self._failed_log_file_name = os.getcwd() + "/log/" + self.__exchange_name + "/failed_currency.log"
                 self._failed_log_file = open(self._failed_log_file_name, 'a')
             
             self._error_msg_list = ["", ""]
