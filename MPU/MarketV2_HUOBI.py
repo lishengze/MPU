@@ -72,6 +72,13 @@ class HUOBI(ExchangeBase):
         except Exception as e:
             self._logger._logger.warning("[E]on_open: " + str(e))
 
+    def decode_msg(self, msg):
+        try:
+            msg = zlib.decompress(msg.data, 16 + zlib.MAX_WBITS)
+            msg = json.loads(msg, parse_float=float)
+        except Exception as e:
+            self._logger._logger.warning(traceback.format_exc())      
+
     def get_sub_order_info(self, symbol_name:str, logger = None):
         sub_info = {'sub': f"market.{symbol_name.lower()}.trade.detail", 
                     'channel': 'orderbook', 
@@ -120,10 +127,12 @@ class HUOBI(ExchangeBase):
 
     def process_msg(self, ws_msg):
         try:
+            print(ws_msg)
+            
             if 'ping' in ws_msg:
                 return
             
-            print(ws_msg)
+            # print(ws_msg)
             
             return
             # self._logger._logger.info(str(ws_msg))

@@ -217,10 +217,18 @@ class ExchangeBase(ABC):
 
     def on_msg(self, msg):
         try:
-            dic = json.loads(msg)
-            self.process_msg(dic)
+            json_data = self.decode_msg(msg)
+            self.process_msg(json_data)
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())
+            
+    
+    def decode_msg(self, msg):
+        try:
+            dic = json.loads(msg)
+            return dic
+        except Exception as e:
+            self._logger._logger.warning(traceback.format_exc())        
 
     def on_open(self):
         try:
