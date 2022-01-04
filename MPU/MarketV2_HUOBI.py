@@ -74,7 +74,7 @@ class HUOBI(ExchangeBase):
 
     def decode_msg(self, msg):
         try:
-            msg = zlib.decompress(msg.data, 16 + zlib.MAX_WBITS)
+            msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
             print(msg)
             msg = json.loads(msg, parse_float=float)
             print(msg)
@@ -129,7 +129,7 @@ class HUOBI(ExchangeBase):
 
     def process_msg(self, ws_msg):
         try:
-            print(ws_msg)
+            # print(ws_msg)
             
             if 'ping' in ws_msg:
                 return
