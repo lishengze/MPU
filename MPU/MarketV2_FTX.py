@@ -126,91 +126,6 @@ class FTX(ExchangeBase):
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
 
-    # def connect_ws_server(self, info):
-    #     try:
-    #         self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % \
-    #                                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
-    #         # websocket.enableTrace(True)
-    #         self._ws = websocket.WebSocketApp(self._ws_url)
-    #         self._ws.on_message = self.on_msg
-    #         self._ws.on_error = self.on_error                                    
-    #         self._ws.on_open = self.on_open
-    #         self._ws.on_close = self.on_close
-
-    #         self._ws.run_forever()
-
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]connect_ws_server: " + str(e))
-
-    # def start_reconnect(self):
-    #     try:
-    #         self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-    #         while self._is_connnect == False:
-    #             self.connect_ws_server("Reconnect Server")
-    #             time.sleep(self._reconnect_secs)
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]start_reconnect: " + str(e))
-
-    # def start_timer(self):
-    #     try:
-    #         self._logger._logger.info("start_timer")
-    #         self._timer = threading.Timer(self._ping_secs, self.on_timer)
-    #         self._timer.start()
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]start_timer: " + str(e))
-
-    # def start(self):
-    #     try:
-    #         self.start_timer()
-    #         self.connect_ws_server("Start Connect")
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]start: " + str(e))
-
-    # def on_msg(self, msg):
-    #     try:
-    #         dic = json.loads(msg)
-    #         self.process_msg(dic)
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]on_msg: " + str(e))
-
-    # def on_error(self):
-    #     self._logger.Error("on_error")
-
-    # def on_close(self):
-    #     try:
-    #         self._logger._logger.warning("\n******* on_close *******")
-    #         self._is_connnect = False        
-    #         self.start_reconnect()
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]on_close: " + str(e))
-
-    # def print_publish_info(self):
-    #     try:
-    #         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    #         self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
-    #         for item in self._publish_count_dict:
-    #             if item == "depth" or item == "trade":
-    #                 for symbol in self._publish_count_dict[item]:
-    #                     self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
-    #                     self._publish_count_dict[item][symbol] = 0
-    #         self._logger._logger.info("\n")
-
-    #         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]print_publish_info: " + str(e))
-
-    # def on_timer(self):
-    #     try:
-    #         if self._is_connnect:
-    #             self._ws.send(get_ping_info())        
-
-    #         self.print_publish_info()
-
-    #         self._timer = threading.Timer(self._ping_secs, self.on_timer)
-    #         self._timer.start()
-    #     except Exception as e:
-    #         self._logger._logger.warning("[E]on_timer: " + str(e))
-
     def on_open(self):
         try:            
             self._logger._logger.info("\nftx_on_open")
@@ -366,3 +281,88 @@ if __name__ == "__main__":
     test_ftx()
     
     # test_get_ori_sys_config()
+
+    # def connect_ws_server(self, info):
+    #     try:
+    #         self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % \
+    #                                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+    #         # websocket.enableTrace(True)
+    #         self._ws = websocket.WebSocketApp(self._ws_url)
+    #         self._ws.on_message = self.on_msg
+    #         self._ws.on_error = self.on_error                                    
+    #         self._ws.on_open = self.on_open
+    #         self._ws.on_close = self.on_close
+
+    #         self._ws.run_forever()
+
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]connect_ws_server: " + str(e))
+
+    # def start_reconnect(self):
+    #     try:
+    #         self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    #         while self._is_connnect == False:
+    #             self.connect_ws_server("Reconnect Server")
+    #             time.sleep(self._reconnect_secs)
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]start_reconnect: " + str(e))
+
+    # def start_timer(self):
+    #     try:
+    #         self._logger._logger.info("start_timer")
+    #         self._timer = threading.Timer(self._ping_secs, self.on_timer)
+    #         self._timer.start()
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]start_timer: " + str(e))
+
+    # def start(self):
+    #     try:
+    #         self.start_timer()
+    #         self.connect_ws_server("Start Connect")
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]start: " + str(e))
+
+    # def on_msg(self, msg):
+    #     try:
+    #         dic = json.loads(msg)
+    #         self.process_msg(dic)
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]on_msg: " + str(e))
+
+    # def on_error(self):
+    #     self._logger.Error("on_error")
+
+    # def on_close(self):
+    #     try:
+    #         self._logger._logger.warning("\n******* on_close *******")
+    #         self._is_connnect = False        
+    #         self.start_reconnect()
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]on_close: " + str(e))
+
+    # def print_publish_info(self):
+    #     try:
+    #         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    #         self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+    #         for item in self._publish_count_dict:
+    #             if item == "depth" or item == "trade":
+    #                 for symbol in self._publish_count_dict[item]:
+    #                     self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+    #                     self._publish_count_dict[item][symbol] = 0
+    #         self._logger._logger.info("\n")
+
+    #         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]print_publish_info: " + str(e))
+
+    # def on_timer(self):
+    #     try:
+    #         if self._is_connnect:
+    #             self._ws.send(get_ping_info())        
+
+    #         self.print_publish_info()
+
+    #         self._timer = threading.Timer(self._ping_secs, self.on_timer)
+    #         self._timer.start()
+    #     except Exception as e:
+    #         self._logger._logger.warning("[E]on_timer: " + str(e))
