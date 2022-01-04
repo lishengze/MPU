@@ -188,7 +188,7 @@ class ExchangeBase(ABC):
             self._ws.run_forever()
 
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     def start_reconnect(self):
         try:
@@ -198,7 +198,7 @@ class ExchangeBase(ABC):
                 self.connect_ws_server("Reconnect Server")
                 time.sleep(self._reconnect_secs)
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     def start_timer(self):
         try:
@@ -206,21 +206,21 @@ class ExchangeBase(ABC):
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     def start(self):
         try:
             self.start_timer()
             self.connect_ws_server("Start Connect")
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     def on_msg(self, msg):
         try:
             dic = json.loads(msg)
             self.process_msg(dic)
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     def on_open(self):
         try:
@@ -232,10 +232,10 @@ class ExchangeBase(ABC):
                 self.subscribe_depth()
                     
         except Exception as e:
-            self._logger.warning(traceback.format_exc())                
+            self._logger._logger.warning(traceback.format_exc())                
 
     def on_error(self):
-        self._logger.Error("on_error")
+        self._logger._logger.error("on_error")
 
     def on_close(self):
         try:
@@ -243,7 +243,7 @@ class ExchangeBase(ABC):
             self._is_connnect = False        
             self.start_reconnect()
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     def print_publish_info(self):
         try:
@@ -258,7 +258,7 @@ class ExchangeBase(ABC):
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     def on_timer(self):
         try:
@@ -270,42 +270,42 @@ class ExchangeBase(ABC):
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     @abstractmethod
     def subscribe_depth(self):
         try:
             pass
         except Exception as e:
-            self._logger.warning(traceback.format_exc())        
+            self._logger._logger.warning(traceback.format_exc())        
             
     @abstractmethod
     def subscribe_trade(self):
         try:
             pass
         except Exception as e:
-            self._logger.warning(traceback.format_exc())    
+            self._logger._logger.warning(traceback.format_exc())    
                         
     @abstractmethod
     def process_msg(self, ws_msg):
         try:
             print(ws_msg)                              
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     @abstractmethod
     def _process_orderbook(self, symbol, msg):
         try:
             print(symbol, msg)
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())
 
     @abstractmethod
     def _process_trades(self, symbol, data_list):
         try:
             print(symbol, data_list)
         except Exception as e:
-            self._logger.warning(traceback.format_exc())            
+            self._logger._logger.warning(traceback.format_exc())            
 
             
                 
