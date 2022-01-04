@@ -145,14 +145,14 @@ class HUOBI(ExchangeBase):
             # return
             # self._logger._logger.info(str(ws_msg))
             
-            if  ws_msg["status"] == "ok" and 'subbed' in ws_msg:
+            if  "status" in ws_msg and ws_msg["status"] == "ok" and 'subbed' in ws_msg:
                 detail_msg = ws_msg['subbed']
                 msg_list = detail_msg.split('.')
                 symbol = msg_list[1]
                 print("[S]: " + symbol)
                 self._write_successful_currency(symbol)
                 
-            if ws_msg["status"] == "error":
+            if "status" in ws_msg and ws_msg["status"] == "error":
                 err_msg = ws_msg["err-msg"]
                 pos = err_msg.find("err-msg")
                 if pos != -1:
