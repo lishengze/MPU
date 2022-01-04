@@ -240,7 +240,8 @@ class FTX(ExchangeBase):
                 
             if ws_msg["type"] == "error" and ws_msg["code"] == 404:
                 err_msg = ws_msg["msg"]
-                err_msg.split(":")
+                err_msg = err_msg.split(":")
+                self._logger._logger.info(str(err_msg))
                 failed_symbol = err_msg[1]
                 self._write_failed_currency(failed_symbol)
                 
