@@ -91,6 +91,7 @@ class BINANCE(ExchangeBase):
         try:
             self._logger._logger.info("\non_open")
             self._is_connnect = True
+            self.set_meta()
 
             self.subscribe_trade()
             if not self._is_test_currency:
@@ -114,10 +115,10 @@ class BINANCE(ExchangeBase):
     def _check_success_symbol(self, ws_json):
         try:
             if 'result' in ws_json and ws_json['result'] is None:
-                symbol_id = ws_json['id']
+                symbol_id = str(ws_json['id'])
                 
-                if str(symbol_id) in self._sub_client_id:                
-                    exchaneg_symbol = self._sub_client_id[str(symbol_id)]
+                if symbol_id in self._sub_item_dict:                
+                    exchaneg_symbol = self._sub_item_dict[symbol_id]
                     
                     print(exchaneg_symbol)
                     
@@ -126,7 +127,7 @@ class BINANCE(ExchangeBase):
                     else:
                         self._write_successful_currency(exchaneg_symbol)
                 else:
-                    self._logger._logger.info("unkown sub id: " + str(symbol_id))
+                    self._logger._logger.info("unkown sub id: " + symbol_id)
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())   
                     
