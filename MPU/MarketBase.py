@@ -147,11 +147,10 @@ class ExchangeBase(ABC):
                 self._publish_count_dict["trade"][sys_symbol] = 0
                             
             self._config = self._get_net_config(net_server_type)
-                        
-            if self._is_test_currency == False:                   
-                self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
-                                            net_server_type=net_server_type, debug_mode=debug_mode, 
-                                            logger=self._logger)
+                                                       
+            self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
+                                        net_server_type=net_server_type, debug_mode=debug_mode, 
+                                        logger=self._logger)
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             

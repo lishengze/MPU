@@ -83,7 +83,7 @@ class BINANCE(ExchangeBase):
 
     def on_open(self):
         try:
-            self._logger.info("\nftx_on_open")
+            self._logger.info("\non_open")
             self._is_connnect = True
             self.set_meta()
 
