@@ -278,8 +278,8 @@ class ExchangeBase(ABC):
 
     def on_timer(self):
         try:
-            if self._is_connnect:
-                self._ws.send(self.get_ping_sub_info())        
+            # if self._is_connnect:
+            #     self._ws.send(self.get_ping_sub_info())        
 
             self.print_publish_info()
 
