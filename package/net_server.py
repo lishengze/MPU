@@ -9,6 +9,8 @@ import time
 import traceback
 from data_struct import *
 
+from protobuf_serializer import *
+
 from abc import ABC,abstractmethod
 
 class NetServer(object):
@@ -24,7 +26,7 @@ class NetServer(ABC):
         self._trade_processor = trade_processor
         
         if serializer_type == SERIALIXER_TYPE.PROTOBUF:
-            self.serializer = 1
+            self.serializer = ProtoSerializer(logger=self._logger)
         elif serializer_type == SERIALIXER_TYPE.JSON:
             self.serializer = 2
             
