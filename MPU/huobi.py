@@ -38,10 +38,11 @@ from tool import *
 sys.path.append(os.getcwd())
 from Logger import *
 class HUOBI(ExchangeBase):    
-    def __init__(self, symbol_dict:dict, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
+    def __init__(self, symbol_dict:dict, sub_data_type_list:list, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
                 debug_mode: bool = True, is_test_currency: bool = False):
         try:
-            super().__init__(exchange_name="HUOBI", symbol_dict=symbol_dict, net_server_type=net_server_type,
+            super().__init__(exchange_name="HUOBI", symbol_dict=symbol_dict, 
+                            sub_data_type_list=sub_data_type_list, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)  
                       
             self._ws_url = "wss://api.huobi.pro/ws"
@@ -57,10 +58,10 @@ class HUOBI(ExchangeBase):
             self._ws = None
             self._sub_client_id = 0
             
-            self._logger._logger.info(str(self._symbol_dict))
+            self._logger.info(str(self._symbol_dict))
 
         except Exception as e:
-            self._logger._logger.warning("[E]__init__: " + str(e))
+            self._logger.warning("[E]__init__: " + str(e))
 
     def on_open(self):
         try:     
@@ -70,7 +71,7 @@ class HUOBI(ExchangeBase):
             if not self._is_test_currency:
                 self.subscribe_depth()
         except Exception as e:
-            self._logger._logger.warning("[E]on_open: " + str(e))
+            self._logger.warning("[E]on_open: " + str(e))
 
     def decode_msg(self, msg):
         try:
@@ -80,7 +81,7 @@ class HUOBI(ExchangeBase):
             
             return msg       
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())      
+            self._logger.warning(traceback.format_exc())      
 
     def get_sub_trade_info(self, symbol_name:str, logger = None):
         sub_info = {'sub': f"market.{symbol_name.lower()}.trade.detail", 
@@ -92,7 +93,7 @@ class HUOBI(ExchangeBase):
         sub_info_str = json.dumps(sub_info)
 
         if logger is not None:
-            self._logger._logger.info("\nsub_info: \n" + sub_info_str)
+            self._logger.info("\nsub_info: \n" + sub_info_str)
         else:
             print("\nsub_info: \n" + sub_info_str)
         
@@ -108,7 +109,7 @@ class HUOBI(ExchangeBase):
         sub_info_str = json.dumps(sub_info)
 
         if logger is not None:
-            self._logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
+            self._logger.info("\nsub_trade_info: \n" + sub_info_str)
         else:
             print("\nsub_info: \n" + sub_info_str)
         
@@ -149,7 +150,7 @@ class HUOBI(ExchangeBase):
         try:
             # print(ws_json)
             
-            self._logger._logger.info(str(ws_json))
+            self._logger.info(str(ws_json))
             
             if ws_json is None:
                 return
@@ -162,11 +163,11 @@ class HUOBI(ExchangeBase):
             
             # print(ws_json)            
             # return
-            # self._logger._logger.info(str(ws_json))
+            # self._logger.info(str(ws_json))
             
             return 
             if "data" not in ws_json:
-                self._logger._logger.warning("ws_json is error: " + str(ws_json))
+                self._logger.warning("ws_json is error: " + str(ws_json))
                 return
 
             data = ws_json["data"]
@@ -176,7 +177,7 @@ class HUOBI(ExchangeBase):
             if ex_symbol in self._symbol_dict:
                 sys_symbol = self._symbol_dict[ex_symbol]
             else:
-                self._logger._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
+                self._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
                 return
 
             if channel_type == 'orderbook':
@@ -189,7 +190,7 @@ class HUOBI(ExchangeBase):
                 self._process_trades(sys_symbol, data)
             else:
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_json)))
-                self._logger._logger.warning("[E]process_msg: " + error_msg)                                  
+                self._logger.warning("[E]process_msg: " + error_msg)                                  
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
@@ -259,8 +260,9 @@ class HUOBI(ExchangeBase):
             self._logger.warning(traceback.format_exc())
 
 def huobi_start():
+    data_list = [DATA_TYPE.TRADE]
     huobi = HUOBI(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "HUOBI"), \
-                  debug_mode=False, is_test_currency=True)
+                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
     huobi.start()
         
 if __name__ == '__main__':

@@ -7,6 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 import time
 from MarketBase import ExchangeBase
 
+# from package.data_struct import DATA_TYPE
+
 # self._symbol_dict = {"BTCUSDT": "BTC_USDT",  # the exchange needs 'btcusdt'
 #                       "HTUSDT": "HT_USDT",
 #                       "IRISBTC": "IRIS_BTC",
@@ -32,11 +34,13 @@ from tool import *
 from Logger import *
 
 class BINANCE(ExchangeBase):    
-    def __init__(self, symbol_dict:dict, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
+    def __init__(self, symbol_dict:dict, sub_data_type_list:list, \
+                net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
                 debug_mode: bool = True, is_test_currency: bool = False):
         try:
-            super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, net_server_type=net_server_type,
-                              debug_mode=debug_mode, is_test_currency=is_test_currency)  
+            super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, 
+                             sub_data_type_list = sub_data_type_list, net_server_type=net_server_type,
+                             debug_mode=debug_mode, is_test_currency=is_test_currency)  
                       
             # self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
             
@@ -61,19 +65,19 @@ class BINANCE(ExchangeBase):
             
             # print(self._symbol_dict)
             
-            self._logger._logger.info(str(self._symbol_dict))
+            self._logger.info(str(self._symbol_dict))
             self._sub_item_dict = dict()
             self._sub_id = 1
             # self.set_ws_url()
 
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
             
     def set_meta(self):
         try:
             self._sub_id = 1
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
             
     def decode_msg(self, msg):
         try:
@@ -82,7 +86,7 @@ class BINANCE(ExchangeBase):
             msg = json.loads(msg)                 
             return msg       
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())      
+            self._logger.warning(traceback.format_exc())      
 
     def set_ws_url(self):
         self._sub_info_str += self.get_sub_trade_info()
@@ -91,28 +95,15 @@ class BINANCE(ExchangeBase):
         
         self._ws_url += "/stream?stream=" + self._sub_info_str        
 
-    def on_open(self):
-        try:
-            self._logger._logger.info("\non_open")
-            self._is_connnect = True
-            self.set_meta()
-
-            self.subscribe_trade()
-            if not self._is_test_currency:
-                self.subscribe_depth()
-                                    
-        except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())                
-
     def get_sub_trade_info(self):
         sub_info_str = "/".join([f"{symbol.lower()}@trade" for symbol in self._symbol_dict.keys()])
-        self._logger._logger.info("\nsub_info: \n" + sub_info_str)
+        self._logger.info("\nsub_info: \n" + sub_info_str)
         
         return sub_info_str           
 
     def get_sub_order_info(self):
         sub_info_str = "/".join([f"{symbol.lower()}@depth@100ms" for symbol in self._symbol_dict.keys()])
-        self._logger._logger.info("\nsub_info: \n" + sub_info_str)
+        self._logger.info("\nsub_info: \n" + sub_info_str)
                 
         return sub_info_str   
 
@@ -129,9 +120,9 @@ class BINANCE(ExchangeBase):
                     else:
                         self._write_successful_currency(exchaneg_symbol)
                 else:
-                    self._logger._logger.info("unkown sub id: " + symbol_id)
+                    self._logger.info("unkown sub id: " + symbol_id)
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())   
+            self._logger.warning(traceback.format_exc())   
                     
     def _check_failed_symbol(self, ws_json):
         pass
@@ -148,7 +139,7 @@ class BINANCE(ExchangeBase):
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
             
     def get_ping_sub_info(self):
         try:
@@ -158,13 +149,11 @@ class BINANCE(ExchangeBase):
             
             return sub_info_str       
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
+            self._logger.warning(traceback.format_exc())        
 
     def process_msg(self, ws_json):
         try:
-            # print(ws_json)
-            
-            self._logger._logger.info(str(ws_json))
+            # self._logger.info(str(ws_json))
             
             if ws_json is None:
                 return
@@ -175,34 +164,13 @@ class BINANCE(ExchangeBase):
             self._check_failed_symbol(ws_json)
             self._check_success_symbol(ws_json)
             
-            return 
-            if "data" not in ws_json:
-                self._logger._logger.warning("ws_json is error: " + str(ws_json))
-                return
-
-            data = ws_json["data"]
-            ex_symbol = ws_json["market"]
-            channel_type = ws_json["channel"]
-            
-            if ex_symbol in self._symbol_dict:
-                sys_symbol = self._symbol_dict[ex_symbol]
+             
+            if 'e' in ws_json and ws_json['e'] == "trade":
+                self._process_trades(ws_json)
             else:
-                self._logger._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
-                return
-
-            if channel_type == 'orderbook':
-                if sys_symbol in self._publish_count_dict["depth"]:
-                    self._publish_count_dict["depth"][sys_symbol] += 1
-                self._process_orderbook(sys_symbol, data)
-            elif channel_type == 'trades':
-                if sys_symbol in self._publish_count_dict["trade"]:
-                    self._publish_count_dict["trade"][sys_symbol] += 1                
-                self._process_trades(sys_symbol, data)
-            else:
-                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_json)))
-                self._logger._logger.warning("[E]process_msg: " + error_msg)                                  
+                pass                        
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())  
+            self._logger.warning(traceback.format_exc())  
 
     def _process_orderbook(self, symbol, msg):
         try:
@@ -242,32 +210,39 @@ class BINANCE(ExchangeBase):
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())  
+            self._logger.warning(traceback.format_exc())  
 
-    def _process_trades(self, symbol, data_list):
+
+    def _process_trades(self, ws_json):
         try:
             '''
-            {"channel": "trades", "market": "BTC/USDT", "type": "update", 
-                "data": [{"id": 150635418, "price": 12946.5, "size": 0.0805, "side": "sell", "liquidation": false, "time": "2020-10-23T06:09:42.187960+00:00"}, 
-                {"id": 150635419, "price": 12946.5, "size": 0.0402, "side": "sell", "liquidation": false, "time": "2020-10-23T06:09:42.188834+00:00"}
-            ]}
+            {'e': 'trade', 'E': 1641358340779, 's': 'RAYUSDT', 
+                't': 13419274, 'p': '6.60300000', 'q': '6.70000000', 
+                'b': 125864405, 'a': 125864543, 'T': 1641358340773, 'm': True, 'M': True}
+
             '''
- 
-            if symbol in self._symbol_dict:
-                self._publish_count_dict["trade"][self._symbol_dict[symbol]] = self._publish_count_dict["trade"][self._symbol_dict[symbol]] + 1
-                                            
-            if self._is_test_currency:
+            exchange_symbol = str(ws_json["s"]).lower()
+            if exchange_symbol not in self._symbol_dict:
+                self._logger.warning("unkonw symbol : " + exchange_symbol)  
                 return
-                
-            for trade in data_list:
-                side = trade['side']
-                exg_time = trade['time'].replace('T', ' ')[:-6]
-                self.__publisher.pub_tradex(symbol=symbol,
-                                            direction=side,
-                                            exg_time=exg_time,
-                                            px_qty=(float(trade['price']), float(trade['size'])))
+            
+            sys_symbol = self._symbol_dict[exchange_symbol]
+            exg_time_nano = int(ws_json['E']) * NANO_PER_SECS
+            
+            if ws_json["m"]:
+                direction = "Sell"
+            else:
+                direction = "Buy"
+            price = float(ws_json["p"])
+            volume = float(ws_json["q"])
+
+
+            self.__publisher.pub_tradex(symbol=sys_symbol,
+                                        direction=direction,
+                                        exg_time=exg_time_nano,
+                                        px_qty=(price, volume))
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())  
+            self._logger.warning(traceback.format_exc())  
 
     def test_sub_info(self):
         sub_string = "/".join([f"{symbol.lower()}@trade/{symbol.lower()}@depth@100ms" for symbol in self._symbol_dict.keys()])
@@ -294,7 +269,7 @@ class BINANCE(ExchangeBase):
                 self._ws.send(sub_info_str)
                 
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
+            self._logger.warning(traceback.format_exc())        
             
     # @abstractmethod
     def subscribe_trade(self):
@@ -316,16 +291,17 @@ class BINANCE(ExchangeBase):
                 
                 self._ws.send(sub_info_str)
                 
-                self._logger._logger.info("send %s" % (sub_info_str))
+                self._logger.info("send %s" % (sub_info_str))
                 
                 time.sleep(0.5)
                 
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
+            self._logger.warning(traceback.format_exc())        
     
 def binance_start():
+    data_list = [DATA_TYPE.TRADE]
     binance = BINANCE(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "BINANCE"), \
-                  debug_mode=False, is_test_currency=True)
+                      sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
     
     print(binance._ws_url)
     

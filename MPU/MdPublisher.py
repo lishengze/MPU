@@ -379,6 +379,8 @@ class Publisher:
             trade_data.exchange = self.__exchange
             trade_data.price = SDecimal(px)
             trade_data.exchange = SDecimal(px_qty)
+            
+            print(trade_data.meta_str())
                     
             self._net_server.publish_trade(trade_data)
             

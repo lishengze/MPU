@@ -41,11 +41,11 @@ g_redis_config_file_name = os.getcwd() + "/redis_config.json"
 def get_login_info(api_key, api_secret, logger = None):
     ts = int(time.time() * 1000)
 
-    # self._logger._logger.info("0")
+    # self._logger.info("0")
     tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
-    # self._logger._logger.info(tmp_sign_origin)
+    # self._logger.info(tmp_sign_origin)
     tmp_sign_hex = tmp_sign_origin.hexdigest()
-    # self._logger._logger.info(tmp_sign_hex)
+    # self._logger.info(tmp_sign_hex)
 
     
     sub_info = {'op': 'login', 
@@ -97,7 +97,7 @@ def get_ping_info():
     sub_info = {'op': 'ping'}  
 
     sub_info_str = json.dumps(sub_info)
-    # self._logger._logger.info(sub_info_str)
+    # self._logger.info(sub_info_str)
     
     return sub_info_str       
 
@@ -106,10 +106,11 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(ExchangeBase):    
-    def __init__(self, symbol_dict:dict, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
+    def __init__(self, symbol_dict:dict, sub_data_type_list:list, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
                 debug_mode: bool = True, is_test_currency: bool = False):
         try:
-            super().__init__(exchange_name="FTX", symbol_dict=symbol_dict, net_server_type=net_server_type,
+            super().__init__(exchange_name="FTX", symbol_dict=symbol_dict, 
+                             sub_data_type_list=sub_data_type_list, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)            
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
@@ -121,14 +122,14 @@ class FTX(ExchangeBase):
             self._is_connnect = False
             self._ws = None
             
-            self._logger._logger.info(str(self._symbol_dict))
+            self._logger.info(str(self._symbol_dict))
 
         except Exception as e:
-            self._logger._logger.warning("[E]__init__: " + str(e))
+            self._logger.warning("[E]__init__: " + str(e))
 
     def on_open(self):
         try:            
-            self._logger._logger.info("\nftx_on_open")
+            self._logger.info("\nftx_on_open")
             self._is_connnect = True
 
             sub_info_str = get_login_info(self._api_key, self._api_secret, logger=self._logger)
@@ -138,7 +139,7 @@ class FTX(ExchangeBase):
             if not self._is_test_currency:
                 self.subscribe_depth()
         except Exception as e:
-            self._logger._logger.warning("[E]on_open: " + str(e))
+            self._logger.warning("[E]on_open: " + str(e))
 
     def subscribe_depth(self):
         try:
@@ -159,7 +160,7 @@ class FTX(ExchangeBase):
             if  ws_msg["type"] == "pong":
                 return
             
-            # self._logger._logger.info(str(ws_msg))
+            # self._logger.info(str(ws_msg))
             
             if  ws_msg["type"] == "subscribed" and self._is_test_currency:
                 self._write_successful_currency(ws_msg["market"])
@@ -167,12 +168,12 @@ class FTX(ExchangeBase):
             if ws_msg["type"] == "error" and ws_msg["code"] == 404:
                 err_msg = ws_msg["msg"]
                 err_msg = err_msg.split(":")
-                # self._logger._logger.info(str(err_msg))
+                # self._logger.info(str(err_msg))
                 failed_symbol = err_msg[1]
                 self._write_failed_currency(failed_symbol)
                 
             if "data" not in ws_msg:
-                self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
+                self._logger.warning("ws_msg is error: " + str(ws_msg))
                 return
 
             data = ws_msg["data"]
@@ -182,7 +183,7 @@ class FTX(ExchangeBase):
             if ex_symbol in self._symbol_dict:
                 sys_symbol = self._symbol_dict[ex_symbol]
             else:
-                self._logger._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
+                self._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
                 return
 
             if channel_type == 'orderbook':
@@ -195,7 +196,7 @@ class FTX(ExchangeBase):
                 self._process_trades(sys_symbol, data)
             else:
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
-                self._logger._logger.warning("[E]process_msg: " + error_msg)                                  
+                self._logger.warning("[E]process_msg: " + error_msg)                                  
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
@@ -269,8 +270,9 @@ def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))
     
 def test_ftx():
+    data_list = [DATA_TYPE.TRADE]
     ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
-                  debug_mode=False, is_test_currency=True)
+                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
     ftx_obj.start()
 
 if __name__ == "__main__":
@@ -284,7 +286,7 @@ if __name__ == "__main__":
 
     # def connect_ws_server(self, info):
     #     try:
-    #         self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % \
+    #         self._logger.info("\n*****connect_ws_server %s %s %s *****" % \
     #                                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
     #         # websocket.enableTrace(True)
     #         self._ws = websocket.WebSocketApp(self._ws_url)
@@ -296,64 +298,64 @@ if __name__ == "__main__":
     #         self._ws.run_forever()
 
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]connect_ws_server: " + str(e))
+    #         self._logger.warning("[E]connect_ws_server: " + str(e))
 
     # def start_reconnect(self):
     #     try:
-    #         self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    #         self._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
     #         while self._is_connnect == False:
     #             self.connect_ws_server("Reconnect Server")
     #             time.sleep(self._reconnect_secs)
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]start_reconnect: " + str(e))
+    #         self._logger.warning("[E]start_reconnect: " + str(e))
 
     # def start_timer(self):
     #     try:
-    #         self._logger._logger.info("start_timer")
+    #         self._logger.info("start_timer")
     #         self._timer = threading.Timer(self._ping_secs, self.on_timer)
     #         self._timer.start()
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]start_timer: " + str(e))
+    #         self._logger.warning("[E]start_timer: " + str(e))
 
     # def start(self):
     #     try:
     #         self.start_timer()
     #         self.connect_ws_server("Start Connect")
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]start: " + str(e))
+    #         self._logger.warning("[E]start: " + str(e))
 
     # def on_msg(self, msg):
     #     try:
     #         dic = json.loads(msg)
     #         self.process_msg(dic)
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]on_msg: " + str(e))
+    #         self._logger.warning("[E]on_msg: " + str(e))
 
     # def on_error(self):
     #     self._logger.Error("on_error")
 
     # def on_close(self):
     #     try:
-    #         self._logger._logger.warning("\n******* on_close *******")
+    #         self._logger.warning("\n******* on_close *******")
     #         self._is_connnect = False        
     #         self.start_reconnect()
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]on_close: " + str(e))
+    #         self._logger.warning("[E]on_close: " + str(e))
 
     # def print_publish_info(self):
     #     try:
     #         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    #         self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+    #         self._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
     #         for item in self._publish_count_dict:
     #             if item == "depth" or item == "trade":
     #                 for symbol in self._publish_count_dict[item]:
-    #                     self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+    #                     self._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
     #                     self._publish_count_dict[item][symbol] = 0
-    #         self._logger._logger.info("\n")
+    #         self._logger.info("\n")
 
     #         self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]print_publish_info: " + str(e))
+    #         self._logger.warning("[E]print_publish_info: " + str(e))
 
     # def on_timer(self):
     #     try:
@@ -365,4 +367,4 @@ if __name__ == "__main__":
     #         self._timer = threading.Timer(self._ping_secs, self.on_timer)
     #         self._timer.start()
     #     except Exception as e:
-    #         self._logger._logger.warning("[E]on_timer: " + str(e))
+    #         self._logger.warning("[E]on_timer: " + str(e))

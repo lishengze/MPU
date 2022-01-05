@@ -16,6 +16,7 @@ import traceback
 from abc import ABC,abstractmethod
 
 import os
+# from package.data_struct import DATA_TYPE
 # from package.data_struct import NET_SERVER_TYPE
 
 def get_grandfather_dir():
@@ -44,11 +45,11 @@ g_redis_config_file_name = os.getcwd() + "/redis_config.json"
 def get_login_info(api_key, api_secret, logger = None):
     ts = int(time.time() * 1000)
 
-    # self._logger._logger.info("0")
+    # self._logger.info("0")
     tmp_sign_origin = hmac.new(api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256')
-    # self._logger._logger.info(tmp_sign_origin)
+    # self._logger.info(tmp_sign_origin)
     tmp_sign_hex = tmp_sign_origin.hexdigest()
-    # self._logger._logger.info(tmp_sign_hex)
+    # self._logger.info(tmp_sign_hex)
 
     
     sub_info = {'op': 'login', 
@@ -100,7 +101,7 @@ def get_ping_info():
     sub_info = {'op': 'ping'}  
 
     sub_info_str = json.dumps(sub_info)
-    # self._logger._logger.info(sub_info_str)
+    # self._logger.info(sub_info_str)
     
     return sub_info_str       
 
@@ -109,16 +110,17 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class ExchangeBase(ABC):
-    def __init__(self, exchange_name:str, symbol_dict:dict, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
+    def __init__(self, exchange_name:str, symbol_dict:dict, sub_data_type_list:list, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
                  debug_mode: bool = True, is_test_currency:bool = False):
         try:
             self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
             self._net_server_type = net_server_type
             self.__exchange_name = exchange_name             
+            self._sub_data_type_list = sub_data_type_list
             self._is_test_currency = is_test_currency             
             
-            self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
+            self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")._logger
             
             self._reconnect_secs = 5
             
@@ -152,13 +154,13 @@ class ExchangeBase(ABC):
                                             net_server_type=net_server_type, debug_mode=debug_mode, 
                                             logger=self._logger._logger)
         except Exception as e:
-            self._logger._logger.warning("[E]__init__: " + str(e))
+            self._logger.warning("[E]__init__: " + str(e))
             
     def set_meta(self):
         try:
             self._sub_id = 1
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
                         
     def _get_net_config(self, net_server_type:NET_SERVER_TYPE):
         if net_server_type == NET_SERVER_TYPE.KAFKA:
@@ -184,7 +186,7 @@ class ExchangeBase(ABC):
         
     def connect_ws_server(self, info):
         try:
-            self._logger._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
+            self._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
 
             self._ws = websocket.WebSocketApp(self._ws_url)
             self._ws.on_message = self.on_msg
@@ -195,39 +197,39 @@ class ExchangeBase(ABC):
             self._ws.run_forever()
 
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     def start_reconnect(self):
         try:
-            self._logger._logger.info("------- Start Reconnect -------- \n")
+            self._logger.info("------- Start Reconnect -------- \n")
 
             time.sleep(self._reconnect_secs)
             self.connect_ws_server("Reconnect Server")
             
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     def start_timer(self):
         try:
-            self._logger._logger.info("start_timer\n")
+            self._logger.info("start_timer\n")
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     def start(self):
         try:
             self.start_timer()
             self.connect_ws_server("Start Connect")
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     def on_msg(self, msg):
         try:
             json_data = self.decode_msg(msg)
             self.process_msg(json_data)
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
             
     
     def decode_msg(self, msg):
@@ -235,46 +237,48 @@ class ExchangeBase(ABC):
             dic = json.loads(msg)
             return dic
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
+            self._logger.warning(traceback.format_exc())        
 
     def on_open(self):
         try:
-            self._logger._logger.info("\nftx_on_open")
+            self._logger.info("\nftx_on_open")
             self._is_connnect = True
             self.set_meta()
             
-            self.subscribe_trade()
-            if not self._is_test_currency:
+            if DATA_TYPE.DEPTH in self._sub_data_type_list:
                 self.subscribe_depth()
-                    
+            
+            if DATA_TYPE.TRADE in self._sub_data_type_list:
+                self.subscribe_trade()
+                                    
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())                
+            self._logger.warning(traceback.format_exc())                
 
     def on_error(self):
-        self._logger._logger.error("on_error")
+        self._logger.error("on_error")
 
     def on_close(self):
         try:
-            self._logger._logger.warning("\n******* on_close *******")
+            self._logger.warning("\n******* on_close *******")
             self._is_connnect = False        
             self.start_reconnect()
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     def print_publish_info(self):
         try:
             self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            self._logger._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+            self._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
             for item in self._publish_count_dict:
                 if item == "depth" or item == "trade":
                     for symbol in self._publish_count_dict[item]:
-                        self._logger._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+                        self._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
-            self._logger._logger.info("\n")
+            self._logger.info("\n")
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     def on_timer(self):
         try:
@@ -286,7 +290,7 @@ class ExchangeBase(ABC):
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
             
     @abstractmethod
     def get_ping_sub_info(self):
@@ -297,42 +301,42 @@ class ExchangeBase(ABC):
             
             return sub_info_str       
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
+            self._logger.warning(traceback.format_exc())        
 
     @abstractmethod
     def subscribe_depth(self):
         try:
             pass
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
+            self._logger.warning(traceback.format_exc())        
             
     @abstractmethod
     def subscribe_trade(self):
         try:
             pass
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())    
+            self._logger.warning(traceback.format_exc())    
                         
     @abstractmethod
     def process_msg(self, ws_msg):
         try:
             print(ws_msg)                              
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     @abstractmethod
     def _process_orderbook(self, symbol, msg):
         try:
             print(symbol, msg)
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())
+            self._logger.warning(traceback.format_exc())
 
     @abstractmethod
     def _process_trades(self, symbol, data_list):
         try:
             print(symbol, data_list)
         except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())            
+            self._logger.warning(traceback.format_exc())            
 
             
                 

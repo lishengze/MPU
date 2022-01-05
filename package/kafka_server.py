@@ -218,6 +218,9 @@ class KafkaServer(NetServer):
         try:
             if self._producer.bootstrap_connected() or True:
                 self.check_topic(topic)
+                
+                print(topic + "---" + msg)
+                
                 self._producer.send(topic, value=bytes(msg.encode()))
                 # self._logger.info(topic + " " + msg)
             else:
@@ -239,7 +242,7 @@ class KafkaServer(NetServer):
             
     def _get_trade_topic(self, symbol, exchange):
         try:
-            return TRADE_TYPE + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
+            return TRADE_TYPE + TYPE_SEPARATOR + symbol
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                                 
