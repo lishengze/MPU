@@ -219,7 +219,8 @@ class KafkaServer(NetServer):
             if self._producer.bootstrap_connected() or True:
                 self.check_topic(topic)
                 
-                print(topic + "---" + msg)
+                print(topic)
+                print(msg)
                 
                 self._producer.send(topic, value=bytes(msg.encode()))
                 # self._logger.info(topic + " " + msg)
