@@ -38,7 +38,10 @@ class BINANCE(ExchangeBase):
             super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)  
                       
-            self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
+            # self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
+            
+            self._ws_url = "wss://stream.binance.com:9443/"
+            
             self._ping_secs = 30
             self._sub_info_str = ""
 
@@ -60,8 +63,14 @@ class BINANCE(ExchangeBase):
             # self.set_ws_url()
 
         except Exception as e:
-            self._logger._logger.warning("[E]__init__: " + str(e))
-
+            self._logger._logger.warning(traceback.format_exc())
+            
+    def set_meta(self):
+        try:
+            self._sub_id = 1
+        except Exception as e:
+            self._logger._logger.warning(traceback.format_exc())
+            
     def decode_msg(self, msg):
         try:
             # msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
@@ -102,10 +111,26 @@ class BINANCE(ExchangeBase):
                 
         return sub_info_str   
 
-    def _check_success_symbol(self):
-        pass
-    
-    def _check_failed_symbol(self):
+    def _check_success_symbol(self, ws_json):
+        try:
+            if 'result' in ws_json and ws_json['result'] is None:
+                symbol_id = ws_json['id']
+                
+                if str(symbol_id) in self._sub_client_id:                
+                    exchaneg_symbol = self._sub_client_id[str(symbol_id)]
+                    
+                    print(exchaneg_symbol)
+                    
+                    if exchaneg_symbol in self._symbol_dict:
+                        self._write_successful_currency(self._symbol_dict[exchaneg_symbol])
+                    else:
+                        self._write_successful_currency(exchaneg_symbol)
+                else:
+                    self._logger._logger.info("unkown sub id: " + str(symbol_id))
+        except Exception as e:
+            self._logger._logger.warning(traceback.format_exc())   
+                    
+    def _check_failed_symbol(self, ws_json):
         pass
 
     def process_msg(self, ws_json):
@@ -150,7 +175,7 @@ class BINANCE(ExchangeBase):
                 error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_json)))
                 self._logger._logger.warning("[E]process_msg: " + error_msg)                                  
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())  
 
     def _process_orderbook(self, symbol, msg):
         try:
@@ -190,7 +215,7 @@ class BINANCE(ExchangeBase):
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())  
 
     def _process_trades(self, symbol, data_list):
         try:
@@ -215,7 +240,7 @@ class BINANCE(ExchangeBase):
                                             exg_time=exg_time,
                                             px_qty=(float(trade['price']), float(trade['size'])))
         except Exception as e:
-            self._logger.warning(traceback.format_exc())
+            self._logger._logger.warning(traceback.format_exc())  
 
     def test_sub_info(self):
         sub_string = "/".join([f"{symbol.lower()}@trade/{symbol.lower()}@depth@100ms" for symbol in self._symbol_dict.keys()])
@@ -237,7 +262,7 @@ class BINANCE(ExchangeBase):
                             }
                 sub_info_str = json.dumps(ws_json)
                 
-                self._sub_item_dict[str(self._sub_id)] = sub_depth_msg
+                self._sub_item_dict[str(self._sub_id)] = symbol
                 
                 self._ws.send(sub_info_str)
                 
@@ -260,7 +285,7 @@ class BINANCE(ExchangeBase):
                             }
                 sub_info_str = json.dumps(ws_json)
                 
-                self._sub_item_dict[str(self._sub_id)] = sub_depth_msg
+                self._sub_item_dict[str(self._sub_id)] = symbol
                 
                 self._ws.send(sub_info_str)
         except Exception as e:

@@ -154,6 +154,12 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
             
+    def set_meta(self):
+        try:
+            self._sub_id = 1
+        except Exception as e:
+            self._logger._logger.warning(traceback.format_exc())
+                        
     def _get_net_config(self, net_server_type:NET_SERVER_TYPE):
         if net_server_type == NET_SERVER_TYPE.KAFKA:
             self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/kafka_config.json"               
@@ -237,7 +243,8 @@ class ExchangeBase(ABC):
         try:
             self._logger._logger.info("\nftx_on_open")
             self._is_connnect = True
-
+            self.set_meta()
+            
             self.subscribe_trade()
             if not self._is_test_currency:
                 self.subscribe_depth()
