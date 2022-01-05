@@ -316,7 +316,7 @@ class BINANCE(ExchangeBase):
                 
                 self._ws.send(sub_info_str)
                 
-                self._logger._logger("send %s" % (sub_info_str))
+                self._logger._logger.info("send %s" % (sub_info_str))
                 
                 time.sleep(0.5)
                 
