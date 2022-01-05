@@ -192,10 +192,21 @@ class HUOBI(ExchangeBase):
                     self._process_trades(ws_json=ws_json)
                 elif 'depth' in ws_json['ch']:
                     pass
+            elif 'ping' in ws_json:
+                self._send_pong(ws_json)
             
                                         
         except Exception as e:
             self._logger.warning(traceback.format_exc())
+            
+    def _send_pong(self, ws_json):
+        try:
+            data = {'pong': ws_json['ping']}
+            self._ws.send(json.dumps(data))
+            
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())            
+        
 
     def _process_depth(self, symbol, ws_json):
         try:
@@ -237,12 +248,7 @@ class HUOBI(ExchangeBase):
                 return
             
             sys_symbol = self._symbol_dict[exchange_symbol]
-            
-            
-            if 'data' not in ws_json:
-                self._logger.warning("trade data has no data : " + str(ws_json))  
-                return                
-            
+                       
             for trade in  ws_json['tick']['data']:
                 exg_time_nano = int(trade['ts']) * NANO_PER_MILL
                 
