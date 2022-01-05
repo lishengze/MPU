@@ -219,10 +219,12 @@ class KafkaServer(NetServer):
             if self._producer.bootstrap_connected() or True:
                 self.check_topic(topic)
                 
-                print(topic)
-                print(msg)
+                # print(topic)
+                # print(msg)
                 
-                self._producer.send(topic, value=bytes(msg.encode()))
+                if type(msg) == str:
+                    msg = bytes(msg.encode())
+                self._producer.send(topic, value=msg)
                 # self._logger.info(topic + " " + msg)
             else:
                 self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
