@@ -204,7 +204,7 @@ class ExchangeBase(ABC):
 
     def start_timer(self):
         try:
-            self._logger._logger.info("start_timer")
+            self._logger._logger.info("start_timer\n")
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
         except Exception as e:

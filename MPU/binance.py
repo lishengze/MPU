@@ -52,19 +52,21 @@ class BINANCE(ExchangeBase):
             self._ws = None
             self._sub_client_id = 0
             
-            self._logger._logger.info(str(self._symbol_dict))
+            print(self._symbol_dict)
             
-            self.set_ws_url()
+            self._logger._logger.info(str(self._symbol_dict))
+            self._sub_item_dict = dict()
+            self._sub_id = 1
+            # self.set_ws_url()
 
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
 
     def decode_msg(self, msg):
         try:
-            msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
-            # print(msg)
-            msg = json.loads(msg, parse_float=float)     
-            
+            # msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
+            # # print(msg)
+            msg = json.loads(msg)                 
             return msg       
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())      
@@ -80,7 +82,11 @@ class BINANCE(ExchangeBase):
         try:
             self._logger._logger.info("\non_open")
             self._is_connnect = True
-                    
+
+            self.subscribe_trade()
+            if not self._is_test_currency:
+                self.subscribe_depth()
+                                    
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())                
 
@@ -218,14 +224,45 @@ class BINANCE(ExchangeBase):
     # @abstractmethod
     def subscribe_depth(self):
         try:
-            pass
+            for symbol in self._symbol_dict:
+                sub_depth_msg = symbol+"@depth"
+                self._sub_id += 1
+                ws_json = {
+                            "method": "SUBSCRIBE",
+                            "params":
+                            [
+                                sub_depth_msg
+                            ],
+                            "id": self._sub_id
+                            }
+                sub_info_str = json.dumps(ws_json)
+                
+                self._sub_item_dict[str(self._sub_id)] = sub_depth_msg
+                
+                self._ws.send(sub_info_str)
+                
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())        
             
     # @abstractmethod
     def subscribe_trade(self):
         try:
-            pass
+            for symbol in self._symbol_dict:
+                sub_depth_msg = symbol+"@trade"
+                self._sub_id += 1
+                ws_json = {
+                            "method": "SUBSCRIBE",
+                            "params":
+                            [
+                                sub_depth_msg
+                            ],
+                            "id": self._sub_id
+                            }
+                sub_info_str = json.dumps(ws_json)
+                
+                self._sub_item_dict[str(self._sub_id)] = sub_depth_msg
+                
+                self._ws.send(sub_info_str)
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())        
     

@@ -67,7 +67,9 @@ def trans_sys_symbol_binance(sys_symbol):
         if sys_symbol.find("_") == -1:
             return ""
         else:
-            return sys_symbol.replace("_", "")
+            sys_symbol = sys_symbol.replace("_", "")
+            sys_symbol = sys_symbol.lower()
+            return sys_symbol
     except Exception as e:
         print(traceback.format_exc())    
 
@@ -76,7 +78,9 @@ def trans_sys_symbol_houbi(sys_symbol):
         if sys_symbol.find("_") == -1:
             return ""
         else:
-            return sys_symbol.replace("_", "")
+            sys_symbol = sys_symbol.replace("_", "")
+            sys_symbol = sys_symbol.lower()
+            return sys_symbol
     except Exception as e:
         print(traceback.format_exc())            
 
