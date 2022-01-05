@@ -141,9 +141,9 @@ class ProtoSerializer:
         proto_quote.symbol = local_quote.symbol
         proto_quote.exchange = local_quote.exchange
         proto_quote.sequence_no = local_quote.sequence_no        
-        proto_quote.origin_time = local_quote.origin_time
-        proto_quote.arrive_time = local_quote.arrive_time
-        proto_quote.server_time = local_quote.server_time        
+        proto_quote.origin_time = int(local_quote.origin_time)
+        proto_quote.arrive_time = int(local_quote.arrive_time)
+        proto_quote.server_time = int(local_quote.server_time)
         proto_quote.price_precise = local_quote.price_precise
         proto_quote.volume_precise = local_quote.volume_precise
         proto_quote.amount_precise = local_quote.amount_precise 
@@ -157,7 +157,7 @@ class ProtoSerializer:
     
     def encode_kline(self, local_kline:SKlineData):
         proto_kline = KlineData()
-        proto_kline.time = local_kline.time
+        proto_kline.time = int(local_kline.time)
         proto_kline.symbol = local_kline.symbol
         proto_kline.exchange = local_kline.exchange
         proto_kline.resolution = local_kline.resolution
@@ -181,7 +181,7 @@ class ProtoSerializer:
     
     def encode_trade(self, local_trade:STradeData):
         proto_trade = TradeData()
-        proto_trade.time = local_trade.time
+        proto_trade.time = int(local_trade.time)
         proto_trade.symbol = local_trade.symbol
         proto_trade.exchange = local_trade.exchange
         proto_trade.price.value = local_trade.price.value
