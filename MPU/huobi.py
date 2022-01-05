@@ -2,6 +2,7 @@ import asyncio
 import json
 import aiohttp
 import sys
+import zlib
 from MdPublisher import *
 from concurrent.futures import ThreadPoolExecutor
 
@@ -34,16 +35,17 @@ sys.path.append(get_package_dir())
 
 from tool import *
 
-class BINANCE(ExchangeBase):    
+sys.path.append(os.getcwd())
+from Logger import *
+class HUOBI(ExchangeBase):    
     def __init__(self, symbol_dict:dict, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
                 debug_mode: bool = True, is_test_currency: bool = False):
         try:
-            super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, net_server_type=net_server_type,
+            super().__init__(exchange_name="HUOBI", symbol_dict=symbol_dict, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)  
                       
-            self._ws_url = "wss://stream.binance.com:9443"
+            self._ws_url = "wss://api.huobi.pro/ws"
             self._ping_secs = 30
-            self._sub_info_str = ""
 
             self._sub_type_list = ["trade.detail"]
             if not self._is_test_currency:
@@ -56,11 +58,19 @@ class BINANCE(ExchangeBase):
             self._sub_client_id = 0
             
             self._logger._logger.info(str(self._symbol_dict))
-            
-            self.set_ws_url()
 
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
+
+    def on_open(self):
+        try:     
+            self._is_connnect = True
+            
+            self.subscribe_trade()
+            if not self._is_test_currency:
+                self.subscribe_depth()
+        except Exception as e:
+            self._logger._logger.warning("[E]on_open: " + str(e))
 
     def decode_msg(self, msg):
         try:
@@ -72,73 +82,96 @@ class BINANCE(ExchangeBase):
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())      
 
-    def set_ws_url(self):
-        self._sub_info_str += self.get_sub_trade_info()
-        if not self._is_test_currency:
-            self._sub_info_str += self.get_sub_order_info()
+    def get_sub_trade_info(self, symbol_name:str, logger = None):
+        sub_info = {'sub': f"market.{symbol_name.lower()}.trade.detail", 
+                    'channel': 'orderbook', 
+                    'market': self._sub_client_id}  
         
-        self._ws_url += "/stream?stream=" + self._sub_info_str        
+        self._sub_client_id += 1
 
-    def on_open(self):
-        try:
-            self._logger._logger.info("\non_open")
-            self._is_connnect = True
-                    
-        except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())                
+        sub_info_str = json.dumps(sub_info)
 
-    def get_sub_trade_info(self):
-        sub_info_str = "/".join([f"{symbol.lower()}@trade" for symbol in self._symbol_dict.keys()])
-        self._logger._logger.info("\nsub_info: \n" + sub_info_str)
+        if logger is not None:
+            self._logger._logger.info("\nsub_info: \n" + sub_info_str)
+        else:
+            print("\nsub_info: \n" + sub_info_str)
         
         return sub_info_str           
 
-    def get_sub_order_info(self):
-        sub_info_str = "/".join([f"{symbol.lower()}@depth@100ms" for symbol in self._symbol_dict.keys()])
-        self._logger._logger.info("\nsub_info: \n" + sub_info_str)
-                
-        return sub_info_str   
+    def get_sub_order_info(self, symbol_name, logger = None):
+        sub_info = {'sub': f"market.{symbol_name.lower()}.depth.step0", 
+                    'channel': 'orderbook', 
+                    'market': self._sub_client_id}  
+        
+        self._sub_client_id += 1
 
-    def process_msg(self, ws_msg):
+        sub_info_str = json.dumps(sub_info)
+
+        if logger is not None:
+            self._logger._logger.info("\nsub_trade_info: \n" + sub_info_str)
+        else:
+            print("\nsub_info: \n" + sub_info_str)
+        
+        return sub_info_str  
+
+    def subscribe_depth(self):
         try:
-            # print(ws_msg)
+            for symbol in self._symbol_dict:
+                self._ws.send(self.get_sub_order_info(symbol, logger=self._logger))
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())        
             
-            self._logger._logger.info(str(ws_msg))
-            
-            if ws_msg is None:
-                return
-            
-            if 'ping' in ws_msg:
-                return
-            
-            # print(ws_msg)
-            
-            # return
-            # self._logger._logger.info(str(ws_msg))
-            
-            if  "status" in ws_msg and ws_msg["status"] == "ok" and 'subbed' in ws_msg:
-                detail_msg = ws_msg['subbed']
-                msg_list = detail_msg.split('.')
-                symbol = msg_list[1]
-                print("[S]: " + symbol)
-                self._write_successful_currency(symbol)
-                
-            if "status" in ws_msg and ws_msg["status"] == "error":
-                err_msg = ws_msg["err-msg"]
+    def subscribe_trade(self):
+        try:
+            for symbol in self._symbol_dict:
+                self._ws.send(self.get_sub_trade_info(symbol, logger=self._logger))
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())                    
+
+    def _check_success_symbol(self, ws_json):
+        if  "status" in ws_json and ws_json["status"] == "ok" and 'subbed' in ws_json:
+            detail_msg = ws_json['subbed']
+            msg_list = detail_msg.split('.')
+            symbol = msg_list[1]
+            print("[S]: " + symbol)
+            self._write_successful_currency(symbol)        
+    
+    def _check_failed_symbol(self, ws_json):
+            if "status" in ws_json and ws_json["status"] == "error":
+                err_msg = ws_json["err-msg"]
                 pos = err_msg.find("invalid symbol")
                 if pos != -1:
                     failed_symbol = err_msg[(pos+len("invalid symbol")):]
                     print("[F]: " + failed_symbol)
-                    self._write_failed_currency(failed_symbol)
-                
+                    self._write_failed_currency(failed_symbol)        
+    
+    def process_msg(self, ws_json):
+        try:
+            # print(ws_json)
+            
+            self._logger._logger.info(str(ws_json))
+            
+            if ws_json is None:
+                return
+            
+            if 'ping' in ws_json:
+                return
+            
+            self._check_failed_symbol(ws_json)
+            self._check_success_symbol(ws_json)
+            
+            # print(ws_json)            
+            # return
+            # self._logger._logger.info(str(ws_json))
+            
             return 
-            if "data" not in ws_msg:
-                self._logger._logger.warning("ws_msg is error: " + str(ws_msg))
+            if "data" not in ws_json:
+                self._logger._logger.warning("ws_json is error: " + str(ws_json))
                 return
 
-            data = ws_msg["data"]
-            ex_symbol = ws_msg["market"]
-            channel_type = ws_msg["channel"]
+            data = ws_json["data"]
+            ex_symbol = ws_json["market"]
+            channel_type = ws_json["channel"]
             
             if ex_symbol in self._symbol_dict:
                 sys_symbol = self._symbol_dict[ex_symbol]
@@ -155,7 +188,7 @@ class BINANCE(ExchangeBase):
                     self._publish_count_dict["trade"][sys_symbol] += 1                
                 self._process_trades(sys_symbol, data)
             else:
-                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
+                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_json)))
                 self._logger._logger.warning("[E]process_msg: " + error_msg)                                  
         except Exception as e:
             self._logger.warning(traceback.format_exc())
@@ -225,31 +258,10 @@ class BINANCE(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-    def test_sub_info(self):
-        sub_string = "/".join([f"{symbol.lower()}@trade/{symbol.lower()}@depth@100ms" for symbol in self._symbol_dict.keys()])
-        print(sub_string)
-
-    # @abstractmethod
-    def subscribe_depth(self):
-        try:
-            pass
-        except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
-            
-    # @abstractmethod
-    def subscribe_trade(self):
-        try:
-            pass
-        except Exception as e:
-            self._logger._logger.warning(traceback.format_exc())        
-    
-def binance_start():
-    binance = BINANCE(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "BINANCE"), \
+def huobi_start():
+    huobi = HUOBI(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "HUOBI"), \
                   debug_mode=False, is_test_currency=True)
-    # binance.start()
-    print(binance._ws_url)
-    
-    # binance.test_sub_info()
+    huobi.start()
         
 if __name__ == '__main__':
-    binance_start()
+    huobi_start()

@@ -117,7 +117,9 @@ class ExchangeBase(ABC):
             self._net_server_type = net_server_type
             self.__exchange_name = exchange_name             
             self._is_test_currency = is_test_currency             
-            self._logger = Logger(program_name=self.__exchange_name)
+            
+            self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
+            
             self._reconnect_secs = 5
             
             if self._is_test_currency:

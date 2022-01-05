@@ -9,7 +9,7 @@ def get_datetime_str():
     return datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 
 class Logger(object):
-    def __init__(self, program_name="test"):
+    def __init__(self, program_name="test", log_dir:str= ""):
         # LOG_FORMAT = "%(pathname)s-%(lineno)s - %(asctime)s - %(levelname)s - %(message)s"
         # DATE_FORMAT = "%Y/%m/%d %H:%M:%S"    
         # logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
@@ -17,7 +17,9 @@ class Logger(object):
         self._debug_logger = logging.getLogger('debug_logger')
         self._debug_logger.setLevel(logging.DEBUG)     
 
-        log_dir = os.path.dirname(os.path.abspath(__file__)) + "/log/" 
+        if log_dir == "":
+            log_dir = os.path.dirname(os.path.abspath(__file__)) + "/log/" 
+            
         if program_name !="":
             log_dir = log_dir + program_name + "/"
         print("log_dir: %s" % log_dir)

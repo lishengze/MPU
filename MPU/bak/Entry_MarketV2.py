@@ -12,13 +12,13 @@ import time
 import datetime
 
 from MarketV2_POLONIEX import MarketData_POLONIEX
-from MarketV2_BINANCE import MarketData_BINANCE
+from MPU.binance import MarketData_BINANCE
 from MarketV2_BINANCE_Perpetual import MarketData_BINANCE_Perpetual
 from MarketV2_BITMEX import MarketData_BITMEX
 from MarketV2_GDAX import MarketData_GDAX
 from MarketV2_HITBTC import MarketData_HITBTC
 from MarketV2_XDAEX import MarketData_XDAEX
-from MarketV2_HUOBI import MarketData_HUOBI
+from MPU.huobi import MarketData_HUOBI
 from MarketV2_HUOBI_Future import MarketData_HUOBI_Future
 from MarketV2_HUOBI_Perpetual import MarketData_HUOBI_Perpetual
 from MarketV2_OKEX import MarketData_OKEX
@@ -27,7 +27,7 @@ from MarketV2_OKEX_Perpetual import MarketData_OKEX_Perpetual
 from MarketV2_HASHKEYPRO import MarketData_HASHKEYPRO
 from MarketV2_HASHKEYPRO2 import MarketData_HASHKEYPRO2
 from MarketV2_B2C2 import MarketData_B2C2
-from MarketV2_FTX import MarketData_FTX
+from MPU.ftx import MarketData_FTX
 
 g_redis_config_file_name = "../redis_config.json"
 
