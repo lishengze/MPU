@@ -98,8 +98,8 @@ class STradeData(object):
         self.exchange = ""
         
     def meta_str(self):
-        result =  ("exchange: %s, symbol: %s, price: %f, volume: %f" % \
-                    (self.exchange, self.symbol, self.price.get_value(), self.volume.get_value()))
+        result =  ("exchange: %s, symbol: %s, price: %f, volume: %f, time:%d" % \
+                    (self.exchange, self.symbol, self.price.get_value(), self.volume.get_value()), self.time)
         return result
 class SKlineData(object):
     def __init__(self, ):
