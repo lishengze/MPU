@@ -153,7 +153,7 @@ class ProtoSerializer:
         set_proto_depth_list(proto_quote.asks, local_quote.asks)
         set_proto_depth_list(proto_quote.bids, local_quote.bids)
                                  
-        return proto_quote.SerializeToString(), proto_quote
+        return proto_quote.SerializeToString()
     
     def encode_kline(self, local_kline:SKlineData):
         proto_kline = KlineData()
@@ -177,7 +177,7 @@ class ProtoSerializer:
         proto_kline.volume.value = local_kline.volume.value
         proto_kline.volume.precise = local_kline.volume.precise                               
         
-        return proto_kline.SerializeToString(), proto_kline
+        return proto_kline.SerializeToString()
     
     def encode_trade(self, local_trade:STradeData):
         proto_trade = TradeData()
@@ -190,7 +190,7 @@ class ProtoSerializer:
         proto_trade.volume.value = local_trade.volume.value
         proto_trade.volume.precise = local_trade.volume.precise       
         
-        return proto_trade.SerializeToString(), proto_trade
+        return proto_trade.SerializeToString()
     
 
 def test_market_data():
