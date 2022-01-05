@@ -7,8 +7,7 @@ from MdPublisher import *
 from concurrent.futures import ThreadPoolExecutor
 
 from datetime import datetime
-import time
-from settings import REDIS_CONFIG
+
 
 from MarketBase import ExchangeBase
 
