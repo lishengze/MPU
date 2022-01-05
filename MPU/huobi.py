@@ -221,10 +221,13 @@ class HUOBI(ExchangeBase):
     def _process_trades(self, ws_json):
         try:
             '''
-            {"channel": "trades", "market": "BTC/USDT", "type": "update", 
-                "data": [{"id": 150635418, "price": 12946.5, "size": 0.0805, "side": "sell", "liquidation": false, "time": "2020-10-23T06:09:42.187960+00:00"}, 
-                {"id": 150635419, "price": 12946.5, "size": 0.0402, "side": "sell", "liquidation": false, "time": "2020-10-23T06:09:42.188834+00:00"}
-            ]}
+            {'ch': 'market.btcusdt.trade.detail', 'ts': 1641377078118, 
+            'tick': {
+                    'id': 146011879638, 'ts': 1641377078116, 
+                    'data': [{'id': 146011879638447549965348259, 'ts': 1641377078116, 'tradeId': 102600033828, 
+                                'amount': 0.0002, 'price': 46965.67, 'direction': 'sell'}]
+                    }
+            }
             '''
  
             exchange_symbol = ws_json['ch'].split('.')[1]
@@ -234,27 +237,31 @@ class HUOBI(ExchangeBase):
                 return
             
             sys_symbol = self._symbol_dict[exchange_symbol]
-            exg_time_nano = self.__time_convert(ws_json['ts']) * NANO_PER_SECS
             
-            if ws_json['direction'] == 'buy':
-                direction = "Buy"
-            else:
-                direction = "Sell"
+            
+            if 'data' not in ws_json:
+                self._logger.warning("trade data has no data : " + str(ws_json))  
+                return                
+            
+            for trade in  ws_json['tick']['data']:
+                exg_time_nano = int(trade['ts']) * NANO_PER_MILL
                 
-            price = float(ws_json["price"])
-            volume = float(ws_json["amount"])
+                if trade['direction'] == 'buy':
+                    direction = "Buy"
+                else:
+                    direction = "Sell"
+                    
+                price = float(trade["price"])
+                volume = float(trade["amount"])
 
-            self._publisher.pub_tradex(symbol=sys_symbol,
-                                        direction=direction,
-                                        exg_time=exg_time_nano,
-                                        px_qty=(price, volume))
+                self._publisher.pub_tradex(symbol=sys_symbol,
+                                            direction=direction,
+                                            exg_time=exg_time_nano,
+                                            px_qty=(price, volume))
               
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             
-    def __time_convert(self, time_x: float) -> str:
-        rt_time = datetime.utcfromtimestamp(time_x / 1000).strftime("%Y-%m-%d %H:%M:%S.%f")
-        return rt_time
             
 
 def huobi_start():
