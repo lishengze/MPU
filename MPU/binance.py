@@ -43,6 +43,8 @@ class BINANCE(ExchangeBase):
             super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, 
                              sub_data_type_list = sub_data_type_list, net_server_type=net_server_type,
                              debug_mode=debug_mode, is_test_currency=is_test_currency)  
+            
+            print("super init over")
                       
             # self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
             
@@ -70,7 +72,11 @@ class BINANCE(ExchangeBase):
             self._logger.info(str(self._symbol_dict))
             self._sub_item_dict = dict()
             self._sub_id = 1
-            # self.set_ws_url()
+                                                                                                                
+            # if self._publisher:
+            #     print("Has Publisher")
+            # else:
+            #     print("No publisher")
 
         except Exception as e:
             self._logger.warning(traceback.format_exc())
@@ -234,7 +240,7 @@ class BINANCE(ExchangeBase):
             # if symbol == "ETH_BTC":
             #     self._logger.Debug("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
 
-            self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
+            self._publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
@@ -263,7 +269,7 @@ class BINANCE(ExchangeBase):
             volume = float(ws_json["q"])
 
 
-            self.__publisher.pub_tradex(symbol=sys_symbol,
+            self._publisher.pub_tradex(symbol=sys_symbol,
                                         direction=direction,
                                         exg_time=exg_time_nano,
                                         px_qty=(price, volume))

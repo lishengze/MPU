@@ -113,21 +113,21 @@ class ExchangeBase(ABC):
             self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
             self._net_server_type = net_server_type
-            self.__exchange_name = exchange_name             
+            self._exchange_name = exchange_name             
             self._sub_data_type_list = sub_data_type_list
             self._is_test_currency = is_test_currency             
             
-            self._logger_all = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
+            self._logger_all = Logger(program_name=self._exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
             self._logger = self._logger_all._logger
             
             self._reconnect_secs = 5
             
             # if self._is_test_currency:
                 
-            self._success_log_file_name = os.getcwd() + "/log/" + self.__exchange_name + "/suceess_currency.log"
+            self._success_log_file_name = os.getcwd() + "/log/" + self._exchange_name + "/suceess_currency.log"
             self._success_log_file = open(self._success_log_file_name, 'a')
             
-            self._failed_log_file_name = os.getcwd() + "/log/" + self.__exchange_name + "/failed_currency.log"
+            self._failed_log_file_name = os.getcwd() + "/log/" + self._exchange_name + "/failed_currency.log"
             self._failed_log_file = open(self._failed_log_file_name, 'a')
             
             self._error_msg_list = ["", ""]
@@ -145,12 +145,17 @@ class ExchangeBase(ABC):
                 if not self._is_test_currency:
                     self._publish_count_dict["depth"][sys_symbol] = 0
                 self._publish_count_dict["trade"][sys_symbol] = 0
-                            
+                
             self._config = self._get_net_config(net_server_type)
-                                                       
-            self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
+            self._publisher = Publisher(exchange=self._exchange_name, config=self._config, 
                                         net_server_type=net_server_type, debug_mode=debug_mode, 
                                         logger=self._logger)
+            
+            # if self._publisher:
+            #     print("create publisher for " + self._exchange_name )
+            # else:
+            #     print("No publiser for " + self._exchange_name)                
+                            
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             

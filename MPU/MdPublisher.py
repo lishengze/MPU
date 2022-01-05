@@ -96,6 +96,8 @@ class Publisher:
             self.__exchange_topic = exchange      # 形如 "BINANCE"
 
         self.__orderbook = dict()
+        
+        # print("create publisher for " + self.__exchange)
 
     def _is_depth_invalid(self, depth):
         try:
