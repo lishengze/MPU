@@ -189,7 +189,7 @@ class FTX(ExchangeBase):
             if channel_type == 'orderbook':
                 if sys_symbol in self._publish_count_dict["depth"]:
                     self._publish_count_dict["depth"][sys_symbol] += 1
-                self._process_orderbook(sys_symbol, data)
+                self._process_depth(sys_symbol, data)
             elif channel_type == 'trades':
                 if sys_symbol in self._publish_count_dict["trade"]:
                     self._publish_count_dict["trade"][sys_symbol] += 1                
@@ -200,7 +200,7 @@ class FTX(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-    def _process_orderbook(self, symbol, msg):
+    def _process_depth(self, symbol, msg):
         try:
             '''
             snap: {"channel": "orderbook", "market": "BTC/USDT", "type": "partial", "data": {

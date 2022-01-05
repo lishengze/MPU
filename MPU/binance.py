@@ -204,7 +204,7 @@ class BINANCE(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
-    def _process_orderbook(self, symbol, msg):
+    def _process_depth(self, symbol, msg):
         try:
             '''
             snap: {"channel": "orderbook", "market": "BTC/USDT", "type": "partial", "data": {

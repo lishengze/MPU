@@ -328,7 +328,7 @@ class ExchangeBase(ABC):
             self._logger.warning(traceback.format_exc())
 
     @abstractmethod
-    def _process_orderbook(self, symbol, msg):
+    def _process_depth(self, symbol, msg):
         try:
             print(symbol, msg)
         except Exception as e:
