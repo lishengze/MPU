@@ -148,7 +148,31 @@ class HUOBI(ExchangeBase):
                     failed_symbol = err_msg[(pos+len("invalid symbol")):]
                     print("[F]: " + failed_symbol)
                     self._write_failed_currency(failed_symbol)        
-    
+
+    def on_timer(self):
+        try:
+            return
+        
+            # if self._is_connnect:
+            #     self._ws.send(self.get_ping_sub_info())        
+
+            self.print_publish_info()
+
+            self._timer = threading.Timer(self._ping_secs, self.on_timer)
+            self._timer.start()
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())
+
+    def get_ping_sub_info(self):
+        try:
+            sub_info = {'op': 'pong'}  
+
+            sub_info_str = json.dumps(sub_info)
+            
+            return sub_info_str       
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())   
+                            
     def process_msg(self, ws_json):
         try:
             # print(ws_json)
