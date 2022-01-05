@@ -4,7 +4,7 @@ import aiohttp
 import sys
 from MdPublisher import *
 from concurrent.futures import ThreadPoolExecutor
-
+import time
 from MarketBase import ExchangeBase
 
 # self._symbol_dict = {"BTCUSDT": "BTC_USDT",  # the exchange needs 'btcusdt'
@@ -40,7 +40,9 @@ class BINANCE(ExchangeBase):
                       
             # self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
             
-            self._ws_url = "wss://stream.binance.com:9443/stream?streams=btcusdt@trade/btcusdt@depth"
+            self._ws_url = "wss://stream.binance.com:9443/ws"
+            
+            # self._ws_url = "wss://stream.binance.com:9443/stream?streams=btcusdt@trade/btcusdt@depth"
             
             # self._ws_url = "wss://stream.binance.com:9443/"
             
@@ -95,9 +97,9 @@ class BINANCE(ExchangeBase):
             self._is_connnect = True
             self.set_meta()
 
-            # self.subscribe_trade()
-            # if not self._is_test_currency:
-            #     self.subscribe_depth()
+            self.subscribe_trade()
+            if not self._is_test_currency:
+                self.subscribe_depth()
                                     
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())                
@@ -301,6 +303,11 @@ class BINANCE(ExchangeBase):
                 self._sub_item_dict[str(self._sub_id)] = symbol
                 
                 self._ws.send(sub_info_str)
+                
+                print("send %s" % (sub_info_str))
+                
+                time.sleep(0.5)
+                
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())        
     
