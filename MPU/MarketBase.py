@@ -120,7 +120,7 @@ class ExchangeBase(ABC):
             
             self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
             
-            self._reconnect_secs = 5
+            self._reconnect_secs = 3000
             
             if self._is_test_currency:
                 self._success_log_file_name = os.getcwd() + "/log/" + self.__exchange_name + "/suceess_currency.log"
@@ -196,9 +196,10 @@ class ExchangeBase(ABC):
         try:
             self._logger._logger.info("\n------- %s Start Reconnect --------" % \
                                     (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-            while self._is_connnect == False:
-                self.connect_ws_server("Reconnect Server")
-                time.sleep(self._reconnect_secs)
+
+            time.sleep(self._reconnect_secs)
+            self.connect_ws_server("Reconnect Server")
+            
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())
 
