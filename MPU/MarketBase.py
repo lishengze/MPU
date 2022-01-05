@@ -120,7 +120,8 @@ class ExchangeBase(ABC):
             self._sub_data_type_list = sub_data_type_list
             self._is_test_currency = is_test_currency             
             
-            self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")._logger
+            self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
+            self._logger = self._logger._logger
             
             self._reconnect_secs = 5
             
@@ -152,7 +153,7 @@ class ExchangeBase(ABC):
             if self._is_test_currency == False:                   
                 self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
                                             net_server_type=net_server_type, debug_mode=debug_mode, 
-                                            logger=self._logger._logger)
+                                            logger=self._logger)
         except Exception as e:
             self._logger.warning("[E]__init__: " + str(e))
             
