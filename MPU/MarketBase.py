@@ -120,7 +120,7 @@ class ExchangeBase(ABC):
             
             self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
             
-            self._reconnect_secs = 3000
+            self._reconnect_secs = 5
             
             if self._is_test_currency:
                 self._success_log_file_name = os.getcwd() + "/log/" + self.__exchange_name + "/suceess_currency.log"

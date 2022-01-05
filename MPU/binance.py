@@ -38,7 +38,7 @@ class BINANCE(ExchangeBase):
             super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)  
                       
-            self._ws_url = "wss://stream.binance.com:9443"
+            self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
             self._ping_secs = 30
             self._sub_info_str = ""
 
