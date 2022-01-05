@@ -59,7 +59,7 @@ class BINANCE(ExchangeBase):
             self._ws = None
             self._sub_client_id = 0
             
-            print(self._symbol_dict)
+            # print(self._symbol_dict)
             
             self._logger._logger.info(str(self._symbol_dict))
             self._sub_item_dict = dict()
@@ -123,9 +123,7 @@ class BINANCE(ExchangeBase):
                 
                 if symbol_id in self._sub_item_dict:                
                     exchaneg_symbol = self._sub_item_dict[symbol_id]
-                    
-                    print(exchaneg_symbol)
-                    
+                                    
                     if exchaneg_symbol in self._symbol_dict:
                         self._write_successful_currency(self._symbol_dict[exchaneg_symbol])
                     else:
@@ -164,7 +162,7 @@ class BINANCE(ExchangeBase):
 
     def process_msg(self, ws_json):
         try:
-            print(ws_json)
+            # print(ws_json)
             
             self._logger._logger.info(str(ws_json))
             
@@ -318,7 +316,7 @@ class BINANCE(ExchangeBase):
                 
                 self._ws.send(sub_info_str)
                 
-                print("send %s" % (sub_info_str))
+                self._logger._logger("send %s" % (sub_info_str))
                 
                 time.sleep(0.5)
                 
