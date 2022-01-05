@@ -67,9 +67,12 @@ class HUOBI(ExchangeBase):
         try:     
             self._is_connnect = True
             
-            self.subscribe_trade()
-            if not self._is_test_currency:
+            if DATA_TYPE.DEPTH in self._sub_data_type_list:
                 self.subscribe_depth()
+            
+            if DATA_TYPE.TRADE in self._sub_data_type_list:
+                self.subscribe_trade()
+                                    
         except Exception as e:
             self._logger.warning("[E]on_open: " + str(e))
 
@@ -161,40 +164,17 @@ class HUOBI(ExchangeBase):
             self._check_failed_symbol(ws_json)
             self._check_success_symbol(ws_json)
             
-            # print(ws_json)            
-            # return
-            # self._logger.info(str(ws_json))
+            if 'ch' in ws_json:
+                if 'trade' in ws_json['ch']:
+                    self._process_trades(ws_json=ws_json)
+                elif 'depth' in ws_json['ch']:
+                    pass
             
-            return 
-            if "data" not in ws_json:
-                self._logger.warning("ws_json is error: " + str(ws_json))
-                return
-
-            data = ws_json["data"]
-            ex_symbol = ws_json["market"]
-            channel_type = ws_json["channel"]
-            
-            if ex_symbol in self._symbol_dict:
-                sys_symbol = self._symbol_dict[ex_symbol]
-            else:
-                self._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
-                return
-
-            if channel_type == 'orderbook':
-                if sys_symbol in self._publish_count_dict["depth"]:
-                    self._publish_count_dict["depth"][sys_symbol] += 1
-                self._process_orderbook(sys_symbol, data)
-            elif channel_type == 'trades':
-                if sys_symbol in self._publish_count_dict["trade"]:
-                    self._publish_count_dict["trade"][sys_symbol] += 1                
-                self._process_trades(sys_symbol, data)
-            else:
-                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_json)))
-                self._logger.warning("[E]process_msg: " + error_msg)                                  
+                                        
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-    def _process_orderbook(self, symbol, msg):
+    def _process_depth(self, symbol, ws_json):
         try:
             '''
             snap: {"channel": "orderbook", "market": "BTC/USDT", "type": "partial", "data": {
@@ -209,32 +189,13 @@ class HUOBI(ExchangeBase):
                 "asks": [[12969.5, 3.36], [12968.5, 0.06], [13700.0, 0.0]], "action": "update"}
                 }
             '''            
-            data = msg
+            pass
 
-            if not data:
-                return
-
-            if 'asks' not in data and 'bids' not in data:
-                return
-
-            subscribe_type = data.get('action', '')
-            if subscribe_type not in ['partial', 'update']:
-                return
-
-            depths = {"ASK": {}, "BID": {}}
-            for info in data.get('asks', []):
-                depths["ASK"][float(info[0])] = float(info[1])
-            for info in data.get('bids', []):
-                depths["BID"][float(info[0])] = float(info[1])
-
-            # if symbol == "ETH_BTC":
-            #     self._logger.Debug("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
-
-            self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
+            # self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-    def _process_trades(self, symbol, data_list):
+    def _process_trades(self, ws_json):
         try:
             '''
             {"channel": "trades", "market": "BTC/USDT", "type": "update", 
@@ -243,26 +204,40 @@ class HUOBI(ExchangeBase):
             ]}
             '''
  
-            if symbol in self._symbol_dict:
-                self._publish_count_dict["trade"][self._symbol_dict[symbol]] = self._publish_count_dict["trade"][self._symbol_dict[symbol]] + 1
-                                            
-            if self._is_test_currency:
+            exchange_symbol = ws_json['ch'].split('.')[1]
+            
+            if exchange_symbol not in self._symbol_dict:
+                self._logger.warning("unkonw symbol : " + exchange_symbol)  
                 return
+            
+            sys_symbol = self._symbol_dict[exchange_symbol]
+            exg_time_nano = self.__time_convert(ws_json['ts']) * NANO_PER_SECS
+            
+            if ws_json['direction'] == 'buy':
+                direction = "Buy"
+            else:
+                direction = "Sell"
                 
-            for trade in data_list:
-                side = trade['side']
-                exg_time = trade['time'].replace('T', ' ')[:-6]
-                self.__publisher.pub_tradex(symbol=symbol,
-                                            direction=side,
-                                            exg_time=exg_time,
-                                            px_qty=(float(trade['price']), float(trade['size'])))
+            price = float(ws_json["price"])
+            volume = float(ws_json["amount"])
+
+            self._publisher.pub_tradex(symbol=sys_symbol,
+                                        direction=direction,
+                                        exg_time=exg_time_nano,
+                                        px_qty=(price, volume))
+              
         except Exception as e:
             self._logger.warning(traceback.format_exc())
+            
+    def __time_convert(self, time_x: float) -> str:
+        rt_time = datetime.utcfromtimestamp(time_x / 1000).strftime("%Y-%m-%d %H:%M:%S.%f")
+        return rt_time
+            
 
 def huobi_start():
     data_list = [DATA_TYPE.TRADE]
     huobi = HUOBI(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "HUOBI"), \
-                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
+                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
     huobi.start()
         
 if __name__ == '__main__':
