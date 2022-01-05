@@ -86,18 +86,18 @@ class Publisher:
         elif net_server_type == NET_SERVER_TYPE.REDIS:
             self._net_server = None
                     
-        self.__exchange = exchange
+        self._exchange = exchange
         self.__msg_seq = 0
         self.__msg_seq_symbol = defaultdict(int)
 
         if exchange_topic:
-            self.__exchange_topic = exchange_topic
+            self._exchange_topic = exchange_topic
         else:
-            self.__exchange_topic = exchange      # 形如 "BINANCE"
+            self._exchange_topic = exchange      # 形如 "BINANCE"
 
         self.__orderbook = dict()
         
-        # print("create publisher for " + self.__exchange)
+        # print("create publisher for " + self._exchange)
 
     def _is_depth_invalid(self, depth):
         try:
@@ -216,7 +216,7 @@ class Publisher:
 
             depth_quote = SDepthQuote()
             depth_quote.symbol =  symbol
-            depth_quote.exchange = self.__exchange
+            depth_quote.exchange = self._exchange
             depth_quote.sequence_no = self.__msg_seq_symbol[symbol]
             depth_quote.origin_time = exg_time
             depth_quote.server_time = get_nano_time()
@@ -245,7 +245,7 @@ class Publisher:
 
             depth_quote = SDepthQuote()
             depth_quote.symbol =  symbol
-            depth_quote.exchange = self.__exchange
+            depth_quote.exchange = self._exchange
             depth_quote.sequence_no = self.__msg_seq_symbol[symbol]
             depth_quote.origin_time = get_nano_time()
             depth_quote.server_time = get_nano_time()
@@ -378,9 +378,9 @@ class Publisher:
             
             trade_data.time = get_utc_nano_time()
             trade_data.symbol = symbol
-            trade_data.exchange = self.__exchange
+            trade_data.exchange = self._exchange
             trade_data.price = SDecimal(px)
-            trade_data.exchange = SDecimal(px_qty)
+            trade_data.volume = SDecimal(qty)
             
             print(trade_data.meta_str())
                     
@@ -413,13 +413,13 @@ class Publisher:
             status = event["Status"]
 
         if not self.__debug:
-            body = {"title": f"MDService", "text": f"## **MDService-{self.__exchange_topic}** \n"
+            body = {"title": f"MDService", "text": f"## **MDService-{self._exchange_topic}** \n"
                                                    f"### **Type: {level}** \n"
                                                    f"> #### **Status: {status}** \n"
                                                    f"> ##### {msg} \n\n"
                                                    f"###### Time(UTC): {now} \n"}
         else:
-            body = {"title": f"MDService", "text": f"## **MDService-{self.__exchange_topic}** \n"
+            body = {"title": f"MDService", "text": f"## **MDService-{self._exchange_topic}** \n"
                                                    f"### **Type: {level}-DebugMode** \n"
                                                    f"> #### **Status: {status}** \n"
                                                    f"> ##### {msg} \n\n"
