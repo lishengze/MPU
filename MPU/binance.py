@@ -38,7 +38,9 @@ class BINANCE(ExchangeBase):
             super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)  
                       
-            self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
+            # self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
+            
+            self._ws_url = "wss://stream.binance.com:9443/stream?streams=btcusdt@trade/btcusdt@depth"
             
             # self._ws_url = "wss://stream.binance.com:9443/"
             
@@ -93,9 +95,9 @@ class BINANCE(ExchangeBase):
             self._is_connnect = True
             self.set_meta()
 
-            self.subscribe_trade()
-            if not self._is_test_currency:
-                self.subscribe_depth()
+            # self.subscribe_trade()
+            # if not self._is_test_currency:
+            #     self.subscribe_depth()
                                     
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())                
