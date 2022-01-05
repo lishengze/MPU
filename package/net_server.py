@@ -54,7 +54,7 @@ class NetServer(ABC):
         self._logger.info("publish_kline")     
         
     @abstractmethod
-    def publish(self, topic:str, msg:str):
+    def _publish_msg(self, topic:str, msg:str):
         try:
             print("MiddleConnector publish")            
         except Exception as e:

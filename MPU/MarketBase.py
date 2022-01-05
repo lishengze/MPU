@@ -35,10 +35,7 @@ print(get_package_dir())
 sys.path.append(get_package_dir())
 
 from tool import *
-
-sys.path.append(os.getcwd())
 from Logger import *
-
 
 g_redis_config_file_name = os.getcwd() + "/redis_config.json"
 
@@ -120,8 +117,8 @@ class ExchangeBase(ABC):
             self._sub_data_type_list = sub_data_type_list
             self._is_test_currency = is_test_currency             
             
-            self._logger = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
-            self._logger = self._logger._logger
+            self._logger_all = Logger(program_name=self.__exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
+            self._logger = self._logger_all._logger
             
             self._reconnect_secs = 5
             
@@ -155,7 +152,7 @@ class ExchangeBase(ABC):
                                             net_server_type=net_server_type, debug_mode=debug_mode, 
                                             logger=self._logger)
         except Exception as e:
-            self._logger.warning("[E]__init__: " + str(e))
+            self._logger.warning(traceback.format_exc())
             
     def set_meta(self):
         try:
@@ -242,7 +239,7 @@ class ExchangeBase(ABC):
 
     def on_open(self):
         try:
-            self._logger.info("\nftx_on_open")
+            self._logger.info("\non_open")
             self._is_connnect = True
             self.set_meta()
             

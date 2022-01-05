@@ -7,6 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 import time
 from MarketBase import ExchangeBase
 
+import threading
+
 # from package.data_struct import DATA_TYPE
 
 # self._symbol_dict = {"BTCUSDT": "BTC_USDT",  # the exchange needs 'btcusdt'
@@ -78,7 +80,31 @@ class BINANCE(ExchangeBase):
             self._sub_id = 1
         except Exception as e:
             self._logger.warning(traceback.format_exc())
+
+    def on_open(self):
+        try:
+            self._logger.info("\nftx_on_open")
+            self._is_connnect = True
+            self.set_meta()
+
+            sub_thread = threading.Thread(target=self.sub_data, )
+            sub_thread.start()
+                                                
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())        
             
+    def sub_data(self):
+        try:              
+            if DATA_TYPE.DEPTH in self._sub_data_type_list:
+                self.subscribe_depth()
+            
+            if DATA_TYPE.TRADE in self._sub_data_type_list:
+                self.subscribe_trade()
+                                    
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())        
+                    
+                        
     def decode_msg(self, msg):
         try:
             # msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
