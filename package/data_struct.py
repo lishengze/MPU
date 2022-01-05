@@ -37,13 +37,13 @@ class SDecimal(object):
         self.precise = precise_
         
     def __init__(self, raw:float=0.0):
-        str_value = str(raw)
+        str_value = '{:.8f}'.format(raw)
         pos = str_value.find('.')
         
         # print("pos: %d " % (pos))
         
         if pos == -1:
-            self.value = int(str_value)
+            self.value = int(raw)
             self.precise = 0
         else:
             self.precise = len(str_value) - pos -1;

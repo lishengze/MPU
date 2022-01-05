@@ -130,7 +130,17 @@ def get_symbol_dict(config_file_name:str, exchange:str):
 
 def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "B2C2"))
+
+def test_float_to_str():
+    str_value = '{:.8f}'.format(1.0)
+    pos = str_value.find('.')
     
+    
+    print(str_value)
+    print("pos: %d " % (pos))
+                
 if __name__ == "__main__":
     
-    test_get_ori_sys_config()
+    test_float_to_str()
+    
+    # test_get_ori_sys_config()
