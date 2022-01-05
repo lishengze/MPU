@@ -38,9 +38,9 @@ class BINANCE(ExchangeBase):
             super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)  
                       
-            # self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
+            self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
             
-            self._ws_url = "wss://stream.binance.com:9443/"
+            # self._ws_url = "wss://stream.binance.com:9443/"
             
             self._ping_secs = 30
             self._sub_info_str = ""
@@ -132,6 +132,16 @@ class BINANCE(ExchangeBase):
                     
     def _check_failed_symbol(self, ws_json):
         pass
+
+    def get_ping_sub_info(self):
+        try:
+            sub_info = {'op': 'ping'}  
+
+            sub_info_str = json.dumps(sub_info)
+            
+            return sub_info_str       
+        except Exception as e:
+            self._logger._logger.warning(traceback.format_exc())        
 
     def process_msg(self, ws_json):
         try:

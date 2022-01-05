@@ -184,8 +184,7 @@ class ExchangeBase(ABC):
         
     def connect_ws_server(self, info):
         try:
-            self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % \
-                                        (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+            self._logger._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
 
             self._ws = websocket.WebSocketApp(self._ws_url)
             self._ws.on_message = self.on_msg
@@ -200,8 +199,7 @@ class ExchangeBase(ABC):
 
     def start_reconnect(self):
         try:
-            self._logger._logger.info("\n------- %s Start Reconnect --------" % \
-                                    (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+            self._logger._logger.info("------- Start Reconnect -------- \n")
 
             time.sleep(self._reconnect_secs)
             self.connect_ws_server("Reconnect Server")
@@ -281,7 +279,7 @@ class ExchangeBase(ABC):
     def on_timer(self):
         try:
             if self._is_connnect:
-                self._ws.send(get_ping_info())        
+                self._ws.send(self.get_ping_sub_info())        
 
             self.print_publish_info()
 
@@ -289,6 +287,17 @@ class ExchangeBase(ABC):
             self._timer.start()
         except Exception as e:
             self._logger._logger.warning(traceback.format_exc())
+            
+    @abstractmethod
+    def get_ping_sub_info(self):
+        try:
+            sub_info = {'op': 'ping'}  
+
+            sub_info_str = json.dumps(sub_info)
+            
+            return sub_info_str       
+        except Exception as e:
+            self._logger._logger.warning(traceback.format_exc())        
 
     @abstractmethod
     def subscribe_depth(self):
