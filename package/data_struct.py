@@ -39,6 +39,8 @@ class SDecimal(object):
         
     def __init__(self, raw:float=0.0):
         str_value = str(raw)
+        self.value = 0
+        self.precise = 0
         
         if 'e' in str_value:
             self.parse_e_float(raw, str_value)
@@ -52,9 +54,13 @@ class SDecimal(object):
     def parse_e_float(self, raw:float, str_value:str):
         try:
             pos1 = str_value.find('e')
-            self.value = int(str_value[0:pos1])
+            
+            tmp_value = float(str_value[0:pos1])
+            
+            self.parse_original_float(raw=tmp_value,str_value=str(tmp_value))
+            
             pos2 = str_value.find('-')
-            self.precise = int(str_value[pos2+1:])
+            self.precise += int(str_value[pos2+1:])
         except Exception as e :
             print("str_value: %s, raw: %f \n" % (str_value, raw))
             print(traceback.format_exc())
