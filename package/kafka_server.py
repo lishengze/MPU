@@ -221,7 +221,7 @@ class KafkaServer(NetServer):
         except Exception as e:
             self._logger.warning("[E] check_topic: \n%s" % (traceback.format_exc()))    
             
-    def _publish_msg(self, topic:str, msg:str):
+    def _publish_msg(self, topic:str, key:str, msg:str):
         try:
             if self._producer.bootstrap_connected() or True:
                 self.check_topic(topic)
@@ -231,7 +231,7 @@ class KafkaServer(NetServer):
                 
                 if type(msg) == str:
                     msg = bytes(msg.encode())
-                self._producer.send(topic, value=msg)
+                self._producer.send(topic, key=key, value=msg)
                 # self._logger.info(topic + " " + msg)
             else:
                 self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
@@ -278,12 +278,12 @@ class KafkaServer(NetServer):
                 
             if self._kafka_curr_pubed_update_count[symbol] < self._kafka_depth_update_count:                
                 self._publish_msg(topic=self._get_depth_topic(update_quote.symbol, update_quote.exchange), \
-                                  msg=self.serializer.encode_depth(update_quote))
+                                  key=update_quote.exchange, msg=self.serializer.encode_depth(update_quote))
                 self._kafka_curr_pubed_update_count[symbol] += 1
             else:
                 if snap_quote:
                     self._publish_msg(topic=self._get_depth_topic(snap_quote.symbol, snap_quote.exchange),\
-                                      msg=self.serializer.encode_depth(snap_quote))
+                                      key=update_quote.exchange, msg=self.serializer.encode_depth(snap_quote))
                     self._kafka_curr_pubed_update_count[symbol] = 0
                 else:
                     self._logger.info("snap_quote is None")   
@@ -294,14 +294,14 @@ class KafkaServer(NetServer):
     def publish_trade(self, trade:STradeData):
         try:
             self._publish_msg(topic=self._get_trade_topic(trade.symbol, trade.exchange), \
-                                        msg=self.serializer.encode_trade(trade))
+                                       key=trade.exchange, msg=self.serializer.encode_trade(trade))
         except Exception as e:
             self._logger.warning(traceback.format_exc())            
 
     def publish_kline(self, kline:SKlineData):
         try:
             self._publish_msg(topic=self._get_kline_topic(kline.symbol, kline.exchange), \
-                              msg=self.serializer.encode_kline(kline))
+                              key=kline.exchange, msg=self.serializer.encode_kline(kline))
         except Exception as e:
             self._logger.warning(traceback.format_exc())     
             
