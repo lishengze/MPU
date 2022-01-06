@@ -60,7 +60,7 @@ class KafkaServer(NetServer):
             sub_topics = list()
             
             for topic in self._sub_topics:
-                if created_topics.find(topic) != -1:
+                if topic in created_topics:
                     sub_topics.append(topic)
 
             self._logger.info("create topics: %s" % (str(created_topics)))
