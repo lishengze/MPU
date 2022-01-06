@@ -182,13 +182,18 @@ class FTX(ExchangeBase):
 
     def process_msg(self, ws_msg):
         try:
+            if ws_msg["type"] == 'error':
+                self._logger.warning("ws_msg is error: " + str(ws_msg))
+                return
+                            
             if  ws_msg["type"] == "pong":
                 return
             
             # self._logger.info(str(ws_msg))
             
-            if  ws_msg["type"] == "subscribed" and self._is_test_currency:
+            if  ws_msg["type"] == "subscribed":
                 self._write_successful_currency(ws_msg["market"])
+                return
                 
             if ws_msg["type"] == "error" and ws_msg["code"] == 404:
                 err_msg = ws_msg["msg"]
@@ -196,36 +201,24 @@ class FTX(ExchangeBase):
                 # self._logger.info(str(err_msg))
                 failed_symbol = err_msg[1]
                 self._write_failed_currency(failed_symbol)
+                return 
                 
             if "data" not in ws_msg:
-                self._logger.warning("ws_msg is error: " + str(ws_msg))
+                self._logger.warning("unkonwn ws_msg: " + str(ws_msg))
                 return
-
-            data = ws_msg["data"]
-            ex_symbol = ws_msg["market"]
-            channel_type = ws_msg["channel"]
             
-            if ex_symbol in self._symbol_dict:
-                sys_symbol = self._symbol_dict[ex_symbol]
+            if ws_msg["channel"] == 'orderbook':
+                self._process_depth(ws_msg)
+            elif ws_msg["channel"] == 'trades':             
+                self._process_trades(ws_msg)
             else:
-                self._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
-                return
-
-            if channel_type == 'orderbook':
-                if sys_symbol in self._publish_count_dict["depth"]:
-                    self._publish_count_dict["depth"][sys_symbol] += 1
-                self._process_depth(sys_symbol, data)
-            elif channel_type == 'trades':
-                if sys_symbol in self._publish_count_dict["trade"]:
-                    self._publish_count_dict["trade"][sys_symbol] += 1                
-                self._process_trades(sys_symbol, data)
-            else:
-                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (channel_type, str(ws_msg)))
-                self._logger.warning("[E]process_msg: " + error_msg)                                  
+                error_msg = ("\nUnknow channel_type %s, \nOriginMsg: %s" % (ws_msg["channel"], str(ws_msg)))
+                self._logger.warning("[E]process_msg: " + error_msg)   
+                                               
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-    def _process_depth(self, symbol, msg):
+    def _process_depth(self, ws_json):
         try:
             '''
             snap: {"channel": "orderbook", "market": "BTC/USDT", "type": "partial", "data": {
@@ -239,11 +232,16 @@ class FTX(ExchangeBase):
                 "bids": [[12945.0, 0.0165], [12951.0, 0.0402], [12200.0, 0.0]], 
                 "asks": [[12969.5, 3.36], [12968.5, 0.06], [13700.0, 0.0]], "action": "update"}
                 }
-            '''            
-            data = msg
-
-            if not data:
+            '''                        
+            ex_symbol = ws_json["market"]
+            if ex_symbol in self._symbol_dict:
+                sys_symbol = self._symbol_dict[ex_symbol]
+                self._publish_count_dict["depth"][sys_symbol] += 1
+            else:
+                self._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
                 return
+                        
+            data = ws_json['data']
 
             if 'asks' not in data and 'bids' not in data:
                 return
@@ -258,14 +256,11 @@ class FTX(ExchangeBase):
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
 
-            # if symbol == "ETH_BTC":
-            #     self._logger.Debug("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
-
-            self._publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
+            self._publisher.pub_depthx(symbol=sys_symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
-    def _process_trades(self, symbol, data_list):
+    def _process_trades(self, ws_json):
         try:
             '''
             {"channel": "trades", "market": "BTC/USDT", "type": "update", 
@@ -274,13 +269,19 @@ class FTX(ExchangeBase):
             ]}
             '''
  
-            if symbol in self._symbol_dict:
-                self._publish_count_dict["trade"][self._symbol_dict[symbol]] = self._publish_count_dict["trade"][self._symbol_dict[symbol]] + 1
-                                            
+            ex_symbol = ws_json["market"]
+            if ex_symbol in self._symbol_dict:
+                sys_symbol = self._symbol_dict[ex_symbol]
+                self._publish_count_dict["trade"][sys_symbol] += 1
+            else:
+                self._logger.info("process_msg %s is not in symbol_dict" % (ex_symbol))
+                return
+                      
+            data_list = ws_json['data']  
             for trade in data_list:
                 side = trade['side']
                 exg_time = trade['time'].replace('T', ' ')[:-6]
-                self._publisher.pub_tradex(symbol=symbol,
+                self._publisher.pub_tradex(symbol=sys_symbol,
                                             direction=side,
                                             exg_time=exg_time,
                                             px_qty=(float(trade['price']), float(trade['size'])))
@@ -292,7 +293,7 @@ def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))
     
 def test_ftx():
-    data_list = [DATA_TYPE.TRADE]
+    data_list = [DATA_TYPE.DEPTH]
     ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
                   sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
     ftx_obj.start()
