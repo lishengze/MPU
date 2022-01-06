@@ -293,7 +293,7 @@ def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))
     
 def test_ftx():
-    data_list = [DATA_TYPE.DEPTH]
+    data_list = [DATA_TYPE.DEPTH, DATA_TYPE.TRADE]
     ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
                   sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
     ftx_obj.start()
