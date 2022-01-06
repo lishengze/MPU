@@ -112,8 +112,8 @@ class SDepthQuote(object):
         # print(len(asks_), len(bids_))
         
     def meta_str(self):
-        result = ("exchange: %s, symbol: %s, ask.len: %d, bid.len: %d" % \
-                    (self.exchange, self.symbol, len(self.asks), len(self.bids)))
+        result = ("exchange: %s, symbol: %s, ask.len: %d, bid.len: %d, %d" % \
+                    (self.exchange, self.symbol, len(self.asks), len(self.bids), self.sequence_no))
 
         return result
 
