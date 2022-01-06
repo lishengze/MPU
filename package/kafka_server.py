@@ -304,6 +304,8 @@ class TestKafka:
         self._server_address = ["127.0.0.1:9117"]
         self._logger = Logger(program_name="")
         
+        self._logger = self._logger._logger
+        
         self._config = {
             "server_list": ["127.0.0.1:9117"],
             "depth_update_count":5
