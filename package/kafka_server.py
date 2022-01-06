@@ -336,7 +336,7 @@ class TestKafka:
     def process_depth_data(self, depth_quote:SDepthQuote):
         try:            
             pass
-            # print(depth_quote.meta_str())
+            print(depth_quote.meta_str())
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             
