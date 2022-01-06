@@ -347,7 +347,7 @@ class TestKafka:
             self._logger.warning(traceback.format_exc())                        
             
 def test_kafka():
-    data_type_list = [DATA_TYPE.TRADE] 
+    data_type_list = [DATA_TYPE.DEPTH] 
     kafka_obj = TestKafka(data_type_list=data_type_list)
     kafka_obj.start()
         
