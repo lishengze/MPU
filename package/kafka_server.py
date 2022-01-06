@@ -344,5 +344,5 @@ def test_kafka():
     kafka_obj.start()
         
 if __name__ == "__main__":
-    test_kafka = TestKafka()
+    test_kafka()
     
