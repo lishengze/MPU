@@ -139,17 +139,17 @@ class KafkaServer(NetServer):
             while True:
                 try:
                     for msg in self._consumer:
-                        print(msg)
-                        # data_type = self._get_data_type(msg.topic)
+                        # print(msg)
+                        data_type = self._get_data_type(msg.topic)
                         
-                        # if data_type == DEPTH_TYPE:
-                        #     self.process_depth(msg)
+                        if data_type == DEPTH_TYPE:
+                            self.process_depth(msg)
                             
-                        # if data_type == KLINE_TYPE:
-                        #     self.process_kline(msg)
+                        if data_type == KLINE_TYPE:
+                            self.process_kline(msg)
                             
-                        # if data_type == TRADE_TYPE:
-                        #     self.process_trade(msg)                                                        
+                        if data_type == TRADE_TYPE:
+                            self.process_trade(msg)                                                        
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
