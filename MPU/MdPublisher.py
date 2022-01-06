@@ -201,13 +201,14 @@ class Publisher:
         except Exception as e:
             self._logger.warning("[E] _update_msg_seq: \n%s" % (traceback.format_exc()))      
             
-    def _set_depth_from_book(self, dst_depth:list, book:list):
-        dst_depth.clear()
+    def _get_depth_from_book(self, book:list):
+        dst_depth = []
         for price in book:
             new_depth = SDepth()
             new_depth.price = SDecimal(price)
             new_depth.volume = SDecimal(book[price])
             dst_depth.append(new_depth)
+        return dst_depth
             
         print("dst_len: %d, book.len: %d" %(len(dst_depth), len(book)))        
 
@@ -225,8 +226,11 @@ class Publisher:
             depth_quote.arrive_time = 0
             depth_quote.is_snap = True
 
-            self._set_depth_from_book(depth_quote.asks, book["AskDepth"])
-            self._set_depth_from_book(depth_quote.bids, book["BidDepth"])
+            depth_quote.asks = self._get_depth_from_book(book["AskDepth"])
+            depth_quote.bids = self._get_depth_from_book(book["BidDepth"])
+            
+            print("ask.len: %d, bid.len: %d, AskDepth.len: %d, BidDepth.len: %d" % 
+                  (len(depth_quote.asks),len(depth_quote.bids), len(book["AskDepth"]), len(book["BidDepth"])))
 
             return depth_quote
 
@@ -255,9 +259,12 @@ class Publisher:
             depth_quote.arrive_time = 0
             depth_quote.is_snap = False
 
-            self._set_depth_from_book(depth_quote.asks, depth_update["ASK"])
-            self._set_depth_from_book(depth_quote.bids, depth_update["BID"])
+            depth_quote.asks = self._get_depth_from_book(depth_update["ASK"])
+            depth_quote.bids = self._get_depth_from_book(depth_update["BID"])
             
+            print("ask.len: %d, bid.len: %d, AskDepth.len: %d, BidDepth.len: %d" % 
+                  (len(depth_quote.asks),len(depth_quote.bids), len(depth_update["ASK"]), len(depth_update["BID"])))
+                        
             return depth_quote
         except Exception as e:
             self._logger.warning("[E] _get_update_quote: \n%s" % (traceback.format_exc()))              
