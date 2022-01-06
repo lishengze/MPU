@@ -55,12 +55,18 @@ class KafkaServer(NetServer):
     def subcribe_topics(self):
         try:
             created_topics = self.get_created_topic()
+            
+
             sub_topics = list()
             
             for topic in self._sub_topics:
                 if created_topics.find(topic) != -1:
                     sub_topics.append(topic)
-                    
+
+            self._logger.info("create topics: %s" % (str(created_topics)))
+            self._logger.info("req  sub topics: %s" % (str(self._sub_topics)))
+            self._logger.info("real sub topics: %s" % (str(sub_topics)))                    
+            
             if len(sub_topics) > 0:
                 self._logger.info("sub_topics: %s\n" % (str(sub_topics)))
                 self._consumer.subscribe(topics=sub_topics)
