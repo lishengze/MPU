@@ -208,6 +208,8 @@ class Publisher:
             new_depth.price = SDecimal(price)
             new_depth.volume = SDecimal(book[price])
             dst_depth.append(new_depth)
+            
+        print("dst_len: %d, book.len: %d" %(len(dst_depth), len(book)))        
 
     def _get_snap_quote(self, exg_time, symbol, book):
         try:
@@ -235,7 +237,8 @@ class Publisher:
     def _get_update_quote(self, symbol, depth_update, revised_ask=None, revised_bid=None,):
         try:
             if self._is_depth_invalid(depth_update):
-                return None
+                empty_quote = SDepthQuote()
+                return empty_quote
             
             if revised_ask:
                 depth_update["ASK"].update(revised_ask)
@@ -326,7 +329,7 @@ class Publisher:
             snap_quote = self._get_snap_quote(exg_time, symbol, book)
                             
             update_quote = self._get_update_quote(symbol, update_book)
-            
+                        
             self._logger.info("snap: " + snap_quote.meta_str())
             self._logger.info("update: " + update_quote.meta_str())
 
