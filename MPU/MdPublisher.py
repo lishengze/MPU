@@ -229,8 +229,8 @@ class Publisher:
             depth_quote.asks = self._get_depth_from_book(book["AskDepth"])
             depth_quote.bids = self._get_depth_from_book(book["BidDepth"])
             
-            print("ask.len: %d, bid.len: %d, AskDepth.len: %d, BidDepth.len: %d" % 
-                  (len(depth_quote.asks),len(depth_quote.bids), len(book["AskDepth"]), len(book["BidDepth"])))
+            # print("ask.len: %d, bid.len: %d, AskDepth.len: %d, BidDepth.len: %d" % 
+            #       (len(depth_quote.asks),len(depth_quote.bids), len(book["AskDepth"]), len(book["BidDepth"])))
 
             return depth_quote
 
@@ -262,8 +262,8 @@ class Publisher:
             depth_quote.asks = self._get_depth_from_book(depth_update["ASK"])
             depth_quote.bids = self._get_depth_from_book(depth_update["BID"])
             
-            print("ask.len: %d, bid.len: %d, AskDepth.len: %d, BidDepth.len: %d" % 
-                  (len(depth_quote.asks),len(depth_quote.bids), len(depth_update["ASK"]), len(depth_update["BID"])))
+            # print("ask.len: %d, bid.len: %d, AskDepth.len: %d, BidDepth.len: %d" % 
+            #       (len(depth_quote.asks),len(depth_quote.bids), len(depth_update["ASK"]), len(depth_update["BID"])))
                         
             return depth_quote
         except Exception as e:

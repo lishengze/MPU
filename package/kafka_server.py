@@ -219,8 +219,8 @@ class KafkaServer(NetServer):
             if self._producer.bootstrap_connected() or True:
                 self.check_topic(topic)
                 
-                # print(topic)
-                # print(msg)
+                print(topic)
+                print(msg)
                 
                 if type(msg) == str:
                     msg = bytes(msg.encode())
