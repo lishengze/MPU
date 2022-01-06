@@ -384,7 +384,7 @@ class Publisher:
             
             print(trade_data.meta_str())
                     
-            # self._net_server.publish_trade(trade_data)
+            self._net_server.publish_trade(trade_data)
             
         except Exception as e:
             self._logger.warning(traceback.format_exc())
