@@ -331,14 +331,25 @@ class TestKafka:
         self._kafka_server.set_meta(symbol_list=self._symbol_list, \
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
+        self._seq_no = -1
     
     def start(self):
         self._kafka_server.start_listen_data()
+    
+    def check_seq(self, seq_no):
+        if self._seq_no == -1:
+            self._seq_no = seq_no
+        elif self._seq_no + 1 != seq_no:
+            print("local seq: %d, new seq: %d" % (self._seq_no, seq_no))
+        
+        self._seq_no = seq_no
+        
         
     def process_depth_data(self, depth_quote:SDepthQuote):
         try:            
             pass
             # print(depth_quote.meta_str())
+            
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             
