@@ -346,7 +346,8 @@ class TestKafka:
         
         
     def process_depth_data(self, depth_quote:SDepthQuote):
-        try:            
+        try:    
+            self.check_seq(depth_quote.sequence_no)        
             pass
             # print(depth_quote.meta_str())
             
