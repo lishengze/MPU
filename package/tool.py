@@ -132,8 +132,26 @@ def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "B2C2"))
 
 def test_float_to_str():
-    str_value = '{:.8f}'.format(1.0)
+    
+    data = float(6e-5)
+    print(data)
+    
+    # str_value = '{:.8f}'.format(6e-5)
+    
+    str_value = str(data)
+    
+    print(str_value)
+    if 'e' in str_value:
+        pos1 = str_value.find('e')
+        value = str_value[0:pos1]
+        pos2 = str_value.find('-')
+        precise = str_value[pos2+1:]
+    
+        print(int(value), int(precise))
+        
     pos = str_value.find('.')
+    
+    
     
     
     print(str_value)

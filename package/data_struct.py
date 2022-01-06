@@ -37,21 +37,31 @@ class SDecimal(object):
         self.precise = precise_
         
     def __init__(self, raw:float=0.0):
-        str_value = '{:.8f}'.format(raw)
+        str_value = str(raw)
+        
+        if 'e' in str_value:
+            self.parse_e_float(raw, str_value)
+        elif '.' in str_value:
+            self.parse_original_float(raw, str_value=str_value)
+        else:
+            self.value = int(raw)
+            self.precise = 0            
+
+        
+    def parse_e_float(self, raw:float, str_value:str):
+        pos1 = str_value.find('e')
+        self.value = str_value[0:pos1]
+        pos2 = str_value.find('-')
+        self.precise = str_value[pos2+1:]
+    
+    def parse_original_float(self, raw:float, str_value:str):
         pos = str_value.find('.')
         
-        # print("pos: %d " % (pos))
+        self.precise = len(str_value) - pos -1;
         
-        if pos == -1:
-            self.value = int(raw)
-            self.precise = 0
-        else:
-            self.precise = len(str_value) - pos -1;
-            # print("precise: %d" % (self.precise))
-            
-            tmp_value = str_value.replace('.', '')
-            self.value = int(tmp_value)
-        
+        tmp_value = str_value.replace('.', '')
+        self.value = int(tmp_value)
+                
     def get_value(self):
         if self.precise == 0:
             return self.value
@@ -126,7 +136,10 @@ def test_decimal():
     a = 10000
     a = 10000.001
     print("original value: %f" % (a))
+    
     b = SDecimal(a)
+    
+    b = SDecimal(25e-2)
     
     print("TestValue: %f" % (b.get_value()))
  
