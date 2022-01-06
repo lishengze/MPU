@@ -133,16 +133,17 @@ class KafkaServer(NetServer):
             while True:
                 try:
                     for msg in self._consumer:
-                        data_type = self._get_data_type(msg.topic)
+                        print(msg)
+                        # data_type = self._get_data_type(msg.topic)
                         
-                        if data_type == DEPTH_TYPE:
-                            self.process_depth(msg)
+                        # if data_type == DEPTH_TYPE:
+                        #     self.process_depth(msg)
                             
-                        if data_type == KLINE_TYPE:
-                            self.process_kline(msg)
+                        # if data_type == KLINE_TYPE:
+                        #     self.process_kline(msg)
                             
-                        if data_type == TRADE_TYPE:
-                            self.process_trade(msg)                                                        
+                        # if data_type == TRADE_TYPE:
+                        #     self.process_trade(msg)                                                        
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
@@ -219,8 +220,8 @@ class KafkaServer(NetServer):
             if self._producer.bootstrap_connected() or True:
                 self.check_topic(topic)
                 
-                print(topic)
-                print(msg)
+                # print(topic)
+                # print(msg)
                 
                 if type(msg) == str:
                     msg = bytes(msg.encode())
@@ -299,7 +300,7 @@ class KafkaServer(NetServer):
             self._logger.warning(traceback.format_exc())     
             
 class TestKafka:
-    def __init__(self, ) -> None:
+    def __init__(self, data_type_list:list) -> None:
         self._server_address = ["127.0.0.1:9117"]
         self._logger = Logger(program_name="")
         
@@ -315,7 +316,8 @@ class TestKafka:
         self._kafka_server.set_meta(symbol_list=self._symbol_list, \
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
-        
+    
+    def start(self):
         self._kafka_server.start_listen_data()
         
     def process_depth_data(self, depth_quote:SDepthQuote):
@@ -336,7 +338,10 @@ class TestKafka:
         except Exception as e:
             self._logger.warning(traceback.format_exc())                        
             
-        
+def test_kafka():
+    data_type_list = [TRADE_TYPE] 
+    kafka_obj = TestKafka(data_type_list=data_type_list)
+    kafka_obj.start()
         
 if __name__ == "__main__":
     test_kafka = TestKafka()
