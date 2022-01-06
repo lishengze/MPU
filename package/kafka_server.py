@@ -143,13 +143,13 @@ class KafkaServer(NetServer):
                         data_type = self._get_data_type(msg.topic)
                         
                         if data_type == DEPTH_TYPE:
-                            self.process_depth(msg)
+                            self.process_depth(msg.value)
                             
                         if data_type == KLINE_TYPE:
-                            self.process_kline(msg)
+                            self.process_kline(msg.value)
                             
                         if data_type == TRADE_TYPE:
-                            self.process_trade(msg)                                                        
+                            self.process_trade(msg.value)                                                        
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
