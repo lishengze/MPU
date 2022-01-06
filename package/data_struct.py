@@ -50,9 +50,9 @@ class SDecimal(object):
         
     def parse_e_float(self, raw:float, str_value:str):
         pos1 = str_value.find('e')
-        self.value = str_value[0:pos1]
+        self.value = int(str_value[0:pos1])
         pos2 = str_value.find('-')
-        self.precise = str_value[pos2+1:]
+        self.precise = int(str_value[pos2+1:])
     
     def parse_original_float(self, raw:float, str_value:str):
         pos = str_value.find('.')
