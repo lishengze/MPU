@@ -1,6 +1,7 @@
 
 import os
 import sys
+import traceback
 
 from enum import Enum
 
@@ -49,18 +50,28 @@ class SDecimal(object):
 
         
     def parse_e_float(self, raw:float, str_value:str):
-        pos1 = str_value.find('e')
-        self.value = int(str_value[0:pos1])
-        pos2 = str_value.find('-')
-        self.precise = int(str_value[pos2+1:])
+        try:
+            pos1 = str_value.find('e')
+            self.value = int(str_value[0:pos1])
+            pos2 = str_value.find('-')
+            self.precise = int(str_value[pos2+1:])
+        except Exception as e :
+            print("str_value: %s, raw: %f \n" % (str_value, raw))
+            print(traceback.format_exc())
+
     
     def parse_original_float(self, raw:float, str_value:str):
-        pos = str_value.find('.')
-        
-        self.precise = len(str_value) - pos -1;
-        
-        tmp_value = str_value.replace('.', '')
-        self.value = int(tmp_value)
+        try:
+            pos = str_value.find('.')
+            
+            self.precise = len(str_value) - pos -1;
+            
+            tmp_value = str_value.replace('.', '')
+            self.value = int(tmp_value)
+        except Exception as e :
+            print("str_value: %s, raw: %f \n" % (str_value, raw))
+            print(traceback.format_exc())
+                    
                 
     def get_value(self):
         if self.precise == 0:
