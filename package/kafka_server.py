@@ -38,7 +38,7 @@ class KafkaServer(NetServer):
             else:
                 self._logger.warning("Producer Not Connected %s" % (str(self._server_list)))    
                         
-            self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=self._server_list)
+            self._consumer = KafkaConsumer(group_id='test', bootstrap_servers=self._server_list, auto_offset_reset='latest')
             if self._consumer.bootstrap_connected():
                 self._logger.info("Consumer Connect %s Successfully" % (str(self._server_list)))
             else:
