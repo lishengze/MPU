@@ -84,13 +84,13 @@ class KafkaServer(NetServer):
         try:
             for symbol in symbol_list:
                 for exchange in exchange_list:
-                    if data_type.find(DEPTH_TYPE) != -1:                        
+                    if DATA_TYPE.DEPTH in data_type:                        
                         self._sub_topics.append(self._get_depth_topic(symbol, exchange))
                         
-                    if data_type.find(KLINE_TYPE) != -1:
+                    if DATA_TYPE.KLINE in data_type:  
                         self._sub_topics.append(self._get_kline_topic(symbol, exchange))
                         
-                    if data_type.find(TRADE_TYPE != -1):
+                    if DATA_TYPE.TRADE in data_type:  
                         self._sub_topics.append(self._get_trade_topic(symbol, exchange))
                     
             self.subcribe_topics()
@@ -314,7 +314,7 @@ class TestKafka:
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
         self._symbol_list = ["BTC_USDT"]
         self._exchange_list = ["FTX"]
-        self._data_type_list = [DEPTH_TYPE, TRADE_TYPE, KLINE_TYPE]
+        self._data_type_list = data_type_list
         self._kafka_server.set_meta(symbol_list=self._symbol_list, \
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
