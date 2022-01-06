@@ -135,9 +135,12 @@ class FTX(ExchangeBase):
             sub_info_str = get_login_info(self._api_key, self._api_secret, logger=self._logger)
             self._ws.send(sub_info_str)
             
-            self.subscribe_trade()
-            if not self._is_test_currency:
+            if DATA_TYPE.DEPTH in self._sub_data_type_list:
                 self.subscribe_depth()
+            
+            if DATA_TYPE.TRADE in self._sub_data_type_list:
+                self.subscribe_trade()
+                
         except Exception as e:
             self._logger.warning("[E]on_open: " + str(e))
 
@@ -252,9 +255,6 @@ class FTX(ExchangeBase):
             if symbol in self._symbol_dict:
                 self._publish_count_dict["trade"][self._symbol_dict[symbol]] = self._publish_count_dict["trade"][self._symbol_dict[symbol]] + 1
                                             
-            if self._is_test_currency:
-                return
-                
             for trade in data_list:
                 side = trade['side']
                 exg_time = trade['time'].replace('T', ' ')[:-6]
@@ -272,7 +272,7 @@ def test_get_ori_sys_config():
 def test_ftx():
     data_list = [DATA_TYPE.TRADE]
     ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
-                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
+                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
     ftx_obj.start()
 
 if __name__ == "__main__":
