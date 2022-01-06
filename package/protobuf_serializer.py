@@ -90,7 +90,7 @@ class ProtoSerializer:
 
         # print(len(local_quote.asks), len(local_quote.bids))
         
-        print("seq:%d" % (local_quote.sequence_no))
+        # print("seq:%d" % (local_quote.sequence_no))
 
         local_quote.asks = get_local_depth_list(proto_quote.asks)
         local_quote.bids = get_local_depth_list(proto_quote.bids)
