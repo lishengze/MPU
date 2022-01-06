@@ -275,9 +275,10 @@ class Publisher:
             
             update_quote = self._get_update_quote(symbol, depth_update, revised_ask, revised_bid)
             
-            # self._logger.info("\nupdate_json %s " % (json.dumps(update_quote)))
+            self._logger.info("snap: " + snap_quote.meta_str())
+            self._logger.info("update: " + update_quote.meta_str())
             
-            self._net_server.publish_depth(symbol, book, snap_quote, update_quote)
+            self._net_server.publish_depth(snap_quote, update_quote)
             
             if raise_exception_flag:
                 raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
@@ -319,18 +320,17 @@ class Publisher:
     def process_depth_snap(self, symbol, depth_update, book, exg_time):   
         try:
             update_book = self._get_update_book(depth_update, book)
-            
-            # self._logger.info("%s, update_book: %s\n" %(symbol, str(update_book)))
               
             self._update_msg_seq(symbol)
             
-            snap_quote = self._get_depth_json(exg_time, symbol, book)
+            snap_quote = self._get_snap_quote(exg_time, symbol, book)
                             
-            update_quote = self._get_update_json(symbol, update_book)
+            update_quote = self._get_update_quote(symbol, update_book)
             
-            # self._logger.info("\n%s, snap_quote: %s" % (symbol, json.dumps(snap_quote)))
+            self._logger.info("snap: " + snap_quote.meta_str())
+            self._logger.info("update: " + update_quote.meta_str())
 
-            self._net_server.publish_depth(symbol, book, snap_quote, update_quote)
+            self._net_server.publish_depth(snap_quote, update_quote)
                            
         except Exception as e:
             self._logger.warning("[E] process_depth_update: \n%s" % (traceback.format_exc()))   
