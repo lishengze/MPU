@@ -39,7 +39,10 @@ def set_proto_depth_list(dst_depth_list_proto, src_depth_list_local):
     
         dst_depth_list_proto.append(new_depth)        
 
-def set_local_depth_list(dst_depth_list_local, src_depth_list_proto):    
+def get_local_depth_list(src_depth_list_proto):    
+    
+    dst_depth_list_local = []
+    
     for depth in src_depth_list_proto:
         new_depth = SDepth()
         
@@ -58,6 +61,8 @@ def set_local_depth_list(dst_depth_list_local, src_depth_list_proto):
         # print('**')
         
         dst_depth_list_local.append(new_depth)
+        
+    return dst_depth_list_local
 
     # print(len(dst_depth_list_local))
         
@@ -85,8 +90,8 @@ class ProtoSerializer:
 
         # print(len(local_quote.asks), len(local_quote.bids))
 
-        set_local_depth_list(local_quote.asks, proto_quote.asks)
-        set_local_depth_list(local_quote.bids, proto_quote.bids)
+        local_quote.asks = get_local_depth_list(proto_quote.asks)
+        local_quote.bids = get_local_depth_list(proto_quote.bids)
 
         return local_quote
 
