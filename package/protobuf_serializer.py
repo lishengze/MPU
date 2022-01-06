@@ -89,6 +89,8 @@ class ProtoSerializer:
         local_quote.is_snap = proto_quote.is_snap
 
         # print(len(local_quote.asks), len(local_quote.bids))
+        
+        print("seq:%d" % (local_quote.sequence_no))
 
         local_quote.asks = get_local_depth_list(proto_quote.asks)
         local_quote.bids = get_local_depth_list(proto_quote.bids)
@@ -154,6 +156,8 @@ class ProtoSerializer:
         proto_quote.amount_precise = local_quote.amount_precise 
         
         proto_quote.is_snap = local_quote.is_snap
+        
+        print("seq:%d" % (local_quote.sequence_no))
         
         set_proto_depth_list(proto_quote.asks, local_quote.asks)
         set_proto_depth_list(proto_quote.bids, local_quote.bids)
