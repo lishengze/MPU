@@ -261,7 +261,7 @@ class FTX(ExchangeBase):
             # if symbol == "ETH_BTC":
             #     self._logger.Debug("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
 
-            self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
+            self._publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
@@ -280,7 +280,7 @@ class FTX(ExchangeBase):
             for trade in data_list:
                 side = trade['side']
                 exg_time = trade['time'].replace('T', ' ')[:-6]
-                self.__publisher.pub_tradex(symbol=symbol,
+                self._publisher.pub_tradex(symbol=symbol,
                                             direction=side,
                                             exg_time=exg_time,
                                             px_qty=(float(trade['price']), float(trade['size'])))
