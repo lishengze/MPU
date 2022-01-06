@@ -262,7 +262,7 @@ class ExchangeBase(ABC):
 
     def on_close(self):
         try:
-            self._logger.warning("\n******* on_close *******")
+            self._logger.warning("******* on_close *******\n")
             self._is_connnect = False        
             self.start_reconnect()
         except Exception as e:

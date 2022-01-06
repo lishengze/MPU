@@ -127,6 +127,28 @@ class FTX(ExchangeBase):
         except Exception as e:
             self._logger.warning("[E]__init__: " + str(e))
 
+    def get_ping_sub_info(self):
+        try:
+            sub_info = {'op': 'ping'}  
+
+            sub_info_str = json.dumps(sub_info)
+            
+            return sub_info_str       
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())    
+
+    def on_timer(self):
+        try:
+            if self._is_connnect:
+                self._ws.send(self.get_ping_sub_info())        
+
+            self.print_publish_info()
+
+            self._timer = threading.Timer(self._ping_secs, self.on_timer)
+            self._timer.start()
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())
+                        
     def on_open(self):
         try:            
             self._logger.info("\nftx_on_open")
