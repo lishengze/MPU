@@ -21,7 +21,7 @@ from kafka import TopicPartition
 from Logger import *
 
 class KafkaServer(NetServer):
-    def __init__(self, config:dict,  depth_processor=None, kline_processor=None, trade_processor=None,serializer_type: SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF, logger=None, debug=False):
+    def __init__(self, config:dict,  depth_processor=None, kline_processor=None, trade_processor=None,serializer_type: SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF,logger=None, debug=False):
         try:        
             super().__init__(depth_processor, kline_processor, trade_processor, serializer_type=serializer_type, logger=logger, debug=debug)
 
