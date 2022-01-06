@@ -60,7 +60,7 @@ def get_login_info(api_key, api_secret, logger = None):
     sub_info_str = json.dumps(sub_info)
 
     if logger is not None:
-        logger._logger.info("\nsub_info: \n" + sub_info_str)
+        logger.info("\nsub_info: \n" + sub_info_str)
     else:
         print("\nsub_info: \n" + sub_info_str)
     return sub_info_str
