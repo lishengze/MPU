@@ -122,11 +122,11 @@ class FTX(ExchangeBase):
                              sub_data_type_list=sub_data_type_list, net_server_type=net_server_type,
                               debug_mode=debug_mode, is_test_currency=is_test_currency)            
             self._ws_url = "wss://ftx.com/ws/"
-            # self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
-            # self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
+            self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
+            self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
             
-            self._api_key = "5CAv80s6UbUHMVvQUdanLD1j8EnY_4p2ilAh6mLv"
-            self._api_secret = "GJQghHEhZDMxAfudkQ5ftjoAJM5BqKNvcQ9an90u"
+            # self._api_key = "5CAv80s6UbUHMVvQUdanLD1j8EnY_4p2ilAh6mLv"
+            # self._api_secret = "GJQghHEhZDMxAfudkQ5ftjoAJM5BqKNvcQ9an90u"
                         
             self._ping_secs = 30
                         
