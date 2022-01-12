@@ -48,14 +48,23 @@ def get_login_info(api_key, api_secret, logger = None):
     # self._logger.info(tmp_sign_hex)
 
     
-    sub_info = {'op': 'login', 
-                    'args': 
-                    {
-                        'key': api_key,
-                        'sign': tmp_sign_hex,
-                        'time': ts,
-                    }
-    }
+    # sub_info = {'op': 'login', 
+    #                 'args': 
+    #                 {
+    #                     'key': api_key,
+    #                     'sign': tmp_sign_hex,
+    #                     'time': ts,
+    #                 }
+    # }
+    
+    sub_info =  {'op': 'login', 'args': {
+                'key': api_key,
+                'sign': hmac.new(
+                    api_secret.encode(), f'{ts}websocket_login'.encode(), 'sha256').hexdigest(),
+                'time': ts,
+            }}   
+    
+    print(sub_info)
 
     sub_info_str = json.dumps(sub_info)
 
