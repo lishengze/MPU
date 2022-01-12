@@ -20,10 +20,12 @@ class FtxWebsocketClient(WebsocketManager):
         self._api_key = 's8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB'  # TODO: Place your API key here
         self._api_secret = 'LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA'  # TODO: Place your API secret here
         self._orderbook_update_events: DefaultDict[str, Event] = defaultdict(Event)
-        self._reset_data()
+        # self._reset_data()
 
     def _on_open(self, ws):
-        self._reset_data()
+        # self._reset_data()
+        print("----------------on_open---------------")
+        self._login()
 
     def _reset_data(self) -> None:
         self._subscriptions: List[Dict] = []
@@ -164,7 +166,11 @@ class FtxWebsocketClient(WebsocketManager):
         self._orders.update({data['id']: data})
 
     def _on_message(self, ws, raw_message: str) -> None:
+
         message = json.loads(raw_message)
+        
+        print(message)
+        
         message_type = message['type']
         if message_type in {'subscribed', 'unsubscribed'}:
             return
