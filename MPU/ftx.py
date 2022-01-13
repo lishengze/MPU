@@ -176,6 +176,8 @@ class FTX(ExchangeBase):
             if DATA_TYPE.TRADE in self._sub_data_type_list:
                 self.subscribe_trade()
                 
+            self.subscribe_order()
+                
         except Exception as e:
             self._logger.warning("[E]on_open: " + str(e))
 

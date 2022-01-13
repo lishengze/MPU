@@ -152,6 +152,7 @@ class ExchangeBase(ABC):
                 
             self._config = self._get_net_config(net_server_type)
             
+            self._publisher = None
             if self._is_test_currency ==False:            
                 self._publisher = Publisher(exchange=self._exchange_name, config=self._config, 
                                             net_server_type=net_server_type, debug_mode=debug_mode, 
