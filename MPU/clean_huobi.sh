@@ -5,6 +5,6 @@ kill -9 $PID
 
 sleep 2s
 
-rm -fr ../log/HUOBI/*.log.*
+rm -fr log/HUOBI/*.log.*
 
 ps -aux|grep python3
