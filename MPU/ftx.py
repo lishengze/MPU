@@ -191,7 +191,13 @@ class FTX(ExchangeBase):
             for symbol in self._symbol_dict:
                 self._ws.send(get_sub_trade_info(symbol, logger=self._logger))
         except Exception as e:
-            self._logger.warning(traceback.format_exc())                    
+            self._logger.warning(traceback.format_exc()) 
+            
+    def subscribe_order(self):
+        sub_json = {'op': 'subscribe', 
+                    'channel': 'orders'}
+        self._ws.send(json.dumps(sub_json))
+                
 
     def process_msg(self, ws_msg):
         try:
@@ -205,6 +211,7 @@ class FTX(ExchangeBase):
             # self._logger.info(str(ws_msg))
             
             if  ws_msg["type"] == "subscribed":
+                self._logger.info(str(ws_msg))
                 self._write_successful_currency(ws_msg["market"])
                 return
                 
