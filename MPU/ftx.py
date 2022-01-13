@@ -162,7 +162,7 @@ class FTX(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                         
-    def on_open(self):
+    def on_open(self, ws = None):
         try:            
             self._logger.info("\nftx_on_open")
             self._is_connnect = True
