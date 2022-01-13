@@ -147,9 +147,11 @@ class ExchangeBase(ABC):
                 self._publish_count_dict["trade"][sys_symbol] = 0
                 
             self._config = self._get_net_config(net_server_type)
-            self._publisher = Publisher(exchange=self._exchange_name, config=self._config, 
-                                        net_server_type=net_server_type, debug_mode=debug_mode, 
-                                        logger=self._logger)
+            
+            if self._is_test_currency ==True:            
+                self._publisher = Publisher(exchange=self._exchange_name, config=self._config, 
+                                            net_server_type=net_server_type, debug_mode=debug_mode, 
+                                            logger=self._logger)
             
             # if self._publisher:
             #     print("create publisher for " + self._exchange_name )
@@ -242,7 +244,7 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
 
-    def on_open(self):
+    def on_open(self, msg = 1):
         try:
             self._logger.info("\non_open")
             self._is_connnect = True
@@ -257,10 +259,10 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())                
 
-    def on_error(self):
+    def on_error(self, param1=1, param=2):
         self._logger.error("on_error")
 
-    def on_close(self):
+    def on_close(self, msg=2):
         try:
             self._logger.warning("******* on_close *******\n")
             self._is_connnect = False        
