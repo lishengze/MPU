@@ -268,8 +268,9 @@ class FTX(ExchangeBase):
                 depths["ASK"][float(info[0])] = float(info[1])
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
-
-            self._publisher.pub_depthx(symbol=sys_symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
+                
+            if self._publisher is not None:
+                self._publisher.pub_depthx(symbol=sys_symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
@@ -294,10 +295,12 @@ class FTX(ExchangeBase):
             for trade in data_list:
                 side = trade['side']
                 exg_time = trade['time'].replace('T', ' ')[:-6]
-                self._publisher.pub_tradex(symbol=sys_symbol,
-                                            direction=side,
-                                            exg_time=exg_time,
-                                            px_qty=(float(trade['price']), float(trade['size'])))
+                
+                if self._publisher is not None:
+                    self._publisher.pub_tradex(symbol=sys_symbol,
+                                                direction=side,
+                                                exg_time=exg_time,
+                                                px_qty=(float(trade['price']), float(trade['size'])))
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
