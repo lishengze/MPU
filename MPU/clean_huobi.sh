@@ -1,6 +1,6 @@
 # !/bin/bash
 
-rm -fr log/HUOBI/*.log.*
+rm -fr log/HUOBI/*.log*
 
 
 PID=`ps aux|grep huobi |grep -v grep | awk '{print $2}'`

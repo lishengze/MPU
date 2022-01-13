@@ -1,6 +1,6 @@
 # !/bin/bash
 
-rm -fr log/FTX/*.log.*
+rm -fr log/FTX/*.log*
 
 PID=`ps aux|grep ftx |grep -v grep | awk '{print $2}'`
 kill -9 $PID
