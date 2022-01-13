@@ -5,6 +5,6 @@ kill -9 $PID
 
 sleep 2s
 
-rm -fr ../log/BINANCE/*.log*
+rm -fr ../log/BINANCE/*.log.*
 
 ps -aux|grep python3
