@@ -3,10 +3,7 @@ import logging.handlers
 import datetime
 import time
 import os
-
-
-def get_datetime_str():
-    return datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+from tool import *
 
 class Logger(object):
     def __init__(self, program_name="test", log_dir:str= ""):
@@ -18,15 +15,21 @@ class Logger(object):
         self._debug_logger.setLevel(logging.DEBUG)     
 
         if log_dir == "":
-            log_dir = os.path.dirname(os.path.abspath(__file__)) + "/log/" 
+            log_dir = os.path.dirname(os.path.abspath(__file__)) + get_dir_seprator() + "log" + get_dir_seprator() 
             
         if program_name !="":
-            log_dir = log_dir + program_name + "/"
+            log_dir = log_dir + program_name + get_dir_seprator() 
+
         print("log_dir: %s" % log_dir)
         
+        debug_file_name = log_dir + get_datetime_str()+"_debug.log"
+
+        # debug_file_name = log_dir +"_debug.log"
+
+        print("debug_file_name: %s" % (debug_file_name))
 
         # debug_handler = logging.handlers.TimedRotatingFileHandler(log_dir + get_datetime_str()+"_debug.log", when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
-        debug_handler = logging.handlers.RotatingFileHandler(log_dir + get_datetime_str()+"_debug.log", maxBytes=100*1024*1024, backupCount=5)
+        debug_handler = logging.handlers.RotatingFileHandler(debug_file_name, maxBytes=100*1024*1024, backupCount=5)
 
         debug_handler.setLevel(logging.DEBUG)
         debug_handler.setFormatter(logging.Formatter(fmt="%(asctime)s-%(levelname)s-%(filename)s[:%(lineno)d]-%(message)s"))
@@ -38,6 +41,12 @@ class Logger(object):
 
         all_file_Name = log_dir+get_datetime_str()+"_info.log"
         error_file_name = log_dir+get_datetime_str()+"_warn.log"
+
+        # all_file_Name = log_dir+"_info.log"
+        # error_file_name = log_dir+"_warn.log"        
+
+        print("all_file_Name: %s" % (all_file_Name))
+        print("error_file_name: %s" % (error_file_name))
 
         # detail_handler = logging.handlers.TimedRotatingFileHandler('log/all.log', when='midnight', interval=1, backupCount=7, atTime=datetime.time(0, 0, 0, 0))
 

@@ -37,7 +37,10 @@ sys.path.append(os.getcwd())
 from Logger import *
 
 
-SYS_CONFIG = get_config(os.getcwd() + "/sys_config.json")
+
+print(os.getcwd() + get_dir_seprator() + "sys_config.json")
+
+SYS_CONFIG = get_config(config_file = (os.getcwd() + get_dir_seprator() + "sys_config.json"))
 
 def get_login_info(api_key, api_secret, logger = None):
     ts = int(time.time() * 1000)

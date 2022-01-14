@@ -4,6 +4,16 @@ import traceback
 import json
 import os
 
+def get_datetime_str():
+    return datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+
+def get_dir_seprator():
+    dir = os.getcwd()
+    if dir.find('\\') != -1:
+        return '\\'
+    else:
+        return '/'
+
 def get_utc_nano_time():
     ori_time = time.time()
     nano_time = ori_time - int(ori_time)
@@ -35,11 +45,8 @@ def get_in_type(type):
 def get_out_type(type):
     return "Out_" + type;
 
-def get_datetime_str():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-
 def get_config(logger = None, config_file=""):    
+    print("config_file_name: " + config_file)
     json_file = open(config_file,'r')
     json_dict = json.load(json_file)
     if logger is not None:

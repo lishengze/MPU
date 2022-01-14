@@ -117,8 +117,10 @@ class ExchangeBase(ABC):
             self._sub_data_type_list = sub_data_type_list
             self._is_test_currency = is_test_currency           
             self._is_test_kafka = is_test_kafka  
-            
-            self._logger_all = Logger(program_name=self._exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
+
+            log_dir = os.path.dirname(os.path.abspath(__file__)) + get_dir_seprator() + "log" + get_dir_seprator() 
+
+            self._logger_all = Logger(program_name=self._exchange_name, log_dir=log_dir)
             self._logger = self._logger_all._logger
             
             self._reconnect_secs = 5
