@@ -108,14 +108,15 @@ BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class ExchangeBase(ABC):
     def __init__(self, exchange_name:str, symbol_dict:dict, sub_data_type_list:list, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
-                 debug_mode: bool = True, is_test_currency:bool = False):
+                 debug_mode: bool = True, is_test_currency:bool = False, is_test_kafka:bool = False):
         try:
             self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
             self._net_server_type = net_server_type
             self._exchange_name = exchange_name             
             self._sub_data_type_list = sub_data_type_list
-            self._is_test_currency = is_test_currency             
+            self._is_test_currency = is_test_currency           
+            self._is_test_kafka = is_test_kafka  
             
             self._logger_all = Logger(program_name=self._exchange_name, log_dir=os.path.dirname(os.path.abspath(__file__)) + "/log/")
             self._logger = self._logger_all._logger
@@ -226,11 +227,25 @@ class ExchangeBase(ABC):
             self._timer.start()
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-
-    def start(self):
+    
+    def start_exchange_moka(self):
+        print("start_exchange_moka")
+        pass
+    
+    def start_exchange_work(self):
         try:
             self.start_timer()
             self.connect_ws_server("Start Connect")
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())
+            
+
+    def start(self):
+        try:
+            if self._is_test_kafka:
+                self.start_exchange_moka()
+            else:
+                self.start_exchange_work()
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 

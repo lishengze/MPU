@@ -1,0 +1,5 @@
+{
+    "is_test_kafka":true,
+    "test_count_persecs": 1000,
+    "test_symbol_list":["A_USDT", "B_USDT"]
+}
