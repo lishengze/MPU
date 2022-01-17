@@ -137,7 +137,7 @@ class DelayClass:
                 if cur_time < trade_data.time:
                     self._logger.warning("abnormal time: " + str(trade_data.time))
                 else:
-                    self._delay.update(cur_time - trade_data.time)
+                    self._delay[trade_data.symbol].update(cur_time - trade_data.time)
             else:
                 self._logger.warning("invalid trade data: " + trade_data.meta_str())                            
         except Exception as e:
