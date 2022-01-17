@@ -217,6 +217,9 @@ class FTX(ExchangeBase):
                             exg_time = str(get_utc_nano_time())
                             price = random.randint(0, 50000)
                             volume = random.randint(0, 1000)
+
+                            self._publish_count_dict["trade"][sys_symbol] += 1
+
                             self._publisher.pub_tradex(symbol=sys_symbol,
                                                         direction=side,
                                                         exg_time=exg_time,
