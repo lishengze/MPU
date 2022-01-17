@@ -230,6 +230,7 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
     
+    @abstractmethod
     def start_exchange_moka(self):
         print("start_exchange_moka")
         pass

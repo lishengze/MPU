@@ -29,9 +29,9 @@ class KafkaServer(NetServer):
             
             self._kafka_depth_update_count = config["depth_update_count"]
             self._kafka_curr_pubed_update_count = {}    
-                               
-            self._client = KafkaAdminClient(bootstrap_servers=self._server_list, client_id='test')
-                        
+
+            print("server list: %s" % (str(self._server_list)))
+                                                       
             self._producer = KafkaProducer(bootstrap_servers=self._server_list)        
             if self._producer.bootstrap_connected():
                 self._logger.info("Producer Connect %s Successfully" % (str(self._server_list)))
@@ -44,6 +44,10 @@ class KafkaServer(NetServer):
             else:
                 self._logger.warning("Consumer Not Connected %s" % (str(self._server_list)))              
             
+            self._client = KafkaAdminClient(bootstrap_servers=self._server_list)
+
+            # self._client = KafkaAdminClient(bootstrap_servers=self._server_list, api_version=(0,10))
+
             self._topic_list = []
 
             self._sub_topics = list()

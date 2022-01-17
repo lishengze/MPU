@@ -205,17 +205,18 @@ class FTX(ExchangeBase):
         self._ws.send(json.dumps(sub_json))
 
     def start_exchange_moka(self):
-        try:            
-            self._logger.info("start_exchange_moka")
+        try:           
+            print("ftx start_exchange_moka") 
+            self._logger.info("ftx start_exchange_moka")
             if self._publisher is not None:                
                 while True:
-                    for i in SYS_CONFIG['test_count_persecs']:
+                    for i in SYS_CONFIG['test_symbol_list']:
                         for ex_symbol in self._symbol_dict:
                             sys_symbol = self._symbol_dict[ex_symbol]
                             side = "buy"
                             exg_time = str(get_utc_nano_time())
-                            price = random(0, 50000)
-                            volume = random(0, 1000)
+                            price = random.random(0, 50000)
+                            volume = random.random(0, 1000)
                             self._publisher.pub_tradex(symbol=sys_symbol,
                                                         direction=side,
                                                         exg_time=exg_time,
@@ -339,10 +340,6 @@ class FTX(ExchangeBase):
                                                 px_qty=(float(trade['price']), float(trade['size'])))
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-
-    def start_exchange_moka(self):
-        print("start_exchange_moka")
-        pass
     
 def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))
@@ -355,7 +352,7 @@ def test_ftx():
         data_list = [DATA_TYPE.TRADE]     
         symbol_dict = get_exchange_sys_symbol_dict(SYS_CONFIG["test_symbol_list"], "FTX")
         ftx_obj = FTX(symbol_dict=symbol_dict, sub_data_type_list=data_list, \
-                        debug_mode=False, is_test_currency=True, is_test_kafka=True)
+                        debug_mode=False, is_test_currency=False, is_test_kafka=True)
     else:
         ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
                     sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
