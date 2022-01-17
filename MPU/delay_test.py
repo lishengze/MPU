@@ -55,7 +55,8 @@ class DelayMeta:
 
 class DelayClass:
     def __init__(self, data_type_list:list, kafka_config:dict, symbol_list:list) -> None:
-        self._logger = Logger(program_name="Delay")        
+        log_dir = os.path.dirname(os.path.abspath(__file__)) + get_dir_seprator() + "log" + get_dir_seprator() 
+        self._logger = Logger(program_name="Delay", log_dir=log_dir)        
         self._logger = self._logger._logger
         self._kafka_server = KafkaServer(config = kafka_config, depth_processor=self, kline_processor=self, trade_processor=self, \
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
