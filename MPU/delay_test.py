@@ -143,8 +143,13 @@ class DelayClass:
             self._logger.warning(traceback.format_exc())                        
             
 def delay_test():
-    sys_config = get_config(os.getcwd() + get_dir_seprator() + "sys_config.json")
-    kafka_config = get_config(os.getcwd() + get_dir_seprator() + "kafka_config.json")
+    sys_confil_file_name = os.getcwd() + get_dir_seprator() + "sys_config.json"
+    print("sys_confil_file_name: " + sys_confil_file_name)
+    sys_config = get_config(config_file = sys_confil_file_name)
+
+    kafka_config_file_name = os.getcwd() + get_dir_seprator() + "kafka_config.json"
+    print("kafka_config_file_name: " + kafka_config_file_name)
+    kafka_config = get_config(config_file = kafka_config_file_name)
     
     data_type_list = [DATA_TYPE.TRADE] 
     kafka_obj = DelayClass(data_type_list=data_type_list, kafka_config=kafka_config, symbol_list=sys_config['test_symbol_list'])
