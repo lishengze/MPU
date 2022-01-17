@@ -464,7 +464,6 @@ class Publisher:
             self._logger.Warning("[E] __set: ")
             self._logger.Warning(str(e))
 
-
     def __crossing_snapshot(self, channel: str, message):
         try:
             if not self.__debug:
