@@ -210,7 +210,7 @@ class FTX(ExchangeBase):
             self._logger.info("ftx start_exchange_moka")
             if self._publisher is not None:                
                 while True:
-                    for i in SYS_CONFIG['test_symbol_list']:
+                    for i in  range(1, SYS_CONFIG['test_count_persecs']):
                         for ex_symbol in self._symbol_dict:
                             sys_symbol = self._symbol_dict[ex_symbol]
                             side = "buy"
