@@ -7,8 +7,6 @@ import traceback
 import sys
 import os
 import threading
-from package.tool import get_utc_nano_minute
-
 
 def get_grandfather_dir():
     parent = os.path.dirname(os.path.realpath(__file__))
@@ -145,8 +143,8 @@ class DelayClass:
             self._logger.warning(traceback.format_exc())                        
             
 def delay_test():
-    sys_config = get_config(os.getcwd() + "/sys_config.json")
-    kafka_config = get_config(os.getcwd() + "/kafka_config.json")
+    sys_config = get_config(os.getcwd() + get_dir_seprator() + "sys_config.json")
+    kafka_config = get_config(os.getcwd() + get_dir_seprator() + "kafka_config.json")
     
     data_type_list = [DATA_TYPE.TRADE] 
     kafka_obj = DelayClass(data_type_list=data_type_list, kafka_config=kafka_config, symbol_list=sys_config['test_symbol_list'])
