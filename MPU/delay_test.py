@@ -37,6 +37,8 @@ class DelayMeta:
         
     def update(self, new_value):
         
+        new_value = new_value/1000000
+
         if new_value > self._max or self._max == -1:
             self._max = new_value
         
@@ -130,7 +132,7 @@ class DelayClass:
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
-            print(trade_data.meta_str())            
+            # print(trade_data.meta_str())            
             cur_time = get_utc_nano_time()
             
             if trade_data.symbol in self._delay:                            
