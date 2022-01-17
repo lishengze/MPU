@@ -215,8 +215,8 @@ class FTX(ExchangeBase):
                             sys_symbol = self._symbol_dict[ex_symbol]
                             side = "buy"
                             exg_time = str(get_utc_nano_time())
-                            price = random.random(0, 50000)
-                            volume = random.random(0, 1000)
+                            price = random.randint(0, 50000)
+                            volume = random.randint(0, 1000)
                             self._publisher.pub_tradex(symbol=sys_symbol,
                                                         direction=side,
                                                         exg_time=exg_time,
