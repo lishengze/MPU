@@ -174,7 +174,8 @@ def delay_test():
     
     data_type_list = [DATA_TYPE.TRADE] 
     delay_obj = DelayClass(data_type_list=data_type_list, config=config,
-                         symbol_list=sys_config['test_symbol_list'], net_server_type=net_type)
+                         symbol_list=get_test_symbol_list(sys_config['test_symbol_count']), 
+                        net_server_type=net_type)
     delay_obj.start()
         
 if __name__ == "__main__":

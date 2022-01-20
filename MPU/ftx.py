@@ -357,7 +357,7 @@ def test_ftx():
         
     if SYS_CONFIG["is_stress_test"] == True:    
         data_list = [DATA_TYPE.TRADE]     
-        symbol_dict = get_exchange_sys_symbol_dict(SYS_CONFIG["test_symbol_list"], "FTX")
+        symbol_dict = get_exchange_sys_symbol_dict(get_test_symbol_list(SYS_CONFIG['test_symbol_count']), "FTX")
         ftx_obj = FTX(symbol_dict=symbol_dict, sub_data_type_list=data_list, net_server_type=net_type, \
                         debug_mode=False, is_test_currency=False, is_stress_test=True)
     else:

@@ -157,13 +157,16 @@ def test_float_to_str():
         print(int(value), int(precise))
         
     pos = str_value.find('.')
-    
-    
-    
-    
+        
     print(str_value)
     print("pos: %d " % (pos))
-                
+
+def get_test_symbol_list(test_count:int):
+    result = []
+    for i in range(0, test_count):
+        result.append("A_"+ str(i) + "_USDT")
+    return result
+
 if __name__ == "__main__":
     
     test_float_to_str()
