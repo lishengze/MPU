@@ -25,6 +25,7 @@ sys.path.append(get_package_dir())
 
 from tool import *
 from kafka_server import *
+from redis_server import *
 from data_struct import *
 from Logger import *
 
@@ -56,16 +57,24 @@ class DelayMeta:
 
 
 class DelayClass:
-    def __init__(self, data_type_list:list, kafka_config:dict, symbol_list:list) -> None:
+    def __init__(self, data_type_list:list, config:dict, symbol_list:list, 
+                        net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA,) -> None:
         log_dir = os.path.dirname(os.path.abspath(__file__)) + get_dir_seprator() + "log" + get_dir_seprator() 
         self._logger = Logger(program_name="Delay", log_dir=log_dir)        
         self._logger = self._logger._logger
-        self._kafka_server = KafkaServer(config = kafka_config, depth_processor=self, kline_processor=self, trade_processor=self, \
+
+        if net_server_type == NET_SERVER_TYPE.KAFKA:
+            self._net_server = KafkaServer(config = config, depth_processor=self, kline_processor=self, trade_processor=self, \
+                                            serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
+        elif net_server_type == NET_SERVER_TYPE.REDIS:
+            self._net_server = RedisServer(config = config, depth_processor=self, kline_processor=self, trade_processor=self, \
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
+                    
+
         self._symbol_list = symbol_list
         self._exchange_list = ["FTX"]
         self._data_type_list = data_type_list
-        self._kafka_server.set_meta(symbol_list=self._symbol_list, \
+        self._net_server.set_meta(symbol_list=self._symbol_list, \
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
         self._seq_no = -1
@@ -76,7 +85,7 @@ class DelayClass:
             self._delay[symbol] = DelayMeta()
     
     def start(self):
-        self._kafka_server.start_listen_data()
+        self._net_server.start_listen_data()
         
         self.start_timer()
     
@@ -150,13 +159,23 @@ def delay_test():
     print("sys_confil_file_name: " + sys_confil_file_name)
     sys_config = get_config(config_file = sys_confil_file_name)
 
-    kafka_config_file_name = os.getcwd() + get_dir_seprator() + "kafka_config.json"
-    print("kafka_config_file_name: " + kafka_config_file_name)
-    kafka_config = get_config(config_file = kafka_config_file_name)
+    print(str(sys_config))
+
+    if sys_config["net_server"] == "redis":
+        net_type = NET_SERVER_TYPE.REDIS
+        config_file_name = os.getcwd() + get_dir_seprator() + "redis_config.json"
+    elif sys_config["net_server"] == "kafka":
+        net_type = NET_SERVER_TYPE.KAFKA
+        config_file_name = os.getcwd() + get_dir_seprator() + "kafka_config.json"
+    else:
+        print("Error!Unknown Net Type")
+
+    config = get_config(config_file = config_file_name)
     
     data_type_list = [DATA_TYPE.TRADE] 
-    kafka_obj = DelayClass(data_type_list=data_type_list, kafka_config=kafka_config, symbol_list=sys_config['test_symbol_list'])
-    kafka_obj.start()
+    delay_obj = DelayClass(data_type_list=data_type_list, config=config,
+                         symbol_list=sys_config['test_symbol_list'], net_server_type=net_type)
+    delay_obj.start()
         
 if __name__ == "__main__":
     delay_test()

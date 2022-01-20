@@ -110,18 +110,20 @@ class RedisServer(NetServer):
             while True:
                 try:
                     for msg in self._consumer.listen():
-                        print(msg)
+                        # self._logger.info(str(msg))
 
-                        data_type = self._get_data_type(msg.channel)
+                        topic = msg["channel"].decode()
+
+                        data_type = self._get_data_type(topic)
                         
                         if data_type == DEPTH_TYPE:
-                            self.process_depth(msg.data)
+                            self.process_depth(msg["data"])
                             
                         if data_type == KLINE_TYPE:
-                            self.process_kline(msg.data)
+                            self.process_kline(msg["data"])
                             
                         if data_type == TRADE_TYPE:
-                            self.process_trade(msg.data)                                                        
+                            self.process_trade(msg["data"])                                                        
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())                    
@@ -186,11 +188,11 @@ class RedisServer(NetServer):
                                 
     def _get_data_type(self, topic):
         try:
-            if topic.find(DEPTH_TYPE) != -1:
+            if DEPTH_TYPE in topic:
                 return DEPTH_TYPE
-            elif topic.find(KLINE_TYPE) != -1:
+            elif KLINE_TYPE in topic:
                 return KLINE_TYPE
-            elif topic.find(TRADE_TYPE) != -1:
+            elif TRADE_TYPE in topic:
                 return TRADE_TYPE
             else:
                 return None

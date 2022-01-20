@@ -154,6 +154,8 @@ class ExchangeBase(ABC):
             self._logger.info(str(self._publish_count_dict))
                 
             self._config = self._get_net_config(net_server_type)
+
+            self._logger.info(str(self._config))
             
             self._publisher = None
             if self._is_test_currency ==False:            

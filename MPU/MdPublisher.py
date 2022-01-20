@@ -69,6 +69,7 @@ sys.path.append(get_package_dir())
 
 from tool import *
 from kafka_server import *
+from redis_server import *
 from data_struct import *
 
 # from package.tool import *
@@ -84,7 +85,8 @@ class Publisher:
         if net_server_type == NET_SERVER_TYPE.KAFKA:
             self._net_server = KafkaServer(config = config, serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
         elif net_server_type == NET_SERVER_TYPE.REDIS:
-            self._net_server = None
+            self._net_server = RedisServer(config = config, depth_processor=self, kline_processor=self, trade_processor=self, \
+                                         serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
                     
         self._exchange = exchange
         self.__msg_seq = 0
