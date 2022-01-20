@@ -108,7 +108,7 @@ BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class ExchangeBase(ABC):
     def __init__(self, exchange_name:str, symbol_dict:dict, sub_data_type_list:list, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
-                 debug_mode: bool = True, is_test_currency:bool = False, is_test_kafka:bool = False):
+                 debug_mode: bool = True, is_test_currency:bool = False, is_stress_test:bool = False):
         try:
             self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
@@ -116,7 +116,7 @@ class ExchangeBase(ABC):
             self._exchange_name = exchange_name             
             self._sub_data_type_list = sub_data_type_list
             self._is_test_currency = is_test_currency           
-            self._is_test_kafka = is_test_kafka  
+            self._is_stress_test = is_stress_test  
 
             log_dir = os.path.dirname(os.path.abspath(__file__)) + get_dir_seprator() + "log" + get_dir_seprator() 
 
@@ -245,7 +245,7 @@ class ExchangeBase(ABC):
 
     def start(self):
         try:
-            if self._is_test_kafka:
+            if self._is_stress_test:
                 self.start_exchange_moka()
             else:
                 self.start_exchange_work()

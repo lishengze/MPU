@@ -18,13 +18,9 @@ class RedisServer(NetServer):
     def __init__(self, config:dict,  depth_processor=None, kline_processor=None, trade_processor=None,serializer_type: SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF,logger=None, debug=False):
         try:        
             super().__init__(depth_processor, kline_processor, trade_processor, serializer_type=serializer_type, logger=logger, debug=debug)
-
-            self._server_list = config["server_list"]     
-            
+                
             self._kafka_depth_update_count = config["depth_update_count"]
             self._curr_pubed_update_count = {}    
-
-            print("server list: %s" % (str(self._server_list)))
                                                        
             self._producer = redis.Redis(host=config["HOST"],
                                             port=config["PORT"],
@@ -113,7 +109,7 @@ class RedisServer(NetServer):
             self._logger.info("------ listen begin -------")
             while True:
                 try:
-                    for msg in self._consumer:
+                    for msg in self._consumer.listen():
                         print(msg)
 
                         data_type = self._get_data_type(msg.channel)
@@ -237,7 +233,7 @@ class RedisServer(NetServer):
         except Exception as e:
             self._logger.warning(traceback.format_exc())     
             
-class TestKafka:
+class TestRedis:
     def __init__(self, data_type_list:list) -> None:
         self._server_address = ["127.0.0.1:9117"]
         self._logger = Logger(program_name="")
@@ -245,21 +241,23 @@ class TestKafka:
         self._logger = self._logger._logger
         
         self._config = {
-            "server_list": ["127.0.0.1:9117"],
+            "HOST": "127.0.0.1",
+            "PORT": 8379,
+            "PWD": "test_broker",
             "depth_update_count":5
         }
-        self._kafka_server = KafkaServer(config = self._config, depth_processor=self, kline_processor=self, trade_processor=self, \
+        self._redis_server = RedisServer(config = self._config, depth_processor=self, kline_processor=self, trade_processor=self, \
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
         self._symbol_list = ["BTC_USDT"]
         self._exchange_list = ["FTX"]
         self._data_type_list = data_type_list
-        self._kafka_server.set_meta(symbol_list=self._symbol_list, \
+        self._redis_server.set_meta(symbol_list=self._symbol_list, \
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
         self._seq_no = -1
     
     def start(self):
-        self._kafka_server.start_listen_data()
+        self._redis_server.start_listen_data()
     
     def check_seq(self, seq_no):
         if self._seq_no == -1:
@@ -293,7 +291,7 @@ class TestKafka:
             
 def test_kafka():
     data_type_list = [DATA_TYPE.DEPTH] 
-    kafka_obj = TestKafka(data_type_list=data_type_list)
+    kafka_obj = TestRedis(data_type_list=data_type_list)
     kafka_obj.start()
         
 if __name__ == "__main__":

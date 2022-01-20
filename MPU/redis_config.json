@@ -1,5 +1,6 @@
 {
     "HOST": "127.0.0.1",
     "PORT": 8379,
-    "PWD": "test_broker"    
+    "PWD": "test_broker",
+    "depth_update_count":5
 }

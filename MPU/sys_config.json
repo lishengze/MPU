@@ -1,5 +1,6 @@
 {
-    "is_test_kafka":true,
+    "net_server": "redis",
+    "is_stress_test":true,
     "test_count_persecs": 100,
     "test_symbol_list":["A_USDT", "B_USDT"]
 }

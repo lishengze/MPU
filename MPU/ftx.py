@@ -120,11 +120,11 @@ BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(ExchangeBase):    
     def __init__(self, symbol_dict:dict, sub_data_type_list:list, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
-                debug_mode: bool = True, is_test_currency: bool = False, is_test_kafka:bool = False):
+                debug_mode: bool = True, is_test_currency: bool = False, is_stress_test:bool = False):
         try:
             super().__init__(exchange_name="FTX", symbol_dict=symbol_dict, 
                              sub_data_type_list=sub_data_type_list, net_server_type=net_server_type,
-                             debug_mode=debug_mode, is_test_currency=is_test_currency, is_test_kafka=is_test_kafka)            
+                             debug_mode=debug_mode, is_test_currency=is_test_currency, is_stress_test=is_stress_test)            
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
@@ -351,11 +351,11 @@ def test_ftx():
     data_list = [DATA_TYPE.DEPTH, DATA_TYPE.TRADE]    
 
         
-    if SYS_CONFIG["is_test_kafka"] == True:    
+    if SYS_CONFIG["is_stress_test"] == True:    
         data_list = [DATA_TYPE.TRADE]     
         symbol_dict = get_exchange_sys_symbol_dict(SYS_CONFIG["test_symbol_list"], "FTX")
         ftx_obj = FTX(symbol_dict=symbol_dict, sub_data_type_list=data_list, \
-                        debug_mode=False, is_test_currency=False, is_test_kafka=True)
+                        debug_mode=False, is_test_currency=False, is_stress_test=True)
     else:
         ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
                     sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
