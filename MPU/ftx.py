@@ -350,14 +350,19 @@ def test_get_ori_sys_config():
 def test_ftx():
     data_list = [DATA_TYPE.DEPTH, DATA_TYPE.TRADE]    
 
+    if SYS_CONFIG["net_server"] == "redis":
+        net_type = NET_SERVER_TYPE.REDIS
+    elif SYS_CONFIG["net_server"] == "kafka":
+        net_type = NET_SERVER_TYPE.KAFKA
         
     if SYS_CONFIG["is_stress_test"] == True:    
         data_list = [DATA_TYPE.TRADE]     
         symbol_dict = get_exchange_sys_symbol_dict(SYS_CONFIG["test_symbol_list"], "FTX")
-        ftx_obj = FTX(symbol_dict=symbol_dict, sub_data_type_list=data_list, \
+        ftx_obj = FTX(symbol_dict=symbol_dict, sub_data_type_list=data_list, net_server_type=net_type, \
                         debug_mode=False, is_test_currency=False, is_stress_test=True)
     else:
-        ftx_obj = FTX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"), \
+        symbol_dict = get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX")
+        ftx_obj = FTX(symbol_dict=symbol_dict,net_server_type=net_type ,\
                     sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
                 
     ftx_obj.start()

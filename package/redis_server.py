@@ -235,7 +235,6 @@ class RedisServer(NetServer):
             
 class TestRedis:
     def __init__(self, data_type_list:list) -> None:
-        self._server_address = ["127.0.0.1:9117"]
         self._logger = Logger(program_name="")
         
         self._logger = self._logger._logger
