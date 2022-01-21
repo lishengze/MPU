@@ -143,7 +143,7 @@ class DelayClass:
         try:
             if len(self._delay) < 10:
                 for symbol in self._delay:
-                    self._logger.info(symbol + ": " + self._delay[symbol].info())
+                    self._logger.info(symbol + ": " + self._delay_all.info())
             
             if len(self._delay) > 1:
                 self._logger.info("ALL: " + self._delay[symbol].info())
