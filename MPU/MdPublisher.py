@@ -394,7 +394,7 @@ class Publisher:
             trade_data.price = SDecimal(px)
             trade_data.volume = SDecimal(qty)
             
-            print(trade_data.meta_str())
+            # print(trade_data.meta_str())
 
             # self._logger.info(trade_data.meta_str())
                     
