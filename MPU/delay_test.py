@@ -141,7 +141,7 @@ class DelayClass:
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
-            print(trade_data.meta_str())            
+            # print(trade_data.meta_str())            
             cur_time = get_utc_nano_time()
             
             if trade_data.symbol in self._delay:                            
