@@ -34,7 +34,7 @@ class DelayMeta:
         self._max = -1
         self._min = -1
         self._ave = 0
-        self._all = list()
+        self._cnt = 0
         
     def update(self, new_value):
         
@@ -46,14 +46,15 @@ class DelayMeta:
         if new_value < self._min or self._min == -1:
             self._min = new_value
             
-        new_sum = len(self._all) * self._ave + new_value
-        self._all.append(new_value)
+        new_sum = self._cnt * self._ave + new_value
+
+        self._cnt = self._cnt + 1
         
-        self._ave = float(new_sum) / len(self._all)
+        self._ave = float(new_sum) / self._cnt
         
     def info(self):
         return ("max: %d, min: %d, ave: %d, all.size: %d \n" % 
-                (self._max, self._min, self._ave, len(self._all)))
+                (self._max, self._min, self._ave, self._cnt))
 
 
 class DelayClass:
@@ -83,6 +84,9 @@ class DelayClass:
         
         for symbol in self._symbol_list:
             self._delay[symbol] = DelayMeta()
+        
+        self._delay_all = DelayMeta()
+        
     
     def start(self):
         self._net_server.start_listen_data()
@@ -107,6 +111,7 @@ class DelayClass:
             
     def on_timer(self):
         try:
+            self.statistic_all()
             self.print_publish_info()
 
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
@@ -114,12 +119,34 @@ class DelayClass:
 
         except Exception as e:
             self._logger.warning(traceback.format_exc())
+
+    def statistic_all(self):
+        if len(self._delay) == 1:
+            return
+
+        sum_time = 0
+        for symbol in self._delay:
+
+            if self._delay_all._max == -1 or self._delay_all._max < self._delay[symbol]._max:
+                self._delay_all._max = self._delay[symbol]._max
+
+            if self._delay_all._min == -1 or self._delay_all._min > self._delay[symbol]._min:
+                self._delay_all._min = self._delay[symbol]._min
+            
+            sum_time += self._delay[symbol]._ave * self._delay[symbol]._cnt
+        
+            self._delay_all._cnt +=  self._delay[symbol]._cnt
+
+        self._delay_all._ave = sum_time / self._delay_all._cnt   
             
     def print_publish_info(self):
         try:
-            for symbol in self._delay:
-                self._logger.info(symbol + ": " + self._delay[symbol].info())
-                
+            if len(self._delay) < 10:
+                for symbol in self._delay:
+                    self._logger.info(symbol + ": " + self._delay[symbol].info())
+            
+            if len(self._delay) > 1:
+                self._logger.info("ALL: " + self._delay[symbol].info())
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                                     
