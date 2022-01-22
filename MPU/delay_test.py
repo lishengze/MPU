@@ -141,7 +141,7 @@ class DelayClass:
             
     def print_publish_info(self):
         try:
-            if len(self._delay) < 10:
+            if len(self._delay) < 15:
                 for symbol in self._delay:
                     self._logger.info(symbol + ": " + self._delay[symbol].info())
             
