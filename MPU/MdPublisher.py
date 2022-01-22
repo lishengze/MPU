@@ -98,6 +98,8 @@ class Publisher:
             self._exchange_topic = exchange      # 形如 "BINANCE"
 
         self.__orderbook = dict()
+
+        self._trade_seq = defaultdict(int)
         
         # print("create publisher for " + self._exchange)
 
@@ -384,7 +386,12 @@ class Publisher:
             :param px_qty: (PX, QTY)
             :return: Void
         """
-        try:                  
+        try:              
+            if symbol in self._trade_seq:
+                self._trade_seq[symbol] += 1
+            else:
+                self._trade_seq[symbol] = 0
+
             px, qty = px_qty
             trade_data = STradeData()
             
@@ -393,7 +400,8 @@ class Publisher:
             trade_data.exchange = self._exchange
             trade_data.price = SDecimal(px)
             trade_data.volume = SDecimal(qty)
-            
+            trade_data.sequence_no = self._trade_seq[symbol]
+
             # print(trade_data.meta_str())
 
             # self._logger.info(trade_data.meta_str())

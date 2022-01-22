@@ -38,9 +38,12 @@ class DelayMeta:
         self._symbol = symbol
         self._lost_cnt = 0;
         self._unsort_cnt = 0;
-        
-    def update(self, new_value):
-        
+
+        self._cur_seq = -1
+        self._lost_list = list()
+        self._unsort_list = list()
+
+    def update_delta_time(self, new_value):
         new_value = new_value/1000000
 
         if new_value > self._max or self._max == -1:
@@ -54,10 +57,39 @@ class DelayMeta:
         self._cnt = self._cnt + 1
         
         self._ave = float(new_sum) / self._cnt
+
+    def update_sequence_no(self, sequence_no):
+        if  self._cur_seq == sequence_no - 1 or self._cur_seq == -1:
+            self._cur_seq = sequence_no
+            return
+
+        if self._cur_seq > sequence_no:
+            self._unsort_list.append(self._cur_seq)
+        
+        if sequence_no in self._lost_list:
+            self._lost_list.remove(sequence_no)
+        else:
+            cur_seq = self._cur_seq + 1
+            while cur_seq < sequence_no:
+                if cur_seq not in self._unsort_list:
+                    self._lost_list.append(cur_seq)
+                cur_seq += 1
+        
+        self._cur_seq = sequence_no
+                            
+    def update(self, new_value, sequence_no=0):
+        
+        self.update_delta_time(new_value)
+
+        self.update_sequence_no(sequence_no)
+        
+
         
     def info(self):
-        return ("%s, max: %d, min: %d, ave: %d, all.size: %d, lost_cnt: %d, unsort_cnt: %d \n" % 
-                (self._symbol,self._max, self._min, self._ave, self._cnt, self._lost_cnt, self._unsort_cnt))
+        return ("%s, max: %d, min: %d, ave: %f, all.size: %d, lost_all: %d, lost_ave: %f, unsort_all: %d, unsort_ave: %f \n" % 
+                (self._symbol,self._max, self._min, self._ave, self._cnt, 
+                len(self._lost_list), float(len(self._lost_list))/float(self._cnt), 
+                len(self._unsort_cnt), float(len(self._unsort_list()))/float(self._cnt)))
 
 
 class DelayClass:

@@ -112,7 +112,7 @@ class SDepthQuote(object):
         # print(len(asks_), len(bids_))
         
     def meta_str(self):
-        result = ("exchange: %s, symbol: %s, ask.len: %d, bid.len: %d, %d" % \
+        result = ("ex: %s, sy: %s, ask.len: %d, bid.len: %d, %d" % \
                     (self.exchange, self.symbol, len(self.asks), len(self.bids), self.sequence_no))
 
         return result
@@ -120,18 +120,20 @@ class SDepthQuote(object):
 class STradeData(object):
     def __init__(self):
         self.time=0
+        self.sequence_no  = 0
         self.price = SDecimal()
         self.volume = SDecimal()
         self.symbol = ""
         self.exchange = ""
         
     def meta_str(self):
-        result =  ("exchange: %s, symbol: %s, price: %f, volume: %f, time:%d" % \
-                    (self.exchange, self.symbol, self.price.get_value(), self.volume.get_value(), self.time))
+        result =  ("se: %d, ex: %s, sy: %s, price: %f, volume: %f, time:%d" % \
+                    (self.sequence_no, self.exchange, self.symbol, self.price.get_value(), self.volume.get_value(), self.time))
         return result
 class SKlineData(object):
     def __init__(self, ):
         self.time=0
+        self.sequence_no = 0
         self.symbol = ""
         self.exchange = ""
         self.resolution = 0
@@ -144,8 +146,8 @@ class SKlineData(object):
         self.volume = SDecimal()
  
     def meta_str(self):
-        result =  ("exchange: %s, symbol: %s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \
-                    (self.exchange, self.symbol, self.px_open.get_value(), self.px_high.get_value(), \
+        result =  ("se: %d, ex: %s, sy: %s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \
+                    (self.sequence_no,self.exchange, self.symbol, self.px_open.get_value(), self.px_high.get_value(), \
                      self.px_low.get_value(), self.px_close.get_value()))
         return result
  
