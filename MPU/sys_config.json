@@ -1,7 +1,7 @@
 {
     "net_server": "kafka",
     "is_stress_test":true,
-    "test_count_persecs": 100,
-    "test_symbol_count":10,
+    "test_count_persecs": 1,
+    "test_symbol_count":1,
     "test_symbol_list":["A_1_USDT", "A_2_USDT"]
 }

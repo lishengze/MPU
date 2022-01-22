@@ -89,7 +89,7 @@ class DelayMeta:
         return ("%s, max: %d, min: %d, ave: %f, all.size: %d, lost_all: %d, lost_ave: %f, unsort_all: %d, unsort_ave: %f \n" % 
                 (self._symbol,self._max, self._min, self._ave, self._cnt, 
                 len(self._lost_list), float(len(self._lost_list))/float(self._cnt), 
-                len(self._unsort_cnt), float(len(self._unsort_list()))/float(self._cnt)))
+                len(self._unsort_cnt), float(len(self._unsort_list))/float(self._cnt)))
 
 
 class DelayClass:
@@ -203,7 +203,7 @@ class DelayClass:
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
-            # print(trade_data.meta_str())            
+            print(trade_data.meta_str())            
             cur_time = get_utc_nano_time()
             
             if trade_data.symbol in self._delay:                            
