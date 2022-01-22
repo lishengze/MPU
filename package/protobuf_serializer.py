@@ -107,6 +107,7 @@ class ProtoSerializer:
         local_kline.symbol = proto_kline.symbol
         local_kline.exchange = proto_kline.exchange
         local_kline.resolution = proto_kline.resolution
+        local_kline.sequence_no = proto_kline.sequence_no
         
         local_kline.px_open.value = proto_kline.px_open.value
         local_kline.px_open.precise = proto_kline.px_open.precise
@@ -134,6 +135,7 @@ class ProtoSerializer:
         local_trade.time = proto_trade.time;
         local_trade.exchange = proto_trade.exchange;
         local_trade.symbol = proto_trade.symbol;
+        local_trade.sequence_no = proto_trade.sequence_no
         
         local_trade.price.value = proto_trade.price.value
         local_trade.price.precise = proto_trade.price.precise
@@ -157,7 +159,7 @@ class ProtoSerializer:
         
         proto_quote.is_snap = local_quote.is_snap
         
-        print("seq:%d" % (local_quote.sequence_no))
+        # print("seq:%d" % (local_quote.sequence_no))
         
         set_proto_depth_list(proto_quote.asks, local_quote.asks)
         set_proto_depth_list(proto_quote.bids, local_quote.bids)
@@ -170,6 +172,7 @@ class ProtoSerializer:
         proto_kline.symbol = local_kline.symbol
         proto_kline.exchange = local_kline.exchange
         proto_kline.resolution = local_kline.resolution
+        proto_kline.sequence_no = local_kline.sequence_no
         
         proto_kline.px_open.value = local_kline.px_open.value
         proto_kline.px_open.precise = local_kline.px_open.precise
@@ -193,6 +196,8 @@ class ProtoSerializer:
         proto_trade.time = int(local_trade.time)
         proto_trade.symbol = local_trade.symbol
         proto_trade.exchange = local_trade.exchange
+        proto_trade.sequence_no = local_trade.sequence_no
+
         proto_trade.price.value = local_trade.price.value
         proto_trade.price.precise = local_trade.price.precise
         

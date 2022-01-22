@@ -30,11 +30,14 @@ from data_struct import *
 from Logger import *
 
 class DelayMeta:
-    def __init__(self) -> None:
+    def __init__(self, symbol:str="test") -> None:
         self._max = -1
         self._min = -1
         self._ave = 0
         self._cnt = 0
+        self._symbol = symbol
+        self._lost_cnt = 0;
+        self._unsort_cnt = 0;
         
     def update(self, new_value):
         
@@ -53,8 +56,8 @@ class DelayMeta:
         self._ave = float(new_sum) / self._cnt
         
     def info(self):
-        return ("max: %d, min: %d, ave: %d, all.size: %d \n" % 
-                (self._max, self._min, self._ave, self._cnt))
+        return ("%s, max: %d, min: %d, ave: %d, all.size: %d, lost_cnt: %d, unsort_cnt: %d \n" % 
+                (self._symbol,self._max, self._min, self._ave, self._cnt, self._lost_cnt, self._unsort_cnt))
 
 
 class DelayClass:
@@ -83,9 +86,9 @@ class DelayClass:
         self._delay = dict()
         
         for symbol in self._symbol_list:
-            self._delay[symbol] = DelayMeta()
+            self._delay[symbol] = DelayMeta(symbol=symbol)
         
-        self._delay_all = DelayMeta()
+        self._delay_all = DelayMeta(symbol="main")
         
     
     def start(self):

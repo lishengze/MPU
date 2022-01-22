@@ -58,6 +58,7 @@ message KlineData
     Decimal px_close = 7;
     Decimal volume = 8;
     uint32  resolution = 9;
+    uint64  sequence_no = 10;
 };    
 
 message TradeData
@@ -67,4 +68,5 @@ message TradeData
     Decimal  volume = 3;
     string   symbol = 4;
     string   exchange = 5;
+    uint64   sequence_no = 6;
 };    
