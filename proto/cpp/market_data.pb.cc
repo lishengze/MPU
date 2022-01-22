@@ -194,6 +194,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, px_close_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, volume_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, resolution_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, sequence_no_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -204,6 +205,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, volume_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, symbol_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, exchange_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, sequence_no_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::Proto3::MarketData::Decimal)},
@@ -211,7 +213,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 16, -1, sizeof(::Proto3::MarketData::Depth)},
   { 24, -1, sizeof(::Proto3::MarketData::DepthQuote)},
   { 41, -1, sizeof(::Proto3::MarketData::KlineData)},
-  { 55, -1, sizeof(::Proto3::MarketData::TradeData)},
+  { 56, -1, sizeof(::Proto3::MarketData::TradeData)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -240,18 +242,19 @@ const char descriptor_table_protodef_market_5fdata_2eproto[] PROTOBUF_SECTION_VA
   "(\r\022\026\n\016amount_precise\030\t \001(\r\022\017\n\007is_snap\030\n "
   "\001(\010\022&\n\004asks\030\013 \003(\0132\030.Proto3.MarketData.De"
   "pth\022&\n\004bids\030\014 \003(\0132\030.Proto3.MarketData.De"
-  "pth\"\257\002\n\tKlineData\022\014\n\004time\030\001 \001(\004\022\020\n\010excha"
+  "pth\"\304\002\n\tKlineData\022\014\n\004time\030\001 \001(\004\022\020\n\010excha"
   "nge\030\002 \001(\t\022\016\n\006symbol\030\003 \001(\t\022+\n\007px_open\030\004 \001"
   "(\0132\032.Proto3.MarketData.Decimal\022+\n\007px_hig"
   "h\030\005 \001(\0132\032.Proto3.MarketData.Decimal\022*\n\006p"
   "x_low\030\006 \001(\0132\032.Proto3.MarketData.Decimal\022"
   ",\n\010px_close\030\007 \001(\0132\032.Proto3.MarketData.De"
   "cimal\022*\n\006volume\030\010 \001(\0132\032.Proto3.MarketDat"
-  "a.Decimal\022\022\n\nresolution\030\t \001(\r\"\222\001\n\tTradeD"
-  "ata\022\014\n\004time\030\001 \001(\004\022)\n\005price\030\002 \001(\0132\032.Proto"
-  "3.MarketData.Decimal\022*\n\006volume\030\003 \001(\0132\032.P"
-  "roto3.MarketData.Decimal\022\016\n\006symbol\030\004 \001(\t"
-  "\022\020\n\010exchange\030\005 \001(\tb\006proto3"
+  "a.Decimal\022\022\n\nresolution\030\t \001(\r\022\023\n\013sequenc"
+  "e_no\030\n \001(\004\"\247\001\n\tTradeData\022\014\n\004time\030\001 \001(\004\022)"
+  "\n\005price\030\002 \001(\0132\032.Proto3.MarketData.Decima"
+  "l\022*\n\006volume\030\003 \001(\0132\032.Proto3.MarketData.De"
+  "cimal\022\016\n\006symbol\030\004 \001(\t\022\020\n\010exchange\030\005 \001(\t\022"
+  "\023\n\013sequence_no\030\006 \001(\004b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_market_5fdata_2eproto_deps[1] = {
 };
@@ -265,7 +268,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mar
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_market_5fdata_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_market_5fdata_2eproto = {
-  false, false, descriptor_table_protodef_market_5fdata_2eproto, "market_data.proto", 1106,
+  false, false, descriptor_table_protodef_market_5fdata_2eproto, "market_data.proto", 1148,
   &descriptor_table_market_5fdata_2eproto_once, descriptor_table_market_5fdata_2eproto_sccs, descriptor_table_market_5fdata_2eproto_deps, 6, 0,
   schemas, file_default_instances, TableStruct_market_5fdata_2eproto::offsets,
   file_level_metadata_market_5fdata_2eproto, 6, file_level_enum_descriptors_market_5fdata_2eproto, file_level_service_descriptors_market_5fdata_2eproto,
@@ -1606,6 +1609,13 @@ const char* KlineData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
+      // uint64 sequence_no = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+          sequence_no_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
@@ -1706,6 +1716,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(9, this->_internal_resolution(), target);
   }
 
+  // uint64 sequence_no = 10;
+  if (this->sequence_no() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(10, this->_internal_sequence_no(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1778,6 +1794,13 @@ size_t KlineData::ByteSizeLong() const {
         this->_internal_time());
   }
 
+  // uint64 sequence_no = 10;
+  if (this->sequence_no() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_sequence_no());
+  }
+
   // uint32 resolution = 9;
   if (this->resolution() != 0) {
     total_size += 1 +
@@ -1839,6 +1862,9 @@ void KlineData::MergeFrom(const KlineData& from) {
   }
   if (from.time() != 0) {
     _internal_set_time(from._internal_time());
+  }
+  if (from.sequence_no() != 0) {
+    _internal_set_sequence_no(from._internal_sequence_no());
   }
   if (from.resolution() != 0) {
     _internal_set_resolution(from._internal_resolution());
@@ -1932,7 +1958,9 @@ TradeData::TradeData(const TradeData& from)
   } else {
     volume_ = nullptr;
   }
-  time_ = from.time_;
+  ::memcpy(&time_, &from.time_,
+    static_cast<size_t>(reinterpret_cast<char*>(&sequence_no_) -
+    reinterpret_cast<char*>(&time_)) + sizeof(sequence_no_));
   // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.TradeData)
 }
 
@@ -1941,8 +1969,8 @@ void TradeData::SharedCtor() {
   symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&price_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&time_) -
-      reinterpret_cast<char*>(&price_)) + sizeof(time_));
+      reinterpret_cast<char*>(&sequence_no_) -
+      reinterpret_cast<char*>(&price_)) + sizeof(sequence_no_));
 }
 
 TradeData::~TradeData() {
@@ -1990,7 +2018,9 @@ void TradeData::Clear() {
     delete volume_;
   }
   volume_ = nullptr;
-  time_ = PROTOBUF_ULONGLONG(0);
+  ::memset(&time_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&sequence_no_) -
+      reinterpret_cast<char*>(&time_)) + sizeof(sequence_no_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2038,6 +2068,13 @@ const char* TradeData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           auto str = _internal_mutable_exchange();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.TradeData.exchange"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint64 sequence_no = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          sequence_no_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2111,6 +2148,12 @@ failure:
         5, this->_internal_exchange(), target);
   }
 
+  // uint64 sequence_no = 6;
+  if (this->sequence_no() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(6, this->_internal_sequence_no(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2162,6 +2205,13 @@ size_t TradeData::ByteSizeLong() const {
         this->_internal_time());
   }
 
+  // uint64 sequence_no = 6;
+  if (this->sequence_no() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_sequence_no());
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -2208,6 +2258,9 @@ void TradeData::MergeFrom(const TradeData& from) {
   if (from.time() != 0) {
     _internal_set_time(from._internal_time());
   }
+  if (from.sequence_no() != 0) {
+    _internal_set_sequence_no(from._internal_sequence_no());
+  }
 }
 
 void TradeData::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -2234,8 +2287,8 @@ void TradeData::InternalSwap(TradeData* other) {
   symbol_.Swap(&other->symbol_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   exchange_.Swap(&other->exchange_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(TradeData, time_)
-      + sizeof(TradeData::time_)
+      PROTOBUF_FIELD_OFFSET(TradeData, sequence_no_)
+      + sizeof(TradeData::sequence_no_)
       - PROTOBUF_FIELD_OFFSET(TradeData, price_)>(
           reinterpret_cast<char*>(&price_),
           reinterpret_cast<char*>(&other->price_));

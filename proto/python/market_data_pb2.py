@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11market_data.proto\x12\x11Proto3.MarketData\")\n\x07\x44\x65\x63imal\x12\r\n\x05value\x18\x01 \x01(\x04\x12\x0f\n\x07precise\x18\x02 \x01(\r\"\x82\x02\n\x05\x44\x65pth\x12)\n\x05price\x18\x01 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06volume\x18\x02 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12L\n\x13volume_by_exchanges\x18\x03 \x03(\x0b\x32/.Proto3.MarketData.Depth.VolumeByExchangesEntry\x1aT\n\x16VolumeByExchangesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12)\n\x05value\x18\x02 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal:\x02\x38\x01\"\xaa\x02\n\nDepthQuote\x12\x10\n\x08\x65xchange\x18\x01 \x01(\t\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x12\x13\n\x0bsequence_no\x18\x03 \x01(\x04\x12\x13\n\x0borigin_time\x18\x04 \x01(\x04\x12\x13\n\x0b\x61rrive_time\x18\x05 \x01(\x04\x12\x13\n\x0bserver_time\x18\x06 \x01(\x04\x12\x15\n\rprice_precise\x18\x07 \x01(\r\x12\x16\n\x0evolume_precise\x18\x08 \x01(\r\x12\x16\n\x0e\x61mount_precise\x18\t \x01(\r\x12\x0f\n\x07is_snap\x18\n \x01(\x08\x12&\n\x04\x61sks\x18\x0b \x03(\x0b\x32\x18.Proto3.MarketData.Depth\x12&\n\x04\x62ids\x18\x0c \x03(\x0b\x32\x18.Proto3.MarketData.Depth\"\xaf\x02\n\tKlineData\x12\x0c\n\x04time\x18\x01 \x01(\x04\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12+\n\x07px_open\x18\x04 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12+\n\x07px_high\x18\x05 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06px_low\x18\x06 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12,\n\x08px_close\x18\x07 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06volume\x18\x08 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12\x12\n\nresolution\x18\t \x01(\r\"\x92\x01\n\tTradeData\x12\x0c\n\x04time\x18\x01 \x01(\x04\x12)\n\x05price\x18\x02 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06volume\x18\x03 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12\x0e\n\x06symbol\x18\x04 \x01(\t\x12\x10\n\x08\x65xchange\x18\x05 \x01(\tb\x06proto3'
+  serialized_pb=b'\n\x11market_data.proto\x12\x11Proto3.MarketData\")\n\x07\x44\x65\x63imal\x12\r\n\x05value\x18\x01 \x01(\x04\x12\x0f\n\x07precise\x18\x02 \x01(\r\"\x82\x02\n\x05\x44\x65pth\x12)\n\x05price\x18\x01 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06volume\x18\x02 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12L\n\x13volume_by_exchanges\x18\x03 \x03(\x0b\x32/.Proto3.MarketData.Depth.VolumeByExchangesEntry\x1aT\n\x16VolumeByExchangesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12)\n\x05value\x18\x02 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal:\x02\x38\x01\"\xaa\x02\n\nDepthQuote\x12\x10\n\x08\x65xchange\x18\x01 \x01(\t\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x12\x13\n\x0bsequence_no\x18\x03 \x01(\x04\x12\x13\n\x0borigin_time\x18\x04 \x01(\x04\x12\x13\n\x0b\x61rrive_time\x18\x05 \x01(\x04\x12\x13\n\x0bserver_time\x18\x06 \x01(\x04\x12\x15\n\rprice_precise\x18\x07 \x01(\r\x12\x16\n\x0evolume_precise\x18\x08 \x01(\r\x12\x16\n\x0e\x61mount_precise\x18\t \x01(\r\x12\x0f\n\x07is_snap\x18\n \x01(\x08\x12&\n\x04\x61sks\x18\x0b \x03(\x0b\x32\x18.Proto3.MarketData.Depth\x12&\n\x04\x62ids\x18\x0c \x03(\x0b\x32\x18.Proto3.MarketData.Depth\"\xc4\x02\n\tKlineData\x12\x0c\n\x04time\x18\x01 \x01(\x04\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12+\n\x07px_open\x18\x04 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12+\n\x07px_high\x18\x05 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06px_low\x18\x06 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12,\n\x08px_close\x18\x07 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06volume\x18\x08 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12\x12\n\nresolution\x18\t \x01(\r\x12\x13\n\x0bsequence_no\x18\n \x01(\x04\"\xa7\x01\n\tTradeData\x12\x0c\n\x04time\x18\x01 \x01(\x04\x12)\n\x05price\x18\x02 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12*\n\x06volume\x18\x03 \x01(\x0b\x32\x1a.Proto3.MarketData.Decimal\x12\x0e\n\x06symbol\x18\x04 \x01(\t\x12\x10\n\x08\x65xchange\x18\x05 \x01(\t\x12\x13\n\x0bsequence_no\x18\x06 \x01(\x04\x62\x06proto3'
 )
 
 
@@ -328,6 +328,13 @@ _KLINEDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='sequence_no', full_name='Proto3.MarketData.KlineData.sequence_no', index=9,
+      number=10, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -341,7 +348,7 @@ _KLINEDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=646,
-  serialized_end=949,
+  serialized_end=970,
 )
 
 
@@ -388,6 +395,13 @@ _TRADEDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='sequence_no', full_name='Proto3.MarketData.TradeData.sequence_no', index=5,
+      number=6, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -400,8 +414,8 @@ _TRADEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=952,
-  serialized_end=1098,
+  serialized_start=973,
+  serialized_end=1140,
 )
 
 _DEPTH_VOLUMEBYEXCHANGESENTRY.fields_by_name['value'].message_type = _DECIMAL
