@@ -318,13 +318,12 @@ class KafkaServer(NetServer):
             
 class TestKafka:
     def __init__(self, data_type_list:list) -> None:
-        self._server_address = ["127.0.0.1:9117"]
         self._logger = Logger(program_name="")
         
         self._logger = self._logger._logger
         
         self._config = {
-            "server_list": ["127.0.0.1:9117"],
+            "server_list": ["43.154.179.47:9117"],
             "depth_update_count":5
         }
         self._kafka_server = KafkaServer(config = self._config, depth_processor=self, kline_processor=self, trade_processor=self, \
@@ -366,12 +365,13 @@ class TestKafka:
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
+            self.check_seq(trade_data.sequence_no)
             print(trade_data.meta_str())
         except Exception as e:
             self._logger.warning(traceback.format_exc())                        
             
 def test_kafka():
-    data_type_list = [DATA_TYPE.DEPTH] 
+    data_type_list = [DATA_TYPE.TRADE] 
     kafka_obj = TestKafka(data_type_list=data_type_list)
     kafka_obj.start()
         
