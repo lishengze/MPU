@@ -172,7 +172,13 @@ class BINANCE(ExchangeBase):
             self._timer.start()
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-            
+    
+    # @abstractmethod
+    def start_exchange_moka(self):
+        print("start_exchange_moka")
+        pass
+    
+    # @abstractmethod
     def get_ping_sub_info(self):
         try:
             sub_info = {'op': 'pong'}  
@@ -204,6 +210,7 @@ class BINANCE(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
+    # @abstractmethod
     def _process_depth(self, symbol, msg):
         try:
             '''
@@ -244,7 +251,7 @@ class BINANCE(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
-
+    # @abstractmethod
     def _process_trades(self, ws_json):
         try:
             '''

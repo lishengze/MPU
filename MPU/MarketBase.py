@@ -204,6 +204,8 @@ class ExchangeBase(ABC):
             self._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
 
             self._ws = websocket.WebSocketApp(self._ws_url)
+            # self._ws.run_forever(http_proxy_host='127.0.0.1',http_proxy_port=7890)    
+
             self._ws.on_message = self.on_msg
             self._ws.on_error = self.on_error                                    
             self._ws.on_open = self.on_open

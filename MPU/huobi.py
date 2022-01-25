@@ -117,6 +117,7 @@ class HUOBI(ExchangeBase):
         
         return sub_info_str  
 
+    # @abstractmethod
     def subscribe_depth(self):
         try:
             for symbol in self._symbol_dict:
@@ -124,6 +125,7 @@ class HUOBI(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
             
+    # @abstractmethod
     def subscribe_trade(self):
         try:
             for symbol in self._symbol_dict:
@@ -162,6 +164,7 @@ class HUOBI(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
+    # @abstractmethod
     def get_ping_sub_info(self):
         try:
             sub_info = {'op': 'pong'}  
@@ -207,7 +210,12 @@ class HUOBI(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())            
         
+    # @abstractmethod
+    def start_exchange_moka(self):
+        print("start_exchange_moka")
+        pass
 
+    # @abstractmethod
     def _process_depth(self, symbol, ws_json):
         try:
             '''
@@ -229,6 +237,7 @@ class HUOBI(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
+    # @abstractmethod
     def _process_trades(self, ws_json):
         try:
             '''
