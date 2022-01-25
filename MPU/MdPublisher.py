@@ -402,7 +402,7 @@ class Publisher:
             trade_data.volume = SDecimal(qty)
             trade_data.sequence_no = self._trade_seq[symbol]
 
-            # print(trade_data.meta_str())
+            print(trade_data.meta_str())
 
             # self._logger.info(trade_data.meta_str())
                     
