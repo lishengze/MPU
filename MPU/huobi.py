@@ -62,7 +62,7 @@ class HUOBI(ExchangeBase):
         except Exception as e:
             self._logger.warning("[E]__init__: " + str(e))
 
-    def on_open(self):
+    def on_open(self, ws = None):
         try:     
             self._is_connnect = True
             

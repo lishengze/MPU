@@ -269,8 +269,7 @@ class ExchangeBase(ABC):
             self.process_msg(json_data)
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-            
-    
+                
     def decode_msg(self, msg):
         try:
             dic = json.loads(msg)
@@ -278,7 +277,7 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
 
-    def on_open(self, ws = None):
+    def on_open(self, *t_args, **d_args):
         try:
             self._logger.info("\non_open")
             self._is_connnect = True
@@ -293,13 +292,16 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())                
 
-    def on_error(self, ws=None, error=None):
-        if error is not None:
-            self._logger.error(error)
-        else:
-            self._logger.error("on_error")
+    def on_error(self, *t_args, **d_args):
+        self._logger.error("on_error")
 
-    def on_close(self, ws=None):
+
+        # if error is not None:
+        #     self._logger.error(error)
+        # else:
+        #     self._logger.error("on_error")
+
+    def on_close(self, *t_args, **d_args):
         try:
             self._logger.warning("******* on_close *******\n")
             self._is_connnect = False        
