@@ -141,6 +141,13 @@ class FTX(ExchangeBase):
             
             self._logger.info(str(self._symbol_dict))
 
+            self._publish_count_dict = {
+                "depth":{},
+                "trade":{},
+                "start_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            }
+
         except Exception as e:
             self._logger.warning("[E]__init__: " + str(e))
 
