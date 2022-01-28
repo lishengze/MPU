@@ -188,7 +188,7 @@ class TradeTest:
                     self._logger.info(symbol + ": " + self._delay[symbol].delay_info())
             
             if len(self._delay) > 1:
-                self._logger.info("ALL: " + self._delay_all.delay_info())
+                self._logger.info("ALL: " + self._delay_all.delay_info() + "\n\n")
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                                     
