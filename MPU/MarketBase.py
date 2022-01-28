@@ -146,10 +146,12 @@ class ExchangeBase(ABC):
             
             self._logger.info(str(self._symbol_dict))
             
+            sys_symbol_list = list()
             for item in self._symbol_dict:
                 sys_symbol = self._symbol_dict[item]
                 self._publish_count_dict["depth"][sys_symbol] = 0
                 self._publish_count_dict["trade"][sys_symbol] = 0
+                sys_symbol_list.append(sys_symbol)
                 
             self._logger.info(str(self._publish_count_dict))
                 
@@ -160,6 +162,7 @@ class ExchangeBase(ABC):
             self._publisher = None
             if self._is_test_currency ==False:            
                 self._publisher = Publisher(exchange=self._exchange_name, config=self._config, 
+                                            symbol_list=sys_symbol_list, data_type_list=sub_data_type_list,
                                             net_server_type=net_server_type, debug_mode=debug_mode, 
                                             logger=self._logger)
             

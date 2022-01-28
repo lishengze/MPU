@@ -51,6 +51,8 @@ class KafkaServer(NetServer):
             self._topic_list = []
 
             self._sub_topics = list()
+
+            self._publish_topics = list()
                         
         except Exception as e:
             if self._logger:
@@ -105,8 +107,30 @@ class KafkaServer(NetServer):
                     
             self.subcribe_topics()
         except Exception as e:
-            self._logger.warning(traceback.format_exc())        
-            
+            self._logger.warning(traceback.format_exc())       
+
+    def set_publish_meta(self, symbol_list:list, exchange_list:list, data_type:list):
+        try:
+            for symbol in symbol_list:
+                for exchange in exchange_list:
+                    if DATA_TYPE.DEPTH in data_type:                        
+                        self._publish_topics.append(self._get_depth_topic(symbol, exchange))
+                        
+                    if DATA_TYPE.KLINE in data_type:  
+                        self._publish_topics.append(self._get_kline_topic(symbol, exchange))
+                        
+                    if DATA_TYPE.TRADE in data_type:  
+                        self._publish_topics.append(self._get_trade_topic(symbol, exchange))
+                    
+            print("\n\n self._publish_topics: %s" % (str(self._publish_topics)))
+            self._logger.info("\n\n self._publish_topics: %s" % (str(self._publish_topics))) 
+            self.check_topics(self._publish_topics)
+
+        except Exception as e:
+            self._logger.warning(traceback.format_exc()) 
+
+    
+
     def set_depth_meta(self, symbol_list:list, exchange_list):
         try:
             for symbol in symbol_list:
@@ -211,6 +235,35 @@ class KafkaServer(NetServer):
         except Exception as e:
             self._logger.warning("[E] get_created_topic: \n%s" % (traceback.format_exc()))            
         
+    def check_topics(self, topics):
+        created_topics = self.get_created_topic()
+        wait_for_created_topics = list()
+        for topic in topics:
+            if topic not in created_topics:
+                wait_for_created_topics.append(topic)    
+
+        if len(wait_for_created_topics) > 0:
+            print("\nwait_for_created_topics:  %s" % (str(wait_for_created_topics)))
+            self._logger.info("\nwait_for_created_topics:  %s" % (str(wait_for_created_topics)))
+             
+            self.create_topics(wait_for_created_topics) 
+
+    def create_topics(self, topics):
+        try:
+    
+            self._logger.info("Original TopicList: \n%s" % (str(self.get_created_topic())))
+    
+            topic_list = []
+            for topic in topics:
+                topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=3))
+            self._client.create_topics(new_topics=topic_list, validate_only=False)
+        
+        
+            self._logger.info("After Create Topic %s, TopicList: \n%s" % (str(topic_list), str(self.get_created_topic())))                
+            return self._consumer.topics()
+        except Exception as e:
+            self._logger.warning("[E] create_topic: \n%s" % (traceback.format_exc()))                    
+
     def check_topic(self, topic):
         try:
             if topic in self._topic_list:

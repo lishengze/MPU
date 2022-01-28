@@ -77,13 +77,15 @@ from data_struct import *
 # from package.data_struct import *
 
 class Publisher:
-    def __init__(self, exchange: str, config: dict, net_server_type:NET_SERVER_TYPE, exchange_topic: str = None, debug_mode: bool = False, logger=None):
+    def __init__(self, exchange: str, config: dict, symbol_list:list, data_type_list:list, net_server_type:NET_SERVER_TYPE, exchange_topic: str = None, debug_mode: bool = False, logger=None):
         self.__debug = debug_mode
         self.__crossing_flag = dict()  # {"Symbol": "Date"}
         self._logger = logger
 
         if net_server_type == NET_SERVER_TYPE.KAFKA:
             self._net_server = KafkaServer(config = config, serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
+            self._net_server.set_publish_meta(symbol_list=symbol_list, exchange_list=[exchange], data_type=data_type_list)
+            
         elif net_server_type == NET_SERVER_TYPE.REDIS:
             self._net_server = RedisServer(config = config, depth_processor=self, kline_processor=self, trade_processor=self, \
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
