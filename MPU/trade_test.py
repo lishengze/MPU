@@ -163,6 +163,7 @@ class TradeTest:
         if len(self._delay) == 1:
             return
 
+        self._delay_all._cnt = 0
         sum_time = 0
         for symbol in self._delay:
 
