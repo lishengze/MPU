@@ -183,7 +183,8 @@ class TradeTest:
         try:
             # if len(self._delay) < 15:
             for symbol in self._delay:
-                self._logger.info(symbol + ": " + self._delay[symbol].delay_info())
+                if self._delay[symbol]._cnt > 0:
+                    self._logger.info(symbol + ": " + self._delay[symbol].delay_info())
             
             if len(self._delay) > 1:
                 self._logger.info("ALL: " + self._delay_all.delay_info())
@@ -208,7 +209,7 @@ class TradeTest:
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
-            print(trade_data.meta_str())            
+            # print(trade_data.meta_str())            
             cur_time = get_utc_nano_time()
             
             if trade_data.symbol in self._delay:                            
