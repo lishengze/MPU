@@ -234,17 +234,25 @@ class KafkaServer(NetServer):
             self._logger.warning("[E] get_created_topic: \n%s" % (traceback.format_exc()))            
         
     def check_topics(self, topics):
-        created_topics = self.get_created_topic()
-        wait_for_created_topics = list()
-        for topic in topics:
-            if topic not in created_topics:
-                wait_for_created_topics.append(topic)    
+        try:
+            created_topics = self.get_created_topic()
 
-        if len(wait_for_created_topics) > 0:
-            print("\nwait_for_created_topics:  %s" % (str(wait_for_created_topics)))
-            self._logger.info("\nwait_for_created_topics:  %s" % (str(wait_for_created_topics)))
-             
-            self.create_topics(wait_for_created_topics) 
+            self._logger.info("created_topics: %s" % (str(created_topics)))
+            wait_for_created_topics = list()
+            for topic in topics:
+                if topic not in created_topics:
+                    wait_for_created_topics.append(topic)    
+
+            if len(wait_for_created_topics) > 0:
+                print("\nwait_for_created_topics:  %s" % (str(wait_for_created_topics)))
+                self._logger.info("\nwait_for_created_topics:  %s" % (str(wait_for_created_topics)))
+                
+                self.create_topics(wait_for_created_topics) 
+
+            else:
+                self._logger.info("Topics: %s are all created!" % (str(topics)))
+        except Exception as e:
+            self._logger.warning("[E] create_topic: \n%s" % (traceback.format_exc()))              
 
     def create_topics(self, topics):
         try:
