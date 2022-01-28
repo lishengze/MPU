@@ -348,7 +348,7 @@ def test_get_ori_sys_config():
     print(get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX"))
     
 def test_ftx():
-    data_list = [DATA_TYPE.DEPTH, DATA_TYPE.TRADE]    
+    data_list = [DATA_TYPE.TRADE]    
 
     if SYS_CONFIG["net_server"] == "redis":
         net_type = NET_SERVER_TYPE.REDIS
