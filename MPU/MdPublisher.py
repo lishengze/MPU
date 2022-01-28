@@ -85,7 +85,7 @@ class Publisher:
         if net_server_type == NET_SERVER_TYPE.KAFKA:
             self._net_server = KafkaServer(config = config, serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
             self._net_server.set_publish_meta(symbol_list=symbol_list, exchange_list=[exchange], data_type=data_type_list)
-            
+
         elif net_server_type == NET_SERVER_TYPE.REDIS:
             self._net_server = RedisServer(config = config, depth_processor=self, kline_processor=self, trade_processor=self, \
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
@@ -103,7 +103,7 @@ class Publisher:
 
         self._trade_seq = defaultdict(int)
         
-        # print("create publisher for " + self._exchange)
+        print("\ncreate publisher for " + self._exchange)
 
     def _is_depth_invalid(self, depth):
         try:

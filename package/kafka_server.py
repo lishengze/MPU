@@ -129,8 +129,6 @@ class KafkaServer(NetServer):
         except Exception as e:
             self._logger.warning(traceback.format_exc()) 
 
-    
-
     def set_depth_meta(self, symbol_list:list, exchange_list):
         try:
             for symbol in symbol_list:
