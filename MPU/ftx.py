@@ -231,6 +231,24 @@ class FTX(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())      
 
+    def process_subscribed_msg(self, ws_json):
+        if 'market' in ws_json:
+            self._write_successful_currency(ws_json["market"])
+        else:
+            return
+
+        if ws_json["channel"] == "trades":
+            exchange_symbol = ws_json["market"]
+            if exchange_symbol in self._symbol_dict:
+                sys_symbol = self._symbol_dict[exchange_symbol]
+                self._publish_count_dict["trade"][sys_symbol] = 0
+
+        if ws_json["channel"] == "orderbook":
+            exchange_symbol = ws_json["market"]
+            if exchange_symbol in self._symbol_dict:
+                sys_symbol = self._symbol_dict[exchange_symbol]
+                self._publish_count_dict["depth"][sys_symbol] = 0
+
     def process_msg(self, ws_msg):
         try:
             if ws_msg["type"] == 'error':
@@ -240,12 +258,9 @@ class FTX(ExchangeBase):
             if  ws_msg["type"] == "pong":
                 return
             
-            # self._logger.info(str(ws_msg))
-            
             if  ws_msg["type"] == "subscribed":
                 self._logger.info(str(ws_msg))
-                if 'market' in ws_msg:
-                    self._write_successful_currency(ws_msg["market"])
+                self.process_subscribed_msg(ws_msg)
                 return
                 
             if ws_msg["type"] == "error" and ws_msg["code"] == 404:

@@ -137,6 +137,12 @@ class ExchangeBase(ABC):
             
             self._is_connnect = False
             self._ws = None
+
+            
+            self._logger.info(str(self._symbol_dict))
+            
+            sys_symbol_list = list()
+
             self._publish_count_dict = {
                 "depth":{},
                 "trade":{},
@@ -144,9 +150,6 @@ class ExchangeBase(ABC):
                 "end_time":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             }
             
-            self._logger.info(str(self._symbol_dict))
-            
-            sys_symbol_list = list()
             for item in self._symbol_dict:
                 sys_symbol = self._symbol_dict[item]
                 self._publish_count_dict["depth"][sys_symbol] = 0
