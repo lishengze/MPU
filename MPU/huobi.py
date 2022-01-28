@@ -276,7 +276,9 @@ class HUOBI(ExchangeBase):
               
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-            
+
+    def _process_ping(self, ws_json):
+        pass     
             
 
 def huobi_start():
