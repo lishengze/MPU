@@ -269,6 +269,8 @@ class ExchangeBase(ABC):
             else:
                 self._logger.warning("ws message are all None")
                 return
+
+            print(json_data)
             self.process_msg(json_data)
         except Exception as e:
             self._logger.warning(traceback.format_exc())
