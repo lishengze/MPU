@@ -43,6 +43,12 @@ class DelayMeta:
         self._lost_list = list()
         self._unsort_list = list()
 
+    def reset_update_time(self):
+        self._max = -1
+        self._min = -1
+        self._ave = 0
+        self._cnt = 0           
+
     def update_delta_time(self, new_value):
         new_value = new_value/1000000
 
@@ -125,7 +131,12 @@ class TradeTest:
             self._delay[symbol] = DelayMeta(symbol=symbol)
         
         self._delay_all = DelayMeta(symbol="main")
-        
+    
+    def reset_all(self):
+        for symbol in self._delay:
+            self._delay[symbol].reset_update_time()
+
+        self._delay_all.reset_update_time()                     
     
     def start(self):
         self._net_server.start_listen_data()
@@ -152,6 +163,7 @@ class TradeTest:
         try:
             self.statistic_all()
             self.print_publish_info()
+            self.reset_all()
 
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
             self._timer.start()
@@ -171,7 +183,7 @@ class TradeTest:
                 self._delay_all._max = self._delay[symbol]._max
 
             if self._delay_all._min == -1 or self._delay_all._min > self._delay[symbol]._min:
-                self._delay_all._min = self._delay[symbol]._min
+                self._delay_all._min = self._delay[symbol]._min            
             
             sum_time += self._delay[symbol]._ave * self._delay[symbol]._cnt
         

@@ -43,6 +43,12 @@ class DelayMeta:
         self._lost_list = list()
         self._unsort_list = list()
 
+    def reset_update_time(self):
+        self._max = -1
+        self._min = -1
+        self._ave = 0
+        self._cnt = 0        
+
     def update_delta_time(self, new_value):
         new_value = new_value/1000000
 
@@ -161,18 +167,20 @@ class DelayClass:
 
         sum_time = 0
         for symbol in self._delay:
-
             if self._delay_all._max == -1 or self._delay_all._max < self._delay[symbol]._max:
                 self._delay_all._max = self._delay[symbol]._max
 
             if self._delay_all._min == -1 or self._delay_all._min > self._delay[symbol]._min:
                 self._delay_all._min = self._delay[symbol]._min
             
+            self._delay[symbol].reset()
+
             sum_time += self._delay[symbol]._ave * self._delay[symbol]._cnt
         
             self._delay_all._cnt +=  self._delay[symbol]._cnt
 
         self._delay_all._ave = sum_time / self._delay_all._cnt   
+        self._delay_all.reset()
             
     def print_publish_info(self):
         try:
