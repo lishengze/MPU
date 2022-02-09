@@ -187,8 +187,8 @@ class HUOBI(ExchangeBase):
             if 'ping' in ws_json:
                 return
             
-            self._check_failed_symbol(ws_json)
-            self._check_success_symbol(ws_json)
+            # self._check_failed_symbol(ws_json)
+            # self._check_success_symbol(ws_json)
             
             if 'ch' in ws_json:
                 if 'trade' in ws_json['ch']:
