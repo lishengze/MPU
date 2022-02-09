@@ -179,6 +179,9 @@ class TradeTest:
         sum_time = 0
         for symbol in self._delay:
 
+            if self._delay[symbol]._cnt <= 0:
+                continue
+
             if self._delay_all._max == -1 or self._delay_all._max < self._delay[symbol]._max:
                 self._delay_all._max = self._delay[symbol]._max
 
@@ -199,7 +202,7 @@ class TradeTest:
                 if self._delay[symbol]._cnt > 0:
                     self._logger.info(symbol + ": " + self._delay[symbol].delay_info())
             
-            if len(self._delay) > 1:
+            if self._delay_all._cnt > 0:
                 self._logger.info("ALL: " + self._delay_all.delay_info() + "\n\n")
         except Exception as e:
             self._logger.warning(traceback.format_exc())
