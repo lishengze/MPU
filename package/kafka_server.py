@@ -218,7 +218,7 @@ class KafkaServer(NetServer):
             self._logger.info("Original TopicList: \n%s" % (str(self.get_created_topic())))
     
             topic_list = []
-            topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=3))
+            topic_list.append(NewTopic(name=topic, num_partitions=1, replication_factor=1))
             self._client.create_topics(new_topics=topic_list, validate_only=False)
         
         
@@ -261,7 +261,7 @@ class KafkaServer(NetServer):
     
             topic_list = []
             for topic in topics:
-                topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=3))
+                topic_list.append(NewTopic(name=topic, num_partitions=1, replication_factor=1))
             self._client.create_topics(new_topics=topic_list, validate_only=False)
         
         
