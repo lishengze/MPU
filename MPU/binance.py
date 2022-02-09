@@ -109,8 +109,7 @@ class BINANCE(ExchangeBase):
                                     
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
-                    
-                        
+                                            
     def decode_msg(self, msg):
         try:
             # msg = zlib.decompress(msg, 16 + zlib.MAX_WBITS)
@@ -199,8 +198,8 @@ class BINANCE(ExchangeBase):
             if 'ping' in ws_json:
                 return
             
-            self._check_failed_symbol(ws_json)
-            self._check_success_symbol(ws_json)
+            # self._check_failed_symbol(ws_json)
+            # self._check_success_symbol(ws_json)
             
              
             if 'e' in ws_json and ws_json['e'] == "trade":
@@ -275,11 +274,15 @@ class BINANCE(ExchangeBase):
             price = float(ws_json["p"])
             volume = float(ws_json["q"])
 
+            if sys_symbol not in self._valid_trade_symbol:
+                self._valid_trade_symbol.append(sys_symbol)
+                self._write_successful_currency(sys_symbol)    
+                print(sys_symbol)            
 
-            self._publisher.pub_tradex(symbol=sys_symbol,
-                                        direction=direction,
-                                        exg_time=exg_time_nano,
-                                        px_qty=(price, volume))
+            # self._publisher.pub_tradex(symbol=sys_symbol,
+            #                             direction=direction,
+            #                             exg_time=exg_time_nano,
+            #                             px_qty=(price, volume))
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 

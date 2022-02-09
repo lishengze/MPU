@@ -143,6 +143,9 @@ class ExchangeBase(ABC):
             
             sys_symbol_list = list()
 
+            self._valid_trade_symbol = list()
+            self._valid_depth_symbol = list()
+
             self._publish_count_dict = {
                 "depth":{},
                 "trade":{},
