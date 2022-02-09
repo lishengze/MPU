@@ -124,7 +124,7 @@ class TradeTest:
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
         self._seq_no = -1
-        self._ping_secs = 5
+        self._ping_secs = 15
         self._delay = dict()
         
         for symbol in self._symbol_list:
