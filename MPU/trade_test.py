@@ -43,11 +43,14 @@ class DelayMeta:
         self._lost_list = list()
         self._unsort_list = list()
 
+        self._symbol_cnt = 0
+
     def reset_update_time(self):
         self._max = -1
         self._min = -1
         self._ave = 0
-        self._cnt = 0           
+        self._cnt = 0        
+        self._symbol_cnt = 0   
 
     def update_delta_time(self, new_value):
         new_value = new_value/1000000
@@ -177,6 +180,7 @@ class TradeTest:
 
         self._delay_all._cnt = 0
         sum_time = 0
+        self._delay_all._symbol_cnt = 0
         for symbol in self._delay:
 
             if self._delay[symbol]._cnt <= 0:
@@ -192,6 +196,8 @@ class TradeTest:
         
             self._delay_all._cnt +=  self._delay[symbol]._cnt
 
+            self._delay_all._symbol_cnt += 1
+
         if self._delay_all._cnt > 0:
             self._delay_all._ave = sum_time / self._delay_all._cnt   
             
@@ -203,7 +209,7 @@ class TradeTest:
                     self._logger.info(symbol + ": " + self._delay[symbol].delay_info())
             
             if self._delay_all._cnt > 0:
-                self._logger.info("ALL: " + self._delay_all.delay_info() + "\n\n")
+                self._logger.info("ALL: " + self._delay_all.delay_info() + ", symbol_cnt: " + str(self._delay_all._symbol_cnt) + "\n\n")
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                                     
