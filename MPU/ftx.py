@@ -239,10 +239,10 @@ class FTX(ExchangeBase):
             self._logger.warning(traceback.format_exc())      
 
     def process_subscribed_msg(self, ws_json):
-        if 'market' in ws_json:
-            self._write_successful_currency(ws_json["market"])
-        else:
-            return
+        # if 'market' in ws_json:
+        #     self._write_successful_currency(ws_json["market"])
+        # else:
+        #     return
 
         if ws_json["channel"] == "trades":
             exchange_symbol = ws_json["market"]
@@ -357,7 +357,12 @@ class FTX(ExchangeBase):
             for trade in data_list:
                 side = trade['side']
                 exg_time = trade['time'].replace('T', ' ')[:-6]
-                
+
+                if sys_symbol not in self._valid_trade_symbol:
+                    self._valid_trade_symbol.append(sys_symbol)
+                    self._write_successful_currency(sys_symbol)  
+                    print(sys_symbol)
+
                 if self._publisher is not None:
                     self._publisher.pub_tradex(symbol=sys_symbol,
                                                 direction=side,
