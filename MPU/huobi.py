@@ -167,7 +167,7 @@ class HUOBI(ExchangeBase):
     # @abstractmethod
     def get_ping_sub_info(self):
         try:
-            sub_info = {"action", "pong"}
+            sub_info = {"action": "pong"}
 
             sub_info_str = json.dumps(sub_info)
             
@@ -187,7 +187,7 @@ class HUOBI(ExchangeBase):
         try:
             # print(ws_json)
             
-            self._logger.info(str(ws_json))
+            # self._logger.info(str(ws_json))
             
             if ws_json is None:
                 return
