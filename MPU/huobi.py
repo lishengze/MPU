@@ -167,7 +167,7 @@ class HUOBI(ExchangeBase):
     # @abstractmethod
     def get_ping_sub_info(self):
         try:
-            sub_info = {'op': 'pong'}  
+            sub_info = {"action", "pong"}
 
             sub_info_str = json.dumps(sub_info)
             
@@ -175,6 +175,14 @@ class HUOBI(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())   
                             
+    def send_ping(self):
+        try:
+            self._ws.send(self.get_ping_sub_info())
+            self._logger.info("pong")
+                
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())   
+
     def process_msg(self, ws_json):
         try:
             # print(ws_json)
@@ -185,6 +193,7 @@ class HUOBI(ExchangeBase):
                 return
             
             if 'ping' in ws_json:
+                self.send_ping()
                 return
             
             # self._check_failed_symbol(ws_json)
