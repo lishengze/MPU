@@ -263,6 +263,9 @@ class BINANCE(ExchangeBase):
             if exchange_symbol not in self._symbol_dict:
                 self._logger.warning("unkonw symbol : " + exchange_symbol)  
                 return
+            else:
+                sys_symbol = self._symbol_dict[exchange_symbol]
+                self._publish_count_dict["trade"][sys_symbol] += 1                  
             
             sys_symbol = self._symbol_dict[exchange_symbol]
             exg_time_nano = int(ws_json['E']) * NANO_PER_SECS
