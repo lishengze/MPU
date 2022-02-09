@@ -160,7 +160,7 @@ class BINANCE(ExchangeBase):
 
     def on_timer(self):
         try:
-            return
+            # return
         
             # if self._is_connnect:
             #     self._ws.send(self.get_ping_sub_info())        
