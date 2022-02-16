@@ -363,7 +363,7 @@ class FTX(ExchangeBase):
                     self._write_successful_currency(sys_symbol)  
                     print(sys_symbol)
 
-                if self._publisher is not None:
+                if self._publisher is not None:  
                     self._publisher.pub_tradex(symbol=sys_symbol,
                                                 direction=side,
                                                 exg_time=exg_time,

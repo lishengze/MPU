@@ -190,7 +190,9 @@ class BINANCE(ExchangeBase):
 
     def process_msg(self, ws_json):
         try:
-            # self._logger.info(str(ws_json))
+            if self._is_test_currency:
+                print(ws_json)
+                self._logger.info(str(ws_json))
             
             if ws_json is None:
                 return
@@ -246,7 +248,9 @@ class BINANCE(ExchangeBase):
             # if symbol == "ETH_BTC":
             #     self._logger.Debug("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
 
-            self._publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
+            if self._publisher is not None:
+                self._publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
+                
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
@@ -282,10 +286,11 @@ class BINANCE(ExchangeBase):
                 self._write_successful_currency(sys_symbol)    
                 print(sys_symbol)            
 
-            self._publisher.pub_tradex(symbol=sys_symbol,
-                                        direction=direction,
-                                        exg_time=exg_time_nano,
-                                        px_qty=(price, volume))
+            if self._publisher is not None:
+                self._publisher.pub_tradex(symbol=sys_symbol,
+                                            direction=direction,
+                                            exg_time=exg_time_nano,
+                                            px_qty=(price, volume))
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
