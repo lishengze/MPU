@@ -205,7 +205,7 @@ class MiddleConn:
                 self._redis_con.set(channel=get_depth_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger),
                                     message=json.dumps(depth_json))
                 
-                self._redis_con.crossing_snapshot(symbol, depth_json, book)
+                self._redis_con.crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}", message = json.dumps(depth_json))
             
             if update_json:
                 self._redis_con.publish(channel=get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger), 
