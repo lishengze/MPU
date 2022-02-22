@@ -178,7 +178,7 @@ class HUOBI(ExchangeBase):
     def send_ping(self):
         try:
             self._ws.send(self.get_ping_sub_info())
-            self._logger.info("pong")
+            # self._logger.info("pong")
                 
         except Exception as e:
             self._logger.warning(traceback.format_exc())   
