@@ -123,8 +123,15 @@ class FTX(object):
                 self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"                
             else:
                 self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/kafka_config.json"
- 
+                
+
+
+
             self._config = get_config(logger=self._logger, config_file=self._config_name)
+            
+            print(self._config_name)
+            print(self._config)
+                        
             self.__publisher = Publisher(exchange=self.__exchange_name, config=self._config, 
                                          is_redis=is_redis, debug_mode=debug_mode, logger=self._logger._logger)
 

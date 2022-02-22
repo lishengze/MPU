@@ -129,7 +129,6 @@ class KafkaConn:
 class RedisConn:
     def __init__(self, config:dict, logger = None, debug=False):
         self.__debug = debug
-        self._server_list = config["server_list"]
         self.__redis_conn = redis.Redis(host=config["HOST"],
                                         port=config["PORT"],
                                         password=config["PWD"])
@@ -167,6 +166,8 @@ class MiddleConn:
     def __init__(self, config:dict, is_redis = False , logger = None, debug=False):
         self._is_redis = is_redis
         self._logger = logger
+        
+        
 
         if is_redis:
             self._redis_con = RedisConn(config, self._logger, debug)
