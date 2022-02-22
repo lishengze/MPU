@@ -99,7 +99,7 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(object):
-    def __init__(self, debug_mode: bool = True, is_redis:bool = False):
+    def __init__(self, debug_mode: bool = True, is_redis:bool = False, is_test_depth:bool=True):
         try:
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
