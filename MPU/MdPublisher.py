@@ -138,6 +138,7 @@ class RedisConn:
     def publish(self, channel: str, message):
         try:
             if not self.__debug:
+                self._logger.info("Redis publish: " + channel + ", " + message)
                 self.__redis_conn.publish(channel=channel, message=message)
             else:
                 self._logger.info(f"{channel}\n{message}")
@@ -147,6 +148,8 @@ class RedisConn:
     def set(self, channel: str, message):
         try:
             if not self.__debug:  # All value in redis will expire after 2 days
+                
+                self._logger.info("Redis set: " + channel + ", " + message)
                 self.__redis_conn.set(name=channel, value=message, ex=172800)
             else:
                 self._logger.info(f"{channel}\n{message}")
