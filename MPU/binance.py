@@ -352,7 +352,7 @@ class BINANCE(ExchangeBase):
 def binance_start():
     data_list = [DATA_TYPE.TRADE]
     binance = BINANCE(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "BINANCE"), \
-                      sub_data_type_list=data_list, debug_mode=False, is_test_currency=True)
+                      sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
     
     print(binance._ws_url)
     
