@@ -212,6 +212,10 @@ class MiddleConn:
                 # self._redis_con.crossing_snapshot(channel=f"{symbol}.{self.__exchange_topic}", message = json.dumps(depth_json))
             
             if update_json:
+                
+                if symbol == "ETH_USDT":
+                    self._logger.info(get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger) + json.dumps(update_json))
+                                      
                 self._redis_con.publish(channel=get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger), 
                                         message=json.dumps(update_json))
 
@@ -441,6 +445,9 @@ class Publisher:
             depth_json = self._get_depth_json(exg_time, symbol, book)
             
             update_json = self._get_update_json(symbol, depth_update, depth_json["Time"], depth_json["TimeArrive"], revised_ask, revised_bid)
+            
+            if symbol == "ETH_USDT":
+                self._logger.info(str(update_json))
             
             # self._logger.info("\nupdate_json %s " % (json.dumps(update_json)))
             
