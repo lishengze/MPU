@@ -436,37 +436,36 @@ class Publisher:
                 self._logger.warning("%s snapshoot was not stored, can't process update data " % (symbol))
                 return
 
-            if symbol == "ETH_USDT":
-                self._logger.info(0)
                             
             self._update_depth_volume(depth_update, book)
 
-            if symbol == "ETH_USDT":
-                self._logger.info(1)
+            # if symbol == "ETH_USDT":
+            #     self._logger.info(1)
                 
             revised_ask, revised_bid, raise_exception_flag = self._quality_control(book, raise_exception, depth_update)
 
-            if symbol == "ETH_USDT":
-                self._logger.info(3)
+            # if symbol == "ETH_USDT":
+            #     self._logger.info(3)
                 
             self._update_msg_seq(symbol)
 
-            if symbol == "ETH_USDT":
-                self._logger.info(4)
+            # if symbol == "ETH_USDT":
+            #     self._logger.info(4)
                 
             depth_json = self._get_depth_json(exg_time, symbol, book)
             
             update_json = self._get_update_json(symbol, depth_update, depth_json["Time"], depth_json["TimeArrive"], revised_ask, revised_bid)
             
-            if symbol == "ETH_USDT":
-                self._logger.info(str(update_json))
+            # if symbol == "ETH_USDT":
+            #     self._logger.info(str(update_json))
             
             # self._logger.info("\nupdate_json %s " % (json.dumps(update_json)))
             
             self._connector.publish_depth(symbol, book, depth_json, update_json)
             
             if raise_exception_flag:
-                raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
+                # raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
+                self._logger.error(f"Ask/Bid Price Crossing, Symbol: {symbol}")
             
         except Exception as e:
             self._logger.warning("[E] process_depth_snap: \n%s" % (traceback.format_exc()))          
@@ -535,25 +534,15 @@ class Publisher:
         try:
             # self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
             
-            if symbol == "ETH_USDT":
-                self._logger.info(str(depth_update))
-            
             if self._is_depth_invalid(depth_update):
                 self._logger.warning("Invalid Update: " + str(depth_update))
                 return None
-
-            if symbol == "ETH_USDT":
-                self._logger.info('-3')
                                           
             book = self._get_cached_book(symbol, is_snapshot, depth_update)
 
-            if symbol == "ETH_USDT":
-                self._logger.info('-2')
             if is_snapshot: 
                 self.process_depth_snap(symbol, depth_update, book, exg_time)
-            else: 
-                if symbol == "ETH_USDT":
-                    self._logger.info("-1")                
+            else:               
                 self.process_depth_update(symbol, depth_update, book, exg_time, raise_exception)
 
         except Exception as e:
