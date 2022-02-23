@@ -326,6 +326,7 @@ class FTX(object):
             if self._is_test_depth and symbol == self._moka_depth["symbol"]:
                 if self._moka_depth_start == 0:
                     subscribe_type = 'partial'
+                    self._moka_depth_start = 1
                 else:
                     subscribe_type = 'update'
                     
