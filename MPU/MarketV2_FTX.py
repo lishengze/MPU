@@ -99,12 +99,21 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(object):
-    def __init__(self, debug_mode: bool = True, is_redis:bool = False, is_test_depth:bool=True):
+    def __init__(self, debug_mode: bool = True, is_redis:bool = False, is_test_depth=False):
         try:
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
             self._ping_secs = 10
+            # self._symbol_dict = {
+            #     "BTC/USDT":"BTC_USDT",
+            #     "ETH/USDT":"ETH_USDT",
+            #     "BTC/USD":"BTC_USD",
+            #     "ETH/USD":"ETH_USD",
+            #     "USDT/USD":"USDT_USD",
+            #     "ETH/BTC":"ETH_BTC"                        
+            # }
+            
             self._symbol_dict = {
                 "BTC/USDT":"BTC_USDT",
                 "ETH/USDT":"ETH_USDT",
@@ -113,20 +122,24 @@ class FTX(object):
                 "USDT/USD":"USDT_USD",
                 "ETH/BTC":"ETH_BTC"                        
             }
+                        
             self._logger = Logger(program_name="FTX")
             self._error_msg_list = ["", ""]
             self.__exchange_name = "FTX"
             self._is_connnect = False
             self._ws = None
+            self._is_test_depth = is_test_depth
+            
+            if self._is_test_depth:
+                self._moka_depth = get_config(self._logger, "moka_depth.json")
+                self._logger._logger.info("\n----------moka_depth: \n" + str(self._moka_depth))
+                print("\n----------moka_depth: \n" + str(self._moka_depth))
             
             if is_redis:
                 self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"                
             else:
                 self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/kafka_config.json"
                 
-
-
-
             self._config = get_config(logger=self._logger, config_file=self._config_name)
             
             print(self._config_name)
@@ -146,6 +159,7 @@ class FTX(object):
                 sys_symbol = self._symbol_dict[item]
                 self._publish_count_dict["depth"][sys_symbol] = 0
                 self._publish_count_dict["trade"][sys_symbol] = 0
+                
         except Exception as e:
             self._logger._logger.warning("[E]__init__: " + str(e))
 
@@ -307,6 +321,10 @@ class FTX(object):
             subscribe_type = data.get('action', '')
             if subscribe_type not in ['partial', 'update']:
                 return
+            
+            if self._is_test_depth and symbol == self._moka_depth["symbol"]:
+                subscribe_type = 'partial'
+                data = self._moka_depth
 
             depths = {"ASK": {}, "BID": {}}
             for info in data.get('asks', []):
