@@ -138,7 +138,8 @@ class RedisConn:
     def publish(self, channel: str, message):
         try:
             if not self.__debug:
-                # self._logger.info("Redis publish: " + channel + ", " + message)
+                if "ETH_USDT" in channel:
+                    self._logger.info("Redis publish: " + channel + ", " + message)
                 self.__redis_conn.publish(channel=channel, message=message)
             else:
                 self._logger.info(f"{channel}\n{message}")
