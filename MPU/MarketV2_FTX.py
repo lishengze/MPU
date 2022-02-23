@@ -364,7 +364,7 @@ class FTX(object):
             self._logger._logger.warning(str(e))
 
 def test_ftx():
-    ftx_obj = FTX(debug_mode=False, is_redis=True)
+    ftx_obj = FTX(debug_mode=False, is_redis=True, is_test_depth=True)
     ftx_obj.start()
 
 if __name__ == "__main__":
