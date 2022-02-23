@@ -138,8 +138,8 @@ class RedisConn:
     def publish(self, channel: str, message):
         try:
             if not self.__debug:
-                if "ETH_USDT" in channel:
-                    self._logger.info("Redis publish: " + channel + ", " + message)
+                # if "ETH_USDT" in channel:
+                #     self._logger.info("Redis publish: " + channel + ", " + message)
                 self.__redis_conn.publish(channel=channel, message=message)
             else:
                 self._logger.info(f"{channel}\n{message}")
@@ -213,8 +213,8 @@ class MiddleConn:
             
             if update_json:
                 
-                if symbol == "ETH_USDT":
-                    self._logger.info(get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger) + json.dumps(update_json))
+                # if symbol == "ETH_USDT":
+                #     self._logger.info(get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger) + json.dumps(update_json))
                                       
                 self._redis_con.publish(channel=get_depth_update_topic(depth_json["Symbol"], depth_json["Exchange"], self._logger), 
                                         message=json.dumps(update_json))
