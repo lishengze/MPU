@@ -323,7 +323,7 @@ class FTX(object):
                 return
             
             if self._is_test_depth and symbol == self._moka_depth["symbol"]:
-                subscribe_type = 'partial'
+                subscribe_type = 'update'
                 data = self._moka_depth
 
             depths = {"ASK": {}, "BID": {}}
@@ -332,8 +332,8 @@ class FTX(object):
             for info in data.get('bids', []):
                 depths["BID"][float(info[0])] = float(info[1])
 
-            if symbol == "ETH_USDT":
-                self._logger._logger.warning("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
+            # if symbol == "ETH_USDT":
+            #     self._logger._logger.info("%s.%s PUBLISH: %s" % (self.__exchange_name, symbol, str(depths)))
 
             self.__publisher.pub_depthx(symbol=symbol, depth_update=depths, is_snapshot=subscribe_type=='partial')
         except Exception as e:
