@@ -523,6 +523,9 @@ class Publisher:
         try:
             # self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
             
+            if symbol == "ETH_USDT":
+                self._logger.info(str(depth_update))
+            
             if self._is_depth_invalid(depth_update):
                 self._logger.warning("Invalid Update: " + str(depth_update))
                 return None
