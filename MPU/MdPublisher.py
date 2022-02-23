@@ -541,14 +541,19 @@ class Publisher:
             if self._is_depth_invalid(depth_update):
                 self._logger.warning("Invalid Update: " + str(depth_update))
                 return None
-                        
+
+            if symbol == "ETH_USDT":
+                self._logger.info('-3')
+                                          
             book = self._get_cached_book(symbol, is_snapshot, depth_update)
 
+            if symbol == "ETH_USDT":
+                self._logger.info('-2')
             if is_snapshot: 
                 self.process_depth_snap(symbol, depth_update, book, exg_time)
             else: 
                 if symbol == "ETH_USDT":
-                    self._logger.info(-1)                
+                    self._logger.info("-1")                
                 self.process_depth_update(symbol, depth_update, book, exg_time, raise_exception)
 
         except Exception as e:
