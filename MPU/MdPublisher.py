@@ -463,9 +463,9 @@ class Publisher:
             
             self._connector.publish_depth(symbol, book, depth_json, update_json)
             
-            if raise_exception_flag:
-                # raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
-                self._logger.error(f"Ask/Bid Price Crossing, Symbol: {symbol}")
+            # if raise_exception_flag:
+            #     # raise Exception(f"Ask/Bid Price Crossing, Symbol: {symbol}")
+            #     self._logger.error(f"Ask/Bid Price Crossing, Symbol: {symbol}")
             
         except Exception as e:
             self._logger.warning("[E] process_depth_snap: \n%s" % (traceback.format_exc()))          
