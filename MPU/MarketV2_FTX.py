@@ -132,6 +132,7 @@ class FTX(object):
             
             if self._is_test_depth:
                 self._moka_depth = get_config(self._logger, "moka_depth.json")
+                self._moka_depth_start = 0
                 self._logger._logger.info("\n----------moka_depth: \n" + str(self._moka_depth))
                 print("\n----------moka_depth: \n" + str(self._moka_depth))
             
@@ -323,7 +324,11 @@ class FTX(object):
                 return
             
             if self._is_test_depth and symbol == self._moka_depth["symbol"]:
-                subscribe_type = 'update'
+                if self._moka_depth_start == 0:
+                    subscribe_type = 'partial'
+                else:
+                    subscribe_type = 'update'
+                    
                 data = self._moka_depth
 
             depths = {"ASK": {}, "BID": {}}
