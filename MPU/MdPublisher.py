@@ -435,13 +435,25 @@ class Publisher:
             if book is None:
                 self._logger.warning("%s snapshoot was not stored, can't process update data " % (symbol))
                 return
-            
+
+            if symbol == "ETH_USDT":
+                self._logger.info(0)
+                            
             self._update_depth_volume(depth_update, book)
 
+            if symbol == "ETH_USDT":
+                self._logger.info(1)
+                
             revised_ask, revised_bid, raise_exception_flag = self._quality_control(book, raise_exception, depth_update)
 
+            if symbol == "ETH_USDT":
+                self._logger.info(3)
+                
             self._update_msg_seq(symbol)
 
+            if symbol == "ETH_USDT":
+                self._logger.info(4)
+                
             depth_json = self._get_depth_json(exg_time, symbol, book)
             
             update_json = self._get_update_json(symbol, depth_update, depth_json["Time"], depth_json["TimeArrive"], revised_ask, revised_bid)
@@ -535,6 +547,8 @@ class Publisher:
             if is_snapshot: 
                 self.process_depth_snap(symbol, depth_update, book, exg_time)
             else: 
+                if symbol == "ETH_USDT":
+                    self._logger.info(-1)                
                 self.process_depth_update(symbol, depth_update, book, exg_time, raise_exception)
 
         except Exception as e:
