@@ -624,7 +624,7 @@ class Publisher:
                         "LastPx": px,
                         "Qty": qty}
             
-            # self._connector.publish_trade(trade_json)
+            self._connector.publish_trade(trade_json)
             
         except Exception as e:
             self._logger.warning("[E] pub_tradex: ")
