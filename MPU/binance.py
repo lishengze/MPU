@@ -36,6 +36,9 @@ sys.path.append(get_package_dir())
 from tool import *
 from Logger import *
 
+print(os.getcwd() + get_dir_seprator() + "sys_config.json")
+
+SYS_CONFIG = get_config(config_file = (os.getcwd() + get_dir_seprator() + "sys_config.json"))
 class BINANCE(ExchangeBase):    
     def __init__(self, symbol_dict:dict, sub_data_type_list:list, \
                 net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
@@ -352,13 +355,9 @@ class BINANCE(ExchangeBase):
 def binance_start():
     data_list = [DATA_TYPE.TRADE]
     binance = BINANCE(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "BINANCE"), \
-                      sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
-    
+                      sub_data_type_list=data_list, debug_mode=False, is_test_currency=SYS_CONFIG["is_test_currency"])    
     print(binance._ws_url)
-    
-    binance.start()
-    
-    
+    binance.start()    
     # binance.test_sub_info()
         
 if __name__ == '__main__':

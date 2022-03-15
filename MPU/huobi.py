@@ -35,6 +35,11 @@ sys.path.append(get_package_dir())
 from tool import *
 
 sys.path.append(os.getcwd())
+
+print(os.getcwd() + get_dir_seprator() + "sys_config.json")
+
+SYS_CONFIG = get_config(config_file = (os.getcwd() + get_dir_seprator() + "sys_config.json"))
+
 from Logger import *
 class HUOBI(ExchangeBase):    
     def __init__(self, symbol_dict:dict, sub_data_type_list:list, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
@@ -301,7 +306,7 @@ class HUOBI(ExchangeBase):
 def huobi_start():
     data_list = [DATA_TYPE.TRADE]
     huobi = HUOBI(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "HUOBI"), \
-                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
+                  sub_data_type_list=data_list, debug_mode=False, is_test_currency=SYS_CONFIG["is_test_currency"])
     huobi.start()
         
 if __name__ == '__main__':

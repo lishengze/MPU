@@ -390,7 +390,7 @@ def test_ftx():
     else:
         symbol_dict = get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX")
         ftx_obj = FTX(symbol_dict=symbol_dict,net_server_type=net_type ,\
-                    sub_data_type_list=data_list, debug_mode=False, is_test_currency=False)
+                    sub_data_type_list=data_list, debug_mode=False, is_test_currency=SYS_CONFIG["is_test_currency"])
                 
     ftx_obj.start()
 
