@@ -100,7 +100,16 @@ def trans_sys_symbol_ftx(sys_symbol):
         else:
             return sys_symbol.replace("_", "/")
     except Exception as e:
-        print(traceback.format_exc())        
+        print(traceback.format_exc())   
+        
+def trans_sys_symbol_okex(sys_symbol):
+    try:
+        if sys_symbol.find("_") == -1:
+            return ""
+        else:
+            return sys_symbol.replace("_", "-")
+    except Exception as e:
+        print(traceback.format_exc())                
 
 def trans_sys_symbol(sys_symbol:str, exchange:str):
     try:
@@ -111,7 +120,9 @@ def trans_sys_symbol(sys_symbol:str, exchange:str):
         elif exchange == "BINANCE":
             return trans_sys_symbol_binance(sys_symbol)     
         elif exchange == "B2C2":
-            return trans_sys_symbol_b2c2(sys_symbol)                
+            return trans_sys_symbol_b2c2(sys_symbol)    
+        elif exchange == "OKEX":
+            return trans_sys_symbol_okex(sys_symbol)           
     except Exception as e:
         print(traceback.format_exc())        
         
