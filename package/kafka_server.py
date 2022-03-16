@@ -402,6 +402,8 @@ class TestKafka:
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
         self._seq_no = -1
+        
+        self._trade_symbol_list = []
     
     def start(self):
         self._kafka_server.start_listen_data()
@@ -434,7 +436,12 @@ class TestKafka:
         try:            
             # self.check_seq(trade_data.sequence_no)
             self._logger.info(trade_data.meta_str())
-            print(trade_data.meta_str())
+            
+            if trade_data.symbol not in self._trade_symbol_list:
+                print(trade_data.meta_str())
+                self._trade_symbol_list.append(trade_data.symbol)
+            
+            
         except Exception as e:
             self._logger.warning(traceback.format_exc())                        
             
