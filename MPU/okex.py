@@ -1,6 +1,6 @@
 import asyncio
 import json
-import aiohttp
+# import aiohttp
 import sys
 import hashlib
 import base64
@@ -12,7 +12,29 @@ from datetime import datetime
 import time
 import zlib
 import threading
-from settings import REDIS_CONFIG
+from MarketBase import ExchangeBase
+
+def get_grandfather_dir():
+    parent = os.path.dirname(os.path.realpath(__file__))
+    garder = os.path.dirname(parent)    
+    return garder
+
+def get_package_dir():
+    garder = get_grandfather_dir()
+    if garder.find('\\') != -1:
+        return garder + "\package"
+    else:
+        return garder + "/package"
+
+print(get_package_dir())
+sys.path.append(get_package_dir())
+
+from tool import *
+from Logger import *
+
+print(os.getcwd() + get_dir_seprator() + "sys_config.json")
+
+SYS_CONFIG = get_config(config_file = (os.getcwd() + get_dir_seprator() + "sys_config.json"))
 
 class OKEX(ExchangeBase):    
     def __init__(self, symbol_dict:dict, sub_data_type_list:list, \
@@ -86,8 +108,8 @@ class OKEX(ExchangeBase):
              
     def on_msg(self, ws = None, message=None):
         try:
-            print(ws)
-            print(message)
+            # print("ws: " + str(ws))
+            # print("message: " + str(message))
             
             if (ws != None and message != None) or (ws == None and message != None):
                 json_data = self.decode_msg(message)
@@ -98,7 +120,7 @@ class OKEX(ExchangeBase):
                 self._logger.warning("ws message are all None")
                 return
 
-            # print(json_data)
+            # print(str(json_data))
             self.process_msg(json_data)
         except Exception as e:
             self._logger.warning(traceback.format_exc())
@@ -106,8 +128,10 @@ class OKEX(ExchangeBase):
     def decode_msg(self, ori_msg):
         try:
             decompress = zlib.decompressobj(-zlib.MAX_WBITS)
-            inflated = decompress.decompress(ori_msg.data)
+            inflated = decompress.decompress(ori_msg)
+            # print(inflated)
             inflated += decompress.flush()
+            # print(inflated)
             msg = json.loads(inflated)             
             return msg       
         except Exception as e:
@@ -170,11 +194,7 @@ class OKEX(ExchangeBase):
                 self._logger.info(str(ws_json))
             
             if ws_json is None:
-                return
-                        
-            # self._check_failed_symbol(ws_json)
-            # self._check_success_symbol(ws_json)
-            
+                return            
              
             if 'table' in ws_json and ws_json['table'] == "spot/trade":
                 self._process_trades(ws_json)
@@ -279,6 +299,8 @@ class OKEX(ExchangeBase):
                             "args":['spot/trade:'+symbol]
                             }
                 sub_info_str = json.dumps(ws_json)
+                
+                self._logger.info(sub_info_str)
                 
                 self._sub_item_dict[str(self._sub_id)] = symbol
                 
