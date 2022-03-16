@@ -290,11 +290,12 @@ class HUOBI(ExchangeBase):
                     self._valid_trade_symbol.append(sys_symbol)
                     self._write_successful_currency(sys_symbol)  
                     print(sys_symbol)
-
-                self._publisher.pub_tradex(symbol=sys_symbol,
-                                            direction=direction,
-                                            exg_time=exg_time_nano,
-                                            px_qty=(price, volume))
+                    
+                if self._publisher is not None:
+                    self._publisher.pub_tradex(symbol=sys_symbol,
+                                                direction=direction,
+                                                exg_time=exg_time_nano,
+                                                px_qty=(price, volume))
               
         except Exception as e:
             self._logger.warning(traceback.format_exc())
