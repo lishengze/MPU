@@ -383,7 +383,7 @@ class TestKafka:
         self._logger = self._logger._logger
         
         self._config = {
-            "server_list": ["152.32.254.76:9117"],
+            "server_list": ["127.0.0.1:9117"],
             "depth_update_count":5
         }
         self._kafka_server = KafkaServer(config = self._config, depth_processor=self, kline_processor=self, trade_processor=self, \
@@ -438,9 +438,10 @@ class TestKafka:
             self._logger.info(trade_data.meta_str())
             
             if trade_data.symbol not in self._trade_symbol_list:
-                print(trade_data.meta_str())
+                # print(trade_data.meta_str())
                 self._trade_symbol_list.append(trade_data.symbol)
             
+            print(trade_data.meta_str())
             
         except Exception as e:
             self._logger.warning(traceback.format_exc())                        
