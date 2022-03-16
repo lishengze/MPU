@@ -49,7 +49,7 @@ class OKEX(ExchangeBase):
                       
             # self._ws_url = "wss://stream.binance.com:9443/ws/btcusdt@trade"
             
-            self._ws_url = "wss://real.okex.com:8443/ws/v3"
+            self._ws_url = "wss://ws.okx.com:8443/ws/v5/public"
             
             # self._ws_url = "wss://stream.binance.com:9443/stream?streams=btcusdt@trade/btcusdt@depth"
             
@@ -127,12 +127,13 @@ class OKEX(ExchangeBase):
                                                         
     def decode_msg(self, ori_msg):
         try:
-            decompress = zlib.decompressobj(-zlib.MAX_WBITS)
-            inflated = decompress.decompress(ori_msg)
-            # print(inflated)
-            inflated += decompress.flush()
-            # print(inflated)
-            msg = json.loads(inflated)             
+            # decompress = zlib.decompressobj(-zlib.MAX_WBITS)
+            # inflated = decompress.decompress(ori_msg)
+            # # print(inflated)
+            # inflated += decompress.flush()
+            # # print(inflated)
+            
+            msg = json.loads(ori_msg)             
             return msg       
         except Exception as e:
             self._logger.warning(traceback.format_exc())      
@@ -195,11 +196,10 @@ class OKEX(ExchangeBase):
             
             if ws_json is None:
                 return            
-             
-            if 'table' in ws_json and ws_json['table'] == "spot/trade":
-                self._process_trades(ws_json)
-            else:
-                pass                        
+            
+            if 'data' in ws_json:           
+                self._process_trades(ws_json['data'])
+                                      
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
@@ -246,26 +246,22 @@ class OKEX(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
-    # @abstractmethod
+        # @abstractmethod
     def _process_trades(self, ws_json):
         try:
             '''
-            {'e': 'trade', 'E': 1641358340779, 's': 'RAYUSDT', 
-                't': 13419274, 'p': '6.60300000', 'q': '6.70000000', 
-                'b': 125864405, 'a': 125864543, 'T': 1641358340773, 'm': True, 'M': True}
-
+            {'arg': {'channel': 'trades', 'instId': 'PST-USDT'}, 
+            'data': [{'instId': 'PST-USDT', 'tradeId': '8956124', 'px': '0.01887', 'sz': '453.260975', 'side': 'buy', 'ts': '1647410894164'}]}
             '''
-            
             for data in ws_json:
                 if data["side"] == "buy":
                     direction = "Buy"
                 else:
                     direction = "Sell"       
                     
-                price = float(data["price"])
-                volume = float(data["size"])                      
+                    
                            
-                exchange_symbol = data["instrument_id"]
+                exchange_symbol = data["instId"]
                 if exchange_symbol not in self._symbol_dict:
                     self._logger.warning("unkonw symbol : " + exchange_symbol)  
                     return
@@ -280,6 +276,9 @@ class OKEX(ExchangeBase):
                     self._write_successful_currency(sys_symbol)    
                     print(sys_symbol)            
 
+                price = float(data["px"])
+                volume = float(data["sz"])
+                
                 if self._publisher is not None:
                     self._publisher.pub_tradex(symbol=sys_symbol,
                                                direction=direction,
@@ -291,21 +290,22 @@ class OKEX(ExchangeBase):
     # {"op": "subscribe", "args": [f'spot/trade:{k}' for k, v in symbols.items()]})
     # @abstractmethod
     def subscribe_trade(self):
-        try:            
+        try:    
+            sub_list = []
+                    
             for symbol in self._symbol_dict:
-                self._sub_id += 1
-                ws_json = {
-                            "op": "subscribe", 
-                            "args":['spot/trade:'+symbol]
-                            }
-                sub_info_str = json.dumps(ws_json)
-                
-                self._logger.info(sub_info_str)
-                
+                sub_list.append({"channel": "trades", "instId": symbol})
+                self._sub_id += 1                
                 self._sub_item_dict[str(self._sub_id)] = symbol
                 
-                self._ws.send(sub_info_str)
-                
+            ws_json = {
+                        "op": "subscribe", 
+                        "args": sub_list
+                      }            
+            sub_info_str = json.dumps(ws_json)            
+            self._logger.info(sub_info_str)
+            self._ws.send(sub_info_str)
+                            
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
             
