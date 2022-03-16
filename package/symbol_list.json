@@ -1,7 +1,8 @@
 {
-    "symbol_list_simple":["BTC_USDT", "ETH_USDT", "BTC_USD", "ETH_USD", "USDT_USD", "ETH_BTC"],
+    "symbol_list":["BTC_HUSD", "BUSD_USDT", "PST_USDT", "TUSD_USDT", 
+        "USDC_USDT", "USDK_USDT"],      
     
-    "symbol_list":["USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
+    "symbol_list_all":["USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
         "FTT_USD","HT_USD","ADA_USD","ATOM_USD","AVAX_USD","AXS_USD","BSV_USD","BTT_USD","DOT_USD",
         "EOS_USD","FSN_USD","GLM_USD","GNX_USD","ICP_USD","KSM_USD","LTC_USD","MANA_USD","OKB_USD",
         "PST_USD","QTUM_USD","SOL_USD","SRM_USD","SLP_USD","SXP_USD","TRX_USD","VET_USD","XRP_USD",

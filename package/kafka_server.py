@@ -382,7 +382,7 @@ class TestKafka:
         self._logger = self._logger._logger
         
         self._config = {
-            "server_list": ["43.154.179.47:9117"],
+            "server_list": ["152.32.254.76:9117"],
             "depth_update_count":5
         }
         self._kafka_server = KafkaServer(config = self._config, depth_processor=self, kline_processor=self, trade_processor=self, \
@@ -424,7 +424,8 @@ class TestKafka:
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
-            self.check_seq(trade_data.sequence_no)
+            # self.check_seq(trade_data.sequence_no)
+            self._logger.info(trade_data.meta_str())
             print(trade_data.meta_str())
         except Exception as e:
             self._logger.warning(traceback.format_exc())                        
