@@ -11,6 +11,7 @@ import os
 from datetime import datetime
 import time
 import zlib
+import threading
 from settings import REDIS_CONFIG
 
 class OKEX(ExchangeBase):    
@@ -111,13 +112,6 @@ class OKEX(ExchangeBase):
             return msg       
         except Exception as e:
             self._logger.warning(traceback.format_exc())      
-
-    def set_ws_url(self):
-        self._sub_info_str += self.get_sub_trade_info()
-        if not self._is_test_currency:
-            self._sub_info_str += self.get_sub_order_info()
-        
-        self._ws_url += "/stream?stream=" + self._sub_info_str        
 
     def _check_success_symbol(self, ws_json):
         try:
@@ -274,10 +268,6 @@ class OKEX(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())  
 
-    def test_sub_info(self):
-        sub_string = "/".join([f"{symbol.lower()}@trade/{symbol.lower()}@depth@100ms" for symbol in self._symbol_dict.keys()])
-        print(sub_string)
-
     # {"op": "subscribe", "args": [f'spot/trade:{k}' for k, v in symbols.items()]})
     # @abstractmethod
     def subscribe_trade(self):
@@ -325,6 +315,13 @@ class OKEX(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
  
- 
+def okex_start():
+    data_list = [DATA_TYPE.TRADE]
+    okex = OKEX(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "OKEX"), \
+                      sub_data_type_list=data_list, debug_mode=False, is_test_currency=SYS_CONFIG["is_test_currency"])    
+
+    okex.start() 
+        
 if __name__ == '__main__':
-    a = MarketData_OKEX(debug_mode=False)
+    okex_start()
+ 
