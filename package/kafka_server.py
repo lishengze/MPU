@@ -19,6 +19,7 @@ from kafka import KafkaClient
 from kafka import TopicPartition
 
 from Logger import *
+from tool import *
 
 class KafkaServer(NetServer):
     def __init__(self, config:dict,  depth_processor=None, kline_processor=None, trade_processor=None,serializer_type: SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF,logger=None, debug=False):
@@ -387,9 +388,16 @@ class TestKafka:
         }
         self._kafka_server = KafkaServer(config = self._config, depth_processor=self, kline_processor=self, trade_processor=self, \
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
-        self._symbol_list = ["BTC_USDT"]
+        
+        symbol_list_config = get_config(config_file = (os.getcwd() + get_dir_seprator() + "symbol_list.json"))
+
+        self._symbol_list = symbol_list_config["symbol_list"]
         self._exchange_list = ["FTX"]
         self._data_type_list = data_type_list
+        
+        print(self._symbol_list)
+        print(self._data_type_list)
+        
         self._kafka_server.set_meta(symbol_list=self._symbol_list, \
                                     exchange_list=self._exchange_list, \
                                     data_type=self._data_type_list)
