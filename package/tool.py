@@ -4,6 +4,9 @@ import traceback
 import json
 import os
 
+def get_nano_per_sec():
+    return 1000000000
+
 def get_datetime_str():
     return datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
 

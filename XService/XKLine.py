@@ -1,6 +1,7 @@
 import asyncio
 import json
 import datetime
+from syslog import LOG_INFO
 import redis
 import threading
 import numpy
@@ -15,9 +16,33 @@ from kafka import TopicPartition
 from kafka.admin import KafkaAdminClient, NewTopic
 
 import os
+
+def get_grandfather_dir():
+    parent = os.path.dirname(os.path.realpath(__file__))
+    garder = os.path.dirname(parent)    
+    return garder
+
+def get_package_dir():
+    garder = get_grandfather_dir()
+    if garder.find('\\') != -1:
+        return garder + "\package"
+    else:
+        return garder + "/package"
+
+print(get_package_dir())
+sys.path.append(get_package_dir())
+
+from tool import *
+
 sys.path.append(os.getcwd())
 from Logger import *
 
+from protobuf_serializer import *
+from json_serializer import *
+from data_struct import *
+
+# from package.data_struct import SDecimal, SKlineData
+sys.path.append(os.getcwd())
 
 from pprint import pprint
 
@@ -62,10 +87,17 @@ def to_datetime(s):
     return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f")
 
 class MiddleConnector:
-    def __init__(self, kline_main, config, is_redis = False , logger = None, debug=False):
+    def __init__(self, kline_main, config, is_redis = False , logger = None, debug=False, serializer_type:SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF):
         self._is_redis = is_redis
         self._logger = logger
         self._kline_main = kline_main
+
+        if serializer_type == SERIALIXER_TYPE.PROTOBUF:
+            print("Set PROTOBUF")
+            self._logger.info("Serializer Type is PROTOBUF")
+            self.serializer = ProtoSerializer(logger=self._logger)
+        elif serializer_type == SERIALIXER_TYPE.JSON:
+            self.serializer = 2        
             
     def start_listen_data(self):
         try:            
@@ -93,7 +125,8 @@ class MiddleConnector:
             self._logger.warning("[E] publish_kline: %s" % (traceback.format_exc()))                                
           
 class KafkaConn(MiddleConnector):
-    def __init__(self, kline_main, config:dict, logger = None, debug=False):
+    def __init__(self, kline_main, config:dict, logger = None, debug=False, serializer_type:SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF):
+        super().__init__(kline_main=kline_main, config=config, is_redis=False, logger=logger, serializer_type=serializer_type)
         self._server_list = config["server_list"]
         self._logger = logger
         self._kline_main = kline_main
@@ -177,16 +210,21 @@ class KafkaConn(MiddleConnector):
 
                         # self._logger.info(msg.value)
 
-                        trade_data =  json.loads(msg.value)
-                        symbol = trade_data["Symbol"]
-                        exchange = trade_data["Exchange"]
-                        trade_topic = symbol+ SYMBOL_EXCHANGE_SEPARATOR + exchange
+                        # trade_data =  json.loads(msg.value)
+                        # symbol = trade_data["Symbol"]
+                        # exchange = trade_data["Exchange"]
+
+                        trade_data = self.serializer.decode_trade(msg.value)
+
+                        self._logger.info(trade_data.meta_str())
+
+                        trade_topic = trade_data.symbol + SYMBOL_EXCHANGE_SEPARATOR + trade_data.exchange
                         
                         self._kline_main._update_statistic_info(get_trade_statistic_type(TRADE_TYPE), trade_topic)
                         
-                        self._kline_main.update_kline(trade_topic, to_datetime(trade_data["TimeArrive"]), 
-                                                      float(trade_data["LastPx"]), float(trade_data["Qty"]), 
-                                                      symbol, exchange)
+                        self._kline_main.update_kline(trade_topic, trade_data.time, 
+                                                      trade_data.price.get_value(), trade_data.volume.get_value(), 
+                                                      trade_data.symbol, trade_data.exchange)
 
                 except Exception as e:
                     self._logger.warning(traceback.format_exc())
@@ -201,14 +239,15 @@ class KafkaConn(MiddleConnector):
         except Exception as e:
             self._logger.warning("[E] publish: \n%s" % (traceback.format_exc()))    
 
-    def publish_kline(self, kline_type, symbol, exchange, msg):
+    def publish_kline(self, kline_type, symbol, exchange, kline_data):
         try:            
             topic = kline_type + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR + exchange
+            str_msg = self.serializer.encode_kline(kline_data)
             
-            if symbol == "BTC_USDT":
-                self._logger.info( "\n" + topic + "\n" + msg + "\n") 
+            # if symbol == "BTC_USDT":
+            #     self._logger.info( "\n" + topic + "\n" + msg + "\n") 
                 
-            self.publish(topic, msg)                 
+            self.publish(topic, str_msg)                 
         except Exception as e:
             self._logger.warning("[E] KafkaConn publish_kline: %s" % (traceback.format_exc()))                                
                         
@@ -281,13 +320,13 @@ class KLine:
         except Exception as e:
             self._logger.warning("[E]KLine: " + traceback.format_exc())
 
-    def _update_klines(self, klines, klinetime, price, volume, symbol, exchange, resolution):
+    def _update_klines(self, klines, kline_time, price, volume, symbol, exchange, resolution):
         try:
-            ts = int((klinetime - self.epoch).total_seconds())
+            ts = kline_time
             if len(klines) == 0 or ts > klines[-1][0]:
                 # new kline                
                 
-                kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange, resolution]
+                kline = [ts, price, price, price, price, volume, 1, symbol, exchange, resolution]
                 
                 if symbol == "BTC_USDT":
                     self._logger.info("New Kline" + str(kline))
@@ -296,7 +335,7 @@ class KLine:
                 kline = klines[-1]
                 kline[4] = price
                 kline[5] += volume
-                kline[6] += 1.0
+                kline[6] += 1
                 if price > kline[2]:
                     kline[2] = price
                 if price < kline[3]:
@@ -308,9 +347,18 @@ class KLine:
     def new_trade(self, exg_time: datetime.datetime, price: float, volume: float, symbol:str, exchange:str):
         try:
             # 1min kline
-            wait_secs = float(exg_time.strftime("%S.%f"))
-            tval = exg_time - datetime.timedelta(seconds=wait_secs)
-            self._update_klines(self.klines[kline1_topic], tval, price, volume, symbol, exchange, 60)
+            exg_time_secs = exg_time / get_nano_per_sec();
+
+            kline_time = exg_time_secs - exg_time_secs % 60;
+
+            kline_time_nano = kline_time * get_nano_per_sec()
+            
+            # wait_secs = float(exg_time.strftime("%S.%f"))
+
+
+            # tval = exg_time - datetime.timedelta(seconds=wait_secs)
+
+            self._update_klines(self.klines[kline1_topic], kline_time_nano, price, volume, symbol, exchange, 60)
 
             # 60min kline
             # wait_mins = float(tval.strftime("%M"))
@@ -328,7 +376,7 @@ class KLine:
             self._logger.warning("[E]recover_kline: " + traceback.format_exc())
               
 class KLineSvc:
-    def __init__(self, slow_period: int = 60, running_mode: str = "DEBUG", is_redis:bool = False, is_debug:bool = False):
+    def __init__(self, slow_period: int = 60, running_mode: str = "DEBUG", is_redis:bool = False, is_debug:bool = False, serializer_type:SERIALIXER_TYPE = SERIALIXER_TYPE.PROTOBUF):
         try:
             self.logger = Logger(program_name="")
             self._logger = self.logger._logger
@@ -358,9 +406,9 @@ class KLineSvc:
             self._config = get_config(logger=self._logger, config_file=self._config_name)
             
             if is_redis:
-                self._connector = RedisConn(self, self._config, self._logger, self._is_debug)
+                self._connector = RedisConn(self, self._config, self._logger, self._is_debug, serializer_type=serializer_type)
             else:
-                self._connector = KafkaConn(self, self._config, self._logger, self._is_debug)
+                self._connector = KafkaConn(self, self._config, self._logger, self._is_debug, serializer_type=serializer_type)
                                
             self._connector.start_listen_data()
             self.__loop = asyncio.get_event_loop()
@@ -425,9 +473,6 @@ class KLineSvc:
         except Exception as e:
             self._logger.warning("[E]get_kline_atom: " + traceback.format_exc())   
             
-                    
-                            
-        
     async def _log_updater(self):
         try:
             while True:
@@ -456,10 +501,26 @@ class KLineSvc:
                         symbol = topic_atom_list[0]
                         exchange = topic_atom_list[1]
                         
+                        # kline = [ts, price, price, price, price, volume, 1.0, symbol, exchange, resolution]
                         for kline_type, klines in kline.klines.items():
                             # self._connector.publish_kline(kline_type, symbol, exchange, json.dumps(list(klines)[-1:]))
-                            
-                            self._connector.publish_kline(kline_type, symbol, exchange, json.dumps(klines[-1]))
+
+                            kline_data = SKlineData()
+                            curr_kline = klines[-1]
+                            kline_data.time = curr_kline[0]
+                            kline_data.sequence_no = curr_kline[6]
+                            kline_data.symbol = curr_kline[7]
+                            kline_data.exchange = curr_kline[8]
+                            kline_data.resolution = curr_kline[9]
+                            kline_data.px_open = SDecimal(curr_kline[1])
+                            kline_data.px_high = SDecimal(curr_kline[2])
+                            kline_data.px_low = SDecimal(curr_kline[3])
+                            kline_data.px_close = SDecimal(curr_kline[4])
+                            kline_data.volume = SDecimal(curr_kline[5])
+
+                            self._logger.info(kline_data.meta_str())
+
+                            self._connector.publish_kline(kline_type, symbol, exchange, kline_data)
                             
                             self._update_statistic_info(get_kline_statistic_type(kline_type), topic)
 

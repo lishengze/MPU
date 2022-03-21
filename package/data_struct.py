@@ -146,8 +146,8 @@ class SKlineData(object):
         self.volume = SDecimal()
  
     def meta_str(self):
-        result =  ("se: %d, ex: %s, sy: %s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \
-                    (self.sequence_no,self.exchange, self.symbol, self.px_open.get_value(), self.px_high.get_value(), \
+        result =  ("se: %d, time: %d, ex: %s, sy: %s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \
+                    (self.sequence_no, self.time, self.exchange, self.symbol, self.px_open.get_value(), self.px_high.get_value(), \
                      self.px_low.get_value(), self.px_close.get_value()))
         return result
  
