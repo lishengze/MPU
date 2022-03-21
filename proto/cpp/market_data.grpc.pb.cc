@@ -22,6 +22,288 @@
 namespace Proto3 {
 namespace MarketData {
 
+static const char* MarketService_method_names[] = {
+  "/Proto3.MarketData.MarketService/RequestHistKlineData",
+  "/Proto3.MarketData.MarketService/RequestTradeData",
+  "/Proto3.MarketData.MarketService/GetStreamTradeData",
+  "/Proto3.MarketData.MarketService/RequestDepthData",
+  "/Proto3.MarketData.MarketService/SubKlineData",
+  "/Proto3.MarketData.MarketService/SubTradeData",
+  "/Proto3.MarketData.MarketService/SubDepthData",
+};
+
+std::unique_ptr< MarketService::Stub> MarketService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
+  (void)options;
+  std::unique_ptr< MarketService::Stub> stub(new MarketService::Stub(channel, options));
+  return stub;
+}
+
+MarketService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_RequestHistKlineData_(MarketService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RequestTradeData_(MarketService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetStreamTradeData_(MarketService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RequestDepthData_(MarketService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubKlineData_(MarketService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::BIDI_STREAMING, channel)
+  , rpcmethod_SubTradeData_(MarketService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::BIDI_STREAMING, channel)
+  , rpcmethod_SubDepthData_(MarketService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::BIDI_STREAMING, channel)
+  {}
+
+::grpc::Status MarketService::Stub::RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::Proto3::MarketData::HistKlineData* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::Proto3::MarketData::ReqHishKlineInfo, ::Proto3::MarketData::HistKlineData, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RequestHistKlineData_, context, request, response);
+}
+
+void MarketService::Stub::async::RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::Proto3::MarketData::ReqHishKlineInfo, ::Proto3::MarketData::HistKlineData, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RequestHistKlineData_, context, request, response, std::move(f));
+}
+
+void MarketService::Stub::async::RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RequestHistKlineData_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>* MarketService::Stub::PrepareAsyncRequestHistKlineDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::Proto3::MarketData::HistKlineData, ::Proto3::MarketData::ReqHishKlineInfo, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RequestHistKlineData_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>* MarketService::Stub::AsyncRequestHistKlineDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRequestHistKlineDataRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status MarketService::Stub::RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::Proto3::MarketData::TradeData* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RequestTradeData_, context, request, response);
+}
+
+void MarketService::Stub::async::RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RequestTradeData_, context, request, response, std::move(f));
+}
+
+void MarketService::Stub::async::RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RequestTradeData_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>* MarketService::Stub::PrepareAsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::ReqTradeInfo, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RequestTradeData_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>* MarketService::Stub::AsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRequestTradeDataRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::Proto3::MarketData::TradeData>* MarketService::Stub::GetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request) {
+  return ::grpc::internal::ClientReaderFactory< ::Proto3::MarketData::TradeData>::Create(channel_.get(), rpcmethod_GetStreamTradeData_, context, request);
+}
+
+void MarketService::Stub::async::GetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ClientReadReactor< ::Proto3::MarketData::TradeData>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::Proto3::MarketData::TradeData>::Create(stub_->channel_.get(), stub_->rpcmethod_GetStreamTradeData_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>* MarketService::Stub::AsyncGetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::Proto3::MarketData::TradeData>::Create(channel_.get(), cq, rpcmethod_GetStreamTradeData_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>* MarketService::Stub::PrepareAsyncGetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::Proto3::MarketData::TradeData>::Create(channel_.get(), cq, rpcmethod_GetStreamTradeData_, context, request, false, nullptr);
+}
+
+::grpc::Status MarketService::Stub::RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::Proto3::MarketData::DepthQuote* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RequestDepthData_, context, request, response);
+}
+
+void MarketService::Stub::async::RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RequestDepthData_, context, request, response, std::move(f));
+}
+
+void MarketService::Stub::async::RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RequestDepthData_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>* MarketService::Stub::PrepareAsyncRequestDepthDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::ReqDepthInfo, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RequestDepthData_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>* MarketService::Stub::AsyncRequestDepthDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRequestDepthDataRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* MarketService::Stub::SubKlineDataRaw(::grpc::ClientContext* context) {
+  return ::grpc::internal::ClientReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>::Create(channel_.get(), rpcmethod_SubKlineData_, context);
+}
+
+void MarketService::Stub::async::SubKlineData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::KlineData>* reactor) {
+  ::grpc::internal::ClientCallbackReaderWriterFactory< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::KlineData>::Create(stub_->channel_.get(), stub_->rpcmethod_SubKlineData_, context, reactor);
+}
+
+::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* MarketService::Stub::AsyncSubKlineDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>::Create(channel_.get(), cq, rpcmethod_SubKlineData_, context, true, tag);
+}
+
+::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* MarketService::Stub::PrepareAsyncSubKlineDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>::Create(channel_.get(), cq, rpcmethod_SubKlineData_, context, false, nullptr);
+}
+
+::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* MarketService::Stub::SubTradeDataRaw(::grpc::ClientContext* context) {
+  return ::grpc::internal::ClientReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>::Create(channel_.get(), rpcmethod_SubTradeData_, context);
+}
+
+void MarketService::Stub::async::SubTradeData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::TradeData>* reactor) {
+  ::grpc::internal::ClientCallbackReaderWriterFactory< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::TradeData>::Create(stub_->channel_.get(), stub_->rpcmethod_SubTradeData_, context, reactor);
+}
+
+::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* MarketService::Stub::AsyncSubTradeDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>::Create(channel_.get(), cq, rpcmethod_SubTradeData_, context, true, tag);
+}
+
+::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* MarketService::Stub::PrepareAsyncSubTradeDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>::Create(channel_.get(), cq, rpcmethod_SubTradeData_, context, false, nullptr);
+}
+
+::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* MarketService::Stub::SubDepthDataRaw(::grpc::ClientContext* context) {
+  return ::grpc::internal::ClientReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>::Create(channel_.get(), rpcmethod_SubDepthData_, context);
+}
+
+void MarketService::Stub::async::SubDepthData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::DepthQuote>* reactor) {
+  ::grpc::internal::ClientCallbackReaderWriterFactory< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::DepthQuote>::Create(stub_->channel_.get(), stub_->rpcmethod_SubDepthData_, context, reactor);
+}
+
+::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* MarketService::Stub::AsyncSubDepthDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>::Create(channel_.get(), cq, rpcmethod_SubDepthData_, context, true, tag);
+}
+
+::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* MarketService::Stub::PrepareAsyncSubDepthDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>::Create(channel_.get(), cq, rpcmethod_SubDepthData_, context, false, nullptr);
+}
+
+MarketService::Service::Service() {
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketService_method_names[0],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MarketService::Service, ::Proto3::MarketData::ReqHishKlineInfo, ::Proto3::MarketData::HistKlineData, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MarketService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::Proto3::MarketData::ReqHishKlineInfo* req,
+             ::Proto3::MarketData::HistKlineData* resp) {
+               return service->RequestHistKlineData(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketService_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MarketService::Service, ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MarketService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::Proto3::MarketData::ReqTradeInfo* req,
+             ::Proto3::MarketData::TradeData* resp) {
+               return service->RequestTradeData(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketService_method_names[2],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< MarketService::Service, ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>(
+          [](MarketService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::Proto3::MarketData::ReqTradeInfo* req,
+             ::grpc::ServerWriter<::Proto3::MarketData::TradeData>* writer) {
+               return service->GetStreamTradeData(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketService_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MarketService::Service, ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MarketService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::Proto3::MarketData::ReqDepthInfo* req,
+             ::Proto3::MarketData::DepthQuote* resp) {
+               return service->RequestDepthData(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketService_method_names[4],
+      ::grpc::internal::RpcMethod::BIDI_STREAMING,
+      new ::grpc::internal::BidiStreamingHandler< MarketService::Service, ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>(
+          [](MarketService::Service* service,
+             ::grpc::ServerContext* ctx,
+             ::grpc::ServerReaderWriter<::Proto3::MarketData::KlineData,
+             ::Proto3::MarketData::SubInfo>* stream) {
+               return service->SubKlineData(ctx, stream);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketService_method_names[5],
+      ::grpc::internal::RpcMethod::BIDI_STREAMING,
+      new ::grpc::internal::BidiStreamingHandler< MarketService::Service, ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>(
+          [](MarketService::Service* service,
+             ::grpc::ServerContext* ctx,
+             ::grpc::ServerReaderWriter<::Proto3::MarketData::TradeData,
+             ::Proto3::MarketData::SubInfo>* stream) {
+               return service->SubTradeData(ctx, stream);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketService_method_names[6],
+      ::grpc::internal::RpcMethod::BIDI_STREAMING,
+      new ::grpc::internal::BidiStreamingHandler< MarketService::Service, ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>(
+          [](MarketService::Service* service,
+             ::grpc::ServerContext* ctx,
+             ::grpc::ServerReaderWriter<::Proto3::MarketData::DepthQuote,
+             ::Proto3::MarketData::SubInfo>* stream) {
+               return service->SubDepthData(ctx, stream);
+             }, this)));
+}
+
+MarketService::Service::~Service() {
+}
+
+::grpc::Status MarketService::Service::RequestHistKlineData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MarketService::Service::RequestTradeData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MarketService::Service::GetStreamTradeData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MarketService::Service::RequestDepthData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MarketService::Service::SubKlineData(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* stream) {
+  (void) context;
+  (void) stream;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MarketService::Service::SubTradeData(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* stream) {
+  (void) context;
+  (void) stream;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MarketService::Service::SubDepthData(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* stream) {
+  (void) context;
+  (void) stream;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+
 }  // namespace Proto3
 }  // namespace MarketData
 

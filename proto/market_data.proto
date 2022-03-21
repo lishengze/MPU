@@ -2,21 +2,12 @@ syntax = "proto3";
 
 package Proto3.MarketData;
 
-// struct SDepthQuote {
-//     type_uint32 raw_length; // 原始包大小（用来比较压缩效率）
-//     string exchange;        // 交易所
-//     string symbol;          // 代码
-//     type_seqno sequence_no; // 序号
-//     type_tick origin_time;  // 交易所时间  单位微妙
-//     type_tick arrive_time;  // 服务器收到时间 单位毫秒
-//     type_tick server_time;  // 服务器处理完成时间 单位毫秒
-//     uint32 price_precise;   // 价格精度（来自配置中心）
-//     uint32 volume_precise;  // 成交量精度（来自配置中心）
-//     uint32 amount_precise;  // 成交额精度（来自配置中心）
-//     map<SDecimal, SDepth> asks; // 买盘
-//     map<SDecimal, SDepth> bids; // 卖盘
-//     bool is_snap{false};
-// }
+enum DataType
+{
+  KLINE = 0;
+  TRADE = 1;
+  DEPTH = 2;
+}
 
 message Decimal
 {
@@ -47,6 +38,14 @@ message DepthQuote
     repeated Depth bids = 12;
 };
 
+message ReqDepthInfo
+{
+    string symbol = 1;
+    string exchange = 2;
+    uint64 time = 3;
+};
+
+
 message KlineData
 {
     uint64  time = 1;
@@ -58,8 +57,28 @@ message KlineData
     Decimal px_close = 7;
     Decimal volume = 8;
     uint32  resolution = 9;
-    uint64  sequence_no = 10;
 };    
+
+message ReqHishKlineInfo
+{
+    string symbol = 1;
+    string exchange = 2;    
+    uint64 start_time = 3;
+    uint64 end_time = 4;
+    uint32 count = 5;
+    uint32 frequency = 6;
+};
+
+message HistKlineData
+{
+    string symbol = 1;
+    string exchange = 2;    
+    uint64 start_time = 3;
+    uint64 end_time = 4;
+    uint32 count = 5;
+    uint32 frequency = 6;
+    repeated KlineData kline_data = 7;
+};
 
 message TradeData
 {
@@ -68,5 +87,35 @@ message TradeData
     Decimal  volume = 3;
     string   symbol = 4;
     string   exchange = 5;
-    uint64   sequence_no = 6;
 };    
+
+message ReqTradeInfo
+{
+    string symbol = 1;
+    string exchange = 2;
+    uint64 time = 3;
+};
+
+message SubInfo
+{
+    string symbol = 1;
+    string exchange = 2;   
+    DataType data_type =3;
+};
+
+service MarketService
+{
+    rpc RequestHistKlineData(ReqHishKlineInfo) returns (HistKlineData){}
+
+    rpc RequestTradeData(ReqTradeInfo) returns (TradeData) {}
+
+    rpc GetStreamTradeData(ReqTradeInfo) returns (stream TradeData) {}
+
+    rpc RequestDepthData(ReqDepthInfo) returns (DepthQuote) {}
+
+    rpc SubKlineData(stream SubInfo) returns (stream KlineData) {}
+
+    rpc SubTradeData(stream SubInfo) returns (stream TradeData) {}
+
+    rpc SubDepthData(stream SubInfo) returns (stream DepthQuote) {}
+};

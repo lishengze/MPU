@@ -14,136 +14,198 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_market_5fdata_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Decimal_market_5fdata_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_market_5fdata_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_Depth_market_5fdata_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_market_5fdata_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Depth_VolumeByExchangesEntry_DoNotUse_market_5fdata_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace Proto3 {
 namespace MarketData {
-class DecimalDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Decimal> _instance;
-} _Decimal_default_instance_;
-class Depth_VolumeByExchangesEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Depth_VolumeByExchangesEntry_DoNotUse> _instance;
-} _Depth_VolumeByExchangesEntry_DoNotUse_default_instance_;
-class DepthDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Depth> _instance;
-} _Depth_default_instance_;
-class DepthQuoteDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<DepthQuote> _instance;
-} _DepthQuote_default_instance_;
-class KlineDataDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<KlineData> _instance;
-} _KlineData_default_instance_;
-class TradeDataDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TradeData> _instance;
-} _TradeData_default_instance_;
+constexpr Decimal::Decimal(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : value_(uint64_t{0u})
+  , precise_(0u){}
+struct DecimalDefaultTypeInternal {
+  constexpr DecimalDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~DecimalDefaultTypeInternal() {}
+  union {
+    Decimal _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DecimalDefaultTypeInternal _Decimal_default_instance_;
+constexpr Depth_VolumeByExchangesEntry_DoNotUse::Depth_VolumeByExchangesEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct Depth_VolumeByExchangesEntry_DoNotUseDefaultTypeInternal {
+  constexpr Depth_VolumeByExchangesEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~Depth_VolumeByExchangesEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    Depth_VolumeByExchangesEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT Depth_VolumeByExchangesEntry_DoNotUseDefaultTypeInternal _Depth_VolumeByExchangesEntry_DoNotUse_default_instance_;
+constexpr Depth::Depth(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : volume_by_exchanges_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , price_(nullptr)
+  , volume_(nullptr){}
+struct DepthDefaultTypeInternal {
+  constexpr DepthDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~DepthDefaultTypeInternal() {}
+  union {
+    Depth _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DepthDefaultTypeInternal _Depth_default_instance_;
+constexpr DepthQuote::DepthQuote(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : asks_()
+  , bids_()
+  , exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , sequence_no_(uint64_t{0u})
+  , origin_time_(uint64_t{0u})
+  , arrive_time_(uint64_t{0u})
+  , server_time_(uint64_t{0u})
+  , price_precise_(0u)
+  , volume_precise_(0u)
+  , amount_precise_(0u)
+  , is_snap_(false){}
+struct DepthQuoteDefaultTypeInternal {
+  constexpr DepthQuoteDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~DepthQuoteDefaultTypeInternal() {}
+  union {
+    DepthQuote _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DepthQuoteDefaultTypeInternal _DepthQuote_default_instance_;
+constexpr ReqDepthInfo::ReqDepthInfo(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , time_(uint64_t{0u}){}
+struct ReqDepthInfoDefaultTypeInternal {
+  constexpr ReqDepthInfoDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ReqDepthInfoDefaultTypeInternal() {}
+  union {
+    ReqDepthInfo _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ReqDepthInfoDefaultTypeInternal _ReqDepthInfo_default_instance_;
+constexpr KlineData::KlineData(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , px_open_(nullptr)
+  , px_high_(nullptr)
+  , px_low_(nullptr)
+  , px_close_(nullptr)
+  , volume_(nullptr)
+  , time_(uint64_t{0u})
+  , resolution_(0u){}
+struct KlineDataDefaultTypeInternal {
+  constexpr KlineDataDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~KlineDataDefaultTypeInternal() {}
+  union {
+    KlineData _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT KlineDataDefaultTypeInternal _KlineData_default_instance_;
+constexpr ReqHishKlineInfo::ReqHishKlineInfo(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , start_time_(uint64_t{0u})
+  , end_time_(uint64_t{0u})
+  , count_(0u)
+  , frequency_(0u){}
+struct ReqHishKlineInfoDefaultTypeInternal {
+  constexpr ReqHishKlineInfoDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ReqHishKlineInfoDefaultTypeInternal() {}
+  union {
+    ReqHishKlineInfo _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ReqHishKlineInfoDefaultTypeInternal _ReqHishKlineInfo_default_instance_;
+constexpr HistKlineData::HistKlineData(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : kline_data_()
+  , symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , start_time_(uint64_t{0u})
+  , end_time_(uint64_t{0u})
+  , count_(0u)
+  , frequency_(0u){}
+struct HistKlineDataDefaultTypeInternal {
+  constexpr HistKlineDataDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~HistKlineDataDefaultTypeInternal() {}
+  union {
+    HistKlineData _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT HistKlineDataDefaultTypeInternal _HistKlineData_default_instance_;
+constexpr TradeData::TradeData(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , price_(nullptr)
+  , volume_(nullptr)
+  , time_(uint64_t{0u}){}
+struct TradeDataDefaultTypeInternal {
+  constexpr TradeDataDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~TradeDataDefaultTypeInternal() {}
+  union {
+    TradeData _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT TradeDataDefaultTypeInternal _TradeData_default_instance_;
+constexpr ReqTradeInfo::ReqTradeInfo(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , time_(uint64_t{0u}){}
+struct ReqTradeInfoDefaultTypeInternal {
+  constexpr ReqTradeInfoDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ReqTradeInfoDefaultTypeInternal() {}
+  union {
+    ReqTradeInfo _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ReqTradeInfoDefaultTypeInternal _ReqTradeInfo_default_instance_;
+constexpr SubInfo::SubInfo(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : symbol_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , exchange_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , data_type_(0)
+{}
+struct SubInfoDefaultTypeInternal {
+  constexpr SubInfoDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~SubInfoDefaultTypeInternal() {}
+  union {
+    SubInfo _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SubInfoDefaultTypeInternal _SubInfo_default_instance_;
 }  // namespace MarketData
 }  // namespace Proto3
-static void InitDefaultsscc_info_Decimal_market_5fdata_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::Proto3::MarketData::_Decimal_default_instance_;
-    new (ptr) ::Proto3::MarketData::Decimal();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::Proto3::MarketData::Decimal::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Decimal_market_5fdata_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Decimal_market_5fdata_2eproto}, {}};
-
-static void InitDefaultsscc_info_Depth_market_5fdata_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::Proto3::MarketData::_Depth_default_instance_;
-    new (ptr) ::Proto3::MarketData::Depth();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::Proto3::MarketData::Depth::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_Depth_market_5fdata_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_Depth_market_5fdata_2eproto}, {
-      &scc_info_Decimal_market_5fdata_2eproto.base,
-      &scc_info_Depth_VolumeByExchangesEntry_DoNotUse_market_5fdata_2eproto.base,}};
-
-static void InitDefaultsscc_info_Depth_VolumeByExchangesEntry_DoNotUse_market_5fdata_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::Proto3::MarketData::_Depth_VolumeByExchangesEntry_DoNotUse_default_instance_;
-    new (ptr) ::Proto3::MarketData::Depth_VolumeByExchangesEntry_DoNotUse();
-  }
-  ::Proto3::MarketData::Depth_VolumeByExchangesEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Depth_VolumeByExchangesEntry_DoNotUse_market_5fdata_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Depth_VolumeByExchangesEntry_DoNotUse_market_5fdata_2eproto}, {
-      &scc_info_Decimal_market_5fdata_2eproto.base,}};
-
-static void InitDefaultsscc_info_DepthQuote_market_5fdata_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::Proto3::MarketData::_DepthQuote_default_instance_;
-    new (ptr) ::Proto3::MarketData::DepthQuote();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::Proto3::MarketData::DepthQuote::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_DepthQuote_market_5fdata_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_DepthQuote_market_5fdata_2eproto}, {
-      &scc_info_Depth_market_5fdata_2eproto.base,}};
-
-static void InitDefaultsscc_info_KlineData_market_5fdata_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::Proto3::MarketData::_KlineData_default_instance_;
-    new (ptr) ::Proto3::MarketData::KlineData();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::Proto3::MarketData::KlineData::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_KlineData_market_5fdata_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_KlineData_market_5fdata_2eproto}, {
-      &scc_info_Decimal_market_5fdata_2eproto.base,}};
-
-static void InitDefaultsscc_info_TradeData_market_5fdata_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::Proto3::MarketData::_TradeData_default_instance_;
-    new (ptr) ::Proto3::MarketData::TradeData();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::Proto3::MarketData::TradeData::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TradeData_market_5fdata_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TradeData_market_5fdata_2eproto}, {
-      &scc_info_Decimal_market_5fdata_2eproto.base,}};
-
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_market_5fdata_2eproto[6];
-static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_market_5fdata_2eproto = nullptr;
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_market_5fdata_2eproto[11];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_market_5fdata_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_market_5fdata_2eproto = nullptr;
 
-const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+const uint32_t TableStruct_market_5fdata_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Decimal, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Decimal, value_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Decimal, precise_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Depth_VolumeByExchangesEntry_DoNotUse, _has_bits_),
@@ -151,6 +213,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Depth_VolumeByExchangesEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Depth_VolumeByExchangesEntry_DoNotUse, value_),
   0,
@@ -160,6 +223,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Depth, price_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Depth, volume_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::Depth, volume_by_exchanges_),
@@ -168,6 +232,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::DepthQuote, exchange_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::DepthQuote, symbol_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::DepthQuote, sequence_no_),
@@ -181,10 +246,20 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::DepthQuote, asks_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::DepthQuote, bids_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqDepthInfo, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqDepthInfo, symbol_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqDepthInfo, exchange_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqDepthInfo, time_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, time_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, exchange_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, symbol_),
@@ -194,26 +269,73 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_market_5fdata_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, px_close_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, volume_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, resolution_),
-  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::KlineData, sequence_no_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqHishKlineInfo, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqHishKlineInfo, symbol_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqHishKlineInfo, exchange_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqHishKlineInfo, start_time_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqHishKlineInfo, end_time_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqHishKlineInfo, count_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqHishKlineInfo, frequency_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, symbol_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, exchange_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, start_time_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, end_time_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, count_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, frequency_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::HistKlineData, kline_data_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, time_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, price_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, volume_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, symbol_),
   PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, exchange_),
-  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::TradeData, sequence_no_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqTradeInfo, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqTradeInfo, symbol_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqTradeInfo, exchange_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::ReqTradeInfo, time_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::SubInfo, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::SubInfo, symbol_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::SubInfo, exchange_),
+  PROTOBUF_FIELD_OFFSET(::Proto3::MarketData::SubInfo, data_type_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::Proto3::MarketData::Decimal)},
-  { 7, 14, sizeof(::Proto3::MarketData::Depth_VolumeByExchangesEntry_DoNotUse)},
-  { 16, -1, sizeof(::Proto3::MarketData::Depth)},
-  { 24, -1, sizeof(::Proto3::MarketData::DepthQuote)},
-  { 41, -1, sizeof(::Proto3::MarketData::KlineData)},
-  { 56, -1, sizeof(::Proto3::MarketData::TradeData)},
+  { 0, -1, -1, sizeof(::Proto3::MarketData::Decimal)},
+  { 8, 16, -1, sizeof(::Proto3::MarketData::Depth_VolumeByExchangesEntry_DoNotUse)},
+  { 18, -1, -1, sizeof(::Proto3::MarketData::Depth)},
+  { 27, -1, -1, sizeof(::Proto3::MarketData::DepthQuote)},
+  { 45, -1, -1, sizeof(::Proto3::MarketData::ReqDepthInfo)},
+  { 54, -1, -1, sizeof(::Proto3::MarketData::KlineData)},
+  { 69, -1, -1, sizeof(::Proto3::MarketData::ReqHishKlineInfo)},
+  { 81, -1, -1, sizeof(::Proto3::MarketData::HistKlineData)},
+  { 94, -1, -1, sizeof(::Proto3::MarketData::TradeData)},
+  { 105, -1, -1, sizeof(::Proto3::MarketData::ReqTradeInfo)},
+  { 114, -1, -1, sizeof(::Proto3::MarketData::SubInfo)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -221,8 +343,13 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_Depth_VolumeByExchangesEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_Depth_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_DepthQuote_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_ReqDepthInfo_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_KlineData_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_ReqHishKlineInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_HistKlineData_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_TradeData_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_ReqTradeInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::Proto3::MarketData::_SubInfo_default_instance_),
 };
 
 const char descriptor_table_protodef_market_5fdata_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -242,55 +369,93 @@ const char descriptor_table_protodef_market_5fdata_2eproto[] PROTOBUF_SECTION_VA
   "(\r\022\026\n\016amount_precise\030\t \001(\r\022\017\n\007is_snap\030\n "
   "\001(\010\022&\n\004asks\030\013 \003(\0132\030.Proto3.MarketData.De"
   "pth\022&\n\004bids\030\014 \003(\0132\030.Proto3.MarketData.De"
-  "pth\"\304\002\n\tKlineData\022\014\n\004time\030\001 \001(\004\022\020\n\010excha"
-  "nge\030\002 \001(\t\022\016\n\006symbol\030\003 \001(\t\022+\n\007px_open\030\004 \001"
-  "(\0132\032.Proto3.MarketData.Decimal\022+\n\007px_hig"
-  "h\030\005 \001(\0132\032.Proto3.MarketData.Decimal\022*\n\006p"
-  "x_low\030\006 \001(\0132\032.Proto3.MarketData.Decimal\022"
-  ",\n\010px_close\030\007 \001(\0132\032.Proto3.MarketData.De"
-  "cimal\022*\n\006volume\030\010 \001(\0132\032.Proto3.MarketDat"
-  "a.Decimal\022\022\n\nresolution\030\t \001(\r\022\023\n\013sequenc"
-  "e_no\030\n \001(\004\"\247\001\n\tTradeData\022\014\n\004time\030\001 \001(\004\022)"
-  "\n\005price\030\002 \001(\0132\032.Proto3.MarketData.Decima"
-  "l\022*\n\006volume\030\003 \001(\0132\032.Proto3.MarketData.De"
-  "cimal\022\016\n\006symbol\030\004 \001(\t\022\020\n\010exchange\030\005 \001(\t\022"
-  "\023\n\013sequence_no\030\006 \001(\004b\006proto3"
+  "pth\">\n\014ReqDepthInfo\022\016\n\006symbol\030\001 \001(\t\022\020\n\010e"
+  "xchange\030\002 \001(\t\022\014\n\004time\030\003 \001(\004\"\257\002\n\tKlineDat"
+  "a\022\014\n\004time\030\001 \001(\004\022\020\n\010exchange\030\002 \001(\t\022\016\n\006sym"
+  "bol\030\003 \001(\t\022+\n\007px_open\030\004 \001(\0132\032.Proto3.Mark"
+  "etData.Decimal\022+\n\007px_high\030\005 \001(\0132\032.Proto3"
+  ".MarketData.Decimal\022*\n\006px_low\030\006 \001(\0132\032.Pr"
+  "oto3.MarketData.Decimal\022,\n\010px_close\030\007 \001("
+  "\0132\032.Proto3.MarketData.Decimal\022*\n\006volume\030"
+  "\010 \001(\0132\032.Proto3.MarketData.Decimal\022\022\n\nres"
+  "olution\030\t \001(\r\"|\n\020ReqHishKlineInfo\022\016\n\006sym"
+  "bol\030\001 \001(\t\022\020\n\010exchange\030\002 \001(\t\022\022\n\nstart_tim"
+  "e\030\003 \001(\004\022\020\n\010end_time\030\004 \001(\004\022\r\n\005count\030\005 \001(\r"
+  "\022\021\n\tfrequency\030\006 \001(\r\"\253\001\n\rHistKlineData\022\016\n"
+  "\006symbol\030\001 \001(\t\022\020\n\010exchange\030\002 \001(\t\022\022\n\nstart"
+  "_time\030\003 \001(\004\022\020\n\010end_time\030\004 \001(\004\022\r\n\005count\030\005"
+  " \001(\r\022\021\n\tfrequency\030\006 \001(\r\0220\n\nkline_data\030\007 "
+  "\003(\0132\034.Proto3.MarketData.KlineData\"\222\001\n\tTr"
+  "adeData\022\014\n\004time\030\001 \001(\004\022)\n\005price\030\002 \001(\0132\032.P"
+  "roto3.MarketData.Decimal\022*\n\006volume\030\003 \001(\013"
+  "2\032.Proto3.MarketData.Decimal\022\016\n\006symbol\030\004"
+  " \001(\t\022\020\n\010exchange\030\005 \001(\t\">\n\014ReqTradeInfo\022\016"
+  "\n\006symbol\030\001 \001(\t\022\020\n\010exchange\030\002 \001(\t\022\014\n\004time"
+  "\030\003 \001(\004\"[\n\007SubInfo\022\016\n\006symbol\030\001 \001(\t\022\020\n\010exc"
+  "hange\030\002 \001(\t\022.\n\tdata_type\030\003 \001(\0162\033.Proto3."
+  "MarketData.DataType*+\n\010DataType\022\t\n\005KLINE"
+  "\020\000\022\t\n\005TRADE\020\001\022\t\n\005DEPTH\020\0022\345\004\n\rMarketServi"
+  "ce\022_\n\024RequestHistKlineData\022#.Proto3.Mark"
+  "etData.ReqHishKlineInfo\032 .Proto3.MarketD"
+  "ata.HistKlineData\"\000\022S\n\020RequestTradeData\022"
+  "\037.Proto3.MarketData.ReqTradeInfo\032\034.Proto"
+  "3.MarketData.TradeData\"\000\022W\n\022GetStreamTra"
+  "deData\022\037.Proto3.MarketData.ReqTradeInfo\032"
+  "\034.Proto3.MarketData.TradeData\"\0000\001\022T\n\020Req"
+  "uestDepthData\022\037.Proto3.MarketData.ReqDep"
+  "thInfo\032\035.Proto3.MarketData.DepthQuote\"\000\022"
+  "N\n\014SubKlineData\022\032.Proto3.MarketData.SubI"
+  "nfo\032\034.Proto3.MarketData.KlineData\"\000(\0010\001\022"
+  "N\n\014SubTradeData\022\032.Proto3.MarketData.SubI"
+  "nfo\032\034.Proto3.MarketData.TradeData\"\000(\0010\001\022"
+  "O\n\014SubDepthData\022\032.Proto3.MarketData.SubI"
+  "nfo\032\035.Proto3.MarketData.DepthQuote\"\000(\0010\001"
+  "b\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_market_5fdata_2eproto_deps[1] = {
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_market_5fdata_2eproto_sccs[6] = {
-  &scc_info_Decimal_market_5fdata_2eproto.base,
-  &scc_info_Depth_market_5fdata_2eproto.base,
-  &scc_info_Depth_VolumeByExchangesEntry_DoNotUse_market_5fdata_2eproto.base,
-  &scc_info_DepthQuote_market_5fdata_2eproto.base,
-  &scc_info_KlineData_market_5fdata_2eproto.base,
-  &scc_info_TradeData_market_5fdata_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_market_5fdata_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_market_5fdata_2eproto = {
-  false, false, descriptor_table_protodef_market_5fdata_2eproto, "market_data.proto", 1148,
-  &descriptor_table_market_5fdata_2eproto_once, descriptor_table_market_5fdata_2eproto_sccs, descriptor_table_market_5fdata_2eproto_deps, 6, 0,
+  false, false, 2288, descriptor_table_protodef_market_5fdata_2eproto, "market_data.proto", 
+  &descriptor_table_market_5fdata_2eproto_once, nullptr, 0, 11,
   schemas, file_default_instances, TableStruct_market_5fdata_2eproto::offsets,
-  file_level_metadata_market_5fdata_2eproto, 6, file_level_enum_descriptors_market_5fdata_2eproto, file_level_service_descriptors_market_5fdata_2eproto,
+  file_level_metadata_market_5fdata_2eproto, file_level_enum_descriptors_market_5fdata_2eproto, file_level_service_descriptors_market_5fdata_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable* descriptor_table_market_5fdata_2eproto_getter() {
+  return &descriptor_table_market_5fdata_2eproto;
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_market_5fdata_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_market_5fdata_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_market_5fdata_2eproto(&descriptor_table_market_5fdata_2eproto);
 namespace Proto3 {
 namespace MarketData {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* DataType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_market_5fdata_2eproto);
+  return file_level_enum_descriptors_market_5fdata_2eproto[0];
+}
+bool DataType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // ===================================================================
 
-void Decimal::InitAsDefaultInstance() {
-}
 class Decimal::_Internal {
  public:
 };
 
-Decimal::Decimal(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Decimal::Decimal(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.Decimal)
 }
 Decimal::Decimal(const Decimal& from)
@@ -302,20 +467,22 @@ Decimal::Decimal(const Decimal& from)
   // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.Decimal)
 }
 
-void Decimal::SharedCtor() {
-  ::memset(&value_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&precise_) -
-      reinterpret_cast<char*>(&value_)) + sizeof(precise_));
+inline void Decimal::SharedCtor() {
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&value_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&precise_) -
+    reinterpret_cast<char*>(&value_)) + sizeof(precise_));
 }
 
 Decimal::~Decimal() {
   // @@protoc_insertion_point(destructor:Proto3.MarketData.Decimal)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void Decimal::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Decimal::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void Decimal::ArenaDtor(void* object) {
@@ -327,15 +494,10 @@ void Decimal::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void Decimal::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Decimal& Decimal::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Decimal_market_5fdata_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Decimal::Clear() {
 // @@protoc_insertion_point(message_clear_start:Proto3.MarketData.Decimal)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -347,62 +509,63 @@ void Decimal::Clear() {
 
 const char* Decimal::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint64 value = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 precise = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           precise_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Decimal::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* Decimal::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.Decimal)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint64 value = 1;
-  if (this->value() != 0) {
+  if (this->_internal_value() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_value(), target);
   }
 
   // uint32 precise = 2;
-  if (this->precise() != 0) {
+  if (this->_internal_precise() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_precise(), target);
   }
@@ -419,68 +582,49 @@ size_t Decimal::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.Decimal)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint64 value = 1;
-  if (this->value() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_value());
+  if (this->_internal_value() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_value());
   }
 
   // uint32 precise = 2;
-  if (this->precise() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_precise());
+  if (this->_internal_precise() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_precise());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void Decimal::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Proto3.MarketData.Decimal)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Decimal* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Decimal>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Proto3.MarketData.Decimal)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Proto3.MarketData.Decimal)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Decimal::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    Decimal::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Decimal::GetClassData() const { return &_class_data_; }
+
+void Decimal::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Decimal *>(to)->MergeFrom(
+      static_cast<const Decimal &>(from));
 }
+
 
 void Decimal::MergeFrom(const Decimal& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.Decimal)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.value() != 0) {
+  if (from._internal_value() != 0) {
     _internal_set_value(from._internal_value());
   }
-  if (from.precise() != 0) {
+  if (from._internal_precise() != 0) {
     _internal_set_precise(from._internal_precise());
   }
-}
-
-void Decimal::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Proto3.MarketData.Decimal)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Decimal::CopyFrom(const Decimal& from) {
@@ -496,7 +640,7 @@ bool Decimal::IsInitialized() const {
 
 void Decimal::InternalSwap(Decimal* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Decimal, precise_)
       + sizeof(Decimal::precise_)
@@ -506,9 +650,10 @@ void Decimal::InternalSwap(Decimal* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Decimal::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[0]);
 }
-
 
 // ===================================================================
 
@@ -519,22 +664,13 @@ void Depth_VolumeByExchangesEntry_DoNotUse::MergeFrom(const Depth_VolumeByExchan
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata Depth_VolumeByExchangesEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[1]);
 }
-void Depth_VolumeByExchangesEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
-void Depth::InitAsDefaultInstance() {
-  ::Proto3::MarketData::_Depth_default_instance_._instance.get_mutable()->price_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
-  ::Proto3::MarketData::_Depth_default_instance_._instance.get_mutable()->volume_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
-}
 class Depth::_Internal {
  public:
   static const ::Proto3::MarketData::Decimal& price(const Depth* msg);
@@ -549,11 +685,14 @@ const ::Proto3::MarketData::Decimal&
 Depth::_Internal::volume(const Depth* msg) {
   return *msg->volume_;
 }
-Depth::Depth(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+Depth::Depth(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
   volume_by_exchanges_(arena) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.Depth)
 }
 Depth::Depth(const Depth& from)
@@ -573,21 +712,22 @@ Depth::Depth(const Depth& from)
   // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.Depth)
 }
 
-void Depth::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Depth_market_5fdata_2eproto.base);
-  ::memset(&price_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&volume_) -
-      reinterpret_cast<char*>(&price_)) + sizeof(volume_));
+inline void Depth::SharedCtor() {
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&price_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&volume_) -
+    reinterpret_cast<char*>(&price_)) + sizeof(volume_));
 }
 
 Depth::~Depth() {
   // @@protoc_insertion_point(destructor:Proto3.MarketData.Depth)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void Depth::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void Depth::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete price_;
   if (this != internal_default_instance()) delete volume_;
 }
@@ -595,30 +735,29 @@ void Depth::SharedDtor() {
 void Depth::ArenaDtor(void* object) {
   Depth* _this = reinterpret_cast< Depth* >(object);
   (void)_this;
+  _this->volume_by_exchanges_. ~MapField();
 }
-void Depth::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+inline void Depth::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena) {
+  if (arena != nullptr) {
+    arena->OwnCustomDestructor(this, &Depth::ArenaDtor);
+  }
 }
 void Depth::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Depth& Depth::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Depth_market_5fdata_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Depth::Clear() {
 // @@protoc_insertion_point(message_clear_start:Proto3.MarketData.Depth)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   volume_by_exchanges_.Clear();
-  if (GetArena() == nullptr && price_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && price_ != nullptr) {
     delete price_;
   }
   price_ = nullptr;
-  if (GetArena() == nullptr && volume_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && volume_ != nullptr) {
     delete volume_;
   }
   volume_ = nullptr;
@@ -627,29 +766,29 @@ void Depth::Clear() {
 
 const char* Depth::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // .Proto3.MarketData.Decimal price = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_price(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal volume = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_volume(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<string, .Proto3.MarketData.Decimal> volume_by_exchanges = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -657,38 +796,40 @@ const char* Depth::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Depth::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* Depth::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.Depth)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .Proto3.MarketData.Decimal price = 1;
-  if (this->has_price()) {
+  if (this->_internal_has_price()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -696,7 +837,7 @@ failure:
   }
 
   // .Proto3.MarketData.Decimal volume = 2;
-  if (this->has_volume()) {
+  if (this->_internal_has_volume()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -711,6 +852,7 @@ failure:
     typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
     struct Utf8Check {
       static void Check(ConstPtr p) {
+        (void)p;
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -756,7 +898,7 @@ size_t Depth::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.Depth)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -770,64 +912,49 @@ size_t Depth::ByteSizeLong() const {
   }
 
   // .Proto3.MarketData.Decimal price = 1;
-  if (this->has_price()) {
+  if (this->_internal_has_price()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *price_);
   }
 
   // .Proto3.MarketData.Decimal volume = 2;
-  if (this->has_volume()) {
+  if (this->_internal_has_volume()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *volume_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void Depth::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Proto3.MarketData.Depth)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Depth* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Depth>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Proto3.MarketData.Depth)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Proto3.MarketData.Depth)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Depth::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    Depth::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Depth::GetClassData() const { return &_class_data_; }
+
+void Depth::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Depth *>(to)->MergeFrom(
+      static_cast<const Depth &>(from));
 }
+
 
 void Depth::MergeFrom(const Depth& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.Depth)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   volume_by_exchanges_.MergeFrom(from.volume_by_exchanges_);
-  if (from.has_price()) {
+  if (from._internal_has_price()) {
     _internal_mutable_price()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_price());
   }
-  if (from.has_volume()) {
+  if (from._internal_has_volume()) {
     _internal_mutable_volume()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_volume());
   }
-}
-
-void Depth::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Proto3.MarketData.Depth)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Depth::CopyFrom(const Depth& from) {
@@ -843,8 +970,8 @@ bool Depth::IsInitialized() const {
 
 void Depth::InternalSwap(Depth* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  volume_by_exchanges_.Swap(&other->volume_by_exchanges_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  volume_by_exchanges_.InternalSwap(&other->volume_by_exchanges_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Depth, volume_)
       + sizeof(Depth::volume_)
@@ -854,24 +981,26 @@ void Depth::InternalSwap(Depth* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Depth::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[2]);
 }
-
 
 // ===================================================================
 
-void DepthQuote::InitAsDefaultInstance() {
-}
 class DepthQuote::_Internal {
  public:
 };
 
-DepthQuote::DepthQuote(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+DepthQuote::DepthQuote(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
   asks_(arena),
   bids_(arena) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.DepthQuote)
 }
 DepthQuote::DepthQuote(const DepthQuote& from)
@@ -880,14 +1009,20 @@ DepthQuote::DepthQuote(const DepthQuote& from)
       bids_(from.bids_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_exchange().empty()) {
-    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_exchange(),
-      GetArena());
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
   }
   symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_symbol().empty()) {
-    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_symbol(),
-      GetArena());
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
   }
   ::memcpy(&sequence_no_, &from.sequence_no_,
     static_cast<size_t>(reinterpret_cast<char*>(&is_snap_) -
@@ -895,23 +1030,30 @@ DepthQuote::DepthQuote(const DepthQuote& from)
   // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.DepthQuote)
 }
 
-void DepthQuote::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_DepthQuote_market_5fdata_2eproto.base);
-  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&sequence_no_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&is_snap_) -
-      reinterpret_cast<char*>(&sequence_no_)) + sizeof(is_snap_));
+inline void DepthQuote::SharedCtor() {
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&sequence_no_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&is_snap_) -
+    reinterpret_cast<char*>(&sequence_no_)) + sizeof(is_snap_));
 }
 
 DepthQuote::~DepthQuote() {
   // @@protoc_insertion_point(destructor:Proto3.MarketData.DepthQuote)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void DepthQuote::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void DepthQuote::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -925,22 +1067,17 @@ void DepthQuote::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void DepthQuote::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const DepthQuote& DepthQuote::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_DepthQuote_market_5fdata_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void DepthQuote::Clear() {
 // @@protoc_insertion_point(message_clear_start:Proto3.MarketData.DepthQuote)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   asks_.Clear();
   bids_.Clear();
-  exchange_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  symbol_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  exchange_.ClearToEmpty();
+  symbol_.ClearToEmpty();
   ::memset(&sequence_no_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&is_snap_) -
       reinterpret_cast<char*>(&sequence_no_)) + sizeof(is_snap_));
@@ -949,89 +1086,97 @@ void DepthQuote::Clear() {
 
 const char* DepthQuote::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // string exchange = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_exchange();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.DepthQuote.exchange"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string symbol = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_symbol();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.DepthQuote.symbol"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint64 sequence_no = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           sequence_no_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint64 origin_time = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
           origin_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint64 arrive_time = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
           arrive_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint64 server_time = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
           server_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 price_precise = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
           price_precise_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 volume_precise = 8;
       case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
           volume_precise_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 amount_precise = 9;
       case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
           amount_precise_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // bool is_snap = 10;
       case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
           is_snap_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .Proto3.MarketData.Depth asks = 11;
       case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 90)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -1039,11 +1184,12 @@ const char* DepthQuote::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<90>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .Proto3.MarketData.Depth bids = 12;
       case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 98)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -1051,38 +1197,40 @@ const char* DepthQuote::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<98>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* DepthQuote::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* DepthQuote::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.DepthQuote)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string exchange = 1;
-  if (this->exchange().size() > 0) {
+  if (!this->_internal_exchange().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1092,7 +1240,7 @@ failure:
   }
 
   // string symbol = 2;
-  if (this->symbol().size() > 0) {
+  if (!this->_internal_symbol().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1102,49 +1250,49 @@ failure:
   }
 
   // uint64 sequence_no = 3;
-  if (this->sequence_no() != 0) {
+  if (this->_internal_sequence_no() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_sequence_no(), target);
   }
 
   // uint64 origin_time = 4;
-  if (this->origin_time() != 0) {
+  if (this->_internal_origin_time() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->_internal_origin_time(), target);
   }
 
   // uint64 arrive_time = 5;
-  if (this->arrive_time() != 0) {
+  if (this->_internal_arrive_time() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(5, this->_internal_arrive_time(), target);
   }
 
   // uint64 server_time = 6;
-  if (this->server_time() != 0) {
+  if (this->_internal_server_time() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(6, this->_internal_server_time(), target);
   }
 
   // uint32 price_precise = 7;
-  if (this->price_precise() != 0) {
+  if (this->_internal_price_precise() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(7, this->_internal_price_precise(), target);
   }
 
   // uint32 volume_precise = 8;
-  if (this->volume_precise() != 0) {
+  if (this->_internal_volume_precise() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(8, this->_internal_volume_precise(), target);
   }
 
   // uint32 amount_precise = 9;
-  if (this->amount_precise() != 0) {
+  if (this->_internal_amount_precise() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(9, this->_internal_amount_precise(), target);
   }
 
   // bool is_snap = 10;
-  if (this->is_snap() != 0) {
+  if (this->_internal_is_snap() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(10, this->_internal_is_snap(), target);
   }
@@ -1177,7 +1325,7 @@ size_t DepthQuote::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.DepthQuote)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1196,143 +1344,114 @@ size_t DepthQuote::ByteSizeLong() const {
   }
 
   // string exchange = 1;
-  if (this->exchange().size() > 0) {
+  if (!this->_internal_exchange().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_exchange());
   }
 
   // string symbol = 2;
-  if (this->symbol().size() > 0) {
+  if (!this->_internal_symbol().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_symbol());
   }
 
   // uint64 sequence_no = 3;
-  if (this->sequence_no() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_sequence_no());
+  if (this->_internal_sequence_no() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_sequence_no());
   }
 
   // uint64 origin_time = 4;
-  if (this->origin_time() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_origin_time());
+  if (this->_internal_origin_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_origin_time());
   }
 
   // uint64 arrive_time = 5;
-  if (this->arrive_time() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_arrive_time());
+  if (this->_internal_arrive_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_arrive_time());
   }
 
   // uint64 server_time = 6;
-  if (this->server_time() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_server_time());
+  if (this->_internal_server_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_server_time());
   }
 
   // uint32 price_precise = 7;
-  if (this->price_precise() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_price_precise());
+  if (this->_internal_price_precise() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_price_precise());
   }
 
   // uint32 volume_precise = 8;
-  if (this->volume_precise() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_volume_precise());
+  if (this->_internal_volume_precise() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_volume_precise());
   }
 
   // uint32 amount_precise = 9;
-  if (this->amount_precise() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_amount_precise());
+  if (this->_internal_amount_precise() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_amount_precise());
   }
 
   // bool is_snap = 10;
-  if (this->is_snap() != 0) {
+  if (this->_internal_is_snap() != 0) {
     total_size += 1 + 1;
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void DepthQuote::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Proto3.MarketData.DepthQuote)
-  GOOGLE_DCHECK_NE(&from, this);
-  const DepthQuote* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<DepthQuote>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Proto3.MarketData.DepthQuote)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Proto3.MarketData.DepthQuote)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DepthQuote::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    DepthQuote::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DepthQuote::GetClassData() const { return &_class_data_; }
+
+void DepthQuote::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<DepthQuote *>(to)->MergeFrom(
+      static_cast<const DepthQuote &>(from));
 }
+
 
 void DepthQuote::MergeFrom(const DepthQuote& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.DepthQuote)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   asks_.MergeFrom(from.asks_);
   bids_.MergeFrom(from.bids_);
-  if (from.exchange().size() > 0) {
+  if (!from._internal_exchange().empty()) {
     _internal_set_exchange(from._internal_exchange());
   }
-  if (from.symbol().size() > 0) {
+  if (!from._internal_symbol().empty()) {
     _internal_set_symbol(from._internal_symbol());
   }
-  if (from.sequence_no() != 0) {
+  if (from._internal_sequence_no() != 0) {
     _internal_set_sequence_no(from._internal_sequence_no());
   }
-  if (from.origin_time() != 0) {
+  if (from._internal_origin_time() != 0) {
     _internal_set_origin_time(from._internal_origin_time());
   }
-  if (from.arrive_time() != 0) {
+  if (from._internal_arrive_time() != 0) {
     _internal_set_arrive_time(from._internal_arrive_time());
   }
-  if (from.server_time() != 0) {
+  if (from._internal_server_time() != 0) {
     _internal_set_server_time(from._internal_server_time());
   }
-  if (from.price_precise() != 0) {
+  if (from._internal_price_precise() != 0) {
     _internal_set_price_precise(from._internal_price_precise());
   }
-  if (from.volume_precise() != 0) {
+  if (from._internal_volume_precise() != 0) {
     _internal_set_volume_precise(from._internal_volume_precise());
   }
-  if (from.amount_precise() != 0) {
+  if (from._internal_amount_precise() != 0) {
     _internal_set_amount_precise(from._internal_amount_precise());
   }
-  if (from.is_snap() != 0) {
+  if (from._internal_is_snap() != 0) {
     _internal_set_is_snap(from._internal_is_snap());
   }
-}
-
-void DepthQuote::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Proto3.MarketData.DepthQuote)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void DepthQuote::CopyFrom(const DepthQuote& from) {
@@ -1348,11 +1467,21 @@ bool DepthQuote::IsInitialized() const {
 
 void DepthQuote::InternalSwap(DepthQuote* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   asks_.InternalSwap(&other->asks_);
   bids_.InternalSwap(&other->bids_);
-  exchange_.Swap(&other->exchange_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  symbol_.Swap(&other->symbol_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(DepthQuote, is_snap_)
       + sizeof(DepthQuote::is_snap_)
@@ -1362,24 +1491,291 @@ void DepthQuote::InternalSwap(DepthQuote* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata DepthQuote::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[3]);
 }
-
 
 // ===================================================================
 
-void KlineData::InitAsDefaultInstance() {
-  ::Proto3::MarketData::_KlineData_default_instance_._instance.get_mutable()->px_open_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
-  ::Proto3::MarketData::_KlineData_default_instance_._instance.get_mutable()->px_high_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
-  ::Proto3::MarketData::_KlineData_default_instance_._instance.get_mutable()->px_low_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
-  ::Proto3::MarketData::_KlineData_default_instance_._instance.get_mutable()->px_close_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
-  ::Proto3::MarketData::_KlineData_default_instance_._instance.get_mutable()->volume_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
+class ReqDepthInfo::_Internal {
+ public:
+};
+
+ReqDepthInfo::ReqDepthInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.ReqDepthInfo)
 }
+ReqDepthInfo::ReqDepthInfo(const ReqDepthInfo& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_symbol().empty()) {
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
+  }
+  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_exchange().empty()) {
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
+  }
+  time_ = from.time_;
+  // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.ReqDepthInfo)
+}
+
+inline void ReqDepthInfo::SharedCtor() {
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+time_ = uint64_t{0u};
+}
+
+ReqDepthInfo::~ReqDepthInfo() {
+  // @@protoc_insertion_point(destructor:Proto3.MarketData.ReqDepthInfo)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void ReqDepthInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void ReqDepthInfo::ArenaDtor(void* object) {
+  ReqDepthInfo* _this = reinterpret_cast< ReqDepthInfo* >(object);
+  (void)_this;
+}
+void ReqDepthInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ReqDepthInfo::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ReqDepthInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:Proto3.MarketData.ReqDepthInfo)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  symbol_.ClearToEmpty();
+  exchange_.ClearToEmpty();
+  time_ = uint64_t{0u};
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ReqDepthInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string symbol = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_symbol();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.ReqDepthInfo.symbol"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string exchange = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_exchange();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.ReqDepthInfo.exchange"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 time = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ReqDepthInfo::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.ReqDepthInfo)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.ReqDepthInfo.symbol");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_symbol(), target);
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.ReqDepthInfo.exchange");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_exchange(), target);
+  }
+
+  // uint64 time = 3;
+  if (this->_internal_time() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_time(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Proto3.MarketData.ReqDepthInfo)
+  return target;
+}
+
+size_t ReqDepthInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.ReqDepthInfo)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_symbol());
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_exchange());
+  }
+
+  // uint64 time = 3;
+  if (this->_internal_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_time());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ReqDepthInfo::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ReqDepthInfo::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ReqDepthInfo::GetClassData() const { return &_class_data_; }
+
+void ReqDepthInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ReqDepthInfo *>(to)->MergeFrom(
+      static_cast<const ReqDepthInfo &>(from));
+}
+
+
+void ReqDepthInfo::MergeFrom(const ReqDepthInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.ReqDepthInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_symbol().empty()) {
+    _internal_set_symbol(from._internal_symbol());
+  }
+  if (!from._internal_exchange().empty()) {
+    _internal_set_exchange(from._internal_exchange());
+  }
+  if (from._internal_time() != 0) {
+    _internal_set_time(from._internal_time());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ReqDepthInfo::CopyFrom(const ReqDepthInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Proto3.MarketData.ReqDepthInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ReqDepthInfo::IsInitialized() const {
+  return true;
+}
+
+void ReqDepthInfo::InternalSwap(ReqDepthInfo* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
+  swap(time_, other->time_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ReqDepthInfo::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[4]);
+}
+
+// ===================================================================
+
 class KlineData::_Internal {
  public:
   static const ::Proto3::MarketData::Decimal& px_open(const KlineData* msg);
@@ -1409,24 +1805,33 @@ const ::Proto3::MarketData::Decimal&
 KlineData::_Internal::volume(const KlineData* msg) {
   return *msg->volume_;
 }
-KlineData::KlineData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+KlineData::KlineData(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.KlineData)
 }
 KlineData::KlineData(const KlineData& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_exchange().empty()) {
-    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_exchange(),
-      GetArena());
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
   }
   symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_symbol().empty()) {
-    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_symbol(),
-      GetArena());
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
   }
   if (from._internal_has_px_open()) {
     px_open_ = new ::Proto3::MarketData::Decimal(*from.px_open_);
@@ -1459,23 +1864,30 @@ KlineData::KlineData(const KlineData& from)
   // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.KlineData)
 }
 
-void KlineData::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_KlineData_market_5fdata_2eproto.base);
-  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&px_open_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&resolution_) -
-      reinterpret_cast<char*>(&px_open_)) + sizeof(resolution_));
+inline void KlineData::SharedCtor() {
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&px_open_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&resolution_) -
+    reinterpret_cast<char*>(&px_open_)) + sizeof(resolution_));
 }
 
 KlineData::~KlineData() {
   // @@protoc_insertion_point(destructor:Proto3.MarketData.KlineData)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void KlineData::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void KlineData::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete px_open_;
@@ -1494,37 +1906,32 @@ void KlineData::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void KlineData::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const KlineData& KlineData::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_KlineData_market_5fdata_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void KlineData::Clear() {
 // @@protoc_insertion_point(message_clear_start:Proto3.MarketData.KlineData)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  exchange_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  symbol_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  if (GetArena() == nullptr && px_open_ != nullptr) {
+  exchange_.ClearToEmpty();
+  symbol_.ClearToEmpty();
+  if (GetArenaForAllocation() == nullptr && px_open_ != nullptr) {
     delete px_open_;
   }
   px_open_ = nullptr;
-  if (GetArena() == nullptr && px_high_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && px_high_ != nullptr) {
     delete px_high_;
   }
   px_high_ = nullptr;
-  if (GetArena() == nullptr && px_low_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && px_low_ != nullptr) {
     delete px_low_;
   }
   px_low_ = nullptr;
-  if (GetArena() == nullptr && px_close_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && px_close_ != nullptr) {
     delete px_close_;
   }
   px_close_ = nullptr;
-  if (GetArena() == nullptr && volume_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && volume_ != nullptr) {
     delete volume_;
   }
   volume_ = nullptr;
@@ -1536,122 +1943,123 @@ void KlineData::Clear() {
 
 const char* KlineData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint64 time = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string exchange = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_exchange();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.KlineData.exchange"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string symbol = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           auto str = _internal_mutable_symbol();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.KlineData.symbol"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal px_open = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr = ctx->ParseMessage(_internal_mutable_px_open(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal px_high = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           ptr = ctx->ParseMessage(_internal_mutable_px_high(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal px_low = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
           ptr = ctx->ParseMessage(_internal_mutable_px_low(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal px_close = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
           ptr = ctx->ParseMessage(_internal_mutable_px_close(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal volume = 8;
       case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
           ptr = ctx->ParseMessage(_internal_mutable_volume(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 resolution = 9;
       case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
           resolution_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      // uint64 sequence_no = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
-          sequence_no_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* KlineData::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* KlineData::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.KlineData)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint64 time = 1;
-  if (this->time() != 0) {
+  if (this->_internal_time() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time(), target);
   }
 
   // string exchange = 2;
-  if (this->exchange().size() > 0) {
+  if (!this->_internal_exchange().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1661,7 +2069,7 @@ failure:
   }
 
   // string symbol = 3;
-  if (this->symbol().size() > 0) {
+  if (!this->_internal_symbol().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1671,7 +2079,7 @@ failure:
   }
 
   // .Proto3.MarketData.Decimal px_open = 4;
-  if (this->has_px_open()) {
+  if (this->_internal_has_px_open()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -1679,7 +2087,7 @@ failure:
   }
 
   // .Proto3.MarketData.Decimal px_high = 5;
-  if (this->has_px_high()) {
+  if (this->_internal_has_px_high()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -1687,7 +2095,7 @@ failure:
   }
 
   // .Proto3.MarketData.Decimal px_low = 6;
-  if (this->has_px_low()) {
+  if (this->_internal_has_px_low()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -1695,7 +2103,7 @@ failure:
   }
 
   // .Proto3.MarketData.Decimal px_close = 7;
-  if (this->has_px_close()) {
+  if (this->_internal_has_px_close()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -1703,7 +2111,7 @@ failure:
   }
 
   // .Proto3.MarketData.Decimal volume = 8;
-  if (this->has_volume()) {
+  if (this->_internal_has_volume()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -1711,15 +2119,9 @@ failure:
   }
 
   // uint32 resolution = 9;
-  if (this->resolution() != 0) {
+  if (this->_internal_resolution() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(9, this->_internal_resolution(), target);
-  }
-
-  // uint64 sequence_no = 10;
-  if (this->sequence_no() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(10, this->_internal_sequence_no(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1734,148 +2136,119 @@ size_t KlineData::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.KlineData)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string exchange = 2;
-  if (this->exchange().size() > 0) {
+  if (!this->_internal_exchange().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_exchange());
   }
 
   // string symbol = 3;
-  if (this->symbol().size() > 0) {
+  if (!this->_internal_symbol().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_symbol());
   }
 
   // .Proto3.MarketData.Decimal px_open = 4;
-  if (this->has_px_open()) {
+  if (this->_internal_has_px_open()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *px_open_);
   }
 
   // .Proto3.MarketData.Decimal px_high = 5;
-  if (this->has_px_high()) {
+  if (this->_internal_has_px_high()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *px_high_);
   }
 
   // .Proto3.MarketData.Decimal px_low = 6;
-  if (this->has_px_low()) {
+  if (this->_internal_has_px_low()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *px_low_);
   }
 
   // .Proto3.MarketData.Decimal px_close = 7;
-  if (this->has_px_close()) {
+  if (this->_internal_has_px_close()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *px_close_);
   }
 
   // .Proto3.MarketData.Decimal volume = 8;
-  if (this->has_volume()) {
+  if (this->_internal_has_volume()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *volume_);
   }
 
   // uint64 time = 1;
-  if (this->time() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_time());
-  }
-
-  // uint64 sequence_no = 10;
-  if (this->sequence_no() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_sequence_no());
+  if (this->_internal_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_time());
   }
 
   // uint32 resolution = 9;
-  if (this->resolution() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_resolution());
+  if (this->_internal_resolution() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_resolution());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void KlineData::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Proto3.MarketData.KlineData)
-  GOOGLE_DCHECK_NE(&from, this);
-  const KlineData* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<KlineData>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Proto3.MarketData.KlineData)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Proto3.MarketData.KlineData)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData KlineData::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    KlineData::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*KlineData::GetClassData() const { return &_class_data_; }
+
+void KlineData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<KlineData *>(to)->MergeFrom(
+      static_cast<const KlineData &>(from));
 }
+
 
 void KlineData::MergeFrom(const KlineData& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.KlineData)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.exchange().size() > 0) {
+  if (!from._internal_exchange().empty()) {
     _internal_set_exchange(from._internal_exchange());
   }
-  if (from.symbol().size() > 0) {
+  if (!from._internal_symbol().empty()) {
     _internal_set_symbol(from._internal_symbol());
   }
-  if (from.has_px_open()) {
+  if (from._internal_has_px_open()) {
     _internal_mutable_px_open()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_px_open());
   }
-  if (from.has_px_high()) {
+  if (from._internal_has_px_high()) {
     _internal_mutable_px_high()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_px_high());
   }
-  if (from.has_px_low()) {
+  if (from._internal_has_px_low()) {
     _internal_mutable_px_low()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_px_low());
   }
-  if (from.has_px_close()) {
+  if (from._internal_has_px_close()) {
     _internal_mutable_px_close()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_px_close());
   }
-  if (from.has_volume()) {
+  if (from._internal_has_volume()) {
     _internal_mutable_volume()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_volume());
   }
-  if (from.time() != 0) {
+  if (from._internal_time() != 0) {
     _internal_set_time(from._internal_time());
   }
-  if (from.sequence_no() != 0) {
-    _internal_set_sequence_no(from._internal_sequence_no());
-  }
-  if (from.resolution() != 0) {
+  if (from._internal_resolution() != 0) {
     _internal_set_resolution(from._internal_resolution());
   }
-}
-
-void KlineData::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Proto3.MarketData.KlineData)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void KlineData::CopyFrom(const KlineData& from) {
@@ -1891,9 +2264,19 @@ bool KlineData::IsInitialized() const {
 
 void KlineData::InternalSwap(KlineData* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  exchange_.Swap(&other->exchange_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  symbol_.Swap(&other->symbol_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(KlineData, resolution_)
       + sizeof(KlineData::resolution_)
@@ -1903,18 +2286,758 @@ void KlineData::InternalSwap(KlineData* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata KlineData::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[5]);
 }
-
 
 // ===================================================================
 
-void TradeData::InitAsDefaultInstance() {
-  ::Proto3::MarketData::_TradeData_default_instance_._instance.get_mutable()->price_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
-  ::Proto3::MarketData::_TradeData_default_instance_._instance.get_mutable()->volume_ = const_cast< ::Proto3::MarketData::Decimal*>(
-      ::Proto3::MarketData::Decimal::internal_default_instance());
+class ReqHishKlineInfo::_Internal {
+ public:
+};
+
+ReqHishKlineInfo::ReqHishKlineInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.ReqHishKlineInfo)
 }
+ReqHishKlineInfo::ReqHishKlineInfo(const ReqHishKlineInfo& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_symbol().empty()) {
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
+  }
+  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_exchange().empty()) {
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
+  }
+  ::memcpy(&start_time_, &from.start_time_,
+    static_cast<size_t>(reinterpret_cast<char*>(&frequency_) -
+    reinterpret_cast<char*>(&start_time_)) + sizeof(frequency_));
+  // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.ReqHishKlineInfo)
+}
+
+inline void ReqHishKlineInfo::SharedCtor() {
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&start_time_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&frequency_) -
+    reinterpret_cast<char*>(&start_time_)) + sizeof(frequency_));
+}
+
+ReqHishKlineInfo::~ReqHishKlineInfo() {
+  // @@protoc_insertion_point(destructor:Proto3.MarketData.ReqHishKlineInfo)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void ReqHishKlineInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void ReqHishKlineInfo::ArenaDtor(void* object) {
+  ReqHishKlineInfo* _this = reinterpret_cast< ReqHishKlineInfo* >(object);
+  (void)_this;
+}
+void ReqHishKlineInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ReqHishKlineInfo::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ReqHishKlineInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:Proto3.MarketData.ReqHishKlineInfo)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  symbol_.ClearToEmpty();
+  exchange_.ClearToEmpty();
+  ::memset(&start_time_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&frequency_) -
+      reinterpret_cast<char*>(&start_time_)) + sizeof(frequency_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ReqHishKlineInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string symbol = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_symbol();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.ReqHishKlineInfo.symbol"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string exchange = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_exchange();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.ReqHishKlineInfo.exchange"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 start_time = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          start_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 end_time = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          end_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 count = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 frequency = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          frequency_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ReqHishKlineInfo::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.ReqHishKlineInfo)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.ReqHishKlineInfo.symbol");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_symbol(), target);
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.ReqHishKlineInfo.exchange");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_exchange(), target);
+  }
+
+  // uint64 start_time = 3;
+  if (this->_internal_start_time() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_start_time(), target);
+  }
+
+  // uint64 end_time = 4;
+  if (this->_internal_end_time() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->_internal_end_time(), target);
+  }
+
+  // uint32 count = 5;
+  if (this->_internal_count() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->_internal_count(), target);
+  }
+
+  // uint32 frequency = 6;
+  if (this->_internal_frequency() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_frequency(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Proto3.MarketData.ReqHishKlineInfo)
+  return target;
+}
+
+size_t ReqHishKlineInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.ReqHishKlineInfo)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_symbol());
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_exchange());
+  }
+
+  // uint64 start_time = 3;
+  if (this->_internal_start_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_start_time());
+  }
+
+  // uint64 end_time = 4;
+  if (this->_internal_end_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_end_time());
+  }
+
+  // uint32 count = 5;
+  if (this->_internal_count() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_count());
+  }
+
+  // uint32 frequency = 6;
+  if (this->_internal_frequency() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_frequency());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ReqHishKlineInfo::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ReqHishKlineInfo::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ReqHishKlineInfo::GetClassData() const { return &_class_data_; }
+
+void ReqHishKlineInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ReqHishKlineInfo *>(to)->MergeFrom(
+      static_cast<const ReqHishKlineInfo &>(from));
+}
+
+
+void ReqHishKlineInfo::MergeFrom(const ReqHishKlineInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.ReqHishKlineInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_symbol().empty()) {
+    _internal_set_symbol(from._internal_symbol());
+  }
+  if (!from._internal_exchange().empty()) {
+    _internal_set_exchange(from._internal_exchange());
+  }
+  if (from._internal_start_time() != 0) {
+    _internal_set_start_time(from._internal_start_time());
+  }
+  if (from._internal_end_time() != 0) {
+    _internal_set_end_time(from._internal_end_time());
+  }
+  if (from._internal_count() != 0) {
+    _internal_set_count(from._internal_count());
+  }
+  if (from._internal_frequency() != 0) {
+    _internal_set_frequency(from._internal_frequency());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ReqHishKlineInfo::CopyFrom(const ReqHishKlineInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Proto3.MarketData.ReqHishKlineInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ReqHishKlineInfo::IsInitialized() const {
+  return true;
+}
+
+void ReqHishKlineInfo::InternalSwap(ReqHishKlineInfo* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ReqHishKlineInfo, frequency_)
+      + sizeof(ReqHishKlineInfo::frequency_)
+      - PROTOBUF_FIELD_OFFSET(ReqHishKlineInfo, start_time_)>(
+          reinterpret_cast<char*>(&start_time_),
+          reinterpret_cast<char*>(&other->start_time_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ReqHishKlineInfo::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[6]);
+}
+
+// ===================================================================
+
+class HistKlineData::_Internal {
+ public:
+};
+
+HistKlineData::HistKlineData(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  kline_data_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.HistKlineData)
+}
+HistKlineData::HistKlineData(const HistKlineData& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      kline_data_(from.kline_data_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_symbol().empty()) {
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
+  }
+  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_exchange().empty()) {
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
+  }
+  ::memcpy(&start_time_, &from.start_time_,
+    static_cast<size_t>(reinterpret_cast<char*>(&frequency_) -
+    reinterpret_cast<char*>(&start_time_)) + sizeof(frequency_));
+  // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.HistKlineData)
+}
+
+inline void HistKlineData::SharedCtor() {
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&start_time_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&frequency_) -
+    reinterpret_cast<char*>(&start_time_)) + sizeof(frequency_));
+}
+
+HistKlineData::~HistKlineData() {
+  // @@protoc_insertion_point(destructor:Proto3.MarketData.HistKlineData)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void HistKlineData::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void HistKlineData::ArenaDtor(void* object) {
+  HistKlineData* _this = reinterpret_cast< HistKlineData* >(object);
+  (void)_this;
+}
+void HistKlineData::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void HistKlineData::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void HistKlineData::Clear() {
+// @@protoc_insertion_point(message_clear_start:Proto3.MarketData.HistKlineData)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  kline_data_.Clear();
+  symbol_.ClearToEmpty();
+  exchange_.ClearToEmpty();
+  ::memset(&start_time_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&frequency_) -
+      reinterpret_cast<char*>(&start_time_)) + sizeof(frequency_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* HistKlineData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string symbol = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_symbol();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.HistKlineData.symbol"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string exchange = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_exchange();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.HistKlineData.exchange"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 start_time = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          start_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 end_time = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          end_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 count = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 frequency = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          frequency_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .Proto3.MarketData.KlineData kline_data = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_kline_data(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<58>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* HistKlineData::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.HistKlineData)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.HistKlineData.symbol");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_symbol(), target);
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.HistKlineData.exchange");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_exchange(), target);
+  }
+
+  // uint64 start_time = 3;
+  if (this->_internal_start_time() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_start_time(), target);
+  }
+
+  // uint64 end_time = 4;
+  if (this->_internal_end_time() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->_internal_end_time(), target);
+  }
+
+  // uint32 count = 5;
+  if (this->_internal_count() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->_internal_count(), target);
+  }
+
+  // uint32 frequency = 6;
+  if (this->_internal_frequency() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_frequency(), target);
+  }
+
+  // repeated .Proto3.MarketData.KlineData kline_data = 7;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_kline_data_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(7, this->_internal_kline_data(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Proto3.MarketData.HistKlineData)
+  return target;
+}
+
+size_t HistKlineData::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.HistKlineData)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .Proto3.MarketData.KlineData kline_data = 7;
+  total_size += 1UL * this->_internal_kline_data_size();
+  for (const auto& msg : this->kline_data_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_symbol());
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_exchange());
+  }
+
+  // uint64 start_time = 3;
+  if (this->_internal_start_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_start_time());
+  }
+
+  // uint64 end_time = 4;
+  if (this->_internal_end_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_end_time());
+  }
+
+  // uint32 count = 5;
+  if (this->_internal_count() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_count());
+  }
+
+  // uint32 frequency = 6;
+  if (this->_internal_frequency() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_frequency());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData HistKlineData::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    HistKlineData::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*HistKlineData::GetClassData() const { return &_class_data_; }
+
+void HistKlineData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<HistKlineData *>(to)->MergeFrom(
+      static_cast<const HistKlineData &>(from));
+}
+
+
+void HistKlineData::MergeFrom(const HistKlineData& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.HistKlineData)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  kline_data_.MergeFrom(from.kline_data_);
+  if (!from._internal_symbol().empty()) {
+    _internal_set_symbol(from._internal_symbol());
+  }
+  if (!from._internal_exchange().empty()) {
+    _internal_set_exchange(from._internal_exchange());
+  }
+  if (from._internal_start_time() != 0) {
+    _internal_set_start_time(from._internal_start_time());
+  }
+  if (from._internal_end_time() != 0) {
+    _internal_set_end_time(from._internal_end_time());
+  }
+  if (from._internal_count() != 0) {
+    _internal_set_count(from._internal_count());
+  }
+  if (from._internal_frequency() != 0) {
+    _internal_set_frequency(from._internal_frequency());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void HistKlineData::CopyFrom(const HistKlineData& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Proto3.MarketData.HistKlineData)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HistKlineData::IsInitialized() const {
+  return true;
+}
+
+void HistKlineData::InternalSwap(HistKlineData* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  kline_data_.InternalSwap(&other->kline_data_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(HistKlineData, frequency_)
+      + sizeof(HistKlineData::frequency_)
+      - PROTOBUF_FIELD_OFFSET(HistKlineData, start_time_)>(
+          reinterpret_cast<char*>(&start_time_),
+          reinterpret_cast<char*>(&other->start_time_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata HistKlineData::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[7]);
+}
+
+// ===================================================================
+
 class TradeData::_Internal {
  public:
   static const ::Proto3::MarketData::Decimal& price(const TradeData* msg);
@@ -1929,24 +3052,33 @@ const ::Proto3::MarketData::Decimal&
 TradeData::_Internal::volume(const TradeData* msg) {
   return *msg->volume_;
 }
-TradeData::TradeData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+TradeData::TradeData(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  RegisterArenaDtor(arena);
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
   // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.TradeData)
 }
 TradeData::TradeData(const TradeData& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_symbol().empty()) {
-    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_symbol(),
-      GetArena());
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
   }
   exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_exchange().empty()) {
-    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_exchange(),
-      GetArena());
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
   }
   if (from._internal_has_price()) {
     price_ = new ::Proto3::MarketData::Decimal(*from.price_);
@@ -1958,29 +3090,34 @@ TradeData::TradeData(const TradeData& from)
   } else {
     volume_ = nullptr;
   }
-  ::memcpy(&time_, &from.time_,
-    static_cast<size_t>(reinterpret_cast<char*>(&sequence_no_) -
-    reinterpret_cast<char*>(&time_)) + sizeof(sequence_no_));
+  time_ = from.time_;
   // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.TradeData)
 }
 
-void TradeData::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TradeData_market_5fdata_2eproto.base);
-  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&price_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&sequence_no_) -
-      reinterpret_cast<char*>(&price_)) + sizeof(sequence_no_));
+inline void TradeData::SharedCtor() {
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&price_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&time_) -
+    reinterpret_cast<char*>(&price_)) + sizeof(time_));
 }
 
 TradeData::~TradeData() {
   // @@protoc_insertion_point(destructor:Proto3.MarketData.TradeData)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void TradeData::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
+inline void TradeData::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete price_;
@@ -1996,124 +3133,114 @@ void TradeData::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 void TradeData::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const TradeData& TradeData::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TradeData_market_5fdata_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void TradeData::Clear() {
 // @@protoc_insertion_point(message_clear_start:Proto3.MarketData.TradeData)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  symbol_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  exchange_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  if (GetArena() == nullptr && price_ != nullptr) {
+  symbol_.ClearToEmpty();
+  exchange_.ClearToEmpty();
+  if (GetArenaForAllocation() == nullptr && price_ != nullptr) {
     delete price_;
   }
   price_ = nullptr;
-  if (GetArena() == nullptr && volume_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && volume_ != nullptr) {
     delete volume_;
   }
   volume_ = nullptr;
-  ::memset(&time_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&sequence_no_) -
-      reinterpret_cast<char*>(&time_)) + sizeof(sequence_no_));
+  time_ = uint64_t{0u};
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* TradeData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint64 time = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal price = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_price(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .Proto3.MarketData.Decimal volume = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_volume(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string symbol = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           auto str = _internal_mutable_symbol();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.TradeData.symbol"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string exchange = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           auto str = _internal_mutable_exchange();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.TradeData.exchange"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      // uint64 sequence_no = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
-          sequence_no_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* TradeData::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* TradeData::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.TradeData)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint64 time = 1;
-  if (this->time() != 0) {
+  if (this->_internal_time() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_time(), target);
   }
 
   // .Proto3.MarketData.Decimal price = 2;
-  if (this->has_price()) {
+  if (this->_internal_has_price()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -2121,7 +3248,7 @@ failure:
   }
 
   // .Proto3.MarketData.Decimal volume = 3;
-  if (this->has_volume()) {
+  if (this->_internal_has_volume()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -2129,7 +3256,7 @@ failure:
   }
 
   // string symbol = 4;
-  if (this->symbol().size() > 0) {
+  if (!this->_internal_symbol().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -2139,19 +3266,13 @@ failure:
   }
 
   // string exchange = 5;
-  if (this->exchange().size() > 0) {
+  if (!this->_internal_exchange().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "Proto3.MarketData.TradeData.exchange");
     target = stream->WriteStringMaybeAliased(
         5, this->_internal_exchange(), target);
-  }
-
-  // uint64 sequence_no = 6;
-  if (this->sequence_no() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(6, this->_internal_sequence_no(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2166,108 +3287,81 @@ size_t TradeData::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.TradeData)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string symbol = 4;
-  if (this->symbol().size() > 0) {
+  if (!this->_internal_symbol().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_symbol());
   }
 
   // string exchange = 5;
-  if (this->exchange().size() > 0) {
+  if (!this->_internal_exchange().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_exchange());
   }
 
   // .Proto3.MarketData.Decimal price = 2;
-  if (this->has_price()) {
+  if (this->_internal_has_price()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *price_);
   }
 
   // .Proto3.MarketData.Decimal volume = 3;
-  if (this->has_volume()) {
+  if (this->_internal_has_volume()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *volume_);
   }
 
   // uint64 time = 1;
-  if (this->time() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_time());
+  if (this->_internal_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_time());
   }
 
-  // uint64 sequence_no = 6;
-  if (this->sequence_no() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_sequence_no());
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void TradeData::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Proto3.MarketData.TradeData)
-  GOOGLE_DCHECK_NE(&from, this);
-  const TradeData* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TradeData>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Proto3.MarketData.TradeData)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Proto3.MarketData.TradeData)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TradeData::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    TradeData::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TradeData::GetClassData() const { return &_class_data_; }
+
+void TradeData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<TradeData *>(to)->MergeFrom(
+      static_cast<const TradeData &>(from));
 }
+
 
 void TradeData::MergeFrom(const TradeData& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.TradeData)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.symbol().size() > 0) {
+  if (!from._internal_symbol().empty()) {
     _internal_set_symbol(from._internal_symbol());
   }
-  if (from.exchange().size() > 0) {
+  if (!from._internal_exchange().empty()) {
     _internal_set_exchange(from._internal_exchange());
   }
-  if (from.has_price()) {
+  if (from._internal_has_price()) {
     _internal_mutable_price()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_price());
   }
-  if (from.has_volume()) {
+  if (from._internal_has_volume()) {
     _internal_mutable_volume()->::Proto3::MarketData::Decimal::MergeFrom(from._internal_volume());
   }
-  if (from.time() != 0) {
+  if (from._internal_time() != 0) {
     _internal_set_time(from._internal_time());
   }
-  if (from.sequence_no() != 0) {
-    _internal_set_sequence_no(from._internal_sequence_no());
-  }
-}
-
-void TradeData::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Proto3.MarketData.TradeData)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TradeData::CopyFrom(const TradeData& from) {
@@ -2283,21 +3377,591 @@ bool TradeData::IsInitialized() const {
 
 void TradeData::InternalSwap(TradeData* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  symbol_.Swap(&other->symbol_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  exchange_.Swap(&other->exchange_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(TradeData, sequence_no_)
-      + sizeof(TradeData::sequence_no_)
+      PROTOBUF_FIELD_OFFSET(TradeData, time_)
+      + sizeof(TradeData::time_)
       - PROTOBUF_FIELD_OFFSET(TradeData, price_)>(
           reinterpret_cast<char*>(&price_),
           reinterpret_cast<char*>(&other->price_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TradeData::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[8]);
 }
 
+// ===================================================================
+
+class ReqTradeInfo::_Internal {
+ public:
+};
+
+ReqTradeInfo::ReqTradeInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.ReqTradeInfo)
+}
+ReqTradeInfo::ReqTradeInfo(const ReqTradeInfo& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_symbol().empty()) {
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
+  }
+  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_exchange().empty()) {
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
+  }
+  time_ = from.time_;
+  // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.ReqTradeInfo)
+}
+
+inline void ReqTradeInfo::SharedCtor() {
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+time_ = uint64_t{0u};
+}
+
+ReqTradeInfo::~ReqTradeInfo() {
+  // @@protoc_insertion_point(destructor:Proto3.MarketData.ReqTradeInfo)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void ReqTradeInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void ReqTradeInfo::ArenaDtor(void* object) {
+  ReqTradeInfo* _this = reinterpret_cast< ReqTradeInfo* >(object);
+  (void)_this;
+}
+void ReqTradeInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ReqTradeInfo::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ReqTradeInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:Proto3.MarketData.ReqTradeInfo)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  symbol_.ClearToEmpty();
+  exchange_.ClearToEmpty();
+  time_ = uint64_t{0u};
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ReqTradeInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string symbol = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_symbol();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.ReqTradeInfo.symbol"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string exchange = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_exchange();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.ReqTradeInfo.exchange"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 time = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ReqTradeInfo::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.ReqTradeInfo)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.ReqTradeInfo.symbol");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_symbol(), target);
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.ReqTradeInfo.exchange");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_exchange(), target);
+  }
+
+  // uint64 time = 3;
+  if (this->_internal_time() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_time(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Proto3.MarketData.ReqTradeInfo)
+  return target;
+}
+
+size_t ReqTradeInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.ReqTradeInfo)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_symbol());
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_exchange());
+  }
+
+  // uint64 time = 3;
+  if (this->_internal_time() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_time());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ReqTradeInfo::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ReqTradeInfo::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ReqTradeInfo::GetClassData() const { return &_class_data_; }
+
+void ReqTradeInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ReqTradeInfo *>(to)->MergeFrom(
+      static_cast<const ReqTradeInfo &>(from));
+}
+
+
+void ReqTradeInfo::MergeFrom(const ReqTradeInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.ReqTradeInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_symbol().empty()) {
+    _internal_set_symbol(from._internal_symbol());
+  }
+  if (!from._internal_exchange().empty()) {
+    _internal_set_exchange(from._internal_exchange());
+  }
+  if (from._internal_time() != 0) {
+    _internal_set_time(from._internal_time());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ReqTradeInfo::CopyFrom(const ReqTradeInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Proto3.MarketData.ReqTradeInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ReqTradeInfo::IsInitialized() const {
+  return true;
+}
+
+void ReqTradeInfo::InternalSwap(ReqTradeInfo* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
+  swap(time_, other->time_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ReqTradeInfo::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[9]);
+}
+
+// ===================================================================
+
+class SubInfo::_Internal {
+ public:
+};
+
+SubInfo::SubInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:Proto3.MarketData.SubInfo)
+}
+SubInfo::SubInfo(const SubInfo& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_symbol().empty()) {
+    symbol_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_symbol(), 
+      GetArenaForAllocation());
+  }
+  exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_exchange().empty()) {
+    exchange_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_exchange(), 
+      GetArenaForAllocation());
+  }
+  data_type_ = from.data_type_;
+  // @@protoc_insertion_point(copy_constructor:Proto3.MarketData.SubInfo)
+}
+
+inline void SubInfo::SharedCtor() {
+symbol_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  symbol_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+exchange_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  exchange_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+data_type_ = 0;
+}
+
+SubInfo::~SubInfo() {
+  // @@protoc_insertion_point(destructor:Proto3.MarketData.SubInfo)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void SubInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  symbol_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  exchange_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void SubInfo::ArenaDtor(void* object) {
+  SubInfo* _this = reinterpret_cast< SubInfo* >(object);
+  (void)_this;
+}
+void SubInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SubInfo::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void SubInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:Proto3.MarketData.SubInfo)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  symbol_.ClearToEmpty();
+  exchange_.ClearToEmpty();
+  data_type_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SubInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string symbol = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_symbol();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.SubInfo.symbol"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string exchange = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_exchange();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Proto3.MarketData.SubInfo.exchange"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .Proto3.MarketData.DataType data_type = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_data_type(static_cast<::Proto3::MarketData::DataType>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* SubInfo::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Proto3.MarketData.SubInfo)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_symbol().data(), static_cast<int>(this->_internal_symbol().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.SubInfo.symbol");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_symbol(), target);
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_exchange().data(), static_cast<int>(this->_internal_exchange().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Proto3.MarketData.SubInfo.exchange");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_exchange(), target);
+  }
+
+  // .Proto3.MarketData.DataType data_type = 3;
+  if (this->_internal_data_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      3, this->_internal_data_type(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Proto3.MarketData.SubInfo)
+  return target;
+}
+
+size_t SubInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Proto3.MarketData.SubInfo)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string symbol = 1;
+  if (!this->_internal_symbol().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_symbol());
+  }
+
+  // string exchange = 2;
+  if (!this->_internal_exchange().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_exchange());
+  }
+
+  // .Proto3.MarketData.DataType data_type = 3;
+  if (this->_internal_data_type() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_data_type());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SubInfo::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    SubInfo::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SubInfo::GetClassData() const { return &_class_data_; }
+
+void SubInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<SubInfo *>(to)->MergeFrom(
+      static_cast<const SubInfo &>(from));
+}
+
+
+void SubInfo::MergeFrom(const SubInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Proto3.MarketData.SubInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_symbol().empty()) {
+    _internal_set_symbol(from._internal_symbol());
+  }
+  if (!from._internal_exchange().empty()) {
+    _internal_set_exchange(from._internal_exchange());
+  }
+  if (from._internal_data_type() != 0) {
+    _internal_set_data_type(from._internal_data_type());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SubInfo::CopyFrom(const SubInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Proto3.MarketData.SubInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SubInfo::IsInitialized() const {
+  return true;
+}
+
+void SubInfo::InternalSwap(SubInfo* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &symbol_, lhs_arena,
+      &other->symbol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &exchange_, lhs_arena,
+      &other->exchange_, rhs_arena
+  );
+  swap(data_type_, other->data_type_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SubInfo::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_market_5fdata_2eproto_getter, &descriptor_table_market_5fdata_2eproto_once,
+      file_level_metadata_market_5fdata_2eproto[10]);
+}
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace MarketData
@@ -2315,11 +3979,26 @@ template<> PROTOBUF_NOINLINE ::Proto3::MarketData::Depth* Arena::CreateMaybeMess
 template<> PROTOBUF_NOINLINE ::Proto3::MarketData::DepthQuote* Arena::CreateMaybeMessage< ::Proto3::MarketData::DepthQuote >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Proto3::MarketData::DepthQuote >(arena);
 }
+template<> PROTOBUF_NOINLINE ::Proto3::MarketData::ReqDepthInfo* Arena::CreateMaybeMessage< ::Proto3::MarketData::ReqDepthInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Proto3::MarketData::ReqDepthInfo >(arena);
+}
 template<> PROTOBUF_NOINLINE ::Proto3::MarketData::KlineData* Arena::CreateMaybeMessage< ::Proto3::MarketData::KlineData >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Proto3::MarketData::KlineData >(arena);
 }
+template<> PROTOBUF_NOINLINE ::Proto3::MarketData::ReqHishKlineInfo* Arena::CreateMaybeMessage< ::Proto3::MarketData::ReqHishKlineInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Proto3::MarketData::ReqHishKlineInfo >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Proto3::MarketData::HistKlineData* Arena::CreateMaybeMessage< ::Proto3::MarketData::HistKlineData >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Proto3::MarketData::HistKlineData >(arena);
+}
 template<> PROTOBUF_NOINLINE ::Proto3::MarketData::TradeData* Arena::CreateMaybeMessage< ::Proto3::MarketData::TradeData >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Proto3::MarketData::TradeData >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Proto3::MarketData::ReqTradeInfo* Arena::CreateMaybeMessage< ::Proto3::MarketData::ReqTradeInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Proto3::MarketData::ReqTradeInfo >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Proto3::MarketData::SubInfo* Arena::CreateMaybeMessage< ::Proto3::MarketData::SubInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Proto3::MarketData::SubInfo >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
