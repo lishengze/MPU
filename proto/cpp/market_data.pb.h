@@ -1122,6 +1122,7 @@ class KlineData final :
     kPxCloseFieldNumber = 7,
     kVolumeFieldNumber = 8,
     kTimeFieldNumber = 1,
+    kSequenceNoFieldNumber = 10,
     kResolutionFieldNumber = 9,
   };
   // string exchange = 2;
@@ -1251,6 +1252,15 @@ class KlineData final :
   void _internal_set_time(uint64_t value);
   public:
 
+  // uint64 sequence_no = 10;
+  void clear_sequence_no();
+  uint64_t sequence_no() const;
+  void set_sequence_no(uint64_t value);
+  private:
+  uint64_t _internal_sequence_no() const;
+  void _internal_set_sequence_no(uint64_t value);
+  public:
+
   // uint32 resolution = 9;
   void clear_resolution();
   uint32_t resolution() const;
@@ -1275,6 +1285,7 @@ class KlineData final :
   ::Proto3::MarketData::Decimal* px_close_;
   ::Proto3::MarketData::Decimal* volume_;
   uint64_t time_;
+  uint64_t sequence_no_;
   uint32_t resolution_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_market_5fdata_2eproto;
@@ -1850,6 +1861,7 @@ class TradeData final :
     kPriceFieldNumber = 2,
     kVolumeFieldNumber = 3,
     kTimeFieldNumber = 1,
+    kSequenceNoFieldNumber = 6,
   };
   // string symbol = 4;
   void clear_symbol();
@@ -1924,6 +1936,15 @@ class TradeData final :
   void _internal_set_time(uint64_t value);
   public:
 
+  // uint64 sequence_no = 6;
+  void clear_sequence_no();
+  uint64_t sequence_no() const;
+  void set_sequence_no(uint64_t value);
+  private:
+  uint64_t _internal_sequence_no() const;
+  void _internal_set_sequence_no(uint64_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Proto3.MarketData.TradeData)
  private:
   class _Internal;
@@ -1936,6 +1957,7 @@ class TradeData final :
   ::Proto3::MarketData::Decimal* price_;
   ::Proto3::MarketData::Decimal* volume_;
   uint64_t time_;
+  uint64_t sequence_no_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_market_5fdata_2eproto;
 };
@@ -3629,6 +3651,26 @@ inline void KlineData::set_resolution(uint32_t value) {
   // @@protoc_insertion_point(field_set:Proto3.MarketData.KlineData.resolution)
 }
 
+// uint64 sequence_no = 10;
+inline void KlineData::clear_sequence_no() {
+  sequence_no_ = uint64_t{0u};
+}
+inline uint64_t KlineData::_internal_sequence_no() const {
+  return sequence_no_;
+}
+inline uint64_t KlineData::sequence_no() const {
+  // @@protoc_insertion_point(field_get:Proto3.MarketData.KlineData.sequence_no)
+  return _internal_sequence_no();
+}
+inline void KlineData::_internal_set_sequence_no(uint64_t value) {
+  
+  sequence_no_ = value;
+}
+inline void KlineData::set_sequence_no(uint64_t value) {
+  _internal_set_sequence_no(value);
+  // @@protoc_insertion_point(field_set:Proto3.MarketData.KlineData.sequence_no)
+}
+
 // -------------------------------------------------------------------
 
 // ReqHishKlineInfo
@@ -4345,6 +4387,26 @@ inline void TradeData::set_allocated_exchange(std::string* exchange) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Proto3.MarketData.TradeData.exchange)
+}
+
+// uint64 sequence_no = 6;
+inline void TradeData::clear_sequence_no() {
+  sequence_no_ = uint64_t{0u};
+}
+inline uint64_t TradeData::_internal_sequence_no() const {
+  return sequence_no_;
+}
+inline uint64_t TradeData::sequence_no() const {
+  // @@protoc_insertion_point(field_get:Proto3.MarketData.TradeData.sequence_no)
+  return _internal_sequence_no();
+}
+inline void TradeData::_internal_set_sequence_no(uint64_t value) {
+  
+  sequence_no_ = value;
+}
+inline void TradeData::set_sequence_no(uint64_t value) {
+  _internal_set_sequence_no(value);
+  // @@protoc_insertion_point(field_set:Proto3.MarketData.TradeData.sequence_no)
 }
 
 // -------------------------------------------------------------------
