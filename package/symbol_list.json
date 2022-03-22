@@ -1,5 +1,5 @@
 {
-    "symbol_list":["BTC_USDT"],      
+    "symbol_list":["BTC_USD", "ETH_USD"],      
     
     "symbol_list_all":["USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
         "FTT_USD","HT_USD","ADA_USD","ATOM_USD","AVAX_USD","AXS_USD","BSV_USD","BTT_USD","DOT_USD",
