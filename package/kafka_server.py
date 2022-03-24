@@ -166,7 +166,7 @@ class KafkaServer(NetServer):
             while True:
                 try:
                     for msg in self._consumer:
-                        # print(msg)
+                        print(msg.value)
                         data_type = self._get_data_type(msg.topic)
                         
                         if data_type == DEPTH_TYPE:
