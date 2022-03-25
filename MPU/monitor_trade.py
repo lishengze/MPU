@@ -44,7 +44,7 @@ class TestKafka:
     def __init__(self, data_type_list:list) -> None:
         log_dir = os.path.dirname(os.path.abspath(__file__)) + get_dir_seprator() + "log" + get_dir_seprator() 
 
-        self._logger = Logger(program_name="", log_dir=log_dir)
+        self._logger = Logger(program_name="Monitor", log_dir=log_dir)
         
         self._logger = self._logger._logger
         
