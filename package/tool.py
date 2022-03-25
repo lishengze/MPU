@@ -29,6 +29,20 @@ def get_utc_nano_time():
     
     return utc_time_nano
 
+def get_str_time_from_nano_time(nano_time):
+
+    if nano_time == 0:
+        return "0"
+        
+    time_secs = float(nano_time) / get_nano_per_sec()
+
+    time_obj = time.localtime(time_secs)
+
+    time_str = time.strftime("%Y-%m-%d %H:%M:%S", time_obj)
+
+    return time_str
+
+
 def get_nano_time():
     return time.time() * 1000000000
 
@@ -181,8 +195,16 @@ def get_test_symbol_list(test_count:int):
         result.append("A_"+ str(i) + "_USDT")
     return result
 
+def test_nano_time():
+    nano_time = get_utc_nano_time()
+    print("nano_time: " + str(nano_time))
+
+    print("time_str: " + get_str_time_from_nano_time(nano_time))
+
 if __name__ == "__main__":
     
-    test_float_to_str()
+    # test_float_to_str()
     
     # test_get_ori_sys_config()
+
+    test_nano_time()
