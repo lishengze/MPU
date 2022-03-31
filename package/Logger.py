@@ -50,10 +50,17 @@ class Logger(object):
 
         # detail_handler = logging.handlers.TimedRotatingFileHandler('log/all.log', when='midnight', interval=1, backupCount=7, atTime=datetime.time(0, 0, 0, 0))
 
-        detail_handler = logging.handlers.TimedRotatingFileHandler(all_file_Name, when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
+        # detail_handler = logging.handlers.TimedRotatingFileHandler(all_file_Name, when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
+        
+        detail_handler = logging.handlers.RotatingFileHandler(all_file_Name, maxBytes=100*1024*1024, backupCount=5)
+        
         detail_handler.setFormatter(logging.Formatter("%(asctime)s-%(levelname)s-%(filename)s[:%(lineno)d]-%(message)s"))
 
-        error_handler = logging.handlers.TimedRotatingFileHandler(error_file_name, when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
+        # error_handler = logging.handlers.TimedRotatingFileHandler(error_file_name, when='midnight', interval=1, backupCount=5, atTime=datetime.time(0, 0, 0, 0))
+        error_handler = logging.handlers.RotatingFileHandler(error_file_name, maxBytes=100*1024*1024, backupCount=5)
+        
+        
+        
         error_handler.setLevel(logging.WARNING)
         error_handler.setFormatter(logging.Formatter(fmt="%(asctime)s-%(levelname)s-%(filename)s[:%(lineno)d]-%(message)s"))
 
