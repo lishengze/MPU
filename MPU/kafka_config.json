@@ -1,4 +1,4 @@
 {
-    "server_list":["152.32.254.76:9117"],
+    "server_list":["127.0.0.1:9117"],
     "depth_update_count":5
 }
