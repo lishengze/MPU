@@ -166,7 +166,7 @@ class KafkaServer(NetServer):
             while True:
                 try:
                     for msg in self._consumer:
-                        # print(msg)
+                        # print(msg.value)
                         data_type = self._get_data_type(msg.topic)
                         
                         if data_type == DEPTH_TYPE:
@@ -300,7 +300,9 @@ class KafkaServer(NetServer):
                 if type(key) == str:
                     key_value = bytes(key.encode())
                 
-                self._producer.send(topic, key=key_value, value=msg)
+                # self._producer.send(topic, key=key_value, value=msg)
+
+                self._producer.send(topic, value=msg)
                 
                 # self._producer.send(topic, value=msg)
                 # self._logger.info(topic + " " + msg)
