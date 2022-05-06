@@ -78,7 +78,7 @@ class TestKafka:
         self._symbol_trade_map = dict()
 
         for symbol in self._symbol_list:
-            self._symbol_trade_map[symbol] = []
+            self._symbol_trade_map[symbol] = [0, 'Not Recorded']
 
         self._ping_secs = 10
         self._start_check_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
