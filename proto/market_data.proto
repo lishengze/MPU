@@ -69,16 +69,7 @@ message ReqHishKlineInfo
     uint32 frequency = 6;
 };
 
-message HistKlineData
-{
-    string symbol = 1;
-    string exchange = 2;    
-    uint64 start_time = 3;
-    uint64 end_time = 4;
-    uint32 count = 5;
-    uint32 frequency = 6;
-    repeated KlineData kline_data = 7;
-};
+5
 
 message TradeData
 {
