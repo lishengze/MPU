@@ -1,6 +1,6 @@
 # !/bin/bash
 
-rm -fr log/BINANCE/*.log*
+rm -fr /mnt/pms_market/MPU/log/BINANCE/*.log*
 
 PID=`ps aux|grep binance |grep -v grep | awk '{print $2}'`
 kill -9 $PID

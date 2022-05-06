@@ -1,6 +1,6 @@
 # !/bin/bash
 
-rm -fr log/okex/*.log*
+rm -fr /mnt/pms_market/MPU/log/OKEX/*.log*
 
 
 PID=`ps aux|grep okex |grep -v grep | awk '{print $2}'`

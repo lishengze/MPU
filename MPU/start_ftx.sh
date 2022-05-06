@@ -1,6 +1,6 @@
 # !/bin/bash
 
-nohup python3 /mnt/market/MPU/ftx.py > /mnt/market/MPU/log/ftx.log &
+nohup python3 /mnt/pms_market/MPU/ftx.py > /mnt/pms_market/MPU/log/ftx.log &
 
 
 sleep 2s
