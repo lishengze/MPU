@@ -78,7 +78,7 @@ class TestKafka:
         self._symbol_trade_map = dict()
 
         for symbol in self._symbol_list:
-            self._symbol_trade_map[symbol] = 0
+            self._symbol_trade_map[symbol] = []
 
         self._ping_secs = 10
         self._start_check_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -114,7 +114,7 @@ class TestKafka:
                              self._end_check_time))
 
             for symbol in self._symbol_trade_map:
-                self._logger.info(symbol + ": " +  get_str_time_from_nano_time(self._symbol_trade_map[symbol]))
+                self._logger.info(symbol + ": " +  get_str_time_from_nano_time(self._symbol_trade_map[symbol][0]) + ", " + self._symbol_trade_map[symbol][1] )
 
             self._logger.info("\n")
 
@@ -160,7 +160,7 @@ class TestKafka:
                 # print(trade_data.meta_str())
                 self._trade_symbol_list.append(trade_data.symbol)
             
-            self._symbol_trade_map[trade_data.symbol] = trade_data.time
+            self._symbol_trade_map[trade_data.symbol] = [trade_data.time, trade_data.exchange]
 
             # print(trade_data.meta_str())
             
