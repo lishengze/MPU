@@ -4,6 +4,7 @@ option go_package = "mpupb";
 
 package Proto3.MarketData; 
 
+import public "google/protobuf/timestamp.proto";
 
 message GetSymbolReq {
   string symbol = 1;

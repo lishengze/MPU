@@ -2,7 +2,7 @@ import  os
 import  sys
 
 from data_struct import *
-from proto.python.market_data_pb2 import Trade
+
 
 def get_grandfather_dir():
     parent = os.path.dirname(os.path.realpath(__file__))
@@ -21,13 +21,14 @@ sys.path.append(get_proto_dir())
 
 from market_data_pb2 import *
 
+# from proto.python.market_data_pb2 import Trade
+
 def set_proto_depth_list(dst_depth_list_proto, src_depth_list_local):
     
     for depth in src_depth_list_local:
-        new_depth = Depth()
+        new_depth = PriceVolume()
         
         new_depth.price = str(depth.price.get_value())
-        
         new_depth.volume = str(depth.volume.get_value())    
             
         dst_depth_list_proto.append(new_depth)        
@@ -184,7 +185,7 @@ def test_market_data():
     print(trans_quote.asks[0].price.value)
     print(trans_quote.asks[0].price.precise)
 
-def get_proto_decimal_value(src:Decimal):
+def get_proto_decimal_value(src:SDecimal):
         if src.precise == 0:
             return src.value
         else:
@@ -246,9 +247,8 @@ class TestMain(object):
         local_kline.px_low = SDecimal(54555.11)
         local_kline.px_close = SDecimal(57555.11)
 
-        se_str, new_kline = self.serializer.encode_kline(local_kline)
+        se_str = self.serializer.encode_kline(local_kline)
 
-        print(get_proto_kline_meta(new_kline))
         print("se_str.len: %d, : %s" % (len(se_str), se_str))
 
         new_local_kline = self.serializer.decode_kline(se_str)
@@ -279,6 +279,8 @@ if __name__ == "__main__":
     test_main = TestMain()
 
     test_main.test_quote()
+
+    test_main.test_trade()
 
     # test_main.test_kline()
 

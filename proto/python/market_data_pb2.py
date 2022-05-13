@@ -12,9 +12,11 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
+from google.protobuf.timestamp_pb2 import *
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11market_data.proto\x12\x11Proto3.MarketData\"0\n\x0cGetSymbolReq\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\"9\n\x0cGetSymbolRsp\x12)\n\x06symbol\x18\x01 \x01(\x0b\x32\x19.Proto3.MarketData.Symbol\">\n\x10GetAllSymbolsRsp\x12*\n\x07symbols\x18\x01 \x03(\x0b\x32\x19.Proto3.MarketData.Symbol\"\xc7\x01\n\x06Symbol\x12\x10\n\x08\x65xchange\x18\x01 \x01(\t\x12\x10\n\x08\x65xFormat\x18\x02 \x01(\t\x12\x11\n\tstdFormat\x18\x03 \x01(\t\x12\x0c\n\x04type\x18\x04 \x01(\t\x12\x13\n\x0bvolumeScale\x18\x05 \x01(\t\x12\x12\n\npriceScale\x18\x06 \x01(\t\x12\x11\n\tminVolume\x18\x07 \x01(\t\x12\x10\n\x08minPrice\x18\t \x01(\t\x12\x14\n\x0c\x63ontractSize\x18\x0b \x01(\t\x12\x14\n\x0c\x62\x61seCurrency\x18\x0c \x01(\t\"\xba\x01\n\x0bPriceVolume\x12\r\n\x05price\x18\x01 \x01(\t\x12\x0e\n\x06volume\x18\x02 \x01(\t\x12R\n\x13volume_by_exchanges\x18\x03 \x03(\x0b\x32\x35.Proto3.MarketData.PriceVolume.VolumeByExchangesEntry\x1a\x38\n\x16VolumeByExchangesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x98\x01\n\x05\x44\x65pth\x12\x11\n\ttimestamp\x18\x01 \x01(\x03\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12,\n\x04\x61sks\x18\x04 \x03(\x0b\x32\x1e.Proto3.MarketData.PriceVolume\x12,\n\x04\x62ids\x18\x05 \x03(\x0b\x32\x1e.Proto3.MarketData.PriceVolume\"[\n\x05Trade\x12\x11\n\ttimestamp\x18\x01 \x01(\x03\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\t\x12\x0e\n\x06volume\x18\x05 \x01(\t\"\xa7\x01\n\x05Kline\x12\x11\n\ttimestamp\x18\x01 \x01(\x03\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12\x0c\n\x04open\x18\x04 \x01(\t\x12\x0c\n\x04high\x18\x05 \x01(\t\x12\x0b\n\x03low\x18\x06 \x01(\t\x12\r\n\x05\x63lose\x18\x07 \x01(\t\x12\x0e\n\x06volume\x18\x08 \x01(\t\x12\r\n\x05value\x18\t \x01(\t\x12\x12\n\nresolution\x18\n \x01(\r\"\xa7\x01\n\rHistKlineData\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\x04\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\x04\x12\r\n\x05\x63ount\x18\x05 \x01(\r\x12\x11\n\tfrequency\x18\x06 \x01(\r\x12,\n\nkline_data\x18\x07 \x03(\x0b\x32\x18.Proto3.MarketData.Kline\"\n\n\x08\x45mptyReq\"\n\n\x08\x45mptyRsp\"|\n\x10ReqHishKlineInfo\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\x04\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\x04\x12\r\n\x05\x63ount\x18\x05 \x01(\r\x12\x11\n\tfrequency\x18\x06 \x01(\r\">\n\x0cReqTradeInfo\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0c\n\x04time\x18\x03 \x01(\x04\x32\xe3\x02\n\rMarketService\x12Q\n\rGetAllSymbols\x12\x1b.Proto3.MarketData.EmptyReq\x1a#.Proto3.MarketData.GetAllSymbolsRsp\x12M\n\tGetSymbol\x12\x1f.Proto3.MarketData.GetSymbolReq\x1a\x1f.Proto3.MarketData.GetSymbolRsp\x12_\n\x14RequestHistKlineData\x12#.Proto3.MarketData.ReqHishKlineInfo\x1a .Proto3.MarketData.HistKlineData\"\x00\x12O\n\x10RequestTradeData\x12\x1f.Proto3.MarketData.ReqTradeInfo\x1a\x18.Proto3.MarketData.Trade\"\x00\x42\x07Z\x05mpupbb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11market_data.proto\x12\x11Proto3.MarketData\x1a\x1fgoogle/protobuf/timestamp.proto\"0\n\x0cGetSymbolReq\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\"9\n\x0cGetSymbolRsp\x12)\n\x06symbol\x18\x01 \x01(\x0b\x32\x19.Proto3.MarketData.Symbol\">\n\x10GetAllSymbolsRsp\x12*\n\x07symbols\x18\x01 \x03(\x0b\x32\x19.Proto3.MarketData.Symbol\"\xc7\x01\n\x06Symbol\x12\x10\n\x08\x65xchange\x18\x01 \x01(\t\x12\x10\n\x08\x65xFormat\x18\x02 \x01(\t\x12\x11\n\tstdFormat\x18\x03 \x01(\t\x12\x0c\n\x04type\x18\x04 \x01(\t\x12\x13\n\x0bvolumeScale\x18\x05 \x01(\t\x12\x12\n\npriceScale\x18\x06 \x01(\t\x12\x11\n\tminVolume\x18\x07 \x01(\t\x12\x10\n\x08minPrice\x18\t \x01(\t\x12\x14\n\x0c\x63ontractSize\x18\x0b \x01(\t\x12\x14\n\x0c\x62\x61seCurrency\x18\x0c \x01(\t\"\xba\x01\n\x0bPriceVolume\x12\r\n\x05price\x18\x01 \x01(\t\x12\x0e\n\x06volume\x18\x02 \x01(\t\x12R\n\x13volume_by_exchanges\x18\x03 \x03(\x0b\x32\x35.Proto3.MarketData.PriceVolume.VolumeByExchangesEntry\x1a\x38\n\x16VolumeByExchangesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xe7\x01\n\x05\x44\x65pth\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12,\n\x04\x61sks\x18\x04 \x03(\x0b\x32\x1e.Proto3.MarketData.PriceVolume\x12,\n\x04\x62ids\x18\x05 \x03(\x0b\x32\x1e.Proto3.MarketData.PriceVolume\x12\x31\n\rmpu_timestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"w\n\x05Trade\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12\r\n\x05price\x18\x04 \x01(\t\x12\x0e\n\x06volume\x18\x05 \x01(\t\"\xc3\x01\n\x05Kline\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12\x0c\n\x04open\x18\x04 \x01(\t\x12\x0c\n\x04high\x18\x05 \x01(\t\x12\x0b\n\x03low\x18\x06 \x01(\t\x12\r\n\x05\x63lose\x18\x07 \x01(\t\x12\x0e\n\x06volume\x18\x08 \x01(\t\x12\r\n\x05value\x18\t \x01(\t\x12\x12\n\nresolution\x18\n \x01(\r\"\xa7\x01\n\rHistKlineData\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\x04\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\x04\x12\r\n\x05\x63ount\x18\x05 \x01(\r\x12\x11\n\tfrequency\x18\x06 \x01(\r\x12,\n\nkline_data\x18\x07 \x03(\x0b\x32\x18.Proto3.MarketData.Kline\"\n\n\x08\x45mptyReq\"\n\n\x08\x45mptyRsp\"|\n\x10ReqHishKlineInfo\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\x04\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\x04\x12\r\n\x05\x63ount\x18\x05 \x01(\r\x12\x11\n\tfrequency\x18\x06 \x01(\r\">\n\x0cReqTradeInfo\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08\x65xchange\x18\x02 \x01(\t\x12\x0c\n\x04time\x18\x03 \x01(\x04\x32\xe3\x02\n\rMarketService\x12Q\n\rGetAllSymbols\x12\x1b.Proto3.MarketData.EmptyReq\x1a#.Proto3.MarketData.GetAllSymbolsRsp\x12M\n\tGetSymbol\x12\x1f.Proto3.MarketData.GetSymbolReq\x1a\x1f.Proto3.MarketData.GetSymbolRsp\x12_\n\x14RequestHistKlineData\x12#.Proto3.MarketData.ReqHishKlineInfo\x1a .Proto3.MarketData.HistKlineData\"\x00\x12O\n\x10RequestTradeData\x12\x1f.Proto3.MarketData.ReqTradeInfo\x1a\x18.Proto3.MarketData.Trade\"\x00\x42\x07Z\x05mpupbP\x00\x62\x06proto3')
 
 
 
@@ -138,34 +140,34 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._serialized_options = b'Z\005mpupb'
   _PRICEVOLUME_VOLUMEBYEXCHANGESENTRY._options = None
   _PRICEVOLUME_VOLUMEBYEXCHANGESENTRY._serialized_options = b'8\001'
-  _GETSYMBOLREQ._serialized_start=40
-  _GETSYMBOLREQ._serialized_end=88
-  _GETSYMBOLRSP._serialized_start=90
-  _GETSYMBOLRSP._serialized_end=147
-  _GETALLSYMBOLSRSP._serialized_start=149
-  _GETALLSYMBOLSRSP._serialized_end=211
-  _SYMBOL._serialized_start=214
-  _SYMBOL._serialized_end=413
-  _PRICEVOLUME._serialized_start=416
-  _PRICEVOLUME._serialized_end=602
-  _PRICEVOLUME_VOLUMEBYEXCHANGESENTRY._serialized_start=546
-  _PRICEVOLUME_VOLUMEBYEXCHANGESENTRY._serialized_end=602
-  _DEPTH._serialized_start=605
-  _DEPTH._serialized_end=757
-  _TRADE._serialized_start=759
-  _TRADE._serialized_end=850
-  _KLINE._serialized_start=853
-  _KLINE._serialized_end=1020
-  _HISTKLINEDATA._serialized_start=1023
-  _HISTKLINEDATA._serialized_end=1190
-  _EMPTYREQ._serialized_start=1192
-  _EMPTYREQ._serialized_end=1202
-  _EMPTYRSP._serialized_start=1204
-  _EMPTYRSP._serialized_end=1214
-  _REQHISHKLINEINFO._serialized_start=1216
-  _REQHISHKLINEINFO._serialized_end=1340
-  _REQTRADEINFO._serialized_start=1342
-  _REQTRADEINFO._serialized_end=1404
-  _MARKETSERVICE._serialized_start=1407
-  _MARKETSERVICE._serialized_end=1762
+  _GETSYMBOLREQ._serialized_start=73
+  _GETSYMBOLREQ._serialized_end=121
+  _GETSYMBOLRSP._serialized_start=123
+  _GETSYMBOLRSP._serialized_end=180
+  _GETALLSYMBOLSRSP._serialized_start=182
+  _GETALLSYMBOLSRSP._serialized_end=244
+  _SYMBOL._serialized_start=247
+  _SYMBOL._serialized_end=446
+  _PRICEVOLUME._serialized_start=449
+  _PRICEVOLUME._serialized_end=635
+  _PRICEVOLUME_VOLUMEBYEXCHANGESENTRY._serialized_start=579
+  _PRICEVOLUME_VOLUMEBYEXCHANGESENTRY._serialized_end=635
+  _DEPTH._serialized_start=638
+  _DEPTH._serialized_end=869
+  _TRADE._serialized_start=871
+  _TRADE._serialized_end=990
+  _KLINE._serialized_start=993
+  _KLINE._serialized_end=1188
+  _HISTKLINEDATA._serialized_start=1191
+  _HISTKLINEDATA._serialized_end=1358
+  _EMPTYREQ._serialized_start=1360
+  _EMPTYREQ._serialized_end=1370
+  _EMPTYRSP._serialized_start=1372
+  _EMPTYRSP._serialized_end=1382
+  _REQHISHKLINEINFO._serialized_start=1384
+  _REQHISHKLINEINFO._serialized_end=1508
+  _REQTRADEINFO._serialized_start=1510
+  _REQTRADEINFO._serialized_end=1572
+  _MARKETSERVICE._serialized_start=1575
+  _MARKETSERVICE._serialized_end=1930
 # @@protoc_insertion_point(module_scope)
