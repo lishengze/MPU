@@ -2,6 +2,7 @@ import  os
 import  sys
 
 from data_struct import *
+from proto.python.market_data_pb2 import Depth
 
 def get_grandfather_dir():
     parent = os.path.dirname(os.path.realpath(__file__))
@@ -38,7 +39,7 @@ def set_proto_depth_list(dst_depth_list_proto, src_depth_list_local):
             new_depth.volume_by_exchanges[symbol] = exchange_volume
     
         dst_depth_list_proto.append(new_depth)        
-
+        
 def get_local_depth_list(src_depth_list_proto):    
     
     dst_depth_list_local = []
@@ -70,6 +71,8 @@ class ProtoSerializer:
     def __init__(self, logger=None):
         self._logger = logger
         
+
+
     def decode_depth(self, src_str):
         proto_quote = DepthQuote()
         proto_quote.ParseFromString(src_str)
@@ -96,7 +99,7 @@ class ProtoSerializer:
         local_quote.bids = get_local_depth_list(proto_quote.bids)
 
         return local_quote
-
+    
     def decode_kline(self, src_str):
         proto_kline = KlineData()
         proto_kline.ParseFromString(src_str)
