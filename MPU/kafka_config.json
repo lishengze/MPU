@@ -1,22 +1,22 @@
 {
     "local": {
         "server_list":["43.154.179.47:9117"],
-        "depth_update_count":5
+        "depth_update_count":0
     },
     "dev": {
-        "server_list":["43.154.179.47:9117"],
-        "depth_update_count":5
+        "server_list":["152.32.254.76:9117"],
+        "depth_update_count":0
     },
     "qa": {
-        "server_list":["43.154.179.47:9117"],
-        "depth_update_count":5
+        "server_list":["10.11.1.95:8117"],
+        "depth_update_count":0
     },
     "stg": {
-        "server_list":["43.154.179.47:9117"],
-        "depth_update_count":5
+        "server_list":["18.162.52.222:8117"],
+        "depth_update_count":0
     },
     "prd": {
-        "server_list":["43.154.179.47:9117"],
-        "depth_update_count":5
+        "server_list":["16.162.143.211:8117"],
+        "depth_update_count":0
     }
 }
