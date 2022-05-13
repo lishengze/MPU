@@ -146,7 +146,7 @@ class TestKafka:
         try:    
             # self.check_seq(depth_quote.sequence_no)        
             # pass
-            print(depth_quote.meta_str())
+            # print(depth_quote.meta_str())
             self._symbol_depth_map[depth_quote.symbol] = [depth_quote.origin_time, depth_quote.exchange]
             
         except Exception as e:
