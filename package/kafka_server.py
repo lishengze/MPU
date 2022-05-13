@@ -345,6 +345,14 @@ class KafkaServer(NetServer):
     def publish_depth(self, snap_quote:SDepthQuote, update_quote:SDepthQuote):   
         try:
             symbol = snap_quote.symbol
+
+            if self._kafka_depth_update_count == 0:
+                if snap_quote:
+                    self._publish_msg(topic=self._get_depth_topic(snap_quote.symbol, snap_quote.exchange),\
+                                      key=update_quote.exchange, msg=self.serializer.encode_depth(snap_quote))
+                else:
+                    self._logger.info("snap_quote is None")   
+                return                
             
             if symbol not in self._kafka_curr_pubed_update_count:
                 self._kafka_curr_pubed_update_count[symbol] = self._kafka_depth_update_count
