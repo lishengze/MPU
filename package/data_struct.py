@@ -64,7 +64,6 @@ class SDecimal(object):
         except Exception as e :
             print("str_value: %s, raw: %f \n" % (str_value, raw))
             print(traceback.format_exc())
-
     
     def parse_original_float(self, raw:float, str_value:str):
         try:

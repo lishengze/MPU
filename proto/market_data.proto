@@ -37,17 +37,18 @@ message PriceVolume {
   map<string, string> volume_by_exchanges = 3;  // 增加了记录当前价格是哪个交易所的属性，聚合和风控行情可能用到；
 }
 
-// 名字我都改成了 **Data, 用 Stream 可能会有属性误会。。
-message Depth {  
-  int64     timestamp = 1; // 时间戳，毫秒，13位
-  string    exchange = 2;
-  string    symbol = 3;
+message Depth {
+  google.protobuf.Timestamp timestamp = 1; // 交易所更新时间
+  string  exchange = 2;
+  string  symbol = 3;
   repeated  PriceVolume asks = 4;
   repeated  PriceVolume bids = 5;
+  google.protobuf.Timestamp mpu_timestamp = 6; // mpu 服务器时间
+
 }
 
 message Trade {
-  int64  timestamp = 1; // 时间戳，毫秒，13位
+  google.protobuf.Timestamp timestamp = 1; // 交易所更新时间
   string exchange = 2;
   string symbol = 3;
   string price = 4;
@@ -55,7 +56,7 @@ message Trade {
 }
 
 message Kline {
-  int64  timestamp = 1; // 时间戳，毫秒，13位
+  google.protobuf.Timestamp timestamp = 1; // 时间
   string exchange = 2;
   string symbol = 3;
   string open = 4;
@@ -64,7 +65,7 @@ message Kline {
   string close = 7;
   string volume = 8; // 量
   string value = 9; // 额
-  uint32 resolution = 10;  // 增加的这个是 k 线频率的关键字，后面的行情服务可能会用到；
+  uint32 resolution = 10;
 }
 
 message HistKlineData
