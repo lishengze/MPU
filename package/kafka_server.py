@@ -310,10 +310,10 @@ class KafkaServer(NetServer):
                 self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
         except Exception as e:
             self._logger.warning("[E] publish_msg: \n%s" % (traceback.format_exc()))    
-            
+    # // fmt.Sprintf("DEPTH.%s.%s", depth.Symbol.StdSymbol.String(), depth.Exchange.String())
     def _get_depth_topic(self, symbol, exchange):
         try:
-            return DEPTH_TYPE + TYPE_SEPARATOR + symbol+ SYMBOL_EXCHANGE_SEPARATOR  + exchange
+            return DEPTH_TYPE + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR  + exchange
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             
@@ -323,9 +323,10 @@ class KafkaServer(NetServer):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             
+    # fmt.Sprintf("TRADE.%s.%s", depth.Symbol.StdSymbol.String(), depth.Exchange.String())
     def _get_trade_topic(self, symbol, exchange):
         try:
-            return TRADE_TYPE + TYPE_SEPARATOR + symbol
+            return TRADE_TYPE + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR  + exchange
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                                 
