@@ -62,17 +62,52 @@ def get_in_type(type):
 def get_out_type(type):
     return "Out_" + type;
 
-def get_config(logger = None, config_file=""):    
+def log_info_(info, logger = None):
+    if logger is not None:
+        logger.info(info)
+    else:
+        print(info)
+        
+def log_warning_(logger = None, info=""):
+    if logger is not None:
+        logger.warning(info)
+    else:
+        print("[W]: " + str(info))        
+        
+def get_config(logger = None, config_file="", env_type:str=""):    
     print("config_file_name: " + config_file)
     json_file = open(config_file,'r')
-    json_dict = json.load(json_file)
-    if logger is not None:
-        logger.info("\n******* config *******\n" + str(json_dict))
+    origin_config = json.load(json_file)
+    
+    log_info_("\n******* config *******\n" + str(origin_config))
+    
+    if env_type == "local":
+        if "local" not in origin_config:
+             log_warning_(logger, "local not int origin_config " + str(origin_config))
+        else:
+            return origin_config["local"]
+    elif env_type == "dev":
+        if "dev" not in origin_config:
+             log_warning_(logger, "dev not int origin_config " + str(origin_config))
+        else:
+            return origin_config["dev"]      
+    elif env_type == "qa":
+        if "qa" not in origin_config:
+             log_warning_(logger, "qa not int origin_config " + str(origin_config))
+        else:
+            return origin_config["qa"]                
+    elif env_type == "stg":
+        if "stg" not in origin_config:
+             log_warning_(logger, "stg not int origin_config " + str(origin_config))
+        else:
+            return origin_config["stg"]                      
+    elif env_type == "prd":
+        if "prd" not in origin_config:
+             log_warning_(logger, "prd not int origin_config " + str(origin_config))
+        else:
+            return origin_config["prd"]        
     else:
-        print("\n******* config *******\n" + str(json_dict))
-    # time.sleep(3)
-
-    return json_dict
+        return origin_config
 
 def trans_sys_symbol_b2c2(sys_symbol):
     try:
@@ -156,8 +191,8 @@ def get_exchange_sys_symbol_dict(sys_symbol_list, exchange:str):
         
     return result
     
-def get_symbol_dict(config_file_name:str, exchange:str):
-    config = get_config(config_file=config_file_name)
+def get_symbol_dict(config_file_name:str, exchange:str, env_type:str=""):
+    config = get_config(config_file=config_file_name, env_type=env_type)
     
     exchange_sys_symbol_dict = get_exchange_sys_symbol_dict(config["symbol_list"], exchange)
     

@@ -1,4 +1,22 @@
 {
-    "server_list":["10.11.1.95:8117"],
-    "depth_update_count":5
+    "local": {
+        "server_list":["43.154.179.47:9117"],
+        "depth_update_count":5
+    },
+    "dev": {
+        "server_list":["43.154.179.47:9117"],
+        "depth_update_count":5
+    },
+    "qa": {
+        "server_list":["43.154.179.47:9117"],
+        "depth_update_count":5
+    },
+    "stg": {
+        "server_list":["43.154.179.47:9117"],
+        "depth_update_count":5
+    },
+    "prd": {
+        "server_list":["43.154.179.47:9117"],
+        "depth_update_count":5
+    }
 }

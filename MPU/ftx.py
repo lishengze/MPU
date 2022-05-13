@@ -39,7 +39,7 @@ from Logger import *
 
 
 print(os.getcwd() + get_dir_seprator() + "sys_config.json")
-
+ENV_TYPE = ""
 SYS_CONFIG = get_config(config_file = (os.getcwd() + get_dir_seprator() + "sys_config.json"))
 
 def get_login_info(api_key, api_secret, logger = None):
@@ -120,11 +120,11 @@ BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class FTX(ExchangeBase):    
     def __init__(self, symbol_dict:dict, sub_data_type_list:list, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
-                debug_mode: bool = True, is_test_currency: bool = False, is_stress_test:bool = False):
+                debug_mode: bool = True, is_test_currency: bool = False, is_stress_test:bool = False, env_type:str = "dev"):
         try:
             super().__init__(exchange_name="FTX", symbol_dict=symbol_dict, 
                              sub_data_type_list=sub_data_type_list, net_server_type=net_server_type,
-                             debug_mode=debug_mode, is_test_currency=is_test_currency, is_stress_test=is_stress_test)            
+                             debug_mode=debug_mode, is_test_currency=is_test_currency, is_stress_test=is_stress_test, env_type=env_type)            
             self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
@@ -388,13 +388,19 @@ def test_ftx():
         ftx_obj = FTX(symbol_dict=symbol_dict, sub_data_type_list=data_list, net_server_type=net_type, \
                         debug_mode=False, is_test_currency=False, is_stress_test=True)
     else:
-        symbol_dict = get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX")
+        symbol_dict = get_symbol_dict(os.getcwd() + "/symbol_list.json", "FTX", env_type=ENV_TYPE)
         ftx_obj = FTX(symbol_dict=symbol_dict,net_server_type=net_type ,\
-                    sub_data_type_list=data_list, debug_mode=False, is_test_currency=SYS_CONFIG["is_test_currency"])
+                    sub_data_type_list=data_list, debug_mode=False, 
+                    is_test_currency=SYS_CONFIG["is_test_currency"], env_type=ENV_TYPE)
                 
     ftx_obj.start()
 
 if __name__ == "__main__":
+    if len(sys.argv) == 2:
+        ENV_TYPE = sys.argv[1]
+        
+    print("\nENV_TYPE: " + ENV_TYPE)
+    
     test_ftx()
     
     

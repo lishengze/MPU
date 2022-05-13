@@ -1,5 +1,78 @@
 {
-    "symbol_list_all":["BTC_USDT"],
+    "local": 
+    {
+        "symbol_list":["BTC_USDT"]
+    }, 
+    "dev": 
+    {
+        "symbol_list":["BTC_USD","BTC_HUSD","ETH_USD","USDT_USD","BTC_USDT","ETH_USDT", "ETH_BTC",
+            "USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
+            "FTT_USD","HT_USD","ADA_USD","ATOM_USD","AVAX_USD","AXS_USD","BSV_USD","BTT_USD","DOT_USD",
+            "EOS_USD","FSN_USD","GLM_USD","GNX_USD","ICP_USD","KSM_USD","LTC_USD","MANA_USD","OKB_USD",
+            "PST_USD","QTUM_USD","SOL_USD","SRM_USD","SLP_USD","SXP_USD","TRX_USD","VET_USD","XRP_USD",
+            "C98_USD","NMR_USD","AUDIO_USD","CTK_USD","AR_USD","RAY_USD","PHA_USD","MNGO_USD","LINK_USD",
+            "MATIC_USD","ATLAS_USD",
+            "DAI_USDT","PAX_USDT","BNB_USDT","FTT_USDT","HT_USDT","ADA_USDT",
+            "ATOM_USDT","AVAX_USDT","AXS_USDT","BSV_USDT","BTT_USDT","DOT_USDT","EOS_USDT","FSN_USDT",
+            "GLM_USDT","GNX_USDT","ICP_USDT","KSM_USDT","LTC_USDT","MANA_USDT","OKB_USDT","PST_USDT",
+            "QTUM_USDT","SOL_USDT","SRM_USDT","SLP_USDT","SXP_USDT","TRX_USDT","VET_USDT","XRP_USDT",
+            "C98_USDT","NMR_USDT","AUDIO_USDT","CTK_USDT","AR_USDT","RAY_USDT","PHA_USDT","MNGO_USDT",
+            "LINK_USDT","MATIC_USDT","ATLAS_USDT", "BUSD_USDT", "PST_USDT", "TUSD_USDT", 
+            "USDC_USDT", "USDK_USDT"]
+    }, 
+    "qa": 
+    {
+        "symbol_list":["BTC_USD","BTC_HUSD","ETH_USD","USDT_USD","BTC_USDT","ETH_USDT", "ETH_BTC",
+            "USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
+            "FTT_USD","HT_USD","ADA_USD","ATOM_USD","AVAX_USD","AXS_USD","BSV_USD","BTT_USD","DOT_USD",
+            "EOS_USD","FSN_USD","GLM_USD","GNX_USD","ICP_USD","KSM_USD","LTC_USD","MANA_USD","OKB_USD",
+            "PST_USD","QTUM_USD","SOL_USD","SRM_USD","SLP_USD","SXP_USD","TRX_USD","VET_USD","XRP_USD",
+            "C98_USD","NMR_USD","AUDIO_USD","CTK_USD","AR_USD","RAY_USD","PHA_USD","MNGO_USD","LINK_USD",
+            "MATIC_USD","ATLAS_USD",
+            "DAI_USDT","PAX_USDT","BNB_USDT","FTT_USDT","HT_USDT","ADA_USDT",
+            "ATOM_USDT","AVAX_USDT","AXS_USDT","BSV_USDT","BTT_USDT","DOT_USDT","EOS_USDT","FSN_USDT",
+            "GLM_USDT","GNX_USDT","ICP_USDT","KSM_USDT","LTC_USDT","MANA_USDT","OKB_USDT","PST_USDT",
+            "QTUM_USDT","SOL_USDT","SRM_USDT","SLP_USDT","SXP_USDT","TRX_USDT","VET_USDT","XRP_USDT",
+            "C98_USDT","NMR_USDT","AUDIO_USDT","CTK_USDT","AR_USDT","RAY_USDT","PHA_USDT","MNGO_USDT",
+            "LINK_USDT","MATIC_USDT","ATLAS_USDT", "BUSD_USDT", "PST_USDT", "TUSD_USDT", 
+            "USDC_USDT", "USDK_USDT"]
+    },
+    "stg": 
+    {
+        "symbol_list":["BTC_USD","BTC_HUSD","ETH_USD","USDT_USD","BTC_USDT","ETH_USDT", "ETH_BTC",
+            "USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
+            "FTT_USD","HT_USD","ADA_USD","ATOM_USD","AVAX_USD","AXS_USD","BSV_USD","BTT_USD","DOT_USD",
+            "EOS_USD","FSN_USD","GLM_USD","GNX_USD","ICP_USD","KSM_USD","LTC_USD","MANA_USD","OKB_USD",
+            "PST_USD","QTUM_USD","SOL_USD","SRM_USD","SLP_USD","SXP_USD","TRX_USD","VET_USD","XRP_USD",
+            "C98_USD","NMR_USD","AUDIO_USD","CTK_USD","AR_USD","RAY_USD","PHA_USD","MNGO_USD","LINK_USD",
+            "MATIC_USD","ATLAS_USD",
+            "DAI_USDT","PAX_USDT","BNB_USDT","FTT_USDT","HT_USDT","ADA_USDT",
+            "ATOM_USDT","AVAX_USDT","AXS_USDT","BSV_USDT","BTT_USDT","DOT_USDT","EOS_USDT","FSN_USDT",
+            "GLM_USDT","GNX_USDT","ICP_USDT","KSM_USDT","LTC_USDT","MANA_USDT","OKB_USDT","PST_USDT",
+            "QTUM_USDT","SOL_USDT","SRM_USDT","SLP_USDT","SXP_USDT","TRX_USDT","VET_USDT","XRP_USDT",
+            "C98_USDT","NMR_USDT","AUDIO_USDT","CTK_USDT","AR_USDT","RAY_USDT","PHA_USDT","MNGO_USDT",
+            "LINK_USDT","MATIC_USDT","ATLAS_USDT", "BUSD_USDT", "PST_USDT", "TUSD_USDT", 
+            "USDC_USDT", "USDK_USDT"]
+    }, 
+    "prd": 
+    {
+        "symbol_list":["BTC_USD","BTC_HUSD","ETH_USD","USDT_USD","BTC_USDT","ETH_USDT", "ETH_BTC",
+            "USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
+            "FTT_USD","HT_USD","ADA_USD","ATOM_USD","AVAX_USD","AXS_USD","BSV_USD","BTT_USD","DOT_USD",
+            "EOS_USD","FSN_USD","GLM_USD","GNX_USD","ICP_USD","KSM_USD","LTC_USD","MANA_USD","OKB_USD",
+            "PST_USD","QTUM_USD","SOL_USD","SRM_USD","SLP_USD","SXP_USD","TRX_USD","VET_USD","XRP_USD",
+            "C98_USD","NMR_USD","AUDIO_USD","CTK_USD","AR_USD","RAY_USD","PHA_USD","MNGO_USD","LINK_USD",
+            "MATIC_USD","ATLAS_USD",
+            "DAI_USDT","PAX_USDT","BNB_USDT","FTT_USDT","HT_USDT","ADA_USDT",
+            "ATOM_USDT","AVAX_USDT","AXS_USDT","BSV_USDT","BTT_USDT","DOT_USDT","EOS_USDT","FSN_USDT",
+            "GLM_USDT","GNX_USDT","ICP_USDT","KSM_USDT","LTC_USDT","MANA_USDT","OKB_USDT","PST_USDT",
+            "QTUM_USDT","SOL_USDT","SRM_USDT","SLP_USDT","SXP_USDT","TRX_USDT","VET_USDT","XRP_USDT",
+            "C98_USDT","NMR_USDT","AUDIO_USDT","CTK_USDT","AR_USDT","RAY_USDT","PHA_USDT","MNGO_USDT",
+            "LINK_USDT","MATIC_USDT","ATLAS_USDT", "BUSD_USDT", "PST_USDT", "TUSD_USDT", 
+            "USDC_USDT", "USDK_USDT"]
+    },                  
+
+    "symbol_list":["BTC_USDT"],
 
     "symbol_list_usdt":["DAI_USDT","PAX_USDT","BNB_USDT","FTT_USDT","HT_USDT","ADA_USDT",
         "ATOM_USDT","AVAX_USDT","AXS_USDT","BSV_USDT","BTT_USDT","DOT_USDT","EOS_USDT","FSN_USDT",
@@ -8,7 +81,7 @@
         "C98_USDT","NMR_USDT","AUDIO_USDT","CTK_USDT","AR_USDT","RAY_USDT","PHA_USDT","MNGO_USDT",
         "LINK_USDT","MATIC_USDT","ATLAS_USDT"],        
     
-    "symbol_list":["BTC_USD","BTC_HUSD","ETH_USD","USDT_USD","BTC_USDT","ETH_USDT", "ETH_BTC",
+    "symbol_list_all":["BTC_USD","BTC_HUSD","ETH_USD","USDT_USD","BTC_USDT","ETH_USDT", "ETH_BTC",
                         "USDC_USD","BUSD_USD","HUSD_USD","USDK_USD","TUSD_USD","DAI_USD","PAX_USD","BNB_USD",
                         "FTT_USD","HT_USD","ADA_USD","ATOM_USD","AVAX_USD","AXS_USD","BSV_USD","BTT_USD","DOT_USD",
                         "EOS_USD","FSN_USD","GLM_USD","GNX_USD","ICP_USD","KSM_USD","LTC_USD","MANA_USD","OKB_USD",

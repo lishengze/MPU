@@ -37,16 +37,16 @@ from tool import *
 from Logger import *
 
 print(os.getcwd() + get_dir_seprator() + "sys_config.json")
-
+ENV_TYPE = ""
 SYS_CONFIG = get_config(config_file = (os.getcwd() + get_dir_seprator() + "sys_config.json"))
 class BINANCE(ExchangeBase):    
     def __init__(self, symbol_dict:dict, sub_data_type_list:list, \
                 net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
-                debug_mode: bool = True, is_test_currency: bool = False):
+                debug_mode: bool = True, is_test_currency: bool = False, env_type:str = "dev"):
         try:
             super().__init__(exchange_name="BINANCE", symbol_dict=symbol_dict, 
                              sub_data_type_list = sub_data_type_list, net_server_type=net_server_type,
-                             debug_mode=debug_mode, is_test_currency=is_test_currency)  
+                             debug_mode=debug_mode, is_test_currency=is_test_currency, env_type=env_type)  
             
             print("super init over")
                       
@@ -354,11 +354,15 @@ class BINANCE(ExchangeBase):
     
 def binance_start():
     data_list = [DATA_TYPE.TRADE]
-    binance = BINANCE(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "BINANCE"), \
-                      sub_data_type_list=data_list, debug_mode=False, is_test_currency=SYS_CONFIG["is_test_currency"])    
+    binance = BINANCE(symbol_dict=get_symbol_dict(os.getcwd() + "/symbol_list.json", "BINANCE", env_type=ENV_TYPE), \
+                      sub_data_type_list=data_list, debug_mode=False, 
+                      is_test_currency=SYS_CONFIG["is_test_currency"], 
+                      env_type=ENV_TYPE)    
     print(binance._ws_url)
     binance.start()    
     # binance.test_sub_info()
         
 if __name__ == '__main__':
+    if len(sys.argv) == 2:
+        ENV_TYPE = sys.argv[1]    
     binance_start()

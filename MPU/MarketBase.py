@@ -108,7 +108,7 @@ BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class ExchangeBase(ABC):
     def __init__(self, exchange_name:str, symbol_dict:dict, sub_data_type_list:list, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
-                 debug_mode: bool = True, is_test_currency:bool = False, is_stress_test:bool = False):
+                 debug_mode: bool = True, is_test_currency:bool = False, is_stress_test:bool = False, env_type:str = "dev"):
         try:
             self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
@@ -161,7 +161,7 @@ class ExchangeBase(ABC):
                 
             self._logger.info(str(self._publish_count_dict))
                 
-            self._config = self._get_net_config(net_server_type)
+            self._config = self._get_net_config(net_server_type, env_type)
 
             self._logger.info(str(self._config))
             
@@ -186,13 +186,15 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                         
-    def _get_net_config(self, net_server_type:NET_SERVER_TYPE):
+    def _get_net_config(self, net_server_type:NET_SERVER_TYPE, env_type:str = "dev"):
         if net_server_type == NET_SERVER_TYPE.KAFKA:
             self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/kafka_config.json"               
         elif net_server_type == NET_SERVER_TYPE.REDIS:
             self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/redis_config.json"
-
-        return get_config(logger=self._logger, config_file=self._config_name)     
+            
+        origin_config = get_config(logger=self._logger, config_file=self._config_name, env_type=env_type)
+        
+        return origin_config  
     
     def _write_successful_currency(self, symbol):
         if self._success_log_file.closed:
