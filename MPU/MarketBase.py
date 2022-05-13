@@ -123,6 +123,8 @@ class ExchangeBase(ABC):
             self._logger_all = Logger(program_name=self._exchange_name, log_dir=log_dir)
             self._logger = self._logger_all._logger
             
+            self._logger.info("\n\n_symbol_dict: \n" + str(self._symbol_dict))
+            
             self._reconnect_secs = 5
             
             # if self._is_test_currency:

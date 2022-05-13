@@ -35,6 +35,8 @@ def get_package_dir():
 print(get_package_dir())
 sys.path.append(get_package_dir())
 
+ENV_TYPE = ""
+
 from tool import *
 from kafka_server import *
 from redis_server import *
@@ -48,7 +50,7 @@ class TestKafka:
         
         self._logger = self._logger._logger
         
-        server_config = get_config(config_file = (os.getcwd() + get_dir_seprator() + "kafka_config.json"))
+        server_config = get_config(config_file = (os.getcwd() + get_dir_seprator() + "kafka_config.json"), env_type=ENV_TYPE)
 
         print(server_config)
         self._logger.info(str(server_config))
@@ -56,7 +58,7 @@ class TestKafka:
         self._kafka_server = KafkaServer(config = server_config, depth_processor=self, kline_processor=self, trade_processor=self, \
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
         
-        symbol_list_config = get_config(config_file = (os.getcwd() + get_dir_seprator() + "symbol_list.json"))
+        symbol_list_config = get_config(config_file = (os.getcwd() + get_dir_seprator() + "symbol_list.json"), env_type=ENV_TYPE)
 
         self._symbol_list = symbol_list_config["symbol_list"]
 
@@ -173,5 +175,10 @@ def test_kafka():
     kafka_obj.start()
         
 if __name__ == "__main__":
+    if len(sys.argv) == 2:
+        ENV_TYPE = sys.argv[1]
+        
+    print("\nENV_TYPE: " + ENV_TYPE)
+        
     test_kafka()
     

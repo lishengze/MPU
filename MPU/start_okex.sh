@@ -1,6 +1,7 @@
 # !/bin/bash
+echo "args : $@"
 
-nohup python3 /mnt/pms_market/MPU/okex.py > /mnt/pms_market/MPU/log/okex.log &
+nohup python3 /mnt/pms_market/MPU/okex.py  $1> /mnt/pms_market/MPU/log/okex.log &
 
 
 sleep 2s
