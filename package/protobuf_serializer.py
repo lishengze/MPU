@@ -71,8 +71,8 @@ class ProtoSerializer:
         local_quote.exchange = proto_quote.exchange
         local_quote.sequence_no = -1        
         local_quote.origin_time = proto_quote.timestamp.ToNanoseconds()
-        local_quote.mpu_timestamp = proto_quote.timestamp.ToNanoseconds()
-        local_quote.mpu_timestamp = proto_quote.timestamp.ToNanoseconds()   
+        local_quote.arrive_time = proto_quote.mpu_timestamp.ToNanoseconds()
+        local_quote.server_time = proto_quote.timestamp.ToNanoseconds()   
         local_quote.price_precise = -1
         local_quote.volume_precise = -1
         local_quote.amount_precise = -1
@@ -130,7 +130,7 @@ class ProtoSerializer:
         proto_quote.symbol = local_quote.symbol
         proto_quote.exchange = local_quote.exchange     
         proto_quote.timestamp.FromNanoseconds(int(local_quote.origin_time))
-        proto_quote.timestamp.FromNanoseconds(int(local_quote.arrive_time))
+        proto_quote.mpu_timestamp.FromNanoseconds(int(local_quote.arrive_time))
         
         set_proto_depth_list(proto_quote.asks, local_quote.asks)
         set_proto_depth_list(proto_quote.bids, local_quote.bids)
