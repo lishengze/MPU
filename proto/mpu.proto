@@ -4,6 +4,8 @@ option go_package = "mpupb";
 
 package mpupb;
 
+import public "google/protobuf/timestamp.proto";
+
 
 message GetSymbolReq {
   string symbol = 1;
@@ -36,32 +38,35 @@ message PriceVolume {
   string volume = 2;
 }
 
-message StreamDepth {
-  int64 timestamp = 1; // 时间戳，毫秒，13位
+message Depth {
+  google.protobuf.Timestamp timestamp = 1; // 交易所更新时间
   string  exchange = 2;
   string  symbol = 3;
   repeated  PriceVolume asks = 4;
   repeated  PriceVolume bids = 5;
+  google.protobuf.Timestamp mpu_timestamp = 6; // mpu 服务器时间
+
 }
 
-message StreamTrade {
-  int64 timestamp = 1; // 时间戳，毫秒，13位
-  string  exchange = 2;
-  string  symbol = 3;
+message Trade {
+  google.protobuf.Timestamp timestamp = 1; // 交易所更新时间
+  string exchange = 2;
+  string symbol = 3;
   string price = 4;
   string volume = 5;
 }
 
-message StreamKline {
-  int64 timestamp = 1; // 时间戳，毫秒，13位
-  string  exchange = 2;
-  string  symbol = 3;
+message Kline {
+  google.protobuf.Timestamp timestamp = 1; // 时间
+  string exchange = 2;
+  string symbol = 3;
   string open = 4;
   string high = 5;
   string low = 6;
   string close = 7;
   string volume = 8; // 量
   string value = 9; // 额
+  uint32 resolution = 10;
 }
 
 message EmptyReq {
