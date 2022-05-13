@@ -291,8 +291,8 @@ class Publisher:
             
             update_quote = self._get_update_quote(symbol, depth_update, revised_ask, revised_bid)
             
-            self._logger.info("snap: " + snap_quote.meta_str())
-            self._logger.info("update: " + update_quote.meta_str())
+            # self._logger.info("snap: " + snap_quote.meta_str())
+            # self._logger.info("update: " + update_quote.meta_str())
             
             self._net_server.publish_depth(snap_quote, update_quote)
             
