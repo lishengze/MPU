@@ -37,6 +37,7 @@ import requests
 import traceback
 import sys
 import os
+import threading
 
 from sortedcontainers import SortedDict, sorteddict
 from datetime import datetime
@@ -94,6 +95,9 @@ class Publisher:
         self.__msg_seq = 0
         self.__msg_seq_symbol = defaultdict(int)
 
+        self._snap_symbol_cache = dict()
+        self._snap_publish_secs = 1
+
         if exchange_topic:
             self._exchange_topic = exchange_topic
         else:
@@ -104,6 +108,22 @@ class Publisher:
         self._trade_seq = defaultdict(int)
         
         print("\ncreate publisher for " + self._exchange)
+    
+    def start (self):
+        try:
+            self._logger.info("start_timer\n")
+            self._publish_depth_timer = threading.Timer(self._snap_publish_secs, self.on_timer)
+            self._publish_depth_timer.start()
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())    
+
+    def on_timer(self):
+        try:
+            self._logger.info("start_timer\n")
+            self._publish_depth_timer = threading.Timer(self._snap_publish_secs, self.on_timer)
+            self._publish_depth_timer.start()
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())            
 
     def _is_depth_invalid(self, depth):
         try:

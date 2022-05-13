@@ -119,7 +119,7 @@ class TestKafka:
 
             for symbol in self._symbol_trade_map:
                 info = "\nTrade: " + self._symbol_trade_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_trade_map[symbol][0]) \
-                     + "Depth: " + self._symbol_depth_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_depth_map[symbol][0])
+                     + "\nDepth: " + self._symbol_depth_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_depth_map[symbol][0])
                 self._logger.info(info)
 
             self._logger.info("\n")
@@ -147,7 +147,7 @@ class TestKafka:
             # self.check_seq(depth_quote.sequence_no)        
             # pass
             # print(depth_quote.meta_str())
-            self._symbol_depth_map[depth_quote.symbol] = [depth_quote.time, depth_quote.exchange]
+            self._symbol_depth_map[depth_quote.symbol] = [depth_quote.origin_time, depth_quote.exchange]
             
         except Exception as e:
             self._logger.warning(traceback.format_exc())
