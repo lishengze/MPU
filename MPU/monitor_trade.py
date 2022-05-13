@@ -78,9 +78,11 @@ class TestKafka:
         self._trade_symbol_list = []
 
         self._symbol_trade_map = dict()
+        self._symbol_depth_map = dict()
 
         for symbol in self._symbol_list:
             self._symbol_trade_map[symbol] = [0, 'Not Recorded']
+            self._symbol_depth_map[symbol] = [0, 'Not Recorded']
 
         self._ping_secs = 10
         self._start_check_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -116,7 +118,9 @@ class TestKafka:
                              self._end_check_time))
 
             for symbol in self._symbol_trade_map:
-                self._logger.info(symbol + ": " +  get_str_time_from_nano_time(self._symbol_trade_map[symbol][0]) + ", " + self._symbol_trade_map[symbol][1] )
+                info = "\nTrade: " + self._symbol_trade_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_trade_map[symbol][0]) \
+                     + "Depth: " + self._symbol_depth_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_depth_map[symbol][0])
+                self._logger.info(info)
 
             self._logger.info("\n")
 
@@ -142,7 +146,8 @@ class TestKafka:
         try:    
             # self.check_seq(depth_quote.sequence_no)        
             # pass
-            print(depth_quote.meta_str())
+            # print(depth_quote.meta_str())
+            self._symbol_depth_map[depth_quote.symbol] = [depth_quote.time, depth_quote.exchange]
             
         except Exception as e:
             self._logger.warning(traceback.format_exc())
@@ -170,7 +175,7 @@ class TestKafka:
             self._logger.warning(traceback.format_exc())                        
             
 def test_kafka():
-    data_type_list = [DATA_TYPE.TRADE] 
+    data_type_list = [DATA_TYPE.TRADE, DATA_TYPE.DEPTH] 
     kafka_obj = TestKafka(data_type_list=data_type_list)
     kafka_obj.start()
         
