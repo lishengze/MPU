@@ -241,15 +241,15 @@ class Publisher:
     def _get_snap_quote(self, exg_time, symbol, book):
         try:
             if not exg_time:
-                exg_time = get_nano_time()
+                exg_time = get_utc_nano_time()
 
             depth_quote = SDepthQuote()
             depth_quote.symbol =  symbol
             depth_quote.exchange = self._exchange
             depth_quote.sequence_no = self.__msg_seq_symbol[symbol]
             depth_quote.origin_time = exg_time
-            depth_quote.server_time = get_nano_time()
-            depth_quote.arrive_time = 0
+            depth_quote.server_time = get_utc_nano_time()
+            depth_quote.arrive_time = get_utc_nano_time()
             depth_quote.is_snap = True
 
             depth_quote.asks = self._get_depth_from_book(book["AskDepth"])
