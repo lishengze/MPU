@@ -145,7 +145,7 @@ class TestKafka:
         try:    
             # self.check_seq(depth_quote.sequence_no)        
             # pass
-            # print(depth_quote.meta_str())
+            self._logger.info(depth_quote.meta_str())
             self._symbol_depth_map[depth_quote.symbol] = [depth_quote.origin_time, depth_quote.exchange]
             
         except Exception as e:
@@ -153,14 +153,14 @@ class TestKafka:
             
     def process_kline_data(self, kline_data:SKlineData):
         try:            
-            print(kline_data.meta_str())
+            self._logger.info(kline_data.meta_str())
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
             # self.check_seq(trade_data.sequence_no)
-            # self._logger.info(trade_data.meta_str())
+            self._logger.info(trade_data.meta_str())
             
             if trade_data.symbol not in self._trade_symbol_list:
                 # print(trade_data.meta_str())
