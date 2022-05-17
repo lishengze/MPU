@@ -1,7 +1,8 @@
 {
     "local": 
     {
-        "symbol_list":["BTC_USDT"]
+        "symbol_list":["BTC_USDT"],
+        "exchange_list": ["_bcts_"]
     }, 
     "dev": 
     {

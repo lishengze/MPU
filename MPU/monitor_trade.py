@@ -61,9 +61,8 @@ class TestKafka:
         symbol_list_config = get_config(config_file = (os.getcwd() + get_dir_seprator() + "symbol_list.json"), env_type=ENV_TYPE)
 
         self._symbol_list = symbol_list_config["symbol_list"]
-
-
-        self._exchange_list = ["FTX"]
+        self._exchange_list = symbol_list_config["exchange_list"]
+        
         self._data_type_list = data_type_list
         
         print(self._symbol_list)
@@ -175,7 +174,7 @@ class TestKafka:
             self._logger.warning(traceback.format_exc())                        
             
 def test_kafka():
-    data_type_list = [DATA_TYPE.TRADE, DATA_TYPE.DEPTH] 
+    data_type_list = [DATA_TYPE.TRADE, DATA_TYPE.DEPTH, DATA_TYPE.KLINE] 
     kafka_obj = TestKafka(data_type_list=data_type_list)
     kafka_obj.start()
         
