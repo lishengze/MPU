@@ -35,10 +35,12 @@ def get_str_time_from_nano_time(nano_time):
         return "0"
         
     time_secs = float(nano_time) / get_nano_per_sec()
+    
+    _nano_secs = int(nano_time) % get_nano_per_sec()
 
     time_obj = time.localtime(time_secs)
 
-    time_str = time.strftime("%Y-%m-%d %H:%M:%S", time_obj)
+    time_str = time.strftime("%Y-%m-%d %H:%M:%S", time_obj) + "." + str(_nano_secs)
 
     return time_str
 

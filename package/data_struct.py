@@ -4,6 +4,7 @@ import sys
 import traceback
 
 from enum import Enum
+from tool import *
 
 TYPE_SEPARATOR = "."
 SYMBOL_EXCHANGE_SEPARATOR = "."
@@ -111,8 +112,13 @@ class SDepthQuote(object):
         # print(len(asks_), len(bids_))
         
     def meta_str(self):
-        result = ("[Depth] ex: %s, sy: %s, ask.len: %d, bid.len: %d, %d" % \
-                    (self.exchange, self.symbol, len(self.asks), len(self.bids), self.sequence_no))
+        # result = ("[Depth] %s: %s.%s, ask.len: %d, bid.len: %d" % \
+        #             (get_str_time_from_nano_time(self.origin_time), self.exchange, self.symbol, 
+        #              self.asks, self.bids))
+                
+        result = ("[Depth] %s: %s.%s, ask: %s, bid: %s" % \
+                    (get_str_time_from_nano_time(self.origin_time), self.exchange, self.symbol, 
+                     str(self.asks), str(self.bids)))        
 
         return result
 
@@ -126,8 +132,9 @@ class STradeData(object):
         self.exchange = ""
         
     def meta_str(self):
-        result =  ("[Trade] se: %d, ex: %s, sy: %s, price: %f, volume: %f, time:%d" % \
-                    (self.sequence_no, self.exchange, self.symbol, self.price.get_value(), self.volume.get_value(), self.time))
+        result =  ("[Trade] %s: %s.%s, price: %f, volume: %f" % \
+                    (get_str_time_from_nano_time(self.time), self.exchange, self.symbol, 
+                     self.price.get_value(), self.volume.get_value()))
         return result
 class SKlineData(object):
     def __init__(self, ):
@@ -145,8 +152,8 @@ class SKlineData(object):
         self.volume = SDecimal()
  
     def meta_str(self):
-        result =  ("[kline] se: %d, time: %d, ex: %s, sy: %s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \
-                    (self.sequence_no, self.time, self.exchange, self.symbol, self.px_open.get_value(), self.px_high.get_value(), \
+        result =  ("[kline] %s, %s.%s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \
+                    (get_str_time_from_nano_time(self.time), self.exchange, self.symbol, self.px_open.get_value(), self.px_high.get_value(), \
                      self.px_low.get_value(), self.px_close.get_value()))
         return result
  
