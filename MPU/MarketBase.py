@@ -321,11 +321,11 @@ class ExchangeBase(ABC):
             self._is_connnect = False    
             time.sleep(self._reconnect_secs)    
 
-            if self._restart_thread != None and self._restart_thread.is_alive():
-                self._restart_thread.stop()
+            # if self._restart_thread != None and self._restart_thread.is_alive():
+            #     self._restart_thread.stop()
 
-            self._restart_thread = threading.Thread(self.start_reconnect)
-            self._restart_thread.start()
+            restart_thread = threading.Thread(self.start_reconnect)
+            restart_thread.start()
 
         except Exception as e:
             self._logger.warning(traceback.format_exc())
