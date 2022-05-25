@@ -324,7 +324,7 @@ class ExchangeBase(ABC):
             # if self._restart_thread != None and self._restart_thread.is_alive():
             #     self._restart_thread.stop()
 
-            restart_thread = threading.Thread(self.start_reconnect)
+            restart_thread = threading.Thread(self.start_reconnect, )
             restart_thread.start()
 
         except Exception as e:
