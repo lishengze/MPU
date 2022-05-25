@@ -139,6 +139,7 @@ class ExchangeBase(ABC):
             
             self._is_connnect = False
             self._ws = None
+            self._restart_thread = None
 
             
             self._logger.info(str(self._symbol_dict))
@@ -232,8 +233,6 @@ class ExchangeBase(ABC):
     def start_reconnect(self):
         try:
             self._logger.info("------- Start Reconnect -------- \n")
-
-            time.sleep(self._reconnect_secs)
             self.connect_ws_server("Reconnect Server")
             
         except Exception as e:
@@ -319,8 +318,15 @@ class ExchangeBase(ABC):
     def on_close(self, *t_args, **d_args):
         try:
             self._logger.warning("******* on_close *******\n")
-            self._is_connnect = False        
-            self.start_reconnect()
+            self._is_connnect = False    
+            time.sleep(self._reconnect_secs)    
+
+            if self._restart_thread != None and self._restart_thread.is_alive():
+                self._restart_thread.stop()
+
+            self._restart_thread = threading.Thread(self.start_reconnect)
+            self._restart_thread.start()
+
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
