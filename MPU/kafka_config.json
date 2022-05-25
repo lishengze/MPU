@@ -12,11 +12,11 @@
         "depth_update_count":5
     },
     "stg": {
-        "server_list":["43.154.179.47:9117"],
+        "server_list":["18.162.52.222:8117"],
         "depth_update_count":5
     },
     "prd": {
-        "server_list":["43.154.179.47:9117"],
+        "server_list":["16.162.143.211:8117"],
         "depth_update_count":5
     }
 }
