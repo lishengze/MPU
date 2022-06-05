@@ -1,0 +1,17 @@
+{
+    "local": {
+        "is_detail": true
+    },
+    "dev": {
+        "is_detail": false
+    },
+    "qa": {
+        "is_detail": false
+    },
+    "stg": {
+        "is_detail": false
+    },
+    "prd": {
+        "is_detail": false
+    }
+}

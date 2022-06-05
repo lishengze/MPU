@@ -59,6 +59,13 @@ class TestKafka:
                                          serializer_type=SERIALIXER_TYPE.PROTOBUF, logger=self._logger)
         
         symbol_list_config = get_config(config_file = (os.getcwd() + get_dir_seprator() + "symbol_list.json"), env_type=ENV_TYPE)
+        
+        self._monitor_config = dict()
+        self._monitor_config =  get_config(config_file = (os.getcwd() + get_dir_seprator() + "monitor_config.json"), env_type=ENV_TYPE)
+        
+        if "is_detail" not in self._monitor_config:
+            self._monitor_config["is_detail"] = False
+
 
         self._symbol_list = symbol_list_config["symbol_list"]
         self._exchange_list = symbol_list_config["exchange_list"]
@@ -78,10 +85,12 @@ class TestKafka:
 
         self._symbol_trade_map = dict()
         self._symbol_depth_map = dict()
+        self._symbol_kline_map = dict()
 
         for symbol in self._symbol_list:
             self._symbol_trade_map[symbol] = [0, 'Not Recorded']
             self._symbol_depth_map[symbol] = [0, 'Not Recorded']
+            self._symbol_kline_map[symbol] = [0, 'Not Recorded']
 
         self._ping_secs = 10
         self._start_check_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -118,7 +127,8 @@ class TestKafka:
 
             for symbol in self._symbol_trade_map:
                 info = "\nTrade: " + self._symbol_trade_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_trade_map[symbol][0]) \
-                     + "\nDepth: " + self._symbol_depth_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_depth_map[symbol][0])
+                     + "\nDepth: " + self._symbol_depth_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_depth_map[symbol][0]) \
+                     + "\nKline: " + self._symbol_kline_map[symbol][1] + "." + symbol + ", time: " + get_str_time_from_nano_time(self._symbol_kline_map[symbol][0])
                 self._logger.info(info)
 
             self._logger.info("\n")
@@ -145,7 +155,8 @@ class TestKafka:
         try:    
             # self.check_seq(depth_quote.sequence_no)        
             # pass
-            self._logger.info(depth_quote.meta_str())
+            if self._monitor_config["is_detail"]:
+                self._logger.info(depth_quote.meta_str())
             self._symbol_depth_map[depth_quote.symbol] = [depth_quote.origin_time, depth_quote.exchange]
             
         except Exception as e:
@@ -153,14 +164,18 @@ class TestKafka:
             
     def process_kline_data(self, kline_data:SKlineData):
         try:            
-            self._logger.info(kline_data.meta_str())
+            if self._monitor_config["is_detail"]:
+                self._logger.info(kline_data.meta_str())
+                
+            self._symbol_kline_map[kline_data.symbol] = [kline_data.time, kline_data.exchange]
         except Exception as e:
             self._logger.warning(traceback.format_exc())
             
     def process_trade_data(self, trade_data:STradeData):
         try:            
             # self.check_seq(trade_data.sequence_no)
-            self._logger.info(trade_data.meta_str())
+            if self._monitor_config["is_detail"]:
+                self._logger.info(trade_data.meta_str())
             
             if trade_data.symbol not in self._trade_symbol_list:
                 # print(trade_data.meta_str())
