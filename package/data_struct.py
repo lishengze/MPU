@@ -84,6 +84,9 @@ class SDecimal(object):
             return self.value
         else:
             return float(self.value) / (10**self.precise)
+        
+    def get_str_value(self):
+        return str(self.get_value())
 
 class SDepth(object):
     def __init__(self):
@@ -111,14 +114,29 @@ class SDepthQuote(object):
         
         # print(len(asks_), len(bids_))
         
-    def meta_str(self):
+    def meta_str(self, count:int = 3):
         # result = ("[Depth] %s: %s.%s, ask.len: %d, bid.len: %d" % \
         #             (get_str_time_from_nano_time(self.origin_time), self.exchange, self.symbol, 
         #              self.asks, self.bids))
+        
+        asks_str = "\nAsks: " + str(len(self.asks)) + "\n"
+        i = 0
+        for item in self.asks:
+            asks_str += item.price.get_str_value() + ": " + item.volume.get_str_value() + "\n"
+            i += 1
+            if i >= count:
+                break
+        i = 0
+        bids_str = "\nBids: " + str(len(self.bids)) + "\n"
+        for item in self.bids:
+            bids_str += item.price.get_str_value() + ": " + item.volume.get_str_value() + "\n"         
+            i += 1
+            if i >= count:
+                break            
                 
-        result = ("[Depth] %s: %s.%s, ask: %s, bid: %s" % \
+        result = ("[Depth] %s: %s.%s,  %s %s" % \
                     (get_str_time_from_nano_time(self.origin_time), self.exchange, self.symbol, 
-                     str(self.asks), str(self.bids)))        
+                     asks_str, bids_str))        
 
         return result
 

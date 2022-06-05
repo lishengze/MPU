@@ -41,7 +41,11 @@ def get_local_depth_list(src_depth_list_proto):
         new_depth = SDepth()
         
         new_depth.price = SDecimal(float(depth.price))
-        new_depth.volume.value = SDecimal(float(depth.volume))
+        new_depth.volume = SDecimal(float(depth.volume))
+        
+        # print(float(depth.price), ": ",float(depth.volume))
+        # print(new_depth.price.value, ".", new_depth.price.precise,  ": ",
+        #       new_depth.price.value, ".", new_depth.price.precise,)
         
         # for symbol in depth.volume_by_exchanges:
         #     exchange_volume = SDecimal()
