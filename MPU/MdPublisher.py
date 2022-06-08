@@ -535,7 +535,7 @@ class Publisher:
             # self._logger.info("is_snapshot %s, depth_update: %s" % (str(is_snapshot), str(depth_update)))
             
             if self._is_depth_invalid(depth_update):
-                self._logger.warning("Invalid Update: " + str(depth_update))
+                # self._logger.warning("Invalid Update: " + str(depth_update))
                 return None
                                           
             book = self._get_cached_book(symbol, is_snapshot, depth_update)
