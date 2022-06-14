@@ -252,7 +252,7 @@ class ExchangeBase(ABC):
         try:
             self._connect_count += 1
 
-            self._logger.info("*****connect_ws_server %s, connect_count: ***** \n" % (self._ws_url, self._connect_count))
+            self._logger.info("*****connect_ws_server %s, connect_count: %d ***** \n" % (self._ws_url, self._connect_count))
 
             # self._ws = websocket.WebSocketApp(self._ws_url)
             # # self._ws.run_forever(http_proxy_host='127.0.0.1',http_proxy_port=7890)    
