@@ -233,10 +233,10 @@ class FTX(object):
             time.sleep(self._reconnect_secs)
             self._is_connnect = False        
 
-            restart_thread = threading.Thread(target=self.start_reconnect, )
-            restart_thread.start()
+            # restart_thread = threading.Thread(target=self.start_reconnect, )
+            # restart_thread.start()
 
-            # self.start_reconnect()
+            self.start_reconnect()
         except Exception as e:
             self._logger._logger.warning("[E]on_close: " + str(e))
 
