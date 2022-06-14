@@ -137,7 +137,6 @@ class FTX(ExchangeBase):
             self._error_msg_list = ["", ""]
             self.__exchange_name = "FTX"
             self._is_connnect = False
-            self._ws = None
             
             self._logger.info(str(self._symbol_dict))
 

@@ -174,6 +174,7 @@ class ExchangeBase(ABC):
             
             self._is_connnect = False
             self._ws = None
+            self._connect_count = 0
 
             
             self._logger.info(str(self._symbol_dict))
@@ -249,7 +250,9 @@ class ExchangeBase(ABC):
         
     def connect_ws_server(self, info):
         try:
-            self._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
+            self._connect_count += 1
+
+            self._logger.info("*****connect_ws_server %s, connect_count: ***** \n" % (self._ws_url, self._connect_count))
 
             # self._ws = websocket.WebSocketApp(self._ws_url)
             # # self._ws.run_forever(http_proxy_host='127.0.0.1',http_proxy_port=7890)    
@@ -261,6 +264,7 @@ class ExchangeBase(ABC):
 
             # self._ws.run_forever()
 
+            
             self._ws = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger)
             self._ws.connect()
 
@@ -269,10 +273,11 @@ class ExchangeBase(ABC):
 
     def start_reconnect(self):
         try:
-            self._logger.info("------- Start Reconnect -------- \n")
+            self._logger.warning("------- Start Reconnect -------- \n")
 
             while self._is_connnect == False:
                 time.sleep(self._reconnect_secs)
+                self._logger.warning("connect_count: " + str(self._connect_count))
                 self.connect_ws_server("Reconnect Server")
 
             # time.sleep(self._reconnect_secs)

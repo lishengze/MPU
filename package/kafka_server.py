@@ -31,7 +31,7 @@ class KafkaServer(NetServer):
             self._kafka_depth_update_count = config["depth_update_count"]
             self._kafka_curr_pubed_update_count = {}    
 
-            print("server list: %s" % (str(self._server_list)))
+            self._logger.info("server list: %s" % (str(self._server_list)))
                                                        
             self._producer = KafkaProducer(bootstrap_servers=self._server_list)        
             if self._producer.bootstrap_connected():
