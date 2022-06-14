@@ -242,14 +242,24 @@ class FTX(object):
         except Exception as e:
             self._logger._logger.warning("[E]start: " + str(e))
 
-    def on_msg(self, msg):
+    def on_msg(self, ws = None, message = None):
         try:
-            dic = json.loads(msg)
+            if (ws != None and message != None) or (ws == None and message != None):
+                # json_data = self.decode_msg(message)
+                pass
+            elif ws != None and message == None:
+                message = ws
+                # json_data = self.decode_msg(message)
+            else:
+                self._logger._logger.warning("[E]on_msg: " + str(e))
+                return
+
+            dic = json.loads(message)
             self.process_msg(dic)
         except Exception as e:
             self._logger._logger.warning("[E]on_msg: " + str(e))
 
-    def on_open(self):
+    def on_open(self, *t_args, **d_args):
         try:
             self._logger._logger.info("\nftx_on_open")
             self._is_connnect = True
@@ -264,7 +274,7 @@ class FTX(object):
         except Exception as e:
             self._logger._logger.warning("[E]on_open: " + str(e))
 
-    def on_error(self):
+    def on_error(self, *t_args, **d_args):
         self._logger.Error("on_error")
 
     def on_close(self):
