@@ -106,11 +106,16 @@ class WSClass(object):
             self._logger.info("\n*****WSClass Connect %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
             # websocket.enableTrace(True)
             self._ws = websocket.WebSocketApp(self._ws_url)
-            self._ws.on_message = self._processor.on_message
+            self._ws.on_message = self._processor.on_msg
             self._ws.on_error = self._processor.on_error                                    
             self._ws.on_open = self._processor.on_open
             self._ws.on_close = self._processor.on_close
             self._ws.run_forever()        
+
+            # self._ws.on_message = self.on_msg
+            # self._ws.on_error = self.on_error                                    
+            # self._ws.on_open = self.on_open
+            # self._ws.on_close = self.on_close
 
         except Exception as e:
             self._logger.warning("[E]connect_ws_server: " + str(e))
