@@ -129,6 +129,7 @@ class FTX(object):
             self._is_connnect = False
             self._ws = None
             self._is_test_depth = is_test_depth
+            self._reconnect_secs = 5
             
             if self._is_test_depth:
                 self._moka_depth = get_config(self._logger, "moka_depth.json")
