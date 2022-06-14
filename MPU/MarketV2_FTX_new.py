@@ -224,6 +224,7 @@ class FTX(object):
         try:
             self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
             while self._is_connnect == False:
+                time.sleep(self._reconnect_secs)
                 self.connect_ws_server("Reconnect Server")
         except Exception as e:
             self._logger._logger.warning("[E]start_reconnect: " + str(e))
@@ -277,10 +278,9 @@ class FTX(object):
     def on_error(self, *t_args, **d_args):
         self._logger.Error("on_error")
 
-    def on_close(self):
+    def on_close(self,  *t_args, **d_args):
         try:
             self._logger._logger.warning("\n******* on_close *******")
-            time.sleep(self._reconnect_secs)
             self._is_connnect = False        
 
             # restart_thread = threading.Thread(target=self.start_reconnect, )
