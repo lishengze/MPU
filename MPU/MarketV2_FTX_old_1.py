@@ -94,42 +94,6 @@ def get_ping_info():
     
     return sub_info_str       
 
-class WSClass(object):
-    def __init__(self, ws_url: str, processor, logger):
-        self._ws_url = ws_url
-        self._processor = processor
-        self._ws = None
-        self._logger = logger
-    
-    def connect(self, info:str=""):
-        try:
-            self._logger.info("\n*****WSClass Connect %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
-            # websocket.enableTrace(True)
-            self._ws = websocket.WebSocketApp(self._ws_url)
-            self._ws.on_message = self._processor.on_msg
-            self._ws.on_error = self._processor.on_error                                    
-            self._ws.on_open = self._processor.on_open
-            self._ws.on_close = self._processor.on_close
-            self._ws.run_forever()        
-
-            # self._ws.on_message = self.on_msg
-            # self._ws.on_error = self.on_error                                    
-            # self._ws.on_open = self.on_open
-            # self._ws.on_close = self.on_close
-
-        except Exception as e:
-            self._logger.warning("[E]connect_ws_server: " + str(e))
-
-    def send(self, data:str):
-        try:
-            if self._ws != None:
-                self._ws.send(data)
-            else :
-                self._logger.warning("[E]ws is None!")     
-        except Exception as e:
-            self._logger.warning("[E]send: " + str(e))        
-    
-
 '''
 Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
@@ -163,8 +127,7 @@ class FTX(object):
             self._error_msg_list = ["", ""]
             self.__exchange_name = "FTX"
             self._is_connnect = False
-            # self._ws = None
-            self._ws_obj = None
+            self._ws = None
             self._is_test_depth = is_test_depth
             self._reconnect_secs = 5
             
@@ -206,16 +169,13 @@ class FTX(object):
         try:
             self._logger._logger.info("\n*****connect_ws_server %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
             # websocket.enableTrace(True)
-            # self._ws = websocket.WebSocketApp(self._ws_url)
-            # self._ws.on_message = self.on_msg
-            # self._ws.on_error = self.on_error                                    
-            # self._ws.on_open = self.on_open
-            # self._ws.on_close = self.on_close
+            self._ws = websocket.WebSocketApp(self._ws_url)
+            self._ws.on_message = self.on_msg
+            self._ws.on_error = self.on_error                                    
+            self._ws.on_open = self.on_open
+            self._ws.on_close = self.on_close
 
-            # self._ws.run_forever()
-
-            self._ws_obj = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger._logger)
-            self._ws_obj.connect()
+            self._ws.run_forever()
 
         except Exception as e:
             self._logger._logger.warning("[E]connect_ws_server: " + str(e))
@@ -224,7 +184,6 @@ class FTX(object):
         try:
             self._logger._logger.info("\n------- %s Start Reconnect --------" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
             while self._is_connnect == False:
-                time.sleep(self._reconnect_secs)
                 self.connect_ws_server("Reconnect Server")
         except Exception as e:
             self._logger._logger.warning("[E]start_reconnect: " + str(e))
@@ -243,44 +202,35 @@ class FTX(object):
         except Exception as e:
             self._logger._logger.warning("[E]start: " + str(e))
 
-    def on_msg(self, ws = None, message = None):
+    def on_msg(self, msg):
         try:
-            if (ws != None and message != None) or (ws == None and message != None):
-                # json_data = self.decode_msg(message)
-                pass
-            elif ws != None and message == None:
-                message = ws
-                # json_data = self.decode_msg(message)
-            else:
-                self._logger._logger.warning("[E]on_msg: " + str(e))
-                return
-
-            dic = json.loads(message)
+            dic = json.loads(msg)
             self.process_msg(dic)
         except Exception as e:
             self._logger._logger.warning("[E]on_msg: " + str(e))
 
-    def on_open(self, *t_args, **d_args):
+    def on_open(self):
         try:
             self._logger._logger.info("\nftx_on_open")
             self._is_connnect = True
 
             sub_info_str = get_login_info(self._api_key, self._api_secret, logger=self._logger)
-            self._ws_obj.send(sub_info_str)
+            self._ws.send(sub_info_str)
 
             time.sleep(3)
             for symbol in self._symbol_dict:
-                self._ws_obj.send(get_sub_order_info(symbol, logger=self._logger))
-                self._ws_obj.send(get_sub_trade_info(symbol, logger=self._logger))
+                self._ws.send(get_sub_order_info(symbol, logger=self._logger))
+                self._ws.send(get_sub_trade_info(symbol, logger=self._logger))
         except Exception as e:
             self._logger._logger.warning("[E]on_open: " + str(e))
 
-    def on_error(self, *t_args, **d_args):
+    def on_error(self):
         self._logger.Error("on_error")
 
-    def on_close(self,  *t_args, **d_args):
+    def on_close(self):
         try:
             self._logger._logger.warning("\n******* on_close *******")
+            time.sleep(self._reconnect_secs)
             self._is_connnect = False        
 
             # restart_thread = threading.Thread(target=self.start_reconnect, )
@@ -308,7 +258,7 @@ class FTX(object):
     def on_timer(self):
         try:
             if self._is_connnect:
-                self._ws_obj.send(get_ping_info())        
+                self._ws.send(get_ping_info())        
 
             self.print_publish_info()
 
