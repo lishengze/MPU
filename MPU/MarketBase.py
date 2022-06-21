@@ -276,8 +276,8 @@ class ExchangeBase(ABC):
 
             # self._ws.run_forever()
 
-            self._ws_obj = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger)
-            self._ws_obj.connect()            
+            self._ws = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger)
+            self._ws.connect()            
 
         except Exception as e:
             self._logger.warning(traceback.format_exc())
