@@ -102,6 +102,41 @@ def get_ping_info():
     
     return sub_info_str       
 
+class WSClass(object):
+    def __init__(self, ws_url: str, processor, logger):
+        self._ws_url = ws_url
+        self._processor = processor
+        self._ws = None
+        self._logger = logger
+    
+    def connect(self, info:str=""):
+        try:
+            self._logger.info("\n*****WSClass Connect %s %s %s *****" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url))
+            # websocket.enableTrace(True)
+            self._ws = websocket.WebSocketApp(self._ws_url)
+            self._ws.on_message = self._processor.on_msg
+            self._ws.on_error = self._processor.on_error                                    
+            self._ws.on_open = self._processor.on_open
+            self._ws.on_close = self._processor.on_close
+            self._ws.run_forever()        
+
+            # self._ws.on_message = self.on_msg
+            # self._ws.on_error = self.on_error                                    
+            # self._ws.on_open = self.on_open
+            # self._ws.on_close = self.on_close
+
+        except Exception as e:
+            self._logger.warning("[E]connect_ws_server: " + str(e))
+
+    def send(self, data:str):
+        try:
+            if self._ws != None:
+                self._ws.send(data)
+            else :
+                self._logger.warning("[E]ws is None!")     
+        except Exception as e:
+            self._logger.warning("[E]send: " + str(e))         
+
 '''
 Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
@@ -141,7 +176,9 @@ class ExchangeBase(ABC):
             self._ws = None
             self._restart_thread = None
 
-            
+            self._reconnect_secs = 5
+            self._connect_counts = 0
+
             self._logger.info(str(self._symbol_dict))
             
             sys_symbol_list = list()
@@ -215,25 +252,43 @@ class ExchangeBase(ABC):
         
     def connect_ws_server(self, info):
         try:
-            self._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
+            # self._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
 
-            self._ws = websocket.WebSocketApp(self._ws_url)
-            # self._ws.run_forever(http_proxy_host='127.0.0.1',http_proxy_port=7890)    
+            # self._ws = websocket.WebSocketApp(self._ws_url)
+            # # self._ws.run_forever(http_proxy_host='127.0.0.1',http_proxy_port=7890)    
 
-            self._ws.on_message = self.on_msg
-            self._ws.on_error = self.on_error                                    
-            self._ws.on_open = self.on_open
-            self._ws.on_close = self.on_close
+            # self._ws.on_message = self.on_msg
+            # self._ws.on_error = self.on_error                                    
+            # self._ws.on_open = self.on_open
+            # self._ws.on_close = self.on_close
 
-            self._ws.run_forever()
+            # self._ws.run_forever()
+
+            self._connect_counts += 1
+            self._logger._logger.info("\n*****connect_ws_server %s %s %s, count: %d *****" % 
+                (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url, self._connect_counts))
+            # websocket.enableTrace(True)
+            # self._ws = websocket.WebSocketApp(self._ws_url)
+            # self._ws.on_message = self.on_msg
+            # self._ws.on_error = self.on_error                                    
+            # self._ws.on_open = self.on_open
+            # self._ws.on_close = self.on_close
+
+            # self._ws.run_forever()
+
+            self._ws_obj = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger._logger)
+            self._ws_obj.connect()            
 
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
     def start_reconnect(self):
         try:
-            self._logger.info("------- Start Reconnect -------- \n")
-            self.connect_ws_server("Reconnect Server")
+            self._logger.warning("\n------- %s Start Reconnect, Counts:%d --------" 
+            % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())), self._connect_counts)
+            while self._is_connnect == False:
+                time.sleep(self._reconnect_secs)
+                self.connect_ws_server("Reconnect Server")
             
         except Exception as e:
             self._logger.warning(traceback.format_exc())
@@ -319,13 +374,14 @@ class ExchangeBase(ABC):
         try:
             self._logger.warning("******* on_close *******\n")
             self._is_connnect = False    
-            time.sleep(self._reconnect_secs)    
+            # time.sleep(self._reconnect_secs)    
 
-            # if self._restart_thread != None and self._restart_thread.is_alive():
-            #     self._restart_thread.stop()
+            # # if self._restart_thread != None and self._restart_thread.is_alive():
+            # #     self._restart_thread.stop()
 
-            restart_thread = threading.Thread(target=self.start_reconnect, )
-            restart_thread.start()
+            # restart_thread = threading.Thread(target=self.start_reconnect, )
+            # restart_thread.start()
+            self.start_reconnect()
 
         except Exception as e:
             self._logger.warning(traceback.format_exc())
