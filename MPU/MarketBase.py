@@ -265,7 +265,7 @@ class ExchangeBase(ABC):
             # self._ws.run_forever()
 
             self._connect_counts += 1
-            self._logger._logger.info("\n*****connect_ws_server %s %s %s, count: %d *****" % 
+            self._logger.info("\n*****connect_ws_server %s %s %s, count: %d *****" % 
                 (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), info, self._ws_url, self._connect_counts))
             # websocket.enableTrace(True)
             # self._ws = websocket.WebSocketApp(self._ws_url)
@@ -276,7 +276,7 @@ class ExchangeBase(ABC):
 
             # self._ws.run_forever()
 
-            self._ws_obj = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger._logger)
+            self._ws_obj = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger)
             self._ws_obj.connect()            
 
         except Exception as e:
