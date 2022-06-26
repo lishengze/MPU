@@ -1,6 +1,6 @@
 {
     "local": {
-        "is_detail": true
+        "is_detail": false
     },
     "dev": {
         "is_detail": false
