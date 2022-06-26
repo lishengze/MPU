@@ -2,7 +2,7 @@
     "local": 
     {
         "symbol_list":["BTC_USDT"],
-        "exchange_list": ["_bcts_"]
+        "exchange_list": ["_bcts_", "FTX"]
     }, 
     "dev": 
     {
