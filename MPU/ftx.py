@@ -262,7 +262,10 @@ class FTX(ExchangeBase):
     def process_msg(self, ws_msg):
         try:
             if ws_msg["type"] == 'error':
-                self._logger.warning("ws_msg is error: " + str(ws_msg))
+                if str(ws_msg["code"]) != "404":
+                    self._logger.warning("ws_msg is error: " + str(ws_msg))
+                else:
+                    self._logger.info("ws_msg is error: " + str(ws_msg))
                 return
                             
             if  ws_msg["type"] == "pong":
