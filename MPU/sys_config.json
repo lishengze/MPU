@@ -4,5 +4,21 @@
     "is_test_currency":false,
     "test_count_persecs": 1,
     "test_symbol_count":1,
-    "test_symbol_list":["A_1_USDT", "A_2_USDT"]
+    "test_symbol_list":["A_1_USDT", "A_2_USDT"],
+
+    "local": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=45d8ee0b105947a0aa77879499724d08b095a1f8999074d51169490690168dda"
+    },
+    "dev": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=09cc1fa7cdc641e2a471b464eed1d2a42419add75a00b530b495a78c03457131"
+    },
+    "qa": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=85adeb761aa5d33b6578e5ca71810a014868be071f7274acdfe1fc86d930cf29"
+    },
+    "stg": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=24d4ac4ff26b3f95593ecdfeefda3aa772d72a9119f00d66599a683c5e50868d"
+    },
+    "prd": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=c8092796c3e12ded388b2da31f47296594953fe4d8380b2663568a04f0013037"
+    }    
 }
