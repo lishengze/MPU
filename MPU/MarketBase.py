@@ -425,7 +425,9 @@ class ExchangeBase(ABC):
                         else:
                             self._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
-                    self._logger.info("UnUpdated Symbol Count:%d, List: %s"%(len(unupdate_dict[item]), str(unupdate_dict[item])))
+                    
+                    if len(unupdate_dict[item]) > 0:
+                        self._logger.info("UnUpdated Symbol Count:%d, List: %s"%(len(unupdate_dict[item]), str(unupdate_dict[item])))
 
             self._logger.info("\n")
 
