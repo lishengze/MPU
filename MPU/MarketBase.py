@@ -235,7 +235,8 @@ class ExchangeBase(ABC):
 
     def send_ding_msg(self, msg):
         if self._ding != None : 
-                self._ding.send_text(msg, False)
+            msg = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + ": " + msg
+            self._ding.send_text(msg, False)
 
     def _get_net_config(self, net_server_type:NET_SERVER_TYPE, env_type:str = "dev"):
         if net_server_type == NET_SERVER_TYPE.KAFKA:
@@ -256,7 +257,7 @@ class ExchangeBase(ABC):
         if self._success_log_file.closed:
             self._success_log_file = open(self._success_log_file_name, 'a')
                 
-        self.send_ding_msg("info %s, sub %s, suceesslly"%(self._exchange_name, symbol))
+        # self.send_ding_msg("info %s, sub %s, suceesslly"%(self._exchange_name, symbol))
 
         self._success_log_file.write(symbol + "\n")
         self._success_log_file.close()
@@ -453,7 +454,7 @@ class ExchangeBase(ABC):
 
             if self._is_connnect:
                 self._ws.send(self.get_ping_sub_info())        
-                
+
             self.print_publish_info()
 
             self._timer = threading.Timer(self._ping_secs, self.on_timer)
