@@ -422,16 +422,18 @@ class ExchangeBase(ABC):
             self._logger.warning(traceback.format_exc())
 
 
-    def is_connect_valid(self):
+    def is_connect_invalid(self):
         try:
             update_count = 0
             for item in self._publish_count_dict:
                 if item == "depth" or item == "trade":
                     for symbol in self._publish_count_dict[item]:
                         update_count += self._publish_count_dict[item][symbol]
+
+            self._logger.info("Sum Update Count is: " + str(update_count))        
+
             if update_count == 0:
                 self._invalid_count += 1
-                self._logger.info("update_count sum is: " + str(update_count) + ", need to restart!")
 
                 if self._invalid_count > 3:
                     return True
@@ -439,14 +441,14 @@ class ExchangeBase(ABC):
                     return False
             else:
                 self._invalid_count = 0
-                self._logger.info("update_count sum is: " + str(update_count))
+                
                 return False
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
     def on_timer(self):
         try:
-            if self.is_connect_valid():
+            if self.is_connect_invalid():
                 self.reset_connect() 
 
             self.print_publish_info()
