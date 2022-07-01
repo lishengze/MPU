@@ -451,6 +451,9 @@ class ExchangeBase(ABC):
             if self.is_connect_invalid():
                 self.reset_connect() 
 
+            if self._is_connnect:
+                self._ws.send(self.get_ping_sub_info())        
+                
             self.print_publish_info()
 
             self._timer = threading.Timer(self._ping_secs, self.on_timer)

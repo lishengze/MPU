@@ -160,17 +160,17 @@ class FTX(ExchangeBase):
         except Exception as e:
             self._logger.warning(traceback.format_exc())    
 
-    def on_timer(self):
-        try:
-            if self._is_connnect:
-                self._ws.send(self.get_ping_sub_info())        
+    # def on_timer(self):
+    #     try:
+    #         if self._is_connnect:
+    #             self._ws.send(self.get_ping_sub_info())        
 
-            self.print_publish_info()
+    #         self.print_publish_info()
 
-            self._timer = threading.Timer(self._ping_secs, self.on_timer)
-            self._timer.start()
-        except Exception as e:
-            self._logger.warning(traceback.format_exc())
+    #         self._timer = threading.Timer(self._ping_secs, self.on_timer)
+    #         self._timer.start()
+    #     except Exception as e:
+    #         self._logger.warning(traceback.format_exc())
                         
     def on_open(self, ws = None):
         try:            
