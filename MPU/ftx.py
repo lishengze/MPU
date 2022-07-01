@@ -196,6 +196,8 @@ class FTX(ExchangeBase):
         try:
             for symbol in self._symbol_dict:
                 self._ws.send(get_sub_order_info(symbol, logger=self._logger))
+                self._logger.info(get_sub_order_info(symbol, logger=self._logger))
+
         except Exception as e:
             self._logger.warning(traceback.format_exc())        
             
@@ -203,6 +205,8 @@ class FTX(ExchangeBase):
         try:
             for symbol in self._symbol_dict:
                 self._ws.send(get_sub_trade_info(symbol, logger=self._logger))
+                self._logger.info(get_sub_order_info(symbol, logger=self._logger))
+
         except Exception as e:
             self._logger.warning(traceback.format_exc()) 
             

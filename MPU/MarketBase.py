@@ -4,6 +4,7 @@ import aiohttp
 import sys
 from MdPublisher import *
 from concurrent.futures import ThreadPoolExecutor
+from dingtalkchatbot.chatbot import DingtalkChatbot
 
 from datetime import datetime
 import time
@@ -178,6 +179,7 @@ class ExchangeBase(ABC):
 
             self._reconnect_secs = 5
             self._connect_counts = 0
+            self._invalid_count = 0
 
             self._logger.info(str(self._symbol_dict))
             
@@ -202,6 +204,10 @@ class ExchangeBase(ABC):
             self._logger.info(str(self._publish_count_dict))
                 
             self._config = self._get_net_config(net_server_type, env_type)
+            ding_config = self._get_dingding_config(env_type)
+            self._ding = None
+            if "dingding" in ding_config:
+                self._ding = DingtalkChatbot(ding_config["dingding"])
 
             self._logger.info(str(self._config))
             
@@ -225,7 +231,11 @@ class ExchangeBase(ABC):
             self._sub_id = 1
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-                        
+
+    def send_ding_msg(self, msg):
+        if self._ding != None : 
+                self._ding.send_text(msg, False)
+
     def _get_net_config(self, net_server_type:NET_SERVER_TYPE, env_type:str = "dev"):
         if net_server_type == NET_SERVER_TYPE.KAFKA:
             self._config_name = os.path.dirname(os.path.abspath(__file__)) + "/kafka_config.json"               
@@ -235,11 +245,18 @@ class ExchangeBase(ABC):
         origin_config = get_config(logger=self._logger, config_file=self._config_name, env_type=env_type)
         
         return origin_config  
-    
+
+    def _get_dingding_config(self, env_type:str = "dev"):
+        config_name = os.path.dirname(os.path.abspath(__file__)) + "/sys_config.json"
+        origin_config = get_config(logger=self._logger, config_file=config_name, env_type=env_type)
+        return origin_config
+
     def _write_successful_currency(self, symbol):
         if self._success_log_file.closed:
             self._success_log_file = open(self._success_log_file_name, 'a')
-            
+                
+        self.send_ding_msg("info %s, sub %s, suceesslly"%(self._exchange_name, symbol))
+
         self._success_log_file.write(symbol + "\n")
         self._success_log_file.close()
         
@@ -252,20 +269,10 @@ class ExchangeBase(ABC):
         
     def connect_ws_server(self, info):
         try:
-            # self._logger.info("*****connect_ws_server %s ***** \n" % (self._ws_url))
-
-            # self._ws = websocket.WebSocketApp(self._ws_url)
-            # # self._ws.run_forever(http_proxy_host='127.0.0.1',http_proxy_port=7890)    
-
-            # self._ws.on_message = self.on_msg
-            # self._ws.on_error = self.on_error                                    
-            # self._ws.on_open = self.on_open
-            # self._ws.on_close = self.on_close
-
-            # self._ws.run_forever()
+            self._logger.info("*****connect_ws_server %s, connect_count: %d ***** \n" % (self._ws_url, self._connect_count))
+            self.send_ding_msg("Info *****connect_ws_server %s, connect_count: %d ***** \n" % (self._ws_url, self._connect_count))
 
             self._connect_counts += 1
-            self._logger.info("\n*****connect_ws_server %s %s, count: %d *****" % (info, self._ws_url, self._connect_counts))
             # websocket.enableTrace(True)
             # self._ws = websocket.WebSocketApp(self._ws_url)
             # self._ws.on_message = self.on_msg
@@ -281,9 +288,19 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
+    def reset_connect(self):
+        try:
+            self._is_connnect = False
+            self.start_reconnect()
+
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())
+
     def start_reconnect(self):
         try:
             self._logger.warning("\n------- Start Reconnect, Counts:%d --------" % (self._connect_counts))
+            self.send_ding_msg("Warn ------- Start Reconnect -------- \n")
+
             while self._is_connnect == False:
                 time.sleep(self._reconnect_secs)
                 self.connect_ws_server("Reconnect Server")
@@ -347,6 +364,7 @@ class ExchangeBase(ABC):
     def on_open(self, *t_args, **d_args):
         try:
             self._logger.info("\non_open")
+            self.send_ding_msg("info %s on_open"%(self._exchange_name))
             self._is_connnect = True
             self.set_meta()
             
@@ -399,10 +417,33 @@ class ExchangeBase(ABC):
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
+
+    def is_connect_valid(self):
+        try:
+            update_count = 0
+            for item in self._publish_count_dict:
+                if item == "depth" or item == "trade":
+                    for symbol in self._publish_count_dict[item]:
+                        update_count += self._publish_count_dict[item][symbol]
+            if update_count == 0:
+                self._invalid_count += 1
+                self._logger.info("update_count sum is: " + str(update_count) + ", need to restart!")
+
+                if self._invalid_count > 3:
+                    return False
+                else:
+                    return True
+            else:
+                self._invalid_count = 0
+                self._logger.info("update_count sum is: " + str(update_count))
+                return True
+        except Exception as e:
+            self._logger.warning(traceback.format_exc())
+
     def on_timer(self):
         try:
-            # if self._is_connnect:
-            #     self._ws.send(self.get_ping_sub_info())        
+            if self.is_connect_valid():
+                self.reset_connect() 
 
             self.print_publish_info()
 
