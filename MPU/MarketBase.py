@@ -410,18 +410,28 @@ class ExchangeBase(ABC):
     def print_publish_info(self):
         try:
             self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            self._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],self._publish_count_dict["end_time"] ))
+            self._logger.info("\nFrom %s to %s Publish Statics: "% (self._publish_count_dict["start_time"],
+                                                                    self._publish_count_dict["end_time"] ))
+            unupdate_dict = {
+                "depth":list(), 
+                "trade":list(),
+            }
+
             for item in self._publish_count_dict:
                 if item == "depth" or item == "trade":
                     for symbol in self._publish_count_dict[item]:
-                        self._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
+                        if self._publish_count_dict[item][symbol] == 0:
+                            unupdate_dict[item].append(symbol)
+                        else:
+                            self._logger.info("%s.%s: %d" % (item, symbol, self._publish_count_dict[item][symbol]))
                         self._publish_count_dict[item][symbol] = 0
+                    self._logger.info("UnUpdated Symbol Count:%d, List: %s"%(len(unupdate_dict[item]), str(unupdate_dict[item])))
+
             self._logger.info("\n")
 
             self._publish_count_dict["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         except Exception as e:
             self._logger.warning(traceback.format_exc())
-
 
     def is_connect_invalid(self):
         try:
