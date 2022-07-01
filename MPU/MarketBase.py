@@ -272,7 +272,7 @@ class ExchangeBase(ABC):
     def connect_ws_server(self, info):
         try:
             self._logger.info("*****connect_ws_server %s, connect_count: %d ***** \n" % (self._ws_url, self._connect_count))
-            self.send_ding_msg("Info *****connect_ws_server %s, connect_count: %d ***** \n" % (self._ws_url, self._connect_count))
+            self.send_ding_msg("Info:%s connect_ws_server %s, connect_count: %d \n" % (self._exchange_name, self._ws_url, self._connect_count))
 
             self._connect_count += 1
             # websocket.enableTrace(True)
@@ -304,7 +304,7 @@ class ExchangeBase(ABC):
     def start_reconnect(self):
         try:
             self._logger.warning("\n------- Start Reconnect, Counts:%d --------" % (self._connect_count))
-            self.send_ding_msg("Warn ------- Start Reconnect -------- \n")
+            self.send_ding_msg("Warn: Start Reconnect %s\n"%(self._exchange_name))
 
             while self._is_connnect == False:
                 time.sleep(self._reconnect_secs)
