@@ -291,6 +291,9 @@ class ExchangeBase(ABC):
 
     def reset_connect(self):
         try:
+            self._logger.warning("Reset Connect")
+            self.send_ding_msg("%s Reset Connect "% (self._exchange_name))
+
             self._is_connnect = False
             self.start_reconnect()
 
@@ -365,7 +368,7 @@ class ExchangeBase(ABC):
     def on_open(self, *t_args, **d_args):
         try:
             self._logger.info("\non_open")
-            self.send_ding_msg("info %s on_open"%(self._exchange_name))
+            self.send_ding_msg("Info %s on_open! "%(self._exchange_name))
             self._is_connnect = True
             self.set_meta()
             
@@ -431,13 +434,13 @@ class ExchangeBase(ABC):
                 self._logger.info("update_count sum is: " + str(update_count) + ", need to restart!")
 
                 if self._invalid_count > 3:
-                    return False
-                else:
                     return True
+                else:
+                    return False
             else:
                 self._invalid_count = 0
                 self._logger.info("update_count sum is: " + str(update_count))
-                return True
+                return False
         except Exception as e:
             self._logger.warning(traceback.format_exc())
 
