@@ -143,9 +143,10 @@ Trade InstrumentID
 BTC-USDT、ETH-USDT、BTC-USD、ETH-USD、USDT-USD、ETH-BTC
 '''
 class ExchangeBase(ABC):
-    def __init__(self, exchange_name:str, symbol_dict:dict, sub_data_type_list:list, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
+    def __init__(self, exchange_name:str, ws_url:str, symbol_dict:dict, sub_data_type_list:list, net_server_type:NET_SERVER_TYPE = NET_SERVER_TYPE.KAFKA, 
                  debug_mode: bool = True, is_test_currency:bool = False, is_stress_test:bool = False, env_type:str = "dev"):
         try:
+            self._ws_url = ws_url
             self._is_test_exhange_conn = is_test_currency
             self._symbol_dict = symbol_dict
             self._net_server_type = net_server_type
@@ -178,7 +179,7 @@ class ExchangeBase(ABC):
             self._restart_thread = None
 
             self._reconnect_secs = 5
-            self._connect_counts = 0
+            self._connect_count = 0
             self._invalid_count = 0
 
             self._logger.info(str(self._symbol_dict))
@@ -272,7 +273,7 @@ class ExchangeBase(ABC):
             self._logger.info("*****connect_ws_server %s, connect_count: %d ***** \n" % (self._ws_url, self._connect_count))
             self.send_ding_msg("Info *****connect_ws_server %s, connect_count: %d ***** \n" % (self._ws_url, self._connect_count))
 
-            self._connect_counts += 1
+            self._connect_count += 1
             # websocket.enableTrace(True)
             # self._ws = websocket.WebSocketApp(self._ws_url)
             # self._ws.on_message = self.on_msg
@@ -298,7 +299,7 @@ class ExchangeBase(ABC):
 
     def start_reconnect(self):
         try:
-            self._logger.warning("\n------- Start Reconnect, Counts:%d --------" % (self._connect_counts))
+            self._logger.warning("\n------- Start Reconnect, Counts:%d --------" % (self._connect_count))
             self.send_ding_msg("Warn ------- Start Reconnect -------- \n")
 
             while self._is_connnect == False:

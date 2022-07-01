@@ -122,10 +122,9 @@ class FTX(ExchangeBase):
     def __init__(self, symbol_dict:dict, sub_data_type_list:list, net_server_type: NET_SERVER_TYPE =NET_SERVER_TYPE.KAFKA, 
                 debug_mode: bool = True, is_test_currency: bool = False, is_stress_test:bool = False, env_type:str = "dev"):
         try:
-            super().__init__(exchange_name="FTX", symbol_dict=symbol_dict, 
+            super().__init__(exchange_name="FTX", ws_url="wss://ftx.com/ws/", symbol_dict=symbol_dict, 
                              sub_data_type_list=sub_data_type_list, net_server_type=net_server_type,
                              debug_mode=debug_mode, is_test_currency=is_test_currency, is_stress_test=is_stress_test, env_type=env_type)            
-            self._ws_url = "wss://ftx.com/ws/"
             self._api_key = "s8CXYtq5AGVYZFaPJLvzb0ezS1KxtwUwQTOMFBSB"
             self._api_secret = "LlGNM2EWnKghJEN_T9VCZigkHBEPu0AgoqTjXmwA"
             
