@@ -394,6 +394,7 @@ class ExchangeBase(ABC):
     def on_close(self, *t_args, **d_args):
         try:
             self._logger.warning("******* on_close *******\n")
+            self.send_ding_msg("warn: %s, On Close"%(self._exchange_name))
             self._is_connnect = False    
             # time.sleep(self._reconnect_secs)    
 
@@ -462,6 +463,7 @@ class ExchangeBase(ABC):
     def on_timer(self):
         try:
             if self.is_connect_invalid():
+                self.send_ding_msg("error: %s cann't receive data, reconnect!"%(self._exchange_name))
                 self.reset_connect() 
 
             if self._is_connnect:
