@@ -1,6 +1,8 @@
 # !/bin/bash
 
-nohup python3 /mnt/market/MPU/MarketV2_FTX.py > /mnt/market/MPU/log/ftx.log &
+echo "args : $@"
+
+nohup python3 /mnt/market/MPU/MarketV2_FTX.py $1 > /mnt/market/MPU/log/ftx.log &
 
 
 sleep 2s

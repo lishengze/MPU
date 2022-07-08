@@ -1,0 +1,17 @@
+{
+    "local": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=979132c5df7e2cc573b2c85385c52efdc8622d8f46037b2540a483096a9e1e2c"
+    },
+    "dev": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=bfce8b5639e3366d3bca69710f856f91b352ba8fc3e635a6b1c7d704592e21b8"
+    },
+    "qa": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=e1e1445386aef74a0875727a243cc5ab0023f50e91bb274a114125c399514176"
+    },
+    "stg": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=6d8912ea76f0bee3b707df7d0dfade4b040d7e9478ed95b59672b2e5afeedb09"
+    },
+    "prd": {
+        "dingding":"https://oapi.dingtalk.com/robot/send?access_token=2cefedd47e5466f6c83d3dd9e2a63c201bf6312daa150ed5d79971b7a1b98104"
+    }   
+}
