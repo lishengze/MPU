@@ -84,12 +84,6 @@ def get_sub_trade_info(symbol_name, logger = None):
     
     return sub_info_str         
 
-def get_ping_info():
-    sub_info = {'op': 'ping'}  
-
-    sub_info_str = json.dumps(sub_info)
-    
-    return sub_info_str       
 
 class WSClass(object):
     def __init__(self, ws_url: str, processor, logger):
@@ -304,6 +298,13 @@ class FTX(object):
         except Exception as e:
             self._logger.warning("[E]on_close: " + str(e))
 
+    def get_ping_info(self):
+        sub_info = {'op': 'ping'}  
+
+        sub_info_str = json.dumps(sub_info)
+        
+        return sub_info_str       
+
     # def print_publish_info(self):
     #     try:
     #         self._publish_count_dict["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -385,14 +386,11 @@ class FTX(object):
     def on_timer(self):
         try:
             if self._is_connnect:
-                self._ws.send(get_ping_info())        
+                self._ws.send(self.get_ping_info())        
 
             if self.is_connect_invalid():
                 self.send_ding_msg("error: %s cann't receive data, reconnect!"%(self._exchange_name))
                 self.reset_connect() 
-
-            if self._is_connnect:
-                self._ws.send(self.get_ping_sub_info())   
 
             self.print_publish_info()
 
