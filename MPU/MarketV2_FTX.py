@@ -29,7 +29,7 @@ def get_config(logger = None, config_file=""):
 
     return json_dict
 
-def get_login_info(api_key, api_secret, logger = None):
+def get_login_info(api_key, api_secret, logger= None):
     ts = int(time.time() * 1000)
 
     # self._logger.info("0")
@@ -51,7 +51,7 @@ def get_login_info(api_key, api_secret, logger = None):
     sub_info_str = json.dumps(sub_info)
 
     if logger is not None:
-        logger._logger.info("\nsub_info: \n" + sub_info_str)
+        logger.info("\nsub_info: \n" + sub_info_str)
     else:
         print("\nsub_info: \n" + sub_info_str)
     return sub_info_str
@@ -266,7 +266,8 @@ class FTX(object):
 
     def on_open(self, *t_args, **d_args):
         try:
-            self._logger.info("\nftx_on_open")
+            self._logger.info("ftx_on_open")
+            self.send_ding_msg("Info %s on_open! "%(self._exchange_name))
             self._is_connnect = True
 
             sub_info_str = get_login_info(self._api_key, self._api_secret, logger=self._logger)
