@@ -217,6 +217,8 @@ class FTX(object):
         try:
             self._connect_count += 1
             self._logger.info("\n*****connect_ws_server %s %s, count: %d *****" % (info, self._ws_url, self._connect_count))
+            self.send_ding_msg("Info:%s connect_ws_server %s, connect_count: %d \n" % (self._exchange_name, self._ws_url, self._connect_count))
+
 
             self._ws = WSClass(ws_url=self._ws_url, processor=self, logger= self._logger)
             self._ws.connect()
@@ -267,7 +269,7 @@ class FTX(object):
     def on_open(self, *t_args, **d_args):
         try:
             self._logger.info("ftx_on_open")
-            self.send_ding_msg("Info %s on_open! "%(self._exchange_name))
+            self.send_ding_msg("Info %s on_open! Counts: %d "%(self._exchange_name, self._connect_count))
             self._is_connnect = True
 
             sub_info_str = get_login_info(self._api_key, self._api_secret, logger=self._logger)
