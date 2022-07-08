@@ -120,6 +120,7 @@ class WSClass(object):
     def send(self, data:str):
         try:
             if self._ws != None:
+                self._logger.info("Send %s" %(data))
                 self._ws.send(data)
             else :
                 self._logger.warning("[E]ws is None!")     
