@@ -301,7 +301,7 @@ class KafkaServer(NetServer):
                 if type(key) == str:
                     key_value = bytes(key.encode())
 
-                self._logger.info("send topic: %s, msg: %s", topic, msg)
+                # self._logger.info("send topic: %s, msg: %s", topic, msg)
                 
                 # self._producer.send(topic, key=key_value, value=msg)
 
@@ -373,7 +373,7 @@ class KafkaServer(NetServer):
     
     def publish_trade(self, trade:STradeData):
         try:
-            self._logger.info(trade.meta_str())
+            # self._logger.info(trade.meta_str())
 
             self._publish_msg(topic=self._get_trade_topic(trade.symbol, ""), \
                                        key=trade.exchange, msg=self.serializer.encode_trade(trade))
