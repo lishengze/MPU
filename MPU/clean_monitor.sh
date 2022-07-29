@@ -1,6 +1,8 @@
 # !/bin/bash
 
 rm -fr /mnt/pms_market/MPU/log/Monitor/*.log*
+rm -fr log/Monitor/*.log*
+
 
 
 PID=`ps aux|grep monitor_trade |grep -v grep | awk '{print $2}'`
