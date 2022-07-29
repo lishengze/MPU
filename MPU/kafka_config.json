@@ -1,6 +1,6 @@
 {
     "local": {
-        "server_list":["152.32.254.76:8118"],
+        "server_list":["43.154.179.47:8117"],
         "depth_update_count":5
     },
     "dev": {
