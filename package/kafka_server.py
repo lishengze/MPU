@@ -325,7 +325,11 @@ class KafkaServer(NetServer):
             
     def _get_trade_topic(self, symbol, exchange):
         try:
-            return TRADE_TYPE + TYPE_SEPARATOR + symbol
+            if exchange != "":
+                return TRADE_TYPE + TYPE_SEPARATOR + symbol + SYMBOL_EXCHANGE_SEPARATOR  + exchange
+            else:
+                return TRADE_TYPE + TYPE_SEPARATOR + symbol
+            
         except Exception as e:
             self._logger.warning(traceback.format_exc())
                                 
@@ -366,8 +370,12 @@ class KafkaServer(NetServer):
     
     def publish_trade(self, trade:STradeData):
         try:
+            self._publish_msg(topic=self._get_trade_topic(trade.symbol, ""), \
+                                       key=trade.exchange, msg=self.serializer.encode_trade(trade))
+
             self._publish_msg(topic=self._get_trade_topic(trade.symbol, trade.exchange), \
                                        key=trade.exchange, msg=self.serializer.encode_trade(trade))
+
         except Exception as e:
             self._logger.warning(traceback.format_exc())            
 

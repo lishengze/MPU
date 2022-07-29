@@ -5,12 +5,12 @@ import traceback
 
 from enum import Enum
 
-TYPE_SEPARATOR = "-"
+TYPE_SEPARATOR = "."
 SYMBOL_EXCHANGE_SEPARATOR = "."
 
-DEPTH_TYPE = "DEPTHx"
-TRADE_TYPE = "TRADEx"
-KLINE_TYPE = "KLINEx"
+DEPTH_TYPE = "DEPTH"
+TRADE_TYPE = "TRADE"
+KLINE_TYPE = "KLINE"
 
 MILLS_PER_SECS = 100
 MICRO_PER_MILLS = 1000
@@ -144,6 +144,9 @@ class SKlineData(object):
         self.px_close = SDecimal()
         
         self.volume = SDecimal()
+
+        self.value = SDecimal()
+        self.lastvolume = SDecimal()
  
     def meta_str(self):
         result =  ("se: %d, time: %d, ex: %s, sy: %s, px_open: %f, px_high: %f, px_low: %f, px_close: %f" % \

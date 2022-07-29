@@ -1,64 +1,70 @@
 syntax = "proto3";
 
-package Proto3.MarketData;
+option go_package = "./pb";
 
-enum DataType
-{
-  KLINE = 0;
-  TRADE = 1;
-  DEPTH = 2;
+package Proto3.MarketData; 
+
+import public "google/protobuf/timestamp.proto";
+
+message PriceVolume {
+  string price = 1;
+  string volume = 2;
 }
 
-message Decimal
-{
-    uint64 value = 1;
-    uint32 precise = 2;
-};
+message Depth {
+  google.protobuf.Timestamp timestamp = 1; // 交易所更新时间
+  string  exchange = 2;
+  string  symbol = 3;
+  repeated  PriceVolume asks = 4;
+  repeated  PriceVolume bids = 5;
+  google.protobuf.Timestamp mpu_timestamp = 6; // mpu 服务器时间
+  uint64 sequence = 7;
+}
 
-message Depth
-{
-    Decimal price  = 1;
-    Decimal volume = 2;
-    map<string, Decimal> volume_by_exchanges = 3;
-};
+message Trade {
+  google.protobuf.Timestamp timestamp = 1; // 交易所更新时间
+  string exchange = 2;
+  string symbol = 3;
+  string price = 4;
+  string volume = 5;
+  uint64 sequence = 6;
+}
 
-message DepthQuote
-{
-    string exchange = 1;
-    string symbol = 2;
-    uint64 sequence_no = 3;
-    uint64 origin_time = 4;
-    uint64 arrive_time = 5;
-    uint64 server_time = 6;
-    uint32 price_precise = 7;
-    uint32 volume_precise = 8;
-    uint32 amount_precise = 9;
-    bool   is_snap = 10;
-    repeated Depth asks = 11;
-    repeated Depth bids = 12;
-};
+message Kline {
+  google.protobuf.Timestamp timestamp = 1; // 时间
+  string exchange = 2;
+  string symbol = 3;
+  string open = 4;
+  string high = 5;
+  string low = 6;
+  string close = 7;
+  string volume = 8; // 量
+  string value = 9; // 额
+  uint32 resolution = 10;
+  uint64 sequence = 11;
+  string lastvolume = 12; // 最近一笔的成交量，用于推算当前的成交信息;
+}
 
-message ReqDepthInfo
+message HistKlineData
 {
     string symbol = 1;
-    string exchange = 2;
-    uint64 time = 3;
+    string exchange = 2;    
+    uint64 start_time = 3;
+    uint64 end_time = 4;
+    uint32 count = 5;
+    uint32 frequency = 6;
+    repeated Kline kline_data = 7;
 };
 
-message KlineData
-{
-    uint64  time = 1;
-    string  exchange = 2;
-    string  symbol = 3;    
-    Decimal px_open = 4;
-    Decimal px_high = 5;
-    Decimal px_low = 6;
-    Decimal px_close = 7;
-    Decimal volume = 8;
-    uint32  resolution = 9;
-    uint64  sequence_no = 10;
-};    
+message EmptyReq {
 
+}
+
+message EmptyRsp {
+}
+
+
+// 增加的两个是pms,还有前置服务器的 需要用到的行情接口；
 message ReqHishKlineInfo
 {
     string symbol = 1;
@@ -69,46 +75,17 @@ message ReqHishKlineInfo
     uint32 frequency = 6;
 };
 
-5
-
-message TradeData
-{
-    uint64   time = 1;
-    Decimal  price = 2;
-    Decimal  volume = 3;
-    string   symbol = 4;
-    string   exchange = 5;
-    uint64   sequence_no = 6;
-};    
-
-
 message ReqTradeInfo
 {
     string symbol = 1;
     string exchange = 2;
     uint64 time = 3;
+    uint64 start_time = 5;
+    uint64 end_time = 6;
+    uint32 count = 7;
 };
 
-message SubInfo
-{
-    string symbol = 1;
-    string exchange = 2;   
-    DataType data_type =3;
-};
-
-service MarketService
-{
-    rpc RequestHistKlineData(ReqHishKlineInfo) returns (HistKlineData){}
-
-    rpc RequestTradeData(ReqTradeInfo) returns (TradeData) {}
-
-    rpc GetStreamTradeData(ReqTradeInfo) returns (stream TradeData) {}
-
-    rpc RequestDepthData(ReqDepthInfo) returns (DepthQuote) {}
-
-    rpc SubKlineData(stream SubInfo) returns (stream KlineData) {}
-
-    rpc SubTradeData(stream SubInfo) returns (stream TradeData) {}
-
-    rpc SubDepthData(stream SubInfo) returns (stream DepthQuote) {}
-};
+service MarketService { // 服务名字还是用 MarketService, 整个行情系统都要用；
+  rpc RequestHistKlineData(ReqHishKlineInfo) returns (HistKlineData){}
+  rpc RequestTradeData(ReqTradeInfo) returns (Trade) {} 
+}

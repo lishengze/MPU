@@ -7,6 +7,7 @@
 #include "market_data.pb.h"
 
 #include <functional>
+#include <grpc/impl/codegen/port_platform.h>
 #include <grpcpp/impl/codegen/async_generic_service.h>
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
@@ -43,96 +44,45 @@ class MarketService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::HistKlineData>> PrepareAsyncRequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::HistKlineData>>(PrepareAsyncRequestHistKlineDataRaw(context, request, cq));
     }
-    virtual ::grpc::Status RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::Proto3::MarketData::TradeData* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::TradeData>> AsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::TradeData>>(AsyncRequestTradeDataRaw(context, request, cq));
+    virtual ::grpc::Status RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::Proto3::MarketData::Trade* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::Trade>> AsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::Trade>>(AsyncRequestTradeDataRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::TradeData>> PrepareAsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::TradeData>>(PrepareAsyncRequestTradeDataRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::Trade>> PrepareAsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::Trade>>(PrepareAsyncRequestTradeDataRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::Proto3::MarketData::TradeData>> GetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request) {
-      return std::unique_ptr< ::grpc::ClientReaderInterface< ::Proto3::MarketData::TradeData>>(GetStreamTradeDataRaw(context, request));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Proto3::MarketData::TradeData>> AsyncGetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Proto3::MarketData::TradeData>>(AsyncGetStreamTradeDataRaw(context, request, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Proto3::MarketData::TradeData>> PrepareAsyncGetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Proto3::MarketData::TradeData>>(PrepareAsyncGetStreamTradeDataRaw(context, request, cq));
-    }
-    virtual ::grpc::Status RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::Proto3::MarketData::DepthQuote* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::DepthQuote>> AsyncRequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::DepthQuote>>(AsyncRequestDepthDataRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::DepthQuote>> PrepareAsyncRequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::DepthQuote>>(PrepareAsyncRequestDepthDataRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>> SubKlineData(::grpc::ClientContext* context) {
-      return std::unique_ptr< ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>>(SubKlineDataRaw(context));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>> AsyncSubKlineData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>>(AsyncSubKlineDataRaw(context, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>> PrepareAsyncSubKlineData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>>(PrepareAsyncSubKlineDataRaw(context, cq));
-    }
-    std::unique_ptr< ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>> SubTradeData(::grpc::ClientContext* context) {
-      return std::unique_ptr< ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>>(SubTradeDataRaw(context));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>> AsyncSubTradeData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>>(AsyncSubTradeDataRaw(context, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>> PrepareAsyncSubTradeData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>>(PrepareAsyncSubTradeDataRaw(context, cq));
-    }
-    std::unique_ptr< ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>> SubDepthData(::grpc::ClientContext* context) {
-      return std::unique_ptr< ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>>(SubDepthDataRaw(context));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>> AsyncSubDepthData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>>(AsyncSubDepthDataRaw(context, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>> PrepareAsyncSubDepthData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>>(PrepareAsyncSubDepthDataRaw(context, cq));
-    }
-    class async_interface {
+    class experimental_async_interface {
      public:
-      virtual ~async_interface() {}
+      virtual ~experimental_async_interface() {}
       virtual void RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       virtual void RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void GetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ClientReadReactor< ::Proto3::MarketData::TradeData>* reactor) = 0;
-      virtual void RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void SubKlineData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::KlineData>* reactor) = 0;
-      virtual void SubTradeData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::TradeData>* reactor) = 0;
-      virtual void SubDepthData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::DepthQuote>* reactor) = 0;
+      #else
+      virtual void RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
+      virtual void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
     };
-    typedef class async_interface experimental_async_interface;
-    virtual class async_interface* async() { return nullptr; }
-    class async_interface* experimental_async() { return async(); }
-   private:
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    typedef class experimental_async_interface async_interface;
+    #endif
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    async_interface* async() { return experimental_async(); }
+    #endif
+    virtual class experimental_async_interface* experimental_async() { return nullptr; }
+  private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::HistKlineData>* AsyncRequestHistKlineDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::HistKlineData>* PrepareAsyncRequestHistKlineDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::TradeData>* AsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::TradeData>* PrepareAsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderInterface< ::Proto3::MarketData::TradeData>* GetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::Proto3::MarketData::TradeData>* AsyncGetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::Proto3::MarketData::TradeData>* PrepareAsyncGetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::DepthQuote>* AsyncRequestDepthDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::DepthQuote>* PrepareAsyncRequestDepthDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* SubKlineDataRaw(::grpc::ClientContext* context) = 0;
-    virtual ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* AsyncSubKlineDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* PrepareAsyncSubKlineDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* SubTradeDataRaw(::grpc::ClientContext* context) = 0;
-    virtual ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* AsyncSubTradeDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* PrepareAsyncSubTradeDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* SubDepthDataRaw(::grpc::ClientContext* context) = 0;
-    virtual ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* AsyncSubDepthDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderWriterInterface< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* PrepareAsyncSubDepthDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::Trade>* AsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::Proto3::MarketData::Trade>* PrepareAsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
     ::grpc::Status RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::Proto3::MarketData::HistKlineData* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>> AsyncRequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>>(AsyncRequestHistKlineDataRaw(context, request, cq));
@@ -140,105 +90,45 @@ class MarketService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>> PrepareAsyncRequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>>(PrepareAsyncRequestHistKlineDataRaw(context, request, cq));
     }
-    ::grpc::Status RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::Proto3::MarketData::TradeData* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>> AsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>>(AsyncRequestTradeDataRaw(context, request, cq));
+    ::grpc::Status RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::Proto3::MarketData::Trade* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::Trade>> AsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::Trade>>(AsyncRequestTradeDataRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>> PrepareAsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>>(PrepareAsyncRequestTradeDataRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::Trade>> PrepareAsyncRequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::Trade>>(PrepareAsyncRequestTradeDataRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReader< ::Proto3::MarketData::TradeData>> GetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request) {
-      return std::unique_ptr< ::grpc::ClientReader< ::Proto3::MarketData::TradeData>>(GetStreamTradeDataRaw(context, request));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>> AsyncGetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>>(AsyncGetStreamTradeDataRaw(context, request, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>> PrepareAsyncGetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>>(PrepareAsyncGetStreamTradeDataRaw(context, request, cq));
-    }
-    ::grpc::Status RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::Proto3::MarketData::DepthQuote* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>> AsyncRequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>>(AsyncRequestDepthDataRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>> PrepareAsyncRequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>>(PrepareAsyncRequestDepthDataRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>> SubKlineData(::grpc::ClientContext* context) {
-      return std::unique_ptr< ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>>(SubKlineDataRaw(context));
-    }
-    std::unique_ptr<  ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>> AsyncSubKlineData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>>(AsyncSubKlineDataRaw(context, cq, tag));
-    }
-    std::unique_ptr<  ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>> PrepareAsyncSubKlineData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>>(PrepareAsyncSubKlineDataRaw(context, cq));
-    }
-    std::unique_ptr< ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>> SubTradeData(::grpc::ClientContext* context) {
-      return std::unique_ptr< ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>>(SubTradeDataRaw(context));
-    }
-    std::unique_ptr<  ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>> AsyncSubTradeData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>>(AsyncSubTradeDataRaw(context, cq, tag));
-    }
-    std::unique_ptr<  ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>> PrepareAsyncSubTradeData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>>(PrepareAsyncSubTradeDataRaw(context, cq));
-    }
-    std::unique_ptr< ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>> SubDepthData(::grpc::ClientContext* context) {
-      return std::unique_ptr< ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>>(SubDepthDataRaw(context));
-    }
-    std::unique_ptr<  ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>> AsyncSubDepthData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>>(AsyncSubDepthDataRaw(context, cq, tag));
-    }
-    std::unique_ptr<  ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>> PrepareAsyncSubDepthData(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>>(PrepareAsyncSubDepthDataRaw(context, cq));
-    }
-    class async final :
-      public StubInterface::async_interface {
+    class experimental_async final :
+      public StubInterface::experimental_async_interface {
      public:
       void RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       void RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response, std::function<void(::grpc::Status)>) override;
-      void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void GetStreamTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ClientReadReactor< ::Proto3::MarketData::TradeData>* reactor) override;
-      void RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response, std::function<void(::grpc::Status)>) override;
-      void RequestDepthData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void SubKlineData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::KlineData>* reactor) override;
-      void SubTradeData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::TradeData>* reactor) override;
-      void SubDepthData(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::Proto3::MarketData::SubInfo,::Proto3::MarketData::DepthQuote>* reactor) override;
+      #else
+      void RequestHistKlineData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void RequestTradeData(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
      private:
       friend class Stub;
-      explicit async(Stub* stub): stub_(stub) { }
+      explicit experimental_async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class async* async() override { return &async_stub_; }
+    class experimental_async_interface* experimental_async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class async async_stub_{this};
+    class experimental_async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>* AsyncRequestHistKlineDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::HistKlineData>* PrepareAsyncRequestHistKlineDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqHishKlineInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>* AsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::TradeData>* PrepareAsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientReader< ::Proto3::MarketData::TradeData>* GetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request) override;
-    ::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>* AsyncGetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReader< ::Proto3::MarketData::TradeData>* PrepareAsyncGetStreamTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>* AsyncRequestDepthDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::DepthQuote>* PrepareAsyncRequestDepthDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqDepthInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* SubKlineDataRaw(::grpc::ClientContext* context) override;
-    ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* AsyncSubKlineDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* PrepareAsyncSubKlineDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* SubTradeDataRaw(::grpc::ClientContext* context) override;
-    ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* AsyncSubTradeDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* PrepareAsyncSubTradeDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* SubDepthDataRaw(::grpc::ClientContext* context) override;
-    ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* AsyncSubDepthDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReaderWriter< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* PrepareAsyncSubDepthDataRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::Trade>* AsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::Proto3::MarketData::Trade>* PrepareAsyncRequestTradeDataRaw(::grpc::ClientContext* context, const ::Proto3::MarketData::ReqTradeInfo& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_RequestHistKlineData_;
     const ::grpc::internal::RpcMethod rpcmethod_RequestTradeData_;
-    const ::grpc::internal::RpcMethod rpcmethod_GetStreamTradeData_;
-    const ::grpc::internal::RpcMethod rpcmethod_RequestDepthData_;
-    const ::grpc::internal::RpcMethod rpcmethod_SubKlineData_;
-    const ::grpc::internal::RpcMethod rpcmethod_SubTradeData_;
-    const ::grpc::internal::RpcMethod rpcmethod_SubDepthData_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -247,12 +137,7 @@ class MarketService final {
     Service();
     virtual ~Service();
     virtual ::grpc::Status RequestHistKlineData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response);
-    virtual ::grpc::Status RequestTradeData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response);
-    virtual ::grpc::Status GetStreamTradeData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* writer);
-    virtual ::grpc::Status RequestDepthData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response);
-    virtual ::grpc::Status SubKlineData(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* stream);
-    virtual ::grpc::Status SubTradeData(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* stream);
-    virtual ::grpc::Status SubDepthData(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* stream);
+    virtual ::grpc::Status RequestTradeData(::grpc::ServerContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_RequestHistKlineData : public BaseClass {
@@ -286,132 +171,46 @@ class MarketService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::TradeData* /*response*/) override {
+    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestRequestTradeData(::grpc::ServerContext* context, ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ServerAsyncResponseWriter< ::Proto3::MarketData::TradeData>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRequestTradeData(::grpc::ServerContext* context, ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ServerAsyncResponseWriter< ::Proto3::MarketData::Trade>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
+  typedef WithAsyncMethod_RequestHistKlineData<WithAsyncMethod_RequestTradeData<Service > > AsyncService;
   template <class BaseClass>
-  class WithAsyncMethod_GetStreamTradeData : public BaseClass {
+  class ExperimentalWithCallbackMethod_RequestHistKlineData : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_GetStreamTradeData() {
-      ::grpc::Service::MarkMethodAsync(2);
-    }
-    ~WithAsyncMethod_GetStreamTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status GetStreamTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestGetStreamTradeData(::grpc::ServerContext* context, ::Proto3::MarketData::ReqTradeInfo* request, ::grpc::ServerAsyncWriter< ::Proto3::MarketData::TradeData>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithAsyncMethod_RequestDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithAsyncMethod_RequestDepthData() {
-      ::grpc::Service::MarkMethodAsync(3);
-    }
-    ~WithAsyncMethod_RequestDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status RequestDepthData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqDepthInfo* /*request*/, ::Proto3::MarketData::DepthQuote* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestRequestDepthData(::grpc::ServerContext* context, ::Proto3::MarketData::ReqDepthInfo* request, ::grpc::ServerAsyncResponseWriter< ::Proto3::MarketData::DepthQuote>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithAsyncMethod_SubKlineData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithAsyncMethod_SubKlineData() {
-      ::grpc::Service::MarkMethodAsync(4);
-    }
-    ~WithAsyncMethod_SubKlineData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubKlineData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubKlineData(::grpc::ServerContext* context, ::grpc::ServerAsyncReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* stream, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncBidiStreaming(4, context, stream, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithAsyncMethod_SubTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithAsyncMethod_SubTradeData() {
-      ::grpc::Service::MarkMethodAsync(5);
-    }
-    ~WithAsyncMethod_SubTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubTradeData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubTradeData(::grpc::ServerContext* context, ::grpc::ServerAsyncReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* stream, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncBidiStreaming(5, context, stream, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithAsyncMethod_SubDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithAsyncMethod_SubDepthData() {
-      ::grpc::Service::MarkMethodAsync(6);
-    }
-    ~WithAsyncMethod_SubDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubDepthData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubDepthData(::grpc::ServerContext* context, ::grpc::ServerAsyncReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* stream, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncBidiStreaming(6, context, stream, new_call_cq, notification_cq, tag);
-    }
-  };
-  typedef WithAsyncMethod_RequestHistKlineData<WithAsyncMethod_RequestTradeData<WithAsyncMethod_GetStreamTradeData<WithAsyncMethod_RequestDepthData<WithAsyncMethod_SubKlineData<WithAsyncMethod_SubTradeData<WithAsyncMethod_SubDepthData<Service > > > > > > > AsyncService;
-  template <class BaseClass>
-  class WithCallbackMethod_RequestHistKlineData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_RequestHistKlineData() {
-      ::grpc::Service::MarkMethodCallback(0,
+    ExperimentalWithCallbackMethod_RequestHistKlineData() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqHishKlineInfo, ::Proto3::MarketData::HistKlineData>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response) { return this->RequestHistKlineData(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::Proto3::MarketData::ReqHishKlineInfo* request, ::Proto3::MarketData::HistKlineData* response) { return this->RequestHistKlineData(context, request, response); }));}
     void SetMessageAllocatorFor_RequestHistKlineData(
-        ::grpc::MessageAllocator< ::Proto3::MarketData::ReqHishKlineInfo, ::Proto3::MarketData::HistKlineData>* allocator) {
+        ::grpc::experimental::MessageAllocator< ::Proto3::MarketData::ReqHishKlineInfo, ::Proto3::MarketData::HistKlineData>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(0);
+    #endif
       static_cast<::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqHishKlineInfo, ::Proto3::MarketData::HistKlineData>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_RequestHistKlineData() override {
+    ~ExperimentalWithCallbackMethod_RequestHistKlineData() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -419,156 +218,67 @@ class MarketService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RequestHistKlineData(
-      ::grpc::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqHishKlineInfo* /*request*/, ::Proto3::MarketData::HistKlineData* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqHishKlineInfo* /*request*/, ::Proto3::MarketData::HistKlineData* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* RequestHistKlineData(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqHishKlineInfo* /*request*/, ::Proto3::MarketData::HistKlineData* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_RequestTradeData : public BaseClass {
+  class ExperimentalWithCallbackMethod_RequestTradeData : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_RequestTradeData() {
-      ::grpc::Service::MarkMethodCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>(
+    ExperimentalWithCallbackMethod_RequestTradeData() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::Trade>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::TradeData* response) { return this->RequestTradeData(context, request, response); }));}
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::Proto3::MarketData::ReqTradeInfo* request, ::Proto3::MarketData::Trade* response) { return this->RequestTradeData(context, request, response); }));}
     void SetMessageAllocatorFor_RequestTradeData(
-        ::grpc::MessageAllocator< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>* allocator) {
+        ::grpc::experimental::MessageAllocator< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::Trade>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>*>(handler)
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(1);
+    #endif
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::Trade>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_RequestTradeData() override {
+    ~ExperimentalWithCallbackMethod_RequestTradeData() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::TradeData* /*response*/) override {
+    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RequestTradeData(
-      ::grpc::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::TradeData* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithCallbackMethod_GetStreamTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_GetStreamTradeData() {
-      ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackServerStreamingHandler< ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::Proto3::MarketData::ReqTradeInfo* request) { return this->GetStreamTradeData(context, request); }));
-    }
-    ~WithCallbackMethod_GetStreamTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status GetStreamTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerWriteReactor< ::Proto3::MarketData::TradeData>* GetStreamTradeData(
-      ::grpc::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/)  { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithCallbackMethod_RequestDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_RequestDepthData() {
-      ::grpc::Service::MarkMethodCallback(3,
-          new ::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::Proto3::MarketData::ReqDepthInfo* request, ::Proto3::MarketData::DepthQuote* response) { return this->RequestDepthData(context, request, response); }));}
-    void SetMessageAllocatorFor_RequestDepthData(
-        ::grpc::MessageAllocator< ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote>*>(handler)
-              ->SetMessageAllocator(allocator);
-    }
-    ~WithCallbackMethod_RequestDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status RequestDepthData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqDepthInfo* /*request*/, ::Proto3::MarketData::DepthQuote* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerUnaryReactor* RequestDepthData(
-      ::grpc::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqDepthInfo* /*request*/, ::Proto3::MarketData::DepthQuote* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithCallbackMethod_SubKlineData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_SubKlineData() {
-      ::grpc::Service::MarkMethodCallback(4,
-          new ::grpc::internal::CallbackBidiHandler< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>(
-            [this](
-                   ::grpc::CallbackServerContext* context) { return this->SubKlineData(context); }));
-    }
-    ~WithCallbackMethod_SubKlineData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubKlineData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerBidiReactor< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::KlineData>* SubKlineData(
-      ::grpc::CallbackServerContext* /*context*/)
+      ::grpc::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* RequestTradeData(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/)
+    #endif
       { return nullptr; }
   };
-  template <class BaseClass>
-  class WithCallbackMethod_SubTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_SubTradeData() {
-      ::grpc::Service::MarkMethodCallback(5,
-          new ::grpc::internal::CallbackBidiHandler< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>(
-            [this](
-                   ::grpc::CallbackServerContext* context) { return this->SubTradeData(context); }));
-    }
-    ~WithCallbackMethod_SubTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubTradeData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerBidiReactor< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::TradeData>* SubTradeData(
-      ::grpc::CallbackServerContext* /*context*/)
-      { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithCallbackMethod_SubDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_SubDepthData() {
-      ::grpc::Service::MarkMethodCallback(6,
-          new ::grpc::internal::CallbackBidiHandler< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>(
-            [this](
-                   ::grpc::CallbackServerContext* context) { return this->SubDepthData(context); }));
-    }
-    ~WithCallbackMethod_SubDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubDepthData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerBidiReactor< ::Proto3::MarketData::SubInfo, ::Proto3::MarketData::DepthQuote>* SubDepthData(
-      ::grpc::CallbackServerContext* /*context*/)
-      { return nullptr; }
-  };
-  typedef WithCallbackMethod_RequestHistKlineData<WithCallbackMethod_RequestTradeData<WithCallbackMethod_GetStreamTradeData<WithCallbackMethod_RequestDepthData<WithCallbackMethod_SubKlineData<WithCallbackMethod_SubTradeData<WithCallbackMethod_SubDepthData<Service > > > > > > > CallbackService;
-  typedef CallbackService ExperimentalCallbackService;
+  #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+  typedef ExperimentalWithCallbackMethod_RequestHistKlineData<ExperimentalWithCallbackMethod_RequestTradeData<Service > > CallbackService;
+  #endif
+
+  typedef ExperimentalWithCallbackMethod_RequestHistKlineData<ExperimentalWithCallbackMethod_RequestTradeData<Service > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_RequestHistKlineData : public BaseClass {
    private:
@@ -598,92 +308,7 @@ class MarketService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::TradeData* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
-  class WithGenericMethod_GetStreamTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_GetStreamTradeData() {
-      ::grpc::Service::MarkMethodGeneric(2);
-    }
-    ~WithGenericMethod_GetStreamTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status GetStreamTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
-  class WithGenericMethod_RequestDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_RequestDepthData() {
-      ::grpc::Service::MarkMethodGeneric(3);
-    }
-    ~WithGenericMethod_RequestDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status RequestDepthData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqDepthInfo* /*request*/, ::Proto3::MarketData::DepthQuote* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
-  class WithGenericMethod_SubKlineData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_SubKlineData() {
-      ::grpc::Service::MarkMethodGeneric(4);
-    }
-    ~WithGenericMethod_SubKlineData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubKlineData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
-  class WithGenericMethod_SubTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_SubTradeData() {
-      ::grpc::Service::MarkMethodGeneric(5);
-    }
-    ~WithGenericMethod_SubTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubTradeData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
-  class WithGenericMethod_SubDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_SubDepthData() {
-      ::grpc::Service::MarkMethodGeneric(6);
-    }
-    ~WithGenericMethod_SubDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubDepthData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
+    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -720,7 +345,7 @@ class MarketService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::TradeData* /*response*/) override {
+    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -729,117 +354,27 @@ class MarketService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetStreamTradeData : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_RequestHistKlineData : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_GetStreamTradeData() {
-      ::grpc::Service::MarkMethodRaw(2);
-    }
-    ~WithRawMethod_GetStreamTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status GetStreamTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestGetStreamTradeData(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithRawMethod_RequestDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawMethod_RequestDepthData() {
-      ::grpc::Service::MarkMethodRaw(3);
-    }
-    ~WithRawMethod_RequestDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status RequestDepthData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqDepthInfo* /*request*/, ::Proto3::MarketData::DepthQuote* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestRequestDepthData(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithRawMethod_SubKlineData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawMethod_SubKlineData() {
-      ::grpc::Service::MarkMethodRaw(4);
-    }
-    ~WithRawMethod_SubKlineData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubKlineData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubKlineData(::grpc::ServerContext* context, ::grpc::ServerAsyncReaderWriter< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* stream, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncBidiStreaming(4, context, stream, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithRawMethod_SubTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawMethod_SubTradeData() {
-      ::grpc::Service::MarkMethodRaw(5);
-    }
-    ~WithRawMethod_SubTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubTradeData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubTradeData(::grpc::ServerContext* context, ::grpc::ServerAsyncReaderWriter< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* stream, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncBidiStreaming(5, context, stream, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithRawMethod_SubDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawMethod_SubDepthData() {
-      ::grpc::Service::MarkMethodRaw(6);
-    }
-    ~WithRawMethod_SubDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubDepthData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubDepthData(::grpc::ServerContext* context, ::grpc::ServerAsyncReaderWriter< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* stream, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncBidiStreaming(6, context, stream, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithRawCallbackMethod_RequestHistKlineData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_RequestHistKlineData() {
-      ::grpc::Service::MarkMethodRawCallback(0,
+    ExperimentalWithRawCallbackMethod_RequestHistKlineData() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RequestHistKlineData(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RequestHistKlineData(context, request, response); }));
     }
-    ~WithRawCallbackMethod_RequestHistKlineData() override {
+    ~ExperimentalWithRawCallbackMethod_RequestHistKlineData() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -847,142 +382,51 @@ class MarketService final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RequestHistKlineData(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* RequestHistKlineData(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_RequestTradeData : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_RequestTradeData : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_RequestTradeData() {
-      ::grpc::Service::MarkMethodRawCallback(1,
+    ExperimentalWithRawCallbackMethod_RequestTradeData() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RequestTradeData(context, request, response); }));
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RequestTradeData(context, request, response); }));
     }
-    ~WithRawCallbackMethod_RequestTradeData() override {
+    ~ExperimentalWithRawCallbackMethod_RequestTradeData() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::TradeData* /*response*/) override {
+    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     virtual ::grpc::ServerUnaryReactor* RequestTradeData(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithRawCallbackMethod_GetStreamTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_GetStreamTradeData() {
-      ::grpc::Service::MarkMethodRawCallback(2,
-          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->GetStreamTradeData(context, request); }));
-    }
-    ~WithRawCallbackMethod_GetStreamTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status GetStreamTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* GetStreamTradeData(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithRawCallbackMethod_RequestDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_RequestDepthData() {
-      ::grpc::Service::MarkMethodRawCallback(3,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RequestDepthData(context, request, response); }));
-    }
-    ~WithRawCallbackMethod_RequestDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status RequestDepthData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqDepthInfo* /*request*/, ::Proto3::MarketData::DepthQuote* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerUnaryReactor* RequestDepthData(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithRawCallbackMethod_SubKlineData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_SubKlineData() {
-      ::grpc::Service::MarkMethodRawCallback(4,
-          new ::grpc::internal::CallbackBidiHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context) { return this->SubKlineData(context); }));
-    }
-    ~WithRawCallbackMethod_SubKlineData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubKlineData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::KlineData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerBidiReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubKlineData(
-      ::grpc::CallbackServerContext* /*context*/)
-      { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithRawCallbackMethod_SubTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_SubTradeData() {
-      ::grpc::Service::MarkMethodRawCallback(5,
-          new ::grpc::internal::CallbackBidiHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context) { return this->SubTradeData(context); }));
-    }
-    ~WithRawCallbackMethod_SubTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubTradeData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::TradeData, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerBidiReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubTradeData(
-      ::grpc::CallbackServerContext* /*context*/)
-      { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithRawCallbackMethod_SubDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_SubDepthData() {
-      ::grpc::Service::MarkMethodRawCallback(6,
-          new ::grpc::internal::CallbackBidiHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context) { return this->SubDepthData(context); }));
-    }
-    ~WithRawCallbackMethod_SubDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubDepthData(::grpc::ServerContext* /*context*/, ::grpc::ServerReaderWriter< ::Proto3::MarketData::DepthQuote, ::Proto3::MarketData::SubInfo>* /*stream*/)  override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerBidiReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubDepthData(
-      ::grpc::CallbackServerContext* /*context*/)
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* RequestTradeData(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
       { return nullptr; }
   };
   template <class BaseClass>
@@ -1020,10 +464,10 @@ class MarketService final {
     WithStreamedUnaryMethod_RequestTradeData() {
       ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>(
+          ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::Trade>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>* streamer) {
+                     ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::Trade>* streamer) {
                        return this->StreamedRequestTradeData(context,
                          streamer);
                   }));
@@ -1032,71 +476,18 @@ class MarketService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::TradeData* /*response*/) override {
+    ::grpc::Status RequestTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::Proto3::MarketData::Trade* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedRequestTradeData(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::Proto3::MarketData::ReqTradeInfo,::Proto3::MarketData::TradeData>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRequestTradeData(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::Proto3::MarketData::ReqTradeInfo,::Proto3::MarketData::Trade>* server_unary_streamer) = 0;
   };
-  template <class BaseClass>
-  class WithStreamedUnaryMethod_RequestDepthData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithStreamedUnaryMethod_RequestDepthData() {
-      ::grpc::Service::MarkMethodStreamed(3,
-        new ::grpc::internal::StreamedUnaryHandler<
-          ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
-                     ::Proto3::MarketData::ReqDepthInfo, ::Proto3::MarketData::DepthQuote>* streamer) {
-                       return this->StreamedRequestDepthData(context,
-                         streamer);
-                  }));
-    }
-    ~WithStreamedUnaryMethod_RequestDepthData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status RequestDepthData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqDepthInfo* /*request*/, ::Proto3::MarketData::DepthQuote* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedRequestDepthData(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::Proto3::MarketData::ReqDepthInfo,::Proto3::MarketData::DepthQuote>* server_unary_streamer) = 0;
-  };
-  typedef WithStreamedUnaryMethod_RequestHistKlineData<WithStreamedUnaryMethod_RequestTradeData<WithStreamedUnaryMethod_RequestDepthData<Service > > > StreamedUnaryService;
-  template <class BaseClass>
-  class WithSplitStreamingMethod_GetStreamTradeData : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithSplitStreamingMethod_GetStreamTradeData() {
-      ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::SplitServerStreamingHandler<
-          ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerSplitStreamer<
-                     ::Proto3::MarketData::ReqTradeInfo, ::Proto3::MarketData::TradeData>* streamer) {
-                       return this->StreamedGetStreamTradeData(context,
-                         streamer);
-                  }));
-    }
-    ~WithSplitStreamingMethod_GetStreamTradeData() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status GetStreamTradeData(::grpc::ServerContext* /*context*/, const ::Proto3::MarketData::ReqTradeInfo* /*request*/, ::grpc::ServerWriter< ::Proto3::MarketData::TradeData>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with split streamed
-    virtual ::grpc::Status StreamedGetStreamTradeData(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::Proto3::MarketData::ReqTradeInfo,::Proto3::MarketData::TradeData>* server_split_streamer) = 0;
-  };
-  typedef WithSplitStreamingMethod_GetStreamTradeData<Service > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_RequestHistKlineData<WithStreamedUnaryMethod_RequestTradeData<WithSplitStreamingMethod_GetStreamTradeData<WithStreamedUnaryMethod_RequestDepthData<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_RequestHistKlineData<WithStreamedUnaryMethod_RequestTradeData<Service > > StreamedUnaryService;
+  typedef Service SplitStreamedService;
+  typedef WithStreamedUnaryMethod_RequestHistKlineData<WithStreamedUnaryMethod_RequestTradeData<Service > > StreamedService;
 };
+// 服务名字还是用 MarketService, 整个行情系统都要用；
 
 }  // namespace MarketData
 }  // namespace Proto3
