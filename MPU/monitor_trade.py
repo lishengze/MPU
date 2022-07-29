@@ -63,7 +63,7 @@ class TestKafka:
         self._symbol_list = symbol_list_config["symbol_list"]
 
 
-        self._exchange_list = ["FTX", "HUOBI", "OKEX", "BINANCE", ""]
+        self._exchange_list = ["BINANCE"]
         self._data_type_list = data_type_list
         
         print(self._symbol_list)
