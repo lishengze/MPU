@@ -293,8 +293,9 @@ class KafkaServer(NetServer):
                 # print(topic)
                 # print(msg)
                 
+                byte_msg = msg
                 if type(msg) == str:
-                    msg = bytes(msg.encode())
+                    byte_msg = bytes(msg.encode())
                 
                 key_value = key
                 if type(key) == str:
@@ -302,10 +303,10 @@ class KafkaServer(NetServer):
                 
                 # self._producer.send(topic, key=key_value, value=msg)
 
-                self._producer.send(topic, value=msg)
+                self._producer.send(topic, value=byte_msg)
                 
                 # self._producer.send(topic, value=msg)
-                self._logger.info(topic + " " + msg)
+                
             else:
                 self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
         except Exception as e:
