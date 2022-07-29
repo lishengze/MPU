@@ -156,7 +156,7 @@ class TestKafka:
     def process_trade_data(self, trade_data:STradeData):
         try:            
             # self.check_seq(trade_data.sequence_no)
-            # self._logger.info(trade_data.meta_str())
+            self._logger.info(trade_data.meta_str())
             
             if trade_data.symbol not in self._trade_symbol_list:
                 # print(trade_data.meta_str())
