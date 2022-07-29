@@ -301,11 +301,11 @@ class KafkaServer(NetServer):
                 if type(key) == str:
                     key_value = bytes(key.encode())
 
-                # self._logger.info("send topic: %s, msg: %s", topic, msg)
+                self._logger.info("send topic: %s, msg: %s", topic, msg)
                 
-                # self._producer.send(topic, key=key_value, value=msg)
+                self._producer.send(topic, key=key_value, value=msg)
 
-                self._producer.send(topic, value=byte_msg)
+                # self._producer.send(topic, value=byte_msg)
                 
                 # self._producer.send(topic, value=msg)
                 
