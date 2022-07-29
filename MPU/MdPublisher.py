@@ -406,7 +406,7 @@ class Publisher:
 
             # print(trade_data.meta_str())
 
-            self._logger.debug(trade_data.meta_str())
+            self._logger.info(trade_data.meta_str())
                     
             self._net_server.publish_trade(trade_data)
             

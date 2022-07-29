@@ -305,7 +305,7 @@ class KafkaServer(NetServer):
                 self._producer.send(topic, value=msg)
                 
                 # self._producer.send(topic, value=msg)
-                self._logger.debug(topic + " " + msg)
+                self._logger.info(topic + " " + msg)
             else:
                 self._logger.warning("Producer Not Connected %s, %s " % (str(self._server_list), topic))
         except Exception as e:
